@@ -16,6 +16,7 @@ export class TokenService {
     }else{
       localStorage.setItem('mabc-token', token);
     }
+    this._sharedService.token = token;
   }
 
   getToken(){

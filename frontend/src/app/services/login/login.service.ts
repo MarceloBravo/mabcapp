@@ -19,7 +19,8 @@ export class LoginService {
   ) { }
 
   login(loginForm: FormGroup){
-    this._sharedServices.globalRemenberUser = loginForm['remenber'];
+    let remember: boolean = <boolean><unknown>loginForm.get('remenber')
+    this._sharedServices.globalRemenberUser = remember;
     return this.httpClient.post(this._sharedServices.globalURL + this.endPoint, loginForm, {headers: this.header});
   }
 
@@ -30,8 +31,8 @@ export class LoginService {
         const decodeToken = JSON.parse(atob(tokenArr[1]));
         return decodeToken.iss === this._sharedServices.globalURL + this.endPoint
       }
-      return false
     }
+    return false
   }
 
   isLoggedIn(){
