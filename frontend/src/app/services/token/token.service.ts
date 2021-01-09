@@ -10,17 +10,17 @@ export class TokenService {
     private _sharedService: SharedService
   ) { }
 
-  registerToken(token: string){
-    if(this._sharedService.globalRemenberUser){
-      sessionStorage.setItem('mabc-token', token);
-    }else{
+  registerToken(token: string, remember: boolean){
+    this._sharedService.globalRememberUser = remember;
+    if(remember){
       localStorage.setItem('mabc-token', token);
+    }else{
+      sessionStorage.setItem('mabc-token', token);
     }
-    this._sharedService.token = token;
   }
 
   getToken(){
-    if(this._sharedService.globalRemenberUser){
+    if(this._sharedService.globalRememberUser){
       return localStorage.getItem('mabc-token');
     }else{
       return sessionStorage.getItem('mabc-token');
@@ -28,7 +28,7 @@ export class TokenService {
   }
 
   deteToken(){
-    if(this._sharedService.globalRemenberUser){
+    if(this._sharedService.globalRememberUser){
       localStorage.removeItem('mabc-token');
     }else{
       sessionStorage.removeItem('mabc-token');
