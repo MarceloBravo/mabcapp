@@ -1,0 +1,11 @@
+.main-menu{
+  height: calc(133% - 80px) !important;
+}
+
+.main-menu > div > div > div > div > div > #mCSB_1_container_wrapper{
+  height: 100%;
+  display: contents;
+}
+.mCSB_container{
+  margin-right: 0px !important;
+}

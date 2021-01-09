@@ -1,0 +1,16 @@
+.toast{
+  opacity: 1 !important;
+  background-color: #bb2b39!important;
+}
+
+.toastComponent{
+  padding-bottom: 10px !important;
+}
+
+.mr-auto{
+  color: #841212;
+}
+
+.rounded{
+  width: 21px;
+}
