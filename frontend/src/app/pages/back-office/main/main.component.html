@@ -1,23 +1,40 @@
-<div id="pcoded" class="pcoded">
-  <div class="pcoded-overlay-box"></div>
-  <div class="pcoded-container navbar-wrapper">
-    <app-header-nabvar></app-header-nabvar>
+<div class="wrapper">
 
-    <div class="pcoded-main-container">
-      <div class="pcoded-wrapper">
-        <app-main-menu></app-main-menu>
+      <app-main-menu *ngIf="mostrarMenu"></app-main-menu>
 
-        <router-outlet></router-outlet>
+      <div class="main">
+        <app-header-nabvar (showLeftMenu)="mostrarMenuIzquierdo($event)"></app-header-nabvar>
+
+        <main class="content">
+          <router-outlet></router-outlet>
+        </main>
+        <footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-left">
+							<p class="mb-0">
+								<a href="index.html" class="text-muted"><strong>AdminKit Demo</strong></a> &copy;
+							</p>
+						</div>
+						<div class="col-6 text-right">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<a class="text-muted" href="#">Support</a>
+								</li>
+								<li class="list-inline-item">
+									<a class="text-muted" href="#">Help Center</a>
+								</li>
+								<li class="list-inline-item">
+									<a class="text-muted" href="#">Privacy</a>
+								</li>
+								<li class="list-inline-item">
+									<a class="text-muted" href="#">Terms</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
       </div>
-    </div>
-    <div class="fixed-button">
-      <a
-        href="https://codedthemes.com/item/guru-able-admin-template/"
-        target="_blank"
-        class="btn btn-md btn-primary"
-      >
-        <i class="fa fa-shopping-cart" aria-hidden="true"></i> Upgrade To Pro
-      </a>
-    </div>
-  </div>
+
 </div>

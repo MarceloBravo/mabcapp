@@ -13,11 +13,6 @@ import { ToastService } from '../../../services/toast/toast.service';
   templateUrl: './login.component.html',
   styleUrls: [
     './login.component.css',
-    /*
-    '../../../../assets/vendors/mdi/css/materialdesignicons.min.css',
-    '../../../../assets/vendors/base/vendor.bundle.base.css',
-    '../../../../assets/css/style.css',
-    */
   ]
 })
 export class LoginComponent implements OnInit {

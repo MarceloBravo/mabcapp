@@ -6,11 +6,6 @@ import { ScriptServicesService } from 'src/app/services/scriptServices/script-se
   templateUrl: './main-menu.component.html',
   styleUrls: [
     './main-menu.component.css',
-    '../../../assets/css/googleapi.css',
-    '../../../assets/css/bootstrap/css/bootstrap.min.css',
-    '../../../assets/icon/themify-icons/themify-icons.css',
-    '../../../assets/icon/icofont/css/icofont.css',
-    '../../../assets/css/style.css',
   ],
   encapsulation: ViewEncapsulation.None //Permite que la etiqueta del componente de angular no sea considerada en el dom
 })
@@ -28,21 +23,15 @@ export class MainMenuComponent implements OnInit {
 
   private loadScript(){
     this._scriptService.load([
-      '../../../../assets/js/jquery/jquery.min.js',
-      '../../../../assets/js/jquery-ui/jquery-ui.min.js',
-      '../../../../assets/js/popper.js/popper.min.js',
-      '../../../../assets/js/bootstrap/js/bootstrap.min.js',
-      '../../../../assets/js/jquery-slimscroll/jquery.slimscroll.js',
-      '../../../../assets/js/modernizr/modernizr.js',
-      '../../../../assets/pages/widget/amchart/amcharts.min.js',
-      '../../../../assets/pages/widget/amchart/serial.min.js',
-      '../../../../assets/pages/todo/todo.js',
-      '../../../../assets/pages/dashboard/custom-dashboard.js',
-      '../../../../assets/js/script.js',
-      '../../../../assets/js/SmoothScroll.js',
-      '../../../../assets/js/pcoded.min.js',
-      '../../../../assets/js/demo-12.js',
-      '../../../../assets/js/jquery.mCustomScrollbar.concat.min.js',
+      '../../../../assets/bower_components/jquery/dist/jquery.min.js',
+      '../../../../assets/bower_components/popper.js/dist/umd/popper.min.js',
+      '../../../../assets/dist/js/bootstrap.min.js',
+      '../../../../assets/js/app-style-switcher.js',
+      '../../../../assets/js/waves.js',
+      '../../../../assets/js/sidebarmenu.js',
+      '../../../../assets/js/custom.js',
+      '../../../../assets/bower_components/chartist/dist/chartist.min.js',
+      '../../../../assets/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js',
     ]);
   }
 
