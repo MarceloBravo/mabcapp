@@ -1,13 +1,16 @@
 <div class="wrapper">
 
-      <app-main-menu *ngIf="mostrarMenu"></app-main-menu>
+  <app-main-menu *ngIf="mostrarMenu"></app-main-menu>
 
-      <div class="main">
-        <app-header-nabvar (showLeftMenu)="mostrarMenuIzquierdo($event)"></app-header-nabvar>
+  <div class="main">
+    <app-header-nabvar
+      (showLeftMenu)="mostrarMenuIzquierdo($event)"
+    ></app-header-nabvar>
 
-        <main class="content">
-          <router-outlet></router-outlet>
-        </main>
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+    <!--
         <footer class="footer">
 				<div class="container-fluid">
 					<div class="row text-muted">
@@ -34,7 +37,7 @@
 						</div>
 					</div>
 				</div>
-			</footer>
-      </div>
-
+      </footer>
+    -->
+  </div>
 </div>

@@ -1,0 +1,61 @@
+<div class="row">
+
+  <app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+  <app-modal-dialog
+    [titulo]="'Grabar'"
+    [mensaje]="messageDialog"
+    [mostrar]="mostrarModalGrabar"
+    (cerrar)="cancelarGrabar($event)"
+    (aceptar)="aceptarGrabar($event)"
+    >
+  </app-modal-dialog>
+
+  <app-modal-dialog
+    [titulo]="'Eliminar'"
+    [mensaje]="'¿Desea eliminar el registro?'"
+    [mostrar]="mostrarModalEliminar"
+    (cerrar)="cancelarEliminar($event)"
+    (aceptar)="aceptarEliminar($event)"
+    >
+  </app-modal-dialog>
+
+  <div class="col-12 col-xl-12">
+    <div class="card">
+      <div class="card-header">
+        <h6 class="card-subtitle text-muted">{{ url }}</h6>
+        <h5 class="card-title">Mantenedor de Roles</h5>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="form">
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" formControlName="name" class="form-control col-md-5" placeholder="Ingresa el nombre del rol" max="50"/>
+            <!-- Mensajes de error -->
+            <div *ngIf="form.get('name')?.hasError('required') && form.get('name')?.dirty" class="error-input">El nombre del rol es obligatorio.</div>
+            <div *ngIf="form.get('name')?.hasError('minlength') && form.get('name')?.dirty" class="error-input">El nombre del rol debe tener almenos 5 carácteres. Ingresa un nombre más largo.</div>
+            <div *ngIf="form.get('name')?.hasError('maxlength') && form.get('name')?.dirty" class="error-input">El nombre del rol debe tener un máximo de 50 carácteres. Ingresa un nombre más corto.</div>
+            <!-- /Mensajes de error -->
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <input
+              type="text"
+              formControlName="description"
+              class="form-control"
+              placeholder="Ingresa alguna descripción para el rol."
+              max="150"
+            />
+            <!-- Mensajes de error -->
+            <div *ngIf="form.get('description')?.hasError('required') && form.get('description')?.dirty" class="error-input">El nombre del rol es obligatorio.</div>
+            <div *ngIf="form.get('description')?.hasError('minlength') && form.get('description')?.dirty" class="error-input">El nombre del rol debe tener almenos 5 carácteres. Ingresa un nombre más largo.</div>
+            <div *ngIf="form.get('description')?.hasError('maxlength') && form.get('description')?.dirty" class="error-input">El nombre del rol debe tener un máximo de 50 carácteres. Ingresa un nombre más corto.</div>
+            <!-- /Mensajes de error -->
+          </div>
+          <button type="submit" class="btn btn-primary" (click)="cancelar()">Cancelar</button>
+          <button type="submit" class="btn btn-success" (click)="grabar()">Grabar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

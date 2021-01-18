@@ -16,6 +16,7 @@ export class ToastComponent implements OnInit {
   @Input() autohide: boolean = true
   @Input() delay: Number = 5000
   @Input() id: Number = 0
+  @Input() typeOfMessage: string = 'bg-success';
   @Output() hideToast: EventEmitter<any> = new EventEmitter();
 
   constructor() { }

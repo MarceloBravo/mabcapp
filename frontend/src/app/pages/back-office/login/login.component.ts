@@ -60,23 +60,16 @@ export class LoginComponent implements OnInit {
             this._loginService.registrarToken(res['access_token'], this.loginForm.value['remember']);
             this._shared.user = res['user'];
             this._shared.roles = res['roles'];
-            this.router.navigate(['/home']);
+            this.router.navigate(['/admin']);
           }
+          this.toastService.clearToast();
         } else{
-          this.showToast = true
+          this.showToast = true;
         }
     },error=>{
       console.log(error)
-      this.showError(error.status !== 401 ? error.message : 'Usuario y/o contraseña no validos')
+      this.toastService.showErrorMessage(error.status !== 401 ? error.message : 'Usuario y/o contraseña no validos', 'Error!!')
+
     });
   }
-
-  showError(mensaje: string){
-    this.toastService.show(mensaje, {
-      classname: 'bg-danger text-light',
-      autohide: true,
-      header: 'Error!!!'
-    });
-  }
-
 }
