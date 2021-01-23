@@ -4,9 +4,9 @@ import { UsuariosService } from '../../../../services/usuarios/usuarios.service'
 import { User } from '../../../../class/User/user';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RolesService } from '../../../../services/roles/roles.service';
-import { Rol } from 'src/app/class/rol/rol';
 import { SharedService } from '../../../../services/shared/shared.service';
 import { ToastService } from '../../../../services/toast/toast.service';
+import { Rol } from '../../../../class/rol/rol';
 
 @Component({
   selector: 'app-usuarios-form',
