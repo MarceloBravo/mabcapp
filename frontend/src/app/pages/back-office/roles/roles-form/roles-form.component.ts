@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Rol } from '../../../../class/rol/rol';
 import { RolesService } from '../../../../services/roles/roles.service';
 import { ToastService } from '../../../../services/toast/toast.service';
+import { SharedService } from '../../../../services/shared/shared.service';
 
 @Component({
   selector: 'app-roles-form',
@@ -33,7 +34,9 @@ export class RolesFormComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private _toastService: ToastService,
+    private _shared: SharedService,
   ) {
+    this._toastService.clearToast();
     const urlTree = this.router.url.split('?')[0];
     this.url = urlTree
 
@@ -67,10 +70,14 @@ export class RolesFormComponent implements OnInit {
     this.showSpinner = true
     this._rolesService.find(this.id).subscribe(
       (res: any) => {
-        this.rol = res
-        this.buildForm()
-        console.log(this.rol)
-        this.showSpinner = false
+        if(res['status'] === 'Token is Expired'){
+          this.router.navigate(['/']);
+        }else{
+          this.rol = res
+          this.buildForm()
+          console.log(this.rol)
+          this.showSpinner = false
+        }
       }, error => {
         console.log('ERROR',error)
         this.showSpinner = false
@@ -113,12 +120,12 @@ export class RolesFormComponent implements OnInit {
     this.mostrarModalGrabar = false;
     this.showSpinner = true
 
-    this.form.value['updated_at'] = this.getCurrentDate();
+    this.form.value['updated_at'] = this._shared.getCurrentDate();
 
     if(this.id !== null){
       this.actualizar();
     }else{
-      this.form.value['created_at'] = this.getCurrentDate();
+      this.form.value['created_at'] = this._shared.getCurrentDate();
       this.insertar();
     }
   }
@@ -127,14 +134,19 @@ export class RolesFormComponent implements OnInit {
     this._rolesService.insert(this.form.value).subscribe(
       (res: any)=>{
 
-        if(res['tipoMensaje'] === "success"){
-          this._toastService.showSuccessMessage(res['mensage']);
-          this.router.navigate(['/admin/roles']);
+        if(res['status'] === 'Token is Expired'){
+          this.router.navigate(['/']);
         }else{
-          console.log(res['mensage']);
-          this._toastService.showErrorMessage(res['mensage']);
+
+          if(res['tipoMensaje'] === "success"){
+            this._toastService.showSuccessMessage(res['mensage']);
+            this.router.navigate(['/admin/roles']);
+          }else{
+            console.log(res['mensage']);
+            this._toastService.showErrorMessage(res['mensage']);
+          }
+          this.showSpinner = false
         }
-        this.showSpinner = false
       },error=>{
         this._toastService.showErrorMessage(error.message);
         console.log(error);
@@ -146,11 +158,15 @@ export class RolesFormComponent implements OnInit {
   private actualizar(){
     this._rolesService.update(this.id, this.form.value).subscribe(
       (res: any)=>{
-        if(res['tipoMensaje'] === "success"){
-          this._toastService.showSuccessMessage(res['mensage']);
-          this.router.navigate(['/admin/roles']);
+        if(res['status'] === 'Token is Expired'){
+          this.router.navigate(['/']);
+        }else{
+          if(res['tipoMensaje'] === "success"){
+            this._toastService.showSuccessMessage(res['mensage']);
+            this.router.navigate(['/admin/roles']);
+          }
+          this.showSpinner = false
         }
-        this.showSpinner = false
       },error=>{
         this._toastService.showErrorMessage(error.message);
         console.log(error);
@@ -165,22 +181,20 @@ export class RolesFormComponent implements OnInit {
     this.showSpinner = true
     this._rolesService.delete(this.id).subscribe(
       (res: any)=>{
-        if(res['tipoMensaje'] === "success"){
-          debugger
-          this._toastService.showSuccessMessage(res['mensage']);
-          this.router.navigate(['/admin/roles']);
+        if(res['status'] === 'Token is Expired'){
+          this.router.navigate(['/']);
+        }else{
+          if(res['tipoMensaje'] === "success"){
+            this._toastService.showSuccessMessage(res['mensage']);
+            this.router.navigate(['/admin/roles']);
+          }
+          this.showSpinner = false
         }
-        this.showSpinner = false
       },error=>{
         this._toastService.showErrorMessage(error.message);
         console.log(error);
         this.showSpinner = false
       }
     );
-  }
-
-  private getCurrentDate(){
-    let date = new Date();
-    return `${(date.getDate() < 10 ? '0' : '')}${date.getDate()}/${((date.getMonth() + 1) < 10 ? '0' : '')}${(date.getMonth() + 1)}/${date.getFullYear()}`;
   }
 }

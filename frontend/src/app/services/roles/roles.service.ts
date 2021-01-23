@@ -14,6 +14,12 @@ export class RolesService {
     private http: HttpClient
     ) { }
 
+
+  getAll(){
+    return this.http.get(`${this._constantes.endPoint}${this.url}/get/all`,{headers: this._constantes.header()});
+  }
+
+
   list(pag: number){
     return this.http.get(`${this._constantes.endPoint}${this.url}/pag/${pag}`,{headers: this._constantes.header()});
   }

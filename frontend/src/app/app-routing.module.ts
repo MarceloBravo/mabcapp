@@ -5,6 +5,8 @@ import { LoginComponent } from  './pages/back-office/login/login.component';
 import { MainComponent } from './pages/back-office/main/main.component';
 import { RolesGridComponent } from './pages/back-office/roles/roles-grid/roles-grid.component';
 import { RolesFormComponent } from './pages/back-office/roles/roles-form/roles-form.component';
+import { UsuariosGridComponent } from './pages/back-office/usuarios/usuarios-grid/usuarios-grid.component';
+import { UsuariosFormComponent } from './pages/back-office/usuarios/usuarios-form/usuarios-form.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -13,9 +15,12 @@ const routes: Routes = [
       { path: 'roles', component: RolesGridComponent },
       { path: 'roles/nuevo', component: RolesFormComponent },
       { path: 'roles/edit/:id', component: RolesFormComponent },
+
+      { path: 'usuarios', component: UsuariosGridComponent},
+      { path: 'usuarios/nuevo', component: UsuariosFormComponent },
+      { path: 'usuarios/edit/:id', component: UsuariosFormComponent },
     ]
 },
-  //{ path: 'home', component: HomeComponent},
   { path: '**', pathMatch: 'full', redirectTo: 'login' },
 ];
 

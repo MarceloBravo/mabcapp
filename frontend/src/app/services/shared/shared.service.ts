@@ -21,4 +21,15 @@ export class SharedService {
       'Authorization': `Bearer ${token}`
     })
   }
+
+  getCurrentDate(){
+    let date = new Date();
+    return `${(date.getDate() < 10 ? '0' : '')}${date.getDate()}/${((date.getMonth() + 1) < 10 ? '0' : '')}${(date.getMonth() + 1)}/${date.getFullYear()}`;
+  }
+
+  formatDate(fecha: any){
+    return fecha.toLocaleString().toString().substr(0,10).split('-').reverse().join('/');
+  }
+
+
 }
