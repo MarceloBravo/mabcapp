@@ -3,6 +3,7 @@ import { RolesService } from '../../../../services/roles/roles.service';
 import { Paginacion } from '../../../../class/paginacion/paginacion';
 import { Rol } from '../../../../class/rol/rol';
 import { ToastService } from 'src/app/services/toast/toast.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-roles-grid',
@@ -22,6 +23,7 @@ export class RolesGridComponent implements OnInit {
   constructor(
     private _rolesService: RolesService,
     private _toastService: ToastService,
+    private router: Router,
   ) {
     this.obtenerDatos();
   }
@@ -33,8 +35,12 @@ export class RolesGridComponent implements OnInit {
   private obtenerDatos(){
     this.showSpinner = true
     this._rolesService.list(this.paginacion.pagina).subscribe((res: any) => {
-      this.cargarDatos(res)
-      this.showSpinner = false
+      if(res['status'] === 'Token is Expired'){
+        this.router.navigate(['/']);
+      }else{
+        this.cargarDatos(res)
+        this.showSpinner = false
+      }
     }, error => {
       this.showSpinner = false
       this._toastService.showErrorMessage(error.status !== 401 ? error.message : 'Usuario y/o contraseña no validos', 'Error!!')

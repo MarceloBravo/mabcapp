@@ -34,5 +34,11 @@ Route::group([
 ], function(){
     Route::resource('roles','RolesController');
     Route::get('roles/pag/{pag}','RolesController@index');
-    Route::get('roles/filtrar/{buscado}/${pag}','RolesController@filter');
+    Route::get('roles/filtrar/{buscado}/{pag}','RolesController@filter');
+    Route::get('roles/get/all','RolesController@getAll');
+
+    Route::resource('usuarios','UserController');
+    Route::get('usuarios/pag/{pag}','UserController@index');
+    Route::get('usuarios/filtrar/{buscado}/{pag}','UserController@filter');
+    Route::get('usuarios/get/all','UserController@getAll');
 });

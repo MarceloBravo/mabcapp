@@ -36,6 +36,13 @@ class RolesController extends Controller
         return response()->json(['data' => $roles->toArray(), 'rows' => $totReg, 'page' => $pag, 'rowsPerPage' => $this->rowsPerPag]);
     }
 
+
+    public function getAll(){
+        $roles = Role::orderBy('name','asc')->get();
+
+        return response()->json($roles->toArray());
+    }
+
     /**
      * Show the form for creating a new resource.
      *

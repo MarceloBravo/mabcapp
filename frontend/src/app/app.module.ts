@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/back-office/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms'; //Necesario para usar formGroup y formControl
 import { HomeComponent } from './pages/back-office/home/home.component';
 import { MainMenuComponent } from './components/mainMenu/main-menu.component';
 import { HeaderNabvarComponent } from './components/headerNavbar/header-nabvar.component';
@@ -15,7 +15,10 @@ import { RolesGridComponent } from './pages/back-office/roles/roles-grid/roles-g
 import { PaginacionComponent } from './components/paginacion/paginacion/paginacion.component';
 import { RolesFormComponent } from './pages/back-office/roles/roles-form/roles-form.component';
 import { ModalDialogComponent } from './components/modal-dialog/modal-dialog.component';
-import { SpinnerComponent } from './components/spinner/spinner.component'; //Necesario para usar formGroup y formControl
+import { SpinnerComponent } from './components/spinner/spinner.component';
+import { UsuariosGridComponent } from './pages/back-office/usuarios/usuarios-grid/usuarios-grid.component';
+import { UsuariosFormComponent } from './pages/back-office/usuarios/usuarios-form/usuarios-form.component';
+import { GridComponent } from './components/grid/grid.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,10 @@ import { SpinnerComponent } from './components/spinner/spinner.component'; //Nec
     PaginacionComponent,
     RolesFormComponent,
     ModalDialogComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    UsuariosGridComponent,
+    UsuariosFormComponent,
+    GridComponent
   ],
   imports: [
     BrowserModule,
