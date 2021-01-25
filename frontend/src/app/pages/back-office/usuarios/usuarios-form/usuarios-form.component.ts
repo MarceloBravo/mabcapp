@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { UsuariosService } from '../../../../services/usuarios/usuarios.service';
 import { User } from '../../../../class/User/user';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { RolesService } from '../../../../services/roles/roles.service';
 import { SharedService } from '../../../../services/shared/shared.service';
 import { ToastService } from '../../../../services/toast/toast.service';
 import { Rol } from '../../../../class/rol/rol';
+import { CustomValidators } from '../../../../validators/custom-validators';
 
 @Component({
   selector: 'app-usuarios-form',
@@ -63,6 +64,7 @@ export class UsuariosFormComponent implements OnInit {
 
 
   private iniciarForm(){
+
     this.form = this.fb.group({
       id: [this.usuario.id,[Validators.min(1)]],
       name: [this.usuario.name,[Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
@@ -70,8 +72,8 @@ export class UsuariosFormComponent implements OnInit {
       a_materno: [this.usuario.a_materno,[Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       email: [this.usuario.email,[Validators.required, Validators.email, Validators.maxLength(150)]],
       direccion: [this.usuario.direccion,[Validators.required, Validators.minLength(10), Validators.maxLength(150)]],
-      password: [this.usuario.password,[Validators.minLength(6), Validators.maxLength(20)]],
-      confirm_password: [this.usuario.confirm_password,[, Validators.minLength(6), Validators.maxLength(20)]],
+      password: [this.usuario.password,[Validators.minLength(6), Validators.maxLength(20), CustomValidators.confirmPassword('confirm_password')]],
+      confirm_password: [this.usuario.confirm_password,[Validators.minLength(6), Validators.maxLength(20), CustomValidators.confirmPassword('password')]],
       roles: [this.usuario.roles,[Validators.required]],
       created_at: this.usuario.created_at,
       updated_at: this.usuario.updated_at,

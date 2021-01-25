@@ -120,6 +120,12 @@
                   <!-- Mensajes de error -->
                   <div *ngIf="form.get('password')?.hasError('minlength') && form.get('password')?.dirty" class="error-input">La contraseña ingresada debe terener almenos 6 carácteres. Ingresa una contraseña mas larga.</div>
                   <div *ngIf="form.get('password')?.hasError('maxlength') && form.get('password')?.dirty" class="error-input">La contraseña ingresada debe tener un máximo de 20 carácteres. Ingresa una contraseña más corta.</div>
+                  <div *ngIf="
+                    form.get('password')?.hasError('confirmPassword') &&
+                    form.get('confirm_password')?.hasError('confirmPassword') &&
+                    form.get('password')?.dirty" class="error-input">
+                    La contraseña ingresada no coincide con la confirmación de contraseña.
+                  </div>
                   <!-- /Mensajes de error -->
                 </div>
               </div>
@@ -131,6 +137,13 @@
                   <!-- Mensajes de error -->
                   <div *ngIf="form.get('confirm_password')?.hasError('minlength') && form.get('confirm_password')?.dirty" class="error-input">La contraseña ingresada debe terener almenos 6 carácteres. Ingresa una contraseña mas larga.</div>
                   <div *ngIf="form.get('confirm_password')?.hasError('maxlength') && form.get('confirm_password')?.dirty" class="error-input">La contraseña ingresada debe tener un máximo de 20 carácteres. Ingresa una contraseña más corta.</div>
+                  <div *ngIf="
+                    form.get('confirm_password')?.hasError('confirmPassword') &&
+                    form.get('password')?.hasError('confirmPassword') &&
+                    form.get('confirm_password')?.dirty" class="error-input">
+                    La contraseña ingresada no coincide con la confirmación de contraseña.
+                  </div>
+
                   <!-- /Mensajes de error -->
                 </div>
               </div>

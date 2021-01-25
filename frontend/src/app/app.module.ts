@@ -19,6 +19,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { UsuariosGridComponent } from './pages/back-office/usuarios/usuarios-grid/usuarios-grid.component';
 import { UsuariosFormComponent } from './pages/back-office/usuarios/usuarios-form/usuarios-form.component';
 import { GridComponent } from './components/grid/grid.component';
+//import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,7 @@ import { GridComponent } from './components/grid/grid.component';
     SpinnerComponent,
     UsuariosGridComponent,
     UsuariosFormComponent,
-    GridComponent
+    GridComponent,
   ],
   imports: [
     BrowserModule,
