@@ -2,7 +2,16 @@
   <div class="card">
     <div class="card-header">
       <h5 class="card-title">{{ titulo }}</h5>
-      <a *ngIf="mostrarNuevo" role="button" class="btn btn-primary btn-nuevo" routerLink="{{ urlNuevo }}">Nuevo</a>
+
+      <div class="form-inline">
+        <div class="col-md-6">
+          <input type="text" class="col-md-12 form-control" value="" #txtFoundText (change)="textoFiltroChange(txtFoundText.value)" placeholder="Ingresa el texto  a buscar"/>
+        </div>
+        <div class="col-md-6">
+          <a *ngIf="mostrarNuevo" role="button" class="btn btn-primary btn-nuevo" routerLink="{{ urlNuevo }}">Nuevo</a>
+        </div>
+      </div>
+
     </div>
     <table class="table table-striped table-sm">
       <thead>

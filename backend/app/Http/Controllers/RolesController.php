@@ -63,7 +63,7 @@ class RolesController extends Controller
     {
         $validator = $this->validaDatos($request);
         if($validator->fails()){
-            return response(['mensage' => 'Datos incompletos o no válidos:', 'tipoMensaje' => 'danger', 'errores' => $validator->errors()]);
+            return response(['mensaje' => 'Datos incompletos o no válidos:', 'tipoMensaje' => 'danger', 'errores' => $validator->errors()]);
         }
         $rol = new Role();
         $res = $rol->fill($request->all())->save();
@@ -71,7 +71,7 @@ class RolesController extends Controller
         $tipoMensaje = $res ? 'success' : 'danger';
         $id = $res ? $rol->id : -1;
 
-        return response(['mensage' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
+        return response(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
     }
 
     /**
@@ -109,14 +109,14 @@ class RolesController extends Controller
     {
         $validator = $this->validaDatos($request, $id);
         if($validator->fails()){
-            return response(['mensage' => 'Datos incompletos o no válidos:', 'tipoMensaje' => 'danger', 'errores' => $validator->errors()]);
+            return response(['mensaje' => 'Datos incompletos o no válidos:', 'tipoMensaje' => 'danger', 'errores' => $validator->errors()]);
         }
         $rol = Role::find($id);
         $res = $rol->fill($request->all())->save();
         $mensaje = $res ? 'El registro ha sido actualizado.' : 'Ocurrió un error al intentar actualizar el registro';
         $tipoMensaje = $res ? 'success' : 'danger';
 
-        return response(['mensage' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
+        return response(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
     }
 
     /**
@@ -132,7 +132,7 @@ class RolesController extends Controller
         $mensaje = $res ? 'El registro ha sido eliminado.' : 'Ocurrió un error al intentar eliminar el registro';
         $tipoMensaje = $res ? 'success' : 'danger';
 
-        return response(['mensage' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
+        return response(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
     }
 
     private function validaDatos(Request $request, $id = null){

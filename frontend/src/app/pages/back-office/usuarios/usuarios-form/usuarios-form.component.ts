@@ -16,9 +16,9 @@ import { CustomValidators } from '../../../../validators/custom-validators';
 })
 export class UsuariosFormComponent implements OnInit {
   public showSpinner: boolean = false;
-  public mostrarModalGrabar: boolean = false;
   public messageDialog: string = '';
-  public mostrarModalEliminar: boolean = false;
+  private tipoModal = 'grabar';
+  public mostrarModal: boolean = false;
   public url: string = '';
   private usuario: User = new User();
   public roles: Rol[] = [];
@@ -36,7 +36,7 @@ export class UsuariosFormComponent implements OnInit {
     deleted_at: new FormControl(),
     roles: new FormControl(),
   });
-  private id: any = null;
+  public id: any = null;
 
 
   constructor(
@@ -65,20 +65,27 @@ export class UsuariosFormComponent implements OnInit {
 
   private iniciarForm(){
 
-    this.form = this.fb.group({
-      id: [this.usuario.id,[Validators.min(1)]],
+    this.form = this.fb.group(
+      //Validaciones Sincronas
+      {
+      id: [this.usuario.id,[Validators.min(0)]],
       name: [this.usuario.name,[Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
       a_paterno: [this.usuario.a_paterno,[Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       a_materno: [this.usuario.a_materno,[Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       email: [this.usuario.email,[Validators.required, Validators.email, Validators.maxLength(150)]],
       direccion: [this.usuario.direccion,[Validators.required, Validators.minLength(10), Validators.maxLength(150)]],
-      password: [this.usuario.password,[Validators.minLength(6), Validators.maxLength(20), CustomValidators.confirmPassword('confirm_password')]],
-      confirm_password: [this.usuario.confirm_password,[Validators.minLength(6), Validators.maxLength(20), CustomValidators.confirmPassword('password')]],
+      password: [this.usuario.password,[Validators.minLength(6), Validators.maxLength(20)]],
+      confirm_password: [this.usuario.confirm_password,[Validators.minLength(6), Validators.maxLength(20)]],
       roles: [this.usuario.roles,[Validators.required]],
       created_at: this.usuario.created_at,
       updated_at: this.usuario.updated_at,
       deleted_at: this.usuario.deleted_at
-    });
+    },
+    //Validaciones Asincronas
+    {
+      validators: CustomValidators.confirmPassword('password','confirm_password')
+    }
+    );
   }
 
 
@@ -92,8 +99,7 @@ export class UsuariosFormComponent implements OnInit {
         this.showSpinner = false;
       }
     },error => {
-      console.log(error);
-      this.showSpinner = false;
+      this.handlerError(error);
     });
   }
 
@@ -112,27 +118,48 @@ export class UsuariosFormComponent implements OnInit {
     });
   }
 
+  modalGrabar(){
+    this.mostrarModal = true;
+    this.tipoModal = 'grabar';
+    this.messageDialog = '¿Desea grabar el registro';
+  }
+
+  modalEliminar(){
+    this.mostrarModal = true;
+    this.tipoModal = 'eliminar';
+    this.messageDialog = '¿Desea eliminar el registro';
+  }
+
+  cancelarModal(e: any){
+    this.mostrarModal = false;
+    this.tipoModal = '';
+    this.messageDialog = '';
+  }
+
   cancelar(){
     if(this.id !== null && JSON.stringify(this.form.value) !== JSON.stringify(this.usuario)){
       //Se han detectado cambios sin guardar
       this.messageDialog = 'Existen cambios sin guardar. ¿Desea guardar los cambios?';
-      this.mostrarModalGrabar = true;
+      this.mostrarModal = true;
+      this.tipoModal = 'grabar';
     }else{
       //No se han detectado cambios, se redirige al listado de roles
       this.router.navigate(['/admin/usuarios']);
     }
   }
 
-  grabar(){
-    this.messageDialog = "¿Desea grabar el registro?";
-    this.mostrarModalGrabar = true;
+  aceptarModal(e: any){
+    if(this.tipoModal === 'grabar'){
+      this.grabar();
+    }else{
+      this.eliminar();
+    }
+    this.cancelarModal(null);
   }
 
-  aceptarGrabar(e: any){
+  private grabar(){
     this.showSpinner = true;
-    this.mostrarModalGrabar = false;
     this.form.value.updated_at = this._shared.getCurrentDate();
-
     if(this.id !== null){
       this.actualizar();
     }else{
@@ -143,77 +170,56 @@ export class UsuariosFormComponent implements OnInit {
 
   private insertar(){
     this._userServices.insert(this.form.value).subscribe((res:any)=> {
-      if(res['status'] === 'Token is Expired'){
-        this.router.navigate(['/']);
-      }else{
-        if(res['tipoMensaje'] === "success"){
-          this._toastService.showSuccessMessage(res['mensaje']);
-          this.router.navigate(['/admin/usuarios']);
-        }
-        this.showSpinner = false;
-      }
+      this.handlerSuccess(res);
     },error=>{
-      this._toastService.showErrorMessage(error.message);
-      console.log(error);
-      this.showSpinner = false;
+      this.handlerError(error);
     });
   }
 
   private actualizar(){
     this._userServices.update(this.id, this.form.value).subscribe((res: any)=> {
-      if(res['status'] === 'Token is Expired'){
-        this.router.navigate(['/']);
-      }else{
-        if(res['tipoMensaje'] === "success"){
-          this._toastService.showSuccessMessage(res['mensaje']);
-          this.router.navigate(['/admin/usuarios']);
-        }
-        this.showSpinner = false
-      }
+      this.handlerSuccess(res);
     },error=>{
-      this._toastService.showErrorMessage(error.message);
-      console.log(error);
-      this.showSpinner = false
+      this.handlerError(error);
     });
   }
 
-  cancelarGrabar(e: any){
-    this.mostrarModalGrabar = false;
-  }
-
-  eliminar(){
-    this.mostrarModalEliminar = true;
-  }
-
-
-  cancelarEliminar(e: any){
-    this.mostrarModalEliminar = false;
-  }
-
-  aceptarEliminar(e: any){
+  private eliminar(){
     this.showSpinner = true;
-    this.mostrarModalEliminar = false;
 
     this._userServices.delete(this.id).subscribe((res: any) => {
-      if(res['status'] === 'Token is Expired'){
-        this.router.navigate(['/']);
-      }else{
-        if(res['tipoMensaje'] === "success"){
-          this._toastService.showSuccessMessage(res['mensaje']);
-          this.router.navigate(['/admin/usuarios']);
-        }
-        this.showSpinner = false
-      }
+      this.handlerSuccess(res);
     },error=>{
-      this._toastService.showErrorMessage(error.message);
-      console.log(error);
-      this.showSpinner = false
+      this.handlerError(error);
     });
   }
 
   comparaRoles(rol1: Rol, rol2: Rol):boolean{
     console.log(rol1, rol2);
     return rol1 && rol2 ? rol1.id === rol2.id : rol1 === rol2;
+  }
+
+  private handlerSuccess(res: any){
+    if(res['status'] === 'Token is Expired'){
+      this.router.navigate(['/']);
+    }else{
+      if(res.errores){
+        let mensaje: string = res.mensaje;
+        mensaje += ': ' + Object.keys(res.errores).map(k => res.errores[k]).join(',');
+        this._toastService.showErrorMessage(mensaje);
+      }else if(res['tipoMensaje'] === "success"){
+        this._toastService.showSuccessMessage(res['mensaje']);
+        this.router.navigate(['/admin/usuarios']);
+      }
+      this.showSpinner = false
+
+    }
+  }
+
+  private handlerError(error: any){
+    this._toastService.showErrorMessage(error.message);
+    console.log(error);
+    this.showSpinner = false
   }
 
 }

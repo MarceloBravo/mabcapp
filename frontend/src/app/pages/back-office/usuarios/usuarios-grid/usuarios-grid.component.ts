@@ -95,4 +95,27 @@ export class UsuariosGridComponent implements OnInit {
     this.obtenerDatos()
   }
 
+  filtrar(texto: string){
+    this.paginacion.pagina = 0;
+    if(texto  === ""){
+      this.obtenerDatos();
+    }else{
+      this.filtrarDatos(texto);
+    }
+  }
+
+  private filtrarDatos(texto: string){
+    this.showSpinner = true;
+    this._usuariosServices.filter(texto, this.paginacion.pagina).subscribe(
+      (res: any)=>{
+        this.cargarDatos(res);
+        this.showSpinner = false;
+      },error=>{
+        console.log(error);
+        this.showSpinner = false;
+        this._toastService.showErrorMessage(error.message);
+      }
+    )
+  }
+
 }

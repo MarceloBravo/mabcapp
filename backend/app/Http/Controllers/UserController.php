@@ -197,6 +197,8 @@ class UserController extends Controller
                         )
                         ->where('name','Like','%'.$buscado.'%')
                         ->orWhere('email','Like','%'.$buscado.'%')
+                        ->orWhere('a_paterno','Like','%'.$buscado.'%')
+                        ->orWhere('a_materno','Like','%'.$buscado.'%')
                         ->orderBy('name','asc');
 
         $totRows = count($allData->get());

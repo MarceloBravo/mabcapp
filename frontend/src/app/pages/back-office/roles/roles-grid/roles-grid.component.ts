@@ -94,5 +94,27 @@ export class RolesGridComponent implements OnInit {
     this.mostrarModalEliminar = e;
   }
 
+  filtrar(texto: string){
+    this.paginacion.pagina = 0;
+    if(texto  === ""){
+      this.obtenerDatos();
+    }else{
+      this.filtrarDatos(texto);
+    }
+  }
+
+   private filtrarDatos(texto: string){
+    this.showSpinner = true;
+    this._rolesService.filter(texto, this.paginacion.pagina).subscribe(
+      (res: any)=>{
+        this.cargarDatos(res);
+        this.showSpinner = false;
+      },error=>{
+        console.log(error);
+        this.showSpinner = false;
+        this._toastService.showErrorMessage(error.message);
+      }
+    )
+  }
 
 }

@@ -1,3 +1,7 @@
+.card{
+  display: inline-flex !important;
+}
+
 .col-fecha{
   width: 140px;
 }

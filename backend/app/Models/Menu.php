@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Menus extends Model
+class Menu extends Model
 {
     use HasFactory;
 
     use SoftDeletes;
 
-    protected $fillable = ['nombre'];
+    protected $fillable = ['nombre','url'];
 
     public function pantallas(){
         return $this->hasOne('\App\Models\Pantalla','id','pantalla_id')->get();

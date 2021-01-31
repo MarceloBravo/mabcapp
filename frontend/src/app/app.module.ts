@@ -19,6 +19,8 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { UsuariosGridComponent } from './pages/back-office/usuarios/usuarios-grid/usuarios-grid.component';
 import { UsuariosFormComponent } from './pages/back-office/usuarios/usuarios-form/usuarios-form.component';
 import { GridComponent } from './components/grid/grid.component';
+import { MenusGridComponent } from './pages/back-office/menus/menus-grid/menus-grid.component';
+import { MenusFormComponent } from './pages/back-office/menus/menus-form/menus-form.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -39,6 +41,8 @@ import { GridComponent } from './components/grid/grid.component';
     UsuariosGridComponent,
     UsuariosFormComponent,
     GridComponent,
+    MenusGridComponent,
+    MenusFormComponent,
   ],
   imports: [
     BrowserModule,

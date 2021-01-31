@@ -2,23 +2,17 @@
 
   <app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
 
+  <app-toasts></app-toasts>
+
   <app-modal-dialog
     [titulo]="'Grabar'"
     [mensaje]="messageDialog"
-    [mostrar]="mostrarModalGrabar"
-    (cerrar)="cancelarGrabar($event)"
-    (aceptar)="aceptarGrabar($event)"
+    [mostrar]="mostrarModal"
+    (cerrar)="cancelarModal($event)"
+    (aceptar)="aceptarModal($event)"
     >
   </app-modal-dialog>
 
-  <app-modal-dialog
-    [titulo]="'Eliminar'"
-    [mensaje]="'¿Desea eliminar el registro?'"
-    [mostrar]="mostrarModalEliminar"
-    (cerrar)="cancelarEliminar($event)"
-    (aceptar)="aceptarEliminar($event)"
-    >
-  </app-modal-dialog>
 
   <h1 class="h3 mb-3">Usuarios</h1>
 
@@ -149,7 +143,9 @@
               </div>
 
               <button type="submit" class="btn btn-primary" (click)="cancelar()">Cancelar</button>
-              <button type="button" class="btn btn-success" (click)="grabar()" [disabled]="!form.valid">Grabar</button>
+              <button type="submit" class="btn btn-danger" (click)="modalEliminar()" [disabled]="id == null">Eliminar</button>
+              <button type="button" class="btn btn-success" (click)="modalGrabar()" [disabled]="!form.valid">Grabar</button>
+              <!-- <button (click)="showErrors()">Ver errores</button> -->
             </form>
           </div>
         </div>

@@ -25,7 +25,7 @@ export class RolesService {
   }
 
   filter(textoBuscado: string, pag: number){
-    return this.http.get(`${this._constantes.endPoint}${this.url}/filter/${textoBuscado}/${pag}`,{headers: this._constantes.header()});
+    return this.http.get(`${this._constantes.endPoint}${this.url}/filtrar/${textoBuscado}/${pag}`,{headers: this._constantes.header()});
   }
 
   find(id: number){

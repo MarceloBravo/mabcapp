@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { ChildActivationStart } from '@angular/router';
 
 @Component({
   selector: 'app-grid',
@@ -19,6 +20,7 @@ export class GridComponent implements OnInit {
   @Input() mostrarEditar: boolean = true;
   @Input() mostrarEliminar: boolean = true;
   @Output() idEliminar: EventEmitter<number> = new EventEmitter();
+  @Output() textoFiltro: EventEmitter<string> = new EventEmitter();
 
   constructor() { }
 
@@ -27,6 +29,10 @@ export class GridComponent implements OnInit {
 
   eliminar(id: number){
     this.idEliminar.emit(id);
+  }
+
+  textoFiltroChange(texto: string){
+    this.textoFiltro.emit(texto);
   }
 
   formatDate(dato: any){

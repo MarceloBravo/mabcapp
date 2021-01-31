@@ -14,17 +14,17 @@
     >
   </app-modal-dialog>
 
-  <h1 class="h3 mb-3">Roles</h1>
+  <h1 class="h3 mb-3">Menús</h1>
 
   <div class="row">
 
     <div class="col-12 col-xl-12">
 
       <app-grid
-        [titulo]="'Listado de roles'"
-        [cabeceras]="['Nombre','Descripción','Fecha creación','Fecha actualización','Acciones']"
-        [registros]="roles"
-        [columnasVisibles]="['name','description','created_at','updated_at']"
+        [titulo]="'Listado de menús'"
+        [cabeceras]="headers"
+        [registros]="menus"
+        [columnasVisibles]="visibleColumns"
         (idEliminar)="eliminar($event)"
         (textoFiltro)="filtrar($event)"
       >
@@ -32,7 +32,7 @@
 
       <app-paginacion
         [paginacion]="paginacion"
-        [rutaGet]="'/api/roles/pag/'"
+        [rutaGet]="'/api/menus/pag/'"
         (paginaAnterior)="mostrarPagina($event)"
         (paginaSiguiente)="mostrarPagina($event)"
         (mostrarPagina)="mostrarPagina($event)"
@@ -40,7 +40,5 @@
 
     </div>
   </div>
-
-  <app-toasts></app-toasts>
 
 </div>

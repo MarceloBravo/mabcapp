@@ -23,10 +23,10 @@ export class RolesFormComponent implements OnInit {
   });
   public id: any = null;
   public url: string = '';
-  public mostrarModalGrabar: boolean = false;
-  public mostrarModalEliminar: boolean = false;
+  public mostrarModal: boolean = false;
   public messageDialog: string = '¿Desea grabar el registro?';
   public showSpinner: boolean = false;
+  private tipoModal: string = 'grabar';
 
   constructor(
     private _rolesService: RolesService,
@@ -79,26 +79,30 @@ export class RolesFormComponent implements OnInit {
           this.showSpinner = false
         }
       }, error => {
-        console.log('ERROR',error)
-        this.showSpinner = false
+        this.handlerError(error);
       }
     )
   }
 
-  grabar(){
+  modalGrabar(){
+    this.mostrarModal = true;
     this.messageDialog = '¿Desea grabar el registro?';
-    this.mostrarModalGrabar = true;
+    this.tipoModal = 'grabar';
   }
 
-  eliminar(){
-    this.mostrarModalEliminar = true;
+  modalEliminar(){
+    this.mostrarModal = true;
+    this.messageDialog = '¿Desea eliminar el registro?';
+    this.tipoModal = 'eliminar';
   }
+
 
   cancelar(){
     if(this.id !== null && JSON.stringify(this.form.value) !== JSON.stringify(this.rol)){
       //Se han detectado cambios sin guardar
       this.messageDialog = 'Existen cambios sin guardar. ¿Desea guardar los cambios?';
-      this.mostrarModalGrabar = true;
+      this.tipoModal = 'grabar';
+      this.mostrarModal = true;
     }else{
       //No se han detectado cambios, se redirige al listado de roles
       this.router.navigate(['/admin/roles']);
@@ -106,22 +110,26 @@ export class RolesFormComponent implements OnInit {
   }
 
 
-  cancelarGrabar(e: any){
-    this.mostrarModalGrabar = e;
+  cancelarModal(e: any){
+    this.mostrarModal = false;
+    this.messageDialog = '';
+    this.tipoModal = '';
+  }
+
+  aceptarModal(e: any){
+    if(this.tipoModal === 'grabar'){
+      this.grabar();
+    }else{
+      this.eliminar();
+    }
+    this.cancelarModal(null);
   }
 
 
-  cancelarEliminar(e: any){
-    this.mostrarModalEliminar = e;
-  }
 
-
-  aceptarGrabar(e: any){
-    this.mostrarModalGrabar = false;
+  private grabar(){
     this.showSpinner = true
-
     this.form.value['updated_at'] = this._shared.getCurrentDate();
-
     if(this.id !== null){
       this.actualizar();
     }else{
@@ -134,23 +142,9 @@ export class RolesFormComponent implements OnInit {
     this._rolesService.insert(this.form.value).subscribe(
       (res: any)=>{
 
-        if(res['status'] === 'Token is Expired'){
-          this.router.navigate(['/']);
-        }else{
-
-          if(res['tipoMensaje'] === "success"){
-            this._toastService.showSuccessMessage(res['mensage']);
-            this.router.navigate(['/admin/roles']);
-          }else{
-            console.log(res['mensage']);
-            this._toastService.showErrorMessage(res['mensage']);
-          }
-          this.showSpinner = false
-        }
+        this.handlerSuccess(res);
       },error=>{
-        this._toastService.showErrorMessage(error.message);
-        console.log(error);
-        this.showSpinner = false
+        this.handlerError(error);
       }
     );
   }
@@ -158,43 +152,44 @@ export class RolesFormComponent implements OnInit {
   private actualizar(){
     this._rolesService.update(this.id, this.form.value).subscribe(
       (res: any)=>{
-        if(res['status'] === 'Token is Expired'){
-          this.router.navigate(['/']);
-        }else{
-          if(res['tipoMensaje'] === "success"){
-            this._toastService.showSuccessMessage(res['mensage']);
-            this.router.navigate(['/admin/roles']);
-          }
-          this.showSpinner = false
-        }
+        this.handlerSuccess(res);
       },error=>{
-        this._toastService.showErrorMessage(error.message);
-        console.log(error);
-        this.showSpinner = false
+        this.handlerError(error);
       }
     );
   }
 
 
-  aceptarEliminar(e: any){
-    this.mostrarModalEliminar = false;
+  private eliminar(){
     this.showSpinner = true
     this._rolesService.delete(this.id).subscribe(
       (res: any)=>{
-        if(res['status'] === 'Token is Expired'){
-          this.router.navigate(['/']);
-        }else{
-          if(res['tipoMensaje'] === "success"){
-            this._toastService.showSuccessMessage(res['mensage']);
-            this.router.navigate(['/admin/roles']);
-          }
-          this.showSpinner = false
-        }
+        this.handlerSuccess(res);
       },error=>{
-        this._toastService.showErrorMessage(error.message);
-        console.log(error);
-        this.showSpinner = false
+        this.handlerError(error);
       }
     );
+  }
+
+  private handlerSuccess(res: any){
+    if(res['status'] === 'Token is Expired'){
+      this.router.navigate(['/']);
+    }else{
+      if(res.errores){
+        let mensaje: string = res.mensaje;
+        mensaje += ': ' + Object.keys(res.errores).map(k => res.errores[k]).join(',');
+        this._toastService.showErrorMessage(mensaje);
+      }else if(res['tipoMensaje'] === "success"){
+        this._toastService.showSuccessMessage(res['mensaje']);
+        this.router.navigate(['/admin/roles']);
+      }
+      this.showSpinner = false
+    }
+  }
+
+  private handlerError(error: any){
+    this._toastService.showErrorMessage(error.message);
+    console.log(error);
+    this.showSpinner = false
   }
 }

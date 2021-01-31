@@ -32,18 +32,15 @@ export class CustomValidators {
 
 
   // ----------------   Confirmar contraseña   ----------------
-    static confirmPassword(controlName: string){
+    static confirmPassword(control1: string, control2: string){
       return (control: AbstractControl): {[key: string]: boolean} | null => {
-        let ctrlValue = control.parent?.get(controlName)?.value
-        if(control && control.value !== ctrlValue ){
+        let value1 = control.parent?.get(control1)?.value
+        let value2 = control.parent?.get(control2)?.value
+        if(value1 !== value2 ){
           return {confirmPassword: true}
         }
         return null;
       }
-    /*
-      if(password1Control === password2Control && password1Control === null)return null;
-      return password1Control.value !== password2Control.value ? {confirmPassword: true} : null;
-      */
     }
   // ----------------   /Confirmar contraseña   ----------------
 }
