@@ -90,7 +90,7 @@ export class MenusFormComponent implements OnInit {
   }
 
   aceptarModal(e: any){
-    if(this.tipoModal === 'grabar'){
+    if(this.tipoModal === 'grabar' || this.tipoModal === 'confirmar cambios'){
       this.grabar();
     }else{
       this.eliminar();
@@ -98,6 +98,9 @@ export class MenusFormComponent implements OnInit {
   }
 
   cancelarModal(e: any){
+    if(this.tipoModal === 'confirmar cambios'){
+      this.router.navigate(['/admin/menus'])
+    }
     this.mostrarModal = false;
     this.tipoModal = ''
     this.messageDialog = '';
@@ -108,7 +111,7 @@ export class MenusFormComponent implements OnInit {
       //Se han detectado cambios sin guardar
       this.messageDialog = 'Existen cambios sin guardar. ¿Desea guardar los cambios?';
       this.mostrarModal = true;
-      this.tipoModal = 'grabar';
+      this.tipoModal = 'confirmar cambios';
     }else{
       //No se han detectado cambios, se redirige al listado de roles
       this.router.navigate(['/admin/menus']);

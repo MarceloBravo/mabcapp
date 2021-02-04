@@ -31,7 +31,7 @@ class MenusController extends Controller
 
     public function getAll()
     {
-        $menus = Menu::all();
+        $menus = Menu::orderBy('nombre','asc')->get();
 
         return response()->json($menus->toArray());
     }

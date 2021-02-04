@@ -46,4 +46,9 @@ Route::group([
     Route::get('menus/pag/{pag}','MenusController@index');
     Route::get('menus/filtrar/{buscado}/{pag}','MenusController@filter');
     Route::get('menus/get/all','MenusController@getAll');
+
+    Route::resource('pantallas','PantallasController');
+    Route::get('pantallas/pag/{pag}','PantallasController@index');
+    Route::get('pantallas/filtrar/{buscado}/{pag}','PantallasController@filter');
+    Route::get('pantallas/get/all','PantallasController@getAll');
 });

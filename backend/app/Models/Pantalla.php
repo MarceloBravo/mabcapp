@@ -12,7 +12,7 @@ class Pantalla extends Model
 
     use SoftDeletes;
 
-    protected $fillable = ['nombre','url','menus_id'];
+    protected $fillable = ['nombre','menus_id'];
 
     public function menus(){
         return $this->hasOne(Menus::class,'menus_id')->get();

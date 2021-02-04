@@ -9,6 +9,8 @@ import { UsuariosGridComponent } from './pages/back-office/usuarios/usuarios-gri
 import { UsuariosFormComponent } from './pages/back-office/usuarios/usuarios-form/usuarios-form.component';
 import { MenusGridComponent } from './pages/back-office/menus/menus-grid/menus-grid.component';
 import { MenusFormComponent } from './pages/back-office/menus/menus-form/menus-form.component';
+import { PantallasGridComponent } from './pages/back-office/pantallas/pantallas-grid/pantallas-grid.component';
+import { PantallasFormComponent } from './pages/back-office/pantallas/pantallas-form/pantallas-form.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -25,6 +27,10 @@ const routes: Routes = [
       { path: 'menus', component: MenusGridComponent},
       { path: 'menus/nuevo', component: MenusFormComponent },
       { path: 'menus/edit/:id', component: MenusFormComponent },
+
+      { path: 'pantallas', component: PantallasGridComponent},
+      { path: 'pantallas/nuevo', component: PantallasFormComponent },
+      { path: 'pantallas/edit/:id', component: PantallasFormComponent },
     ]
 },
   { path: '**', pathMatch: 'full', redirectTo: 'login' },
