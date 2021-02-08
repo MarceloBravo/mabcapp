@@ -199,6 +199,7 @@ class UserController extends Controller
                         ->orWhere('email','Like','%'.$buscado.'%')
                         ->orWhere('a_paterno','Like','%'.$buscado.'%')
                         ->orWhere('a_materno','Like','%'.$buscado.'%')
+                        ->whereNull('deleted_at')
                         ->orderBy('name','asc');
 
         $totRows = count($allData->get());

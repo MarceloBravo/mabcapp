@@ -19,7 +19,8 @@ class PantallasController extends Controller
         $data = Pantalla::join('menus','pantallas.menus_id','=','menus.id')
                         ->select('pantallas.*','menus.nombre as menu', 'menus.url as url')
                         ->orderBy('pantallas.nombre','asc')
-                        ->orderBy('menus.nombre','asc');
+                        ->orderBy('menus.nombre','asc')
+                        ->whereNull('menus.deleted_at');
 
         $totRows = count($data->get());
 
@@ -80,6 +81,7 @@ class PantallasController extends Controller
     {
         $pantalla = Pantalla::join('menus','pantallas.menus_id','=','menus.id')
                         ->select('pantallas.*','menus.nombre as menu')
+                        ->whereNull('menus.deleted_at')
                         ->find($id);
 
         return response()->json($pantalla->toArray());
@@ -142,7 +144,8 @@ class PantallasController extends Controller
                         ->orderBy('menus.nombre','asc')
                         ->where('pantallas.nombre','Like','%'.$texto.'%')
                         ->orWhere('menus.nombre','Like','%'.$texto.'%')
-                        ->orWhere('menus.url','Like','%'.$texto.'%');
+                        ->orWhere('menus.url','Like','%'.$texto.'%')
+                        ->whereNull('menus.deleted_at');
 
         $totRows = count($data->get());
 

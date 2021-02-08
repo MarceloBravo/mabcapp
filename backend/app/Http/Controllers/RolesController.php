@@ -167,6 +167,7 @@ class RolesController extends Controller
                         )
                         ->where('name','Like','%'.$buscado.'%')
                         ->orWhere('description','Like','%'.$buscado.'%')
+                        ->whereNull('deleted_at')
                         ->orderBy('name','asc');
 
         $totReg = count($allData->get());

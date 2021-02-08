@@ -23,6 +23,8 @@ import { MenusGridComponent } from './pages/back-office/menus/menus-grid/menus-g
 import { MenusFormComponent } from './pages/back-office/menus/menus-form/menus-form.component';
 import { PantallasGridComponent } from './pages/back-office/pantallas/pantallas-grid/pantallas-grid.component';
 import { PantallasFormComponent } from './pages/back-office/pantallas/pantallas-form/pantallas-form.component';
+import { PermisosFormComponent } from './pages/back-office/permisos/permisos-form/permisos-form.component';
+import { FormsModule } from '@angular/forms';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -47,12 +49,14 @@ import { PantallasFormComponent } from './pages/back-office/pantallas/pantallas-
     MenusFormComponent,
     PantallasGridComponent,
     PantallasFormComponent,
+    PermisosFormComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

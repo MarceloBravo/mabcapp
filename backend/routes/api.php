@@ -51,4 +51,11 @@ Route::group([
     Route::get('pantallas/pag/{pag}','PantallasController@index');
     Route::get('pantallas/filtrar/{buscado}/{pag}','PantallasController@filter');
     Route::get('pantallas/get/all','PantallasController@getAll');
+
+    //Route::resource('permisos','PermisosController');
+    Route::post('permisos','PermisosController@save');
+    Route::get('permisos/{id}','PermisosController@show');
+    Route::get('permisos/pag/{pag}','PermisosController@index');
+    Route::get('permisos/filtrar/{buscado}/{pag}','PermisosController@filter');
+    Route::get('permisos/get/all','PermisosController@getAll');
 });
