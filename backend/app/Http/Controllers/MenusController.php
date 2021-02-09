@@ -131,6 +131,21 @@ class MenusController extends Controller
         return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
     }
 
+    public function getMainMenu($rolId)
+    {
+        $mainMenu = Menu::join('pantallas','menus.id','=','pantallas.menus_id')
+                    ->join('permisos','pantallas.id','=','permisos.pantallas_id')
+                    ->join('roles','permisos.roles_id','=','roles.id')
+                    ->where('roles.id','=',$rolId)
+                    ->get();
+
+        return response()->json($mainMenu->toArray());
+    }
+
+    public function getSubMenus($rol)
+    {
+
+    }
 
     public function filter($texto, $pag){
         $data = Menu::orderBy('nombre','asc')
