@@ -1,5 +1,7 @@
 import { Component, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
 import { ScriptServicesService } from 'src/app/services/scriptServices/script-services.service';
+import { MenusService } from '../../services/menus/menus.service';
+import { Menu } from '../../class/menus/menu';
 
 @Component({
   selector: 'app-main-menu',
@@ -11,11 +13,14 @@ import { ScriptServicesService } from 'src/app/services/scriptServices/script-se
 })
 export class MainMenuComponent implements OnInit {
   //@HostBinding('style') style = 'display: contents';
+  public menus: Menu[] = [];
 
   constructor(
-    private _scriptService: ScriptServicesService
+    private _scriptService: ScriptServicesService,
+    private _menusService: MenusService
   ) {
     this.loadScript()
+    this.getMenus();
   }
 
   ngOnInit(): void {
@@ -33,6 +38,18 @@ export class MainMenuComponent implements OnInit {
       '../../../../assets/bower_components/chartist/dist/chartist.min.js',
       '../../../../assets/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js',
     ]);
+  }
+
+  private getMenus(){
+    this._menusService.getMenus(1).subscribe(
+      (res: any)=>{
+        this.menus = res;
+        this.menus = this.menus.sort((a: any,b: any)=> (a.grupos_menus_id - b.grupos_menus_id)).sort((a: any,b: any)=> (a.posicion - b.posicion))
+        console.log(res);
+      },error=>{
+        console.log(error);
+      }
+    )
   }
 
 }

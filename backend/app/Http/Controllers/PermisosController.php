@@ -120,6 +120,9 @@ class PermisosController extends Controller
                             crear,
                             modificar,
                             eliminar,
+                            pantallas.permite_crear,
+                            pantallas.permite_modificar,
+                            pantallas.permite_eliminar,
                             p.created_at,
                             p.updated_at,
                             p.deleted_at

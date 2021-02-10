@@ -16,7 +16,9 @@ class AddFliedToPatallas extends Migration
         Schema::table('pantallas', function (Blueprint $table) {
             $table->bigInteger('menus_id')->unsigned();
             $table->foreign('menus_id')->references('id')->on('menus');
-            //
+            $table->boolean('permite_crear')->default(true);
+            $table->boolean('permite_modificar')->default(true);
+            $table->boolean('permite_eliminar')->default(true);
         });
     }
 

@@ -7,8 +7,8 @@ import { RolesService } from '../../../../services/roles/roles.service';
 import { ToastService } from '../../../../services/toast/toast.service';
 /*
 IMPORTANTE: Este mantenedor no es un formulario reactivo sino que un formulario enlazado por lo
-cual requiere exportar "import { FormsModule } from '@angular/forms';" en el archivo app.module.ts
-para poder utilizar [(ngModule)] en el html
+cual requiere importar "import { FormsModule } from '@angular/forms';" en el archivo app.module.ts
+para poder utilizar [(ngModule)] en los archivos html no enlazados
 */
 
 @Component({

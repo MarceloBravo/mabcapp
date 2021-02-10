@@ -46,6 +46,7 @@ Route::group([
     Route::get('menus/pag/{pag}','MenusController@index');
     Route::get('menus/filtrar/{buscado}/{pag}','MenusController@filter');
     Route::get('menus/get/all','MenusController@getAll');
+    Route::get('menus/rol/{rolId}','MenusController@getMenus');
 
     Route::resource('pantallas','PantallasController');
     Route::get('pantallas/pag/{pag}','PantallasController@index');
@@ -58,4 +59,9 @@ Route::group([
     Route::get('permisos/pag/{pag}','PermisosController@index');
     Route::get('permisos/filtrar/{buscado}/{pag}','PermisosController@filter');
     Route::get('permisos/get/all','PermisosController@getAll');
+
+    Route::resource('grupos','GruposController');
+    Route::get('grupos/pag/{pag}','GruposController@index');
+    Route::get('grupos/filtrar/{buscado}/{pag}','GruposController@filter');
+    Route::get('grupos/get/all','GruposController@getAll');
 });

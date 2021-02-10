@@ -5,6 +5,8 @@ import { MenusService } from '../../../../services/menus/menus.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastService } from '../../../../services/toast/toast.service';
 import { SharedService } from '../../../../services/shared/shared.service';
+import { Grupo } from '../../../../class/grupos/grupo';
+import { GruposService } from '../../../../services/grupos/grupos.service';
 
 @Component({
   selector: 'app-menus-form',
@@ -21,21 +23,28 @@ export class MenusFormComponent implements OnInit {
     id: new FormControl(),
     nombre: new FormControl(),
     url: new FormControl(),
+    menu_padre_id: new FormControl(),
+    posicion: new FormControl(),
+    grupos_menus_id: new FormControl(),
     created_at: new FormControl(),
     updated_at: new FormControl(),
     deleted_at: new FormControl(),
   });
   public id: any = null;
-
+  public menusPadre: Menu[] = [];
+  public grupos: Grupo[] = [];
 
   constructor(
     private _menusService: MenusService,
     private _toastService: ToastService,
+    private _gruposService:  GruposService,
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private router: Router
   ) {
     this._toastService.clearToast();
+    this.getMenusPadres();
+    this.getGrupos();
     let id: any = this.activatedRoute.snapshot.paramMap.get('id');
     if(id !== null){
       this.id = parseInt(id);
@@ -53,10 +62,35 @@ export class MenusFormComponent implements OnInit {
       id: [this.menu.id,[Validators.min(0)]],
       nombre: [this.menu.nombre,[Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       url: [this.menu.url,[Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
+      menu_padre_id: this.menu.menu_padre_id,
+      posicion: [this.menu.posicion,[Validators.min(0)]],
+      grupos_menus_id: [this.menu.grupos_menus_id,[Validators.required, Validators.min(1)]],
       created_at: this.menu.created_at,
       updated_at: this.menu.updated_at,
       deleted_at: this.menu.deleted_at,
     });
+  }
+
+  private getMenusPadres(){
+    this._menusService.getAll().subscribe(
+      (res: any)=>{
+        this.menusPadre = res;
+        this.menusPadre = this.menusPadre.filter(m  => m.id !== this.id)
+      },error=>{
+        this.handlerError(error);
+      }
+    )
+  }
+
+  private getGrupos() {
+    this._gruposService.getAll().subscribe(
+      (res: any) => {
+        console.log(res);
+        this.grupos = res;
+      }, error => {
+        this.handlerError(error);
+      }
+    )
   }
 
   private buscar(){
@@ -106,7 +140,7 @@ export class MenusFormComponent implements OnInit {
     this.messageDialog = '';
   }
 
-  cancelar(){
+  cancelar() {
     if(this.id !== null && JSON.stringify(this.form.value) !== JSON.stringify(this.menu)){
       //Se han detectado cambios sin guardar
       this.messageDialog = 'Existen cambios sin guardar. ¿Desea guardar los cambios?';
