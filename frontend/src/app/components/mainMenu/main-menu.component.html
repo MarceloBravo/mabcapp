@@ -41,9 +41,8 @@
           <span class="align-middle">Blank</span>
         </a>
       </li>
-
+      <!--
       <li class="sidebar-header">Configuración</li>
-
 
       <li class="sidebar-item">
         <a class="sidebar-link" routerLink="menus">
@@ -75,9 +74,17 @@
           <span class="align-middle">Permisos</span>
         </a>
       </li>
+    -->
+      <li class="sidebar-header group-menu">Configuración</li>
 
+      <li *ngFor="let mnu of menus" class="sidebar-item">
+        <a class="sidebar-link" routerLink="{{ mnu.url }}">
+          <i class="align-middle" data-feather="coffee"></i>
+          <span class="align-middle">{{ mnu.nombre }}</span>
+        </a>
+      </li>
 
-  <!--
+      <!--
       <li class="sidebar-item">
         <a
           data-target="#forms"
@@ -112,8 +119,6 @@
           <span class="align-middle">Tables</span>
         </a>
       </li>
-    -->
-    </ul>
-
+    --></ul>
   </div>
 </nav>

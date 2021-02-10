@@ -43,4 +43,8 @@ export class MenusService {
   filter(texto: string, pag: number){
     return this.http.get(`${this.constantes.endPoint}${this.url}/filtrar/${texto}/${pag}`,{headers: this.constantes.header()});
   }
+
+  getMenus(rolId: number){
+    return this.http.get(`${this.constantes.endPoint}${this.url}/rol/${rolId}`,{headers: this.constantes.header()});
+  }
 }

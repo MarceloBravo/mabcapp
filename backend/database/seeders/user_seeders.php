@@ -19,6 +19,9 @@ class user_seeders extends Seeder
             'email' => 'mabc@live.cl',
             'password' => Hash::make('admin'),
             'name' => 'Administrator',
+            'a-paterno' => 'Bravo',
+            'a_materno' => 'Castillo',
+            'direccion' => '12 Norte 16 Oriente',
             'created_at' => Date('Y-m-d'),
             'updated_at' => Date('Y-m-d'),
         ]);

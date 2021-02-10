@@ -80,7 +80,18 @@ class PantallasController extends Controller
     public function show($id)
     {
         $pantalla = Pantalla::join('menus','pantallas.menus_id','=','menus.id')
-                        ->select('pantallas.*','menus.nombre as menu')
+                        ->select(
+                            'pantallas.id',
+                            'pantallas.nombre',
+                            'pantallas.menus_id',
+                            'pantallas.permite_crear',
+                            'pantallas.permite_modificar',
+                            'pantallas.permite_eliminar',
+                            'pantallas.created_at',
+                            'pantallas.updated_at',
+                            'pantallas.deleted_at',
+                            'menus.nombre as menu'
+                        )
                         ->whereNull('menus.deleted_at')
                         ->find($id);
 

@@ -17,7 +17,10 @@ class MenusController extends Controller
      */
     public function index($pag = 0)
     {
-        $data = Menu::orderBy('nombre','asc');
+        $data = Menu::join('grupos_menus','menus.grupos_menus_id','=','grupos_menus.id')
+                    ->select('menus.*','grupos_menus.nombre as grupo')
+                    ->orderBy('menus.nombre','asc')
+                    ->orderBy('grupos_menus.nombre','asc');
 
         $totRows = count($data->get());
 
@@ -76,7 +79,9 @@ class MenusController extends Controller
      */
     public function show($id)
     {
-        $menu = Menu::find($id);
+        $menu = Menu::select('menus.id','menus.nombre','url','menu_padre_id','menus.posicion','grupos_menus_id','menus.created_at','menus.updated_at','menus.deleted_at')
+                    ->join('grupos_menus','menus.grupos_menus_id','=','grupos_menus.id')
+                    ->find($id);
 
         return response()->json($menu->toArray());
     }
@@ -132,8 +137,12 @@ class MenusController extends Controller
     }
 
 
+
     public function filter($texto, $pag){
-        $data = Menu::orderBy('nombre','asc')
+        $data = Menu::join('grupos_menus','menus.grupos_menus_id','=','grupos_menus.id')
+                    ->select('menus.*','grupos_menus.nombre as grupo')
+                    ->orderBy('menus.nombre','asc')
+                    ->orderBy('grupos_menus.nombre','asc')
                     ->where('nombre','Like','%'.$texto.'%');
 
         $totRows = count($data->get());
@@ -166,4 +175,46 @@ class MenusController extends Controller
 
         return Validator::make($request->all(), $rules, $messages);
     }
+
+    /* ********** Obteneindo los menús a mostrar en la barra de menús ********** */
+    public function getMenus($rolId)
+    {
+        $mainMenu = Menu::join('pantallas','menus.id','=','pantallas.menus_id')
+                    ->join('permisos','pantallas.id','=','permisos.pantallas_id')
+                    ->join('roles','permisos.roles_id','=','roles.id')
+                    ->join('grupos_menus','menus.grupos_menus_id','=','grupos_menus.id')
+                    ->select('menus.*','grupos_menus.nombre as grupo')
+                    ->where('roles.id','=',$rolId)
+                    ->where('menus.menu_padre_id','=',0)
+                    ->get();
+
+        foreach($mainMenu->toArray() as $menu)
+        {
+            $menu['sub_menu'] = $this->getSubMenus($rolId, $menu['id']);
+        }
+
+        return response()->json($mainMenu->toArray());
+    }
+
+
+    private function getSubMenus($rolId, $menuId)
+    {
+        $subMenu = Menu::join('pantallas','menus.id','=','pantallas.menus_id')
+                    ->join('permisos','pantallas.id','=','permisos.pantallas_id')
+                    ->join('roles','permisos.roles_id','=','roles.id')
+                    ->join('grupos_menus','menus.grupos_menus_id','=','grupos_menus.id')
+                    ->select('menus.*','grupos_menus.nombre as grupo')
+                    ->where('roles.id','=',$rolId)
+                    ->where('menus.menu_padre_id','=',$menuId)
+                    ->get();
+
+        foreach($subMenu->toArray() as $menu)
+        {
+            $subMenu['sub_menu'] = $this->getSubMenus($rolId, $menu['id']);
+        }
+
+        return $subMenu;
+    }
+    /* ********** /Obteneindo los menús a mostrar en la barra de menús ********** */
+
 }

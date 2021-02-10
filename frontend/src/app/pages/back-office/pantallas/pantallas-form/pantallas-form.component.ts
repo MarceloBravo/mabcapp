@@ -23,6 +23,9 @@ export class PantallasFormComponent implements OnInit {
     id: new FormControl(),
     nombre: new FormControl(),
     menus_id: new FormControl(),
+    permite_crear: new FormControl(),
+    permite_modificar: new FormControl(),
+    permite_eliminar: new  FormControl(),
     created_at: new FormControl(),
     updated_at: new FormControl(),
     deleted_at: new FormControl(),
@@ -55,7 +58,10 @@ export class PantallasFormComponent implements OnInit {
     this.form = this.fb.group({
       id: [this.pantalla.id,[Validators.min(0)]],
       nombre: [this.pantalla.nombre,[Validators.required, Validators.min(3), Validators.max(50)]],
-      menus_id: [this.pantalla.menus_id,[Validators.required]],
+      menus_id: [this.pantalla.menus_id, [Validators.required]],
+      permite_crear: [this.pantalla.permite_crear,[Validators.required]],
+      permite_modificar: [this.pantalla.permite_modificar,[Validators.required]],
+      permite_eliminar: [this.pantalla.permite_eliminar,[Validators.required]],
       created_at: this.pantalla.created_at,
       updated_at: this.pantalla.updated_at,
       deleted_at: this.pantalla.deleted_at,
@@ -168,11 +174,7 @@ export class PantallasFormComponent implements OnInit {
     delete this.pantalla.url
     delete this.pantalla.menu
 
-    //creando string a partir de los objetos con los datos e igualandolos
-    let beforeSatatus = JSON.stringify(this.pantalla).replace('{','').replace('}','').split(',').sort().join('');
-    let newSatatus = JSON.stringify(this.form.value).replace('{','').replace('}','').split(',').sort().join('');
-
-    if(beforeSatatus !== newSatatus){
+    if(JSON.stringify(this.pantalla) !== JSON.stringify(this.form.value)){
       this.mostrarModal = true
       this.messageDialog = "¿Desea grabar los cambios?";
       this.tipoModal = 'confirmar cambios';

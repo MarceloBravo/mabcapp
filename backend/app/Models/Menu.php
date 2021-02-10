@@ -12,9 +12,13 @@ class Menu extends Model
 
     use SoftDeletes;
 
-    protected $fillable = ['nombre','url'];
+    protected $fillable = ['nombre','url','menu_padre_id','posicion','grupos_menus_id'];
 
     public function pantallas(){
         return $this->hasOne('\App\Models\Pantalla','id','pantalla_id')->get();
+    }
+
+    public function gerGrupo(){
+        return $this->belongsTo('\App\Models\GrupoMenu','id','grupos_menu_id')->get();
     }
 }
