@@ -5,120 +5,12 @@
     </a>
 
     <ul class="sidebar-nav">
-      <li class="sidebar-header">Pages</li>
-
-      <li class="sidebar-item active">
-        <a class="sidebar-link" href="index.html">
-          <i class="align-middle" data-feather="sliders"></i>
-          <span class="align-middle">Dashboard</span>
-        </a>
-      </li>
-
-      <li class="sidebar-item">
-        <a class="sidebar-link" href="pages-profile.html">
-          <i class="align-middle" data-feather="user"></i>
-          <span class="align-middle">Profile</span>
-        </a>
-      </li>
-
-      <li class="sidebar-item">
-        <a class="sidebar-link" href="pages-settings.html">
-          <i class="align-middle" data-feather="settings"></i>
-          <span class="align-middle">Settings</span>
-        </a>
-      </li>
-
-      <li class="sidebar-item">
-        <a class="sidebar-link" href="pages-invoice.html">
-          <i class="align-middle" data-feather="credit-card"></i>
-          <span class="align-middle">Invoice</span>
-        </a>
-      </li>
-
-      <li class="sidebar-item">
-        <a class="sidebar-link" href="pages-blank.html">
-          <i class="align-middle" data-feather="book"></i>
-          <span class="align-middle">Blank</span>
-        </a>
-      </li>
-      <!--
-      <li class="sidebar-header">Configuración</li>
-
-      <li class="sidebar-item">
-        <a class="sidebar-link" routerLink="menus">
-          <i class="align-middle" data-feather="coffee"></i>
-          <span class="align-middle">Menús</span>
-        </a>
-      </li>
-      <li class="sidebar-item">
-        <a class="sidebar-link" routerLink="pantallas">
-          <i class="align-middle" data-feather="coffee"></i>
-          <span class="align-middle">Pantallas</span>
-        </a>
-      </li>
-      <li class="sidebar-item">
-        <a class="sidebar-link" routerLink="roles">
-          <i class="align-middle" data-feather="coffee"></i>
-          <span class="align-middle">Roles</span>
-        </a>
-      </li>
-      <li class="sidebar-item">
-        <a class="sidebar-link" routerLink="usuarios">
-          <i class="align-middle" data-feather="coffee"></i>
-          <span class="align-middle">Usuarios</span>
-        </a>
-      </li>
-      <li class="sidebar-item">
-        <a class="sidebar-link" routerLink="permisos">
-          <i class="align-middle" data-feather="coffee"></i>
-          <span class="align-middle">Permisos</span>
-        </a>
-      </li>
-    -->
-      <li class="sidebar-header group-menu">Configuración</li>
-
-      <li *ngFor="let mnu of menus" class="sidebar-item">
-        <a class="sidebar-link" routerLink="{{ mnu.url }}">
-          <i class="align-middle" data-feather="coffee"></i>
-          <span class="align-middle">{{ mnu.nombre }}</span>
-        </a>
-      </li>
-
-      <!--
-      <li class="sidebar-item">
-        <a
-          data-target="#forms"
-          data-toggle="collapse"
-          class="sidebar-link collapsed"
-        >
-          <i class="align-middle" data-feather="check-circle"></i>
-          <span class="align-middle">Usuarios</span>
-        </a>
-        <ul
-          id="forms"
-          class="sidebar-dropdown list-unstyled collapse"
-          data-parent="#sidebar"
-        >
-          <li class="sidebar-item">
-            <a class="sidebar-link" href="forms-layouts.html">Pantallas</a>
-          </li>
-          <li class="sidebar-item">
-            <a class="sidebar-link" href="forms-layouts.html">Menus</a>
-          </li>
-          <li class="sidebar-item">
-            <a class="sidebar-link" href="forms-basic-inputs.html"
-              >Basic Inputs</a
-            >
-          </li>
-        </ul>
-      </li>
-
-      <li class="sidebar-item">
-        <a class="sidebar-link" href="tables-bootstrap.html">
-          <i class="align-middle" data-feather="list"></i>
-          <span class="align-middle">Tables</span>
-        </a>
-      </li>
-    --></ul>
+      <ng-container *ngFor="let mnu of menus">
+        <app-sub-menu
+          [className]="'sidebar-header'"
+          [menu]="mnu"
+        ></app-sub-menu>
+      </ng-container>
+    </ul>
   </div>
 </nav>
