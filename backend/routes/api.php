@@ -60,8 +60,4 @@ Route::group([
     Route::get('permisos/filtrar/{buscado}/{pag}','PermisosController@filter');
     Route::get('permisos/get/all','PermisosController@getAll');
 
-    Route::resource('grupos','GruposController');
-    Route::get('grupos/pag/{pag}','GruposController@index');
-    Route::get('grupos/filtrar/{buscado}/{pag}','GruposController@filter');
-    Route::get('grupos/get/all','GruposController@getAll');
 });

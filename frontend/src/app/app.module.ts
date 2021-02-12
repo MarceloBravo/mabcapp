@@ -25,6 +25,7 @@ import { PantallasGridComponent } from './pages/back-office/pantallas/pantallas-
 import { PantallasFormComponent } from './pages/back-office/pantallas/pantallas-form/pantallas-form.component';
 import { PermisosFormComponent } from './pages/back-office/permisos/permisos-form/permisos-form.component';
 import { FormsModule } from '@angular/forms';
+import { SubMenuComponent } from './components/subMenu/sub-menu/sub-menu.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -50,6 +51,7 @@ import { FormsModule } from '@angular/forms';
     PantallasGridComponent,
     PantallasFormComponent,
     PermisosFormComponent,
+    SubMenuComponent,
   ],
   imports: [
     BrowserModule,
