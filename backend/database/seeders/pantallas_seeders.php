@@ -16,7 +16,7 @@ class pantallas_seeders extends Seeder
     {
         Pantalla::insert([
             'nombre' => 'Menús',
-            'menus_id' => 4,
+            'menus_id' => 6,
             'permite_crear' => true,
             'permite_modificar' => true,
             'permite_eliminar' => true,
@@ -27,7 +27,7 @@ class pantallas_seeders extends Seeder
 
         Pantalla::insert([
             'nombre' => 'Usuarios',
-            'menus_id' => 3,
+            'menus_id' => 5,
             'permite_crear' => true,
             'permite_modificar' => true,
             'permite_eliminar' => true,
@@ -38,7 +38,7 @@ class pantallas_seeders extends Seeder
 
         Pantalla::insert([
             'nombre' => 'Roles',
-            'menus_id' => 2,
+            'menus_id' => 4,
             'permite_crear' => true,
             'permite_modificar' => true,
             'permite_eliminar' => true,
@@ -49,7 +49,7 @@ class pantallas_seeders extends Seeder
 
         Pantalla::insert([
             'nombre' => 'Pantallas',
-            'menus_id' => 1,
+            'menus_id' => 3,
             'permite_crear' => true,
             'permite_modificar' => true,
             'permite_eliminar' => true,
@@ -60,7 +60,7 @@ class pantallas_seeders extends Seeder
 
         Pantalla::insert([
             'nombre' => 'Permisos',
-            'menus_id' => 5,
+            'menus_id' => 7,
             'permite_crear' => true,
             'permite_modificar' => true,
             'permite_eliminar' => true,

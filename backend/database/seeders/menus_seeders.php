@@ -15,7 +15,26 @@ class menus_seeders extends Seeder
     public function run()
     {
         Menu::insert([
-            'id' => 1,
+            'nombre' => 'Paginas',
+            'url' => null,
+            'menu_padre_id' => 0,
+            'posicion' => 10,
+            'created_at' => Date('Y-m-d'),
+            'upated_at' => Date('Y-m-d'),
+            'deleted_at' => null,
+        ]);
+
+        Menu::insert([
+            'nombre' => 'Configuración',
+            'url' => null,
+            'menu_padre_id' => 0,
+            'posicion' => 20,
+            'created_at' => Date('Y-m-d'),
+            'upated_at' => Date('Y-m-d'),
+            'deleted_at' => null,
+        ]);
+
+        Menu::insert([
             'nombre' => 'Pantallas',
             'url' => 'pantallas',
             'menu_padre_id' => 0,
@@ -26,7 +45,6 @@ class menus_seeders extends Seeder
         ]);
 
         Menu::insert([
-            'id' => 2,
             'nombre' => 'Roles',
             'url' => 'roles',
             'menu_padre_id' => 0,
@@ -37,7 +55,6 @@ class menus_seeders extends Seeder
         ]);
 
         Menu::insert([
-            'id' => 3,
             'nombre' => 'Usuarios',
             'url' => 'usuarios',
             'menu_padre_id' => 0,
@@ -48,7 +65,6 @@ class menus_seeders extends Seeder
         ]);
 
         Menu::insert([
-            'id' => 4,
             'nombre' => 'Menús',
             'url' => 'menus',
             'menu_padre_id' => 0,
@@ -59,7 +75,6 @@ class menus_seeders extends Seeder
         ]);
 
         Menu::insert([
-            'id' => 5,
             'nombre' => 'Permisos',
             'url' => 'permisos',
             'menu_padre_id' => 0,
