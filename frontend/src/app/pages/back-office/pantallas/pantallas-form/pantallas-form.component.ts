@@ -174,13 +174,19 @@ export class PantallasFormComponent implements OnInit {
     delete this.pantalla.url
     delete this.pantalla.menu
 
-    if(JSON.stringify(this.pantalla) !== JSON.stringify(this.form.value)){
+    if(this.detectarCambios()){
       this.mostrarModal = true
       this.messageDialog = "¿Desea grabar los cambios?";
       this.tipoModal = 'confirmar cambios';
     }else{
-      this.router.navigate(['/admin/pantallas'])
+      this.router.navigate(['/admin/pantallas']);
     }
+  }
+
+  private detectarCambios(){
+    let arrDiferencias = Object.keys(this.form.value).filter(k => this.form.get(k)?.value !== (<any>this.pantalla)[k]);
+    return arrDiferencias.length > 0;
+
   }
 
   private handlerSuccess(res: any){

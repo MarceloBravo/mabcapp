@@ -123,7 +123,7 @@ export class MenusFormComponent implements OnInit {
   }
 
   cancelar() {
-    if(this.id !== null && JSON.stringify(this.form.value) !== JSON.stringify(this.menu)){
+    if(this.detectarCambios()){
       //Se han detectado cambios sin guardar
       this.messageDialog = 'Existen cambios sin guardar. ¿Desea guardar los cambios?';
       this.mostrarModal = true;
@@ -132,6 +132,11 @@ export class MenusFormComponent implements OnInit {
       //No se han detectado cambios, se redirige al listado de roles
       this.router.navigate(['/admin/menus']);
     }
+  }
+
+  private detectarCambios(){
+    let arrDiferencias = Object.keys(this.form.value).filter(k => this.form.get(k)?.value !== (<any>this.menu)[k]);
+    return arrDiferencias.length > 0;
   }
 
   private grabar(){

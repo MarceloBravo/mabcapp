@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵCodegenComponentFactoryResolver } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { UsuariosService } from '../../../../services/usuarios/usuarios.service';
 import { User } from '../../../../class/User/user';
@@ -140,7 +140,8 @@ export class UsuariosFormComponent implements OnInit {
   }
 
   cancelar(){
-    if(this.id !== null && JSON.stringify(this.form.value) !== JSON.stringify(this.usuario)){
+    this.detectarCambios()
+    if(this.id !== null && this.detectarCambios() > 0){
       //Se han detectado cambios sin guardar
       this.messageDialog = 'Existen cambios sin guardar. ¿Desea guardar los cambios?';
       this.mostrarModal = true;
@@ -149,6 +150,14 @@ export class UsuariosFormComponent implements OnInit {
       //No se han detectado cambios, se redirige al listado de roles
       this.router.navigate(['/admin/usuarios']);
     }
+  }
+
+  private detectarCambios(){
+    //Itera por cada elemento (campo) del objeto form y lo compara con su homonimo pero del objeto
+    //usuario (El objeto usuario contiene los datos de la base de dato, el objeto form contiene los
+    //cambios del usuario) y retorna un array con los campos con diferencias
+    let arrDiferencias = Object.keys(this.form.value).filter(k => k !== 'password' && k !== 'confirm_password').filter((k : string) => this.form.get(k)?.value !== (<any>this.usuario)[k])
+    return arrDiferencias.length
   }
 
   aceptarModal(e: any){

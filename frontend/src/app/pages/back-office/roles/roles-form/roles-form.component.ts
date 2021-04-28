@@ -98,7 +98,7 @@ export class RolesFormComponent implements OnInit {
 
 
   cancelar(){
-    if(this.id !== null && JSON.stringify(this.form.value) !== JSON.stringify(this.rol)){
+    if(this.id !== null && this.detectarCambios()){
       //Se han detectado cambios sin guardar
       this.messageDialog = 'Existen cambios sin guardar. ¿Desea guardar los cambios?';
       this.tipoModal = 'confirmar cambios';
@@ -107,6 +107,11 @@ export class RolesFormComponent implements OnInit {
       //No se han detectado cambios, se redirige al listado de roles
       this.router.navigate(['/admin/roles']);
     }
+  }
+
+  private detectarCambios(){
+    let arrDiferencias =  Object.keys(this.form.value).filter(k => this.form.get(k)?.value !==  (<any>this.rol)[k]);
+    return arrDiferencias.length > 0;
   }
 
 
