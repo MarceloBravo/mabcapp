@@ -45,7 +45,7 @@ export class MainMenuComponent implements OnInit {
       (res: any)=>{
         this.menus = res;
         this.menus = this.menus.sort((a: any, b: any) => (a.menu_padre_id - b.menu_padre_id)).sort((a: any, b: any) => (a.posicion - b.posicion))
-        console.log(res);
+        console.log('menus',res);
       },error=>{
         console.log(error);
       }

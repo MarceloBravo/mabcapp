@@ -182,6 +182,7 @@ class MenusController extends Controller
     public function getMenus($rolId)
     {
         $mainMenu = Menu::where('menus.menu_padre_id','=',0)
+                    ->orderBy('posicion','asc')
                     ->get();
 
         foreach($mainMenu->toArray() as $key => $menu)
@@ -200,6 +201,7 @@ class MenusController extends Controller
                     ->select('menus.*')
                     ->where('roles.id','=',$rolId)
                     ->where('menus.menu_padre_id','=',$menuId)
+                    ->orderBy('posicion','asc')
                     ->get();
 
 
