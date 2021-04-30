@@ -1,3 +1,13 @@
+.foto-usuario{
+  height: 75%;
+  display: inherit;
+}
+
+.btn-load-photo{
+  position: absolute;
+  margin-left: 7%;
+}
+
 button{
   margin-right: 10px;
   float: right;

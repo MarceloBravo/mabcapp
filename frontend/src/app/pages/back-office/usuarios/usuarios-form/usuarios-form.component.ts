@@ -37,6 +37,7 @@ export class UsuariosFormComponent implements OnInit {
     roles: new FormControl(),
   });
   public id: any = null;
+  public source = 'assets/images/users/user.png'
 
 
   constructor(
@@ -209,6 +210,10 @@ export class UsuariosFormComponent implements OnInit {
   comparaRoles(rol1: Rol, rol2: Rol):boolean{
     console.log(rol1, rol2);
     return rol1 && rol2 ? rol1.id === rol2.id : rol1 === rol2;
+  }
+
+  cargarFoto(){
+
   }
 
   private handlerSuccess(res: any){

@@ -28,53 +28,68 @@
             <form [formGroup]="form">
 
               <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Nombre</label>
-                <div class="col-sm-10">
-                  <input type="text" formControlName="name" class="form-control col-md-5" placeholder="Ingresa el nombre del usuario" max="50"/>
-                  <!-- Mensajes de error -->
-                  <div *ngIf="form.get('name')?.hasError('required') && form.get('name')?.dirty" class="error-input">Debes ingresar el nombre.</div>
-                  <div *ngIf="form.get('name')?.hasError('minlength') && form.get('name')?.dirty" class="error-input">El nombre debe tener almenos 5 carácteres. Ingresa un nombre más largo.</div>
-                  <div *ngIf="form.get('name')?.hasError('maxlength') && form.get('name')?.dirty" class="error-input">El nombre debe tener un máximo de 50 carácteres. Ingresa un nombre más corto.</div>
-                  <!-- /Mensajes de error -->
-                </div>
-              </div>
+
+                <div class="col-sm-8">
+
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Nombre</label>
+                    <div class="col-sm-9">
+                      <input type="text" formControlName="name" class="form-control col-md-9" placeholder="Ingresa el nombre del usuario" max="50"/>
+                      <!-- Mensajes de error -->
+                      <div *ngIf="form.get('name')?.hasError('required') && form.get('name')?.dirty" class="error-input">Debes ingresar el nombre.</div>
+                      <div *ngIf="form.get('name')?.hasError('minlength') && form.get('name')?.dirty" class="error-input">El nombre debe tener almenos 5 carácteres. Ingresa un nombre más largo.</div>
+                      <div *ngIf="form.get('name')?.hasError('maxlength') && form.get('name')?.dirty" class="error-input">El nombre debe tener un máximo de 50 carácteres. Ingresa un nombre más corto.</div>
+                      <!-- /Mensajes de error -->
+                    </div>
+                  </div>
 
 
-              <div class="form-group row">
-                <label class="col-sm-2 col-form-label">A. Paterno</label>
-                <div class="col-sm-10">
-                  <input type="text" formControlName="a_paterno" class="form-control col-md-5" placeholder="Ingresa el apellido paterno." max="50"/>
-                  <!-- Mensajes de error -->
-                  <div *ngIf="form.get('a_paterno')?.hasError('required') && form.get('a_paterno')?.dirty" class="error-input">Debes ingresar el apellido paterno.</div>
-                  <div *ngIf="form.get('a_paterno')?.hasError('minlength') && form.get('a_paterno')?.dirty" class="error-input">El apellido paterno debe tener almenos 5 carácteres. Ingresa un apellido más largo.</div>
-                  <div *ngIf="form.get('a_paterno')?.hasError('maxlength') && form.get('a_paterno')?.dirty" class="error-input">El apellido paterno debe tener un máximo de 50 carácteres. Ingresa un apellido más corto.</div>
-                  <!-- /Mensajes de error -->
+
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">A. Paterno</label>
+                    <div class="col-sm-9">
+                      <input type="text" formControlName="a_paterno" class="form-control col-md-9" placeholder="Ingresa el apellido paterno." max="50"/>
+                      <!-- Mensajes de error -->
+                      <div *ngIf="form.get('a_paterno')?.hasError('required') && form.get('a_paterno')?.dirty" class="error-input">Debes ingresar el apellido paterno.</div>
+                      <div *ngIf="form.get('a_paterno')?.hasError('minlength') && form.get('a_paterno')?.dirty" class="error-input">El apellido paterno debe tener almenos 5 carácteres. Ingresa un apellido más largo.</div>
+                      <div *ngIf="form.get('a_paterno')?.hasError('maxlength') && form.get('a_paterno')?.dirty" class="error-input">El apellido paterno debe tener un máximo de 50 carácteres. Ingresa un apellido más corto.</div>
+                      <!-- /Mensajes de error -->
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">A. Materno</label>
+                    <div class="col-sm-9">
+                      <input type="text" formControlName="a_materno" class="form-control col-md-9" placeholder="Ingresa el apellido materno." max="50"/>
+                      <!-- Mensajes de error -->
+                      <div *ngIf="form.get('a_materno')?.hasError('required') && form.get('a_materno')?.dirty" class="error-input">Debes ingresar el apellido materno.</div>
+                      <div *ngIf="form.get('a_materno')?.hasError('minlength') && form.get('a_materno')?.dirty" class="error-input">El apellido materno debe tener almenos 5 carácteres. Ingresa un apellido más largo.</div>
+                      <div *ngIf="form.get('a_materno')?.hasError('maxlength') && form.get('a_materno')?.dirty" class="error-input">El apellido materno debe tener un máximo de 50 carácteres. Ingresa un apellido más corto.</div>
+                      <!-- /Mensajes de error -->
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Email</label>
+                    <div class="col-sm-9">
+                      <input type="text" formControlName="email" class="form-control col-md-9" placeholder="Ingresa el correo electrónico." max="150"/>
+                      <!-- Mensajes de error -->
+                      <div *ngIf="form.get('email')?.hasError('required') && form.get('email')?.dirty" class="error-input">Debes ingresar el correo electrónico.</div>
+                      <div *ngIf="form.get('email')?.hasError('email') && form.get('email')?.dirty" class="error-input">El correo electrónico no es válido.</div>
+                      <div *ngIf="form.get('email')?.hasError('maxlength') && form.get('email')?.dirty" class="error-input">El correo electrónico debe tener un máximo de 150 carácteres. Ingresa un correo electrónico más corto.</div>
+                      <!-- /Mensajes de error -->
+                    </div>
+                  </div>
+
                 </div>
+                <div class="col-sm-4">
+                  <img src="assets/images/users/user.png" alt="Foto" class="foto-usuario"/>
+                  <button type="submit" class="btn btn-primary btn-load-photo" (click)="cargarFoto()">Cargar foto</button>
+
+                </div>
+
               </div>
 
-              <div class="form-group row">
-                <label class="col-sm-2 col-form-label">A. Materno</label>
-                <div class="col-sm-10">
-                  <input type="text" formControlName="a_materno" class="form-control col-md-5" placeholder="Ingresa el apellido materno." max="50"/>
-                  <!-- Mensajes de error -->
-                  <div *ngIf="form.get('a_materno')?.hasError('required') && form.get('a_materno')?.dirty" class="error-input">Debes ingresar el apellido materno.</div>
-                  <div *ngIf="form.get('a_materno')?.hasError('minlength') && form.get('a_materno')?.dirty" class="error-input">El apellido materno debe tener almenos 5 carácteres. Ingresa un apellido más largo.</div>
-                  <div *ngIf="form.get('a_materno')?.hasError('maxlength') && form.get('a_materno')?.dirty" class="error-input">El apellido materno debe tener un máximo de 50 carácteres. Ingresa un apellido más corto.</div>
-                  <!-- /Mensajes de error -->
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Email</label>
-                <div class="col-sm-10">
-                  <input type="text" formControlName="email" class="form-control col-md-5" placeholder="Ingresa el correo electrónico." max="150"/>
-                  <!-- Mensajes de error -->
-                  <div *ngIf="form.get('email')?.hasError('required') && form.get('email')?.dirty" class="error-input">Debes ingresar el correo electrónico.</div>
-                  <div *ngIf="form.get('email')?.hasError('email') && form.get('email')?.dirty" class="error-input">El correo electrónico no es válido.</div>
-                  <div *ngIf="form.get('email')?.hasError('maxlength') && form.get('email')?.dirty" class="error-input">El correo electrónico debe tener un máximo de 150 carácteres. Ingresa un correo electrónico más corto.</div>
-                  <!-- /Mensajes de error -->
-                </div>
-              </div>
 
               <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Dirección</label>
