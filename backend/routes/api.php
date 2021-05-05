@@ -38,6 +38,8 @@ Route::group([
     Route::get('roles/get/all','RolesController@getAll');
 
     Route::resource('usuarios','UserController');
+    Route::post('usuarios/subir/foto','UserController@storePhoto');
+    Route::get('usuarios/pag/{pag}','UserController@index');
     Route::get('usuarios/pag/{pag}','UserController@index');
     Route::get('usuarios/filtrar/{buscado}/{pag}','UserController@filter');
     Route::get('usuarios/get/all','UserController@getAll');

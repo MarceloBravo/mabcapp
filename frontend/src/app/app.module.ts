@@ -26,6 +26,7 @@ import { PantallasFormComponent } from './pages/back-office/pantallas/pantallas-
 import { PermisosFormComponent } from './pages/back-office/permisos/permisos-form/permisos-form.component';
 import { FormsModule } from '@angular/forms';
 import { SubMenuComponent } from './components/subMenu/sub-menu/sub-menu.component';
+import { ImageUploadModule } from 'angular2-image-upload';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -58,7 +59,8 @@ import { SubMenuComponent } from './components/subMenu/sub-menu/sub-menu.compone
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    ImageUploadModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

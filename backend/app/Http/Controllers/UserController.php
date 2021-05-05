@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\RoleUser;
 use Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -79,7 +80,11 @@ class UserController extends Controller
 
             if($res){
                 $res = $this->saveRol($request->roles, $id);
+                //if($res && !is_null($request['fotoFile'])){
+                //    Storage::disk('public')->put($request['foto'], $request['fotoFile']);
+                //}
             }
+
             $mensaje = $res ? 'El registro ha sido creado exitosamente.' : 'Ocurrió un error al intentar crear el registro.';
             $tipoMensaje = $res ? 'success' : 'danger';
 
@@ -98,6 +103,25 @@ class UserController extends Controller
 
         return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
     }
+
+
+    //Graba la foto en la carpeta public del backend
+    public function storePhoto(Request $request){
+        $res = '';
+        try{
+            if(count($_FILES)>0){
+                move_uploaded_file($_FILES["upload"]["tmp_name"],storage_path().'/app/public/'.$_FILES['upload']['name']);
+
+                $res = 'La foto ha sido actualizada exitosamente.';
+            }else{
+                $res = 'No se han encontrado archivos.';
+            }
+            return response()->json(['mensaje' => $res, 'tipoMensaje' => 'success']);
+        }catch(Exception $e){
+            return response()->json(['mensaje' => 'Ocurrió un error al intentar actualizar la foto: '.$e->getMessage(), 'tipoMensaje' => 'danger', 'id'=> $id]);
+        }
+    }
+
 
     /**
      * Display the specified resource.
@@ -133,6 +157,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //return response()->json([$request->all(), $request->allFiles(), $_FILES, $request->replace($request->all()) ]);
         $validator = $this->validaDatos($request, $id);
         if($validator->fails()){
             return response()->json(['mensaje' => 'Datos incompletos o no válidos.','tipoMensaje'=>'danger','errores'=>$validator->errors()]);

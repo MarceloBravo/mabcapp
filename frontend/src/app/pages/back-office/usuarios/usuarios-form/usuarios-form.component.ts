@@ -8,6 +8,8 @@ import { SharedService } from '../../../../services/shared/shared.service';
 import { ToastService } from '../../../../services/toast/toast.service';
 import { Rol } from '../../../../class/rol/rol';
 import { CustomValidators } from '../../../../validators/custom-validators';
+import { FilesService } from '../../../../services/files/files.service';
+import { ConstantesService } from '../../../../services/constantes/constantes.service';
 
 @Component({
   selector: 'app-usuarios-form',
@@ -35,19 +37,23 @@ export class UsuariosFormComponent implements OnInit {
     updated_at: new FormControl(),
     deleted_at: new FormControl(),
     roles: new FormControl(),
+    foto: new FormControl(),  //Url de la foto
   });
   public id: any = null;
-  public source = 'assets/images/users/user.png'
-
+  public srcDefault: string = '/assets/images/users/user.png'
+  public fileToUpload: File | undefined;
+  public fotoObject: string = ''
 
   constructor(
     private _userServices: UsuariosService,
+    private _files: FilesService,
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private _rolesService: RolesService,
     private router: Router,
     private _shared: SharedService,
     private _toastService: ToastService,
+    private _const: ConstantesService,
   ) {
     this._toastService.clearToast();
     let id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -61,11 +67,11 @@ export class UsuariosFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.cargaFotoEnImageControl('','')
   }
 
 
   private iniciarForm(){
-
     this.form = this.fb.group(
       //Validaciones Sincronas
       {
@@ -78,6 +84,8 @@ export class UsuariosFormComponent implements OnInit {
       password: [this.usuario.password,[Validators.minLength(6), Validators.maxLength(20)]],
       confirm_password: [this.usuario.confirm_password,[Validators.minLength(6), Validators.maxLength(20)]],
       roles: [this.usuario.roles,[Validators.required]],
+      foto: '',
+      //fotoObject: this.usuario.fotoObject,
       created_at: this.usuario.created_at,
       updated_at: this.usuario.updated_at,
       deleted_at: this.usuario.deleted_at
@@ -104,15 +112,16 @@ export class UsuariosFormComponent implements OnInit {
     });
   }
 
+
   private cargarDatos(res: any){
-    console.log(res);
     this.usuario = res;
     this.iniciarForm();
+    this.cargaFotoEnImageControl('',this.usuario.foto)
   }
+
 
   private cargarRoles(){
     this._rolesService.getAll().subscribe((res: any)=>{
-      console.log('Roles',res);
       this.roles = res;
     }, error => {
       console.log(error);
@@ -125,11 +134,13 @@ export class UsuariosFormComponent implements OnInit {
     this.messageDialog = '¿Desea grabar el registro';
   }
 
+
   modalEliminar(){
     this.mostrarModal = true;
     this.tipoModal = 'eliminar';
     this.messageDialog = '¿Desea eliminar el registro';
   }
+
 
   cancelarModal(e: any){
     if(this.tipoModal === 'confirmar cambios'){
@@ -141,8 +152,7 @@ export class UsuariosFormComponent implements OnInit {
   }
 
   cancelar(){
-    this.detectarCambios()
-    if(this.id !== null && this.detectarCambios() > 0){
+    if(this.id !== null && this.detectarCambios()){
       //Se han detectado cambios sin guardar
       this.messageDialog = 'Existen cambios sin guardar. ¿Desea guardar los cambios?';
       this.mostrarModal = true;
@@ -157,8 +167,8 @@ export class UsuariosFormComponent implements OnInit {
     //Itera por cada elemento (campo) del objeto form y lo compara con su homonimo pero del objeto
     //usuario (El objeto usuario contiene los datos de la base de dato, el objeto form contiene los
     //cambios del usuario) y retorna un array con los campos con diferencias
-    let arrDiferencias = Object.keys(this.form.value).filter(k => k !== 'password' && k !== 'confirm_password').filter((k : string) => this.form.get(k)?.value !== (<any>this.usuario)[k])
-    return arrDiferencias.length
+    let arrDiferencias = Object.keys(this.form.value).filter(k => k !== 'password' && k !== 'confirm_password' && k !== 'foto').filter((k : string) => this.form.get(k)?.value !== (<any>this.usuario)[k])
+    return arrDiferencias.length > 0 || this.fileToUpload !== undefined
   }
 
   aceptarModal(e: any){
@@ -170,7 +180,10 @@ export class UsuariosFormComponent implements OnInit {
     this.cancelarModal(null);
   }
 
+
   private grabar(){
+    this.form.value.foto = this.fileToUpload?.name
+
     this.showSpinner = true;
     this.form.value.updated_at = this._shared.getCurrentDate();
     if(this.id !== null){
@@ -181,21 +194,46 @@ export class UsuariosFormComponent implements OnInit {
 
   }
 
+
   private insertar(){
     this._userServices.insert(this.form.value).subscribe((res:any)=> {
+      if(this.isSuccess(res)){
+        this.subirFoto(res['id'], res);
+      }
       this.handlerSuccess(res);
     },error=>{
       this.handlerError(error);
     });
   }
 
+
   private actualizar(){
+    //let form = this.createFormData();
     this._userServices.update(this.id, this.form.value).subscribe((res: any)=> {
+      if(this.isSuccess(res)){
+        this.subirFoto(res['id'], res);
+      }
       this.handlerSuccess(res);
     },error=>{
       this.handlerError(error);
     });
   }
+
+  private isSuccess(res: any){
+    return (res['status'] !== 'Token is Expired' && !res.errores && res['tipoMensaje'] === "success")
+  }
+
+
+  private subirFoto(id: number, res: any){
+    if(this.fileToUpload){
+      this._files.uploadFile(<File>this.fileToUpload, 'usuarios/subir/foto').subscribe(() => {},
+      error=>{
+        console.log(error)
+        this.handlerError(error);
+      })
+    }
+  }
+
 
   private eliminar(){
     this.showSpinner = true;
@@ -208,13 +246,33 @@ export class UsuariosFormComponent implements OnInit {
   }
 
   comparaRoles(rol1: Rol, rol2: Rol):boolean{
-    console.log(rol1, rol2);
     return rol1 && rol2 ? rol1.id === rol2.id : rol1 === rol2;
   }
 
-  cargarFoto(){
-
+  handlerCargarFoto(){
+    (<HTMLButtonElement>document.getElementById('btn-file')).click();
   }
+
+  cargarFoto(target: any){
+    this.fileToUpload = target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      //this.form.value.foto = (<File>this.fileToUpload).name;
+      //this.usuario.foto = this.form.value.foto  //Actualizando el objeto usuario
+      //this.usuario.foto = (<File>this.fileToUpload).name;
+      //this.form.value.fotoObject = reader.result// as string;
+      this.fotoObject = reader.result as string;
+      this.cargaFotoEnImageControl(this.fotoObject)
+      console.log(this.form.value)
+    }
+    reader.readAsDataURL(<File>this.fileToUpload)
+  }
+
+  private cargaFotoEnImageControl(object: string = '', url: string = ''){
+    let img: HTMLImageElement = <HTMLImageElement>document.getElementById('img-foto')
+    img.src = object ? object : url ? this._const.storageImages + url : this.srcDefault
+  }
+
 
   private handlerSuccess(res: any){
     if(res['status'] === 'Token is Expired'){

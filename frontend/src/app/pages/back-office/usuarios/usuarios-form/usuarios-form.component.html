@@ -25,7 +25,7 @@
             <h5 class="card-title">Mantenedor de Usuarios</h5>
           </div>
           <div class="card-body">
-            <form [formGroup]="form">
+            <form [formGroup]="form" id="form">
 
               <div class="form-group row">
 
@@ -82,10 +82,19 @@
                   </div>
 
                 </div>
-                <div class="col-sm-4">
-                  <img src="assets/images/users/user.png" alt="Foto" class="foto-usuario"/>
-                  <button type="submit" class="btn btn-primary btn-load-photo" (click)="cargarFoto()">Cargar foto</button>
 
+                <div class="col-sm-2">
+                  <div class="form-group div-imagen">
+                    <label for="file">Choose File</label>
+                    <input type="file"
+                           id="btn-file"
+                           accept=".png, .jpg"
+                            formControlName="foto"
+                           (change)="cargarFoto($event.target)">
+                  </div>
+
+                  <img id="img-foto" src="#" alt="Foto" class="foto-usuario"/>
+                  <button type="submit" class="btn btn-primary btn-load-photo" (click)="handlerCargarFoto()">Cargar foto</button>
                 </div>
 
               </div>

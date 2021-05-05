@@ -8,6 +8,7 @@ import { User } from 'src/app/class/User/user';
 })
 export class UsuariosService {
   private url: string = 'usuarios';
+  private url_servidor_imagenes: string = ''
 
   constructor(
     private http: HttpClient,
@@ -35,7 +36,28 @@ export class UsuariosService {
   }
 
   update(id: number, user: User){
-    return this.http.put(`${this._constantes.endPoint}${this.url}/${id}`, user, {headers: this._constantes.header()});
+    /*
+    debugger
+    let form = new FormData()
+    if(user.foto && user.fotoObject){
+      form.append(user.foto, user.fotoObject)
+    }
+
+    let data = new Blob([JSON.stringify(user)],
+    {
+        type: "application/json"
+    })
+    form.append('data', JSON.stringify(user));
+
+    (Object.keys(user) as (keyof User)[]).forEach(k => {
+      console.log(k, user[k])
+      if(k !== 'foto' && 'fotoObject'){
+        form.append(k, <string>user[k])
+      }
+    })
+    console.log(id, user, JSON.stringify(user))
+    */
+    return this.http.put<object>(`${this._constantes.endPoint}${this.url}/${id}`, user, {headers: this._constantes.headerAttachFile()});
   }
 
   delete(id: number){

@@ -21,9 +21,11 @@
     "@angular/router": "^11.0.2",
     "@popperjs/core": "^2.5.4",
     "@types/scriptjs": "0.0.2",
+    "angular2-image-upload": "^1.0.0-rc.2",
     "bootstrap": "^4.5.3",
     "jquery": "^3.5.1",
     "rxjs": "~6.6.0",
+    "rxjs-compat": "^6.6.7",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },

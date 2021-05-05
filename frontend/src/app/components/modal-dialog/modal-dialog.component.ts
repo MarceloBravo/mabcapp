@@ -36,7 +36,7 @@ export class ModalDialogComponent implements OnInit {
 
 
   private mostrarChange(mostrar: any){
-    console.log('MOSTRAR  MODAL', mostrar ? 'show' : 'hide')
+    //console.log('MOSTRAR  MODAL', mostrar ? 'show' : 'hide')
     if(mostrar){
       var el = <HTMLButtonElement>document.getElementById('btnShowModal');
     }else{
