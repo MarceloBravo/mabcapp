@@ -42,9 +42,9 @@ export class FormButtonsComponent implements OnInit {
   {
     this._permisosService.getRolPermissions(roles, url).subscribe((res: any) => {
       res.forEach((p: any) => {
-        if(p.crear)this.crear = p.crear
-        if(p.eliminar)this.eliminar = p.eliminar
-        if(p.modificar)this.modificar = p.modificar
+        if(p.crear)this.crear = true
+        if(p.modificar)this.modificar = true
+        if(p.eliminar)this.eliminar = true
       })
     },error=>{
       console.log('ERROR',error)

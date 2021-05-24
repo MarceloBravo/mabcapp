@@ -48,6 +48,7 @@ export class LoginService {
 
   logOut(){
     let token: any = this._tokenService.getToken();
+    this.borrarCredencialesUsuario();
     return this.httpClient.post(
             `${this._sharedServices.globalURL}${this.endPoint}/logout`,
             {},
@@ -80,5 +81,10 @@ export class LoginService {
   {
     let roles = localStorage.getItem('roles');
     return roles ? JSON.parse(roles) : null
+  }
+
+  private borrarCredencialesUsuario(){
+    localStorage.removeItem('user');
+    localStorage.removeItem('roles');
   }
 }
