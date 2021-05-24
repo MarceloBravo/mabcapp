@@ -58,8 +58,9 @@ export class LoginComponent implements OnInit {
         if(res.status !== 200){
           if(this._loginService.validaToken(res['access_token'])){
             this._loginService.registrarToken(res['access_token'], this.loginForm.value['remember']);
-            this._shared.user = res['user'];
-            this._shared.roles = res['roles'];
+            //this._shared.user = res['user'];
+            //this._shared.roles = res['roles'];
+            this._loginService.setCredencialesUsuario(res['user'], res['roles'])
             this.router.navigate(['/admin']);
           }
           this.toastService.clearToast();

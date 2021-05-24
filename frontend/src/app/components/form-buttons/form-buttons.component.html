@@ -1,0 +1,23 @@
+<div class="button-group">
+  <button type="submit" class="btn btn-primary" (click)="cancelar()">
+    Cancelar
+  </button>
+
+  <button *ngIf="eliminar"
+    type="submit"
+    class="btn btn-danger"
+    (click)="modalEliminar()"
+    [disabled]="id == null"
+  >
+    Eliminar
+  </button>
+
+  <button *ngIf="(crear && id == null) || (modificar && id != null)"
+    type="submit"
+    class="btn btn-success"
+    (click)="modalGrabar()"
+    [disabled]="formValid"
+  >
+    Grabar
+  </button>
+</div>

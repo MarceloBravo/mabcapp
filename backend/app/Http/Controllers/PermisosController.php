@@ -16,9 +16,18 @@ class PermisosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($pag = 0)
+    public function getPermisos(Request $arrRoles, $url)
     {
+        $res = Permisos::join('pantallas','permisos.pantallas_id','=','pantallas.id')
+                        ->join('menus','pantallas.menus_id','=','menus.id')
+                        ->select('acceder', 'crear','modificar','eliminar')
+                        ->whereIn('roles_id',$arrRoles)
+                        ->where('url','=',$url)
+                        ->get();
 
+        return response()->json($res);
+
+        /*
         $data = Role::orderBy('name','asc')
                     ->whereNull('deleted_at');
 
@@ -29,8 +38,8 @@ class PermisosController extends Controller
                         ->get();
 
         return response()->json(['data' => $permisos, 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag, 'rows' => $totRows]);
+        */
     }
-
 
     //Retorna todos los permisos
     public function getAll()
@@ -171,6 +180,7 @@ class PermisosController extends Controller
         //
     }
 
+    /*
     public function filter($texto, $pag = 0)
     {
         $data = Permisos::join('roles','permisos.roles_id','=','roles.id')
@@ -191,6 +201,7 @@ class PermisosController extends Controller
 
         return response()->json(['data' => $permisos, 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag, 'rows' => $totRows]);
     }
+    */
 
 
     private function validaDatos($permisos, $id)

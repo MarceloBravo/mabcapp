@@ -169,25 +169,14 @@
               </div>
             </div>
 
-            <button type="submit" class="btn btn-primary" (click)="cancelar()">
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              class="btn btn-danger"
-              (click)="modalEliminar()"
-              [disabled]="id == null"
-            >
-              Eliminar
-            </button>
-            <button
-              type="submit"
-              class="btn btn-success"
-              (click)="modalGrabar()"
-              [disabled]="form.invalid"
-            >
-              Grabar
-            </button>
+            <app-form-buttons
+              (eventCancelar)="cancelar()"
+              (eventEliminar)="modalEliminar()"
+              (eventGrabar)="modalGrabar()"
+              [id]="id"
+              [formValid]="form.invalid"
+            ></app-form-buttons>
+
           </form>
         </div>
       </div>
