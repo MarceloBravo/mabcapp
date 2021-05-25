@@ -56,10 +56,9 @@ class PermisosController extends Controller
             DB::beginTransaction();
             foreach($request->permisos as $permiso ){
                 //Validando datos
-                //$permiso['roles_id'] = $request->id;
                 $validator = $this->validaDatos($permiso, $request->id);
                 if($validator->fails()){
-                    dd($permiso);
+                    //dd($permiso);
                     return response()->json(['mensaje' => 'Datos incompletos o no válidos', 'tipoMensaje' => 'danger', 'errores' => $validator->errors()]);
                 }
 
