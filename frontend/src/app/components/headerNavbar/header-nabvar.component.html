@@ -210,11 +210,11 @@
           data-toggle="dropdown"
         >
           <img
-            src="/assets/img/avatars/avatar.jpg"
+            [src]="srcAvatar"
             class="avatar img-fluid rounded mr-1"
-            alt="Charles Hall"
+            [alt]="nombreUsuario"
           />
-          <span class="text-dark">Charles Hall</span>
+          <span class="text-dark">{{nombreUsuario}}</span>
         </span>
         <div *ngIf="showProfileMenu" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="pages-profile.html"

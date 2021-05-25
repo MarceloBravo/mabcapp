@@ -10,6 +10,7 @@ import { Rol } from '../../../../class/rol/rol';
 import { CustomValidators } from '../../../../validators/custom-validators';
 import { FilesService } from '../../../../services/files/files.service';
 import { ConstantesService } from '../../../../services/constantes/constantes.service';
+import { LoginService } from '../../../../services/login/login.service';
 
 @Component({
   selector: 'app-usuarios-form',
@@ -40,7 +41,6 @@ export class UsuariosFormComponent implements OnInit {
     foto: new FormControl(),  //Url de la foto
   });
   public id: any = null;
-  public srcDefault: string = '/assets/images/users/user.png'
   public fileToUpload: File | undefined;
   public fotoObject: string = ''
 
@@ -54,6 +54,7 @@ export class UsuariosFormComponent implements OnInit {
     private _shared: SharedService,
     private _toastService: ToastService,
     private _const: ConstantesService,
+    private _login: LoginService
   ) {
     this._toastService.clearToast();
     let id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -208,7 +209,6 @@ export class UsuariosFormComponent implements OnInit {
 
 
   private actualizar(){
-    //let form = this.createFormData();
     this._userServices.update(this.id, this.form.value).subscribe((res: any)=> {
       if(this.isSuccess(res)){
         this.subirFoto(res['id'], res);
@@ -226,8 +226,9 @@ export class UsuariosFormComponent implements OnInit {
 
   private subirFoto(id: number, res: any){
     if(this.fileToUpload){
-      this._files.uploadFile(<File>this.fileToUpload, 'usuarios/subir/foto').subscribe(() => {},
-      error=>{
+      this._files.uploadFile(<File>this.fileToUpload, 'usuarios/subir/foto').subscribe(() => {
+        this._login.setCredencialesUsuario(this.form.value, this.form.value.roles)
+      },error=>{
         console.log(error)
         this.handlerError(error);
       })
@@ -270,7 +271,7 @@ export class UsuariosFormComponent implements OnInit {
 
   private cargaFotoEnImageControl(object: string = '', url: string = ''){
     let img: HTMLImageElement = <HTMLImageElement>document.getElementById('img-foto')
-    img.src = object ? object : url ? this._const.storageImages + url : this.srcDefault
+    img.src = object ? object : url ? this._const.storageImages + url : this._const.srcDefault
   }
 
 
