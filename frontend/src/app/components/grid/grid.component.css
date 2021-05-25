@@ -23,3 +23,7 @@ a{
 .btn-nuevo{
   float: right;
 }
+
+.data-table-container{
+  overflow: auto;
+}

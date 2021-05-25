@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SharedService } from '../shared/shared.service';
 import { TokenService } from '../token/token.service';
 import { FormGroup } from '@angular/forms';
+import { User } from '../../class/User/user';
+import { Rol } from '../../class/rol/rol';
 
 
 @Injectable({
@@ -19,7 +21,7 @@ export class LoginService {
   ) { }
 
   login(loginForm: FormGroup){
-    console.log(loginForm.value)
+    //console.log(loginForm.value)
     let remember: boolean = <boolean><unknown>loginForm.value['remember'];
     this._sharedServices.globalRememberUser = remember;
     return this.httpClient.post(this._sharedServices.globalURL + this.endPoint, loginForm.value, {headers: this.header});
@@ -46,6 +48,7 @@ export class LoginService {
 
   logOut(){
     let token: any = this._tokenService.getToken();
+    this.borrarCredencialesUsuario();
     return this.httpClient.post(
             `${this._sharedServices.globalURL}${this.endPoint}/logout`,
             {},
@@ -60,5 +63,28 @@ export class LoginService {
       {},
       {headers: this._sharedServices.header(<string><unknown>token)}
       );
+  }
+
+  setCredencialesUsuario(user: User, roles: Rol[])
+  {
+    localStorage.setItem('user', JSON.stringify(user))
+    localStorage.setItem('roles', JSON.stringify(roles))
+  }
+
+  getUsuarioLogueado():User|null
+  {
+    let usuario = localStorage.getItem('user')
+    return usuario ? JSON.parse(usuario) : null
+  }
+
+  getRolesUsuarioLogueado()
+  {
+    let roles = localStorage.getItem('roles');
+    return roles ? JSON.parse(roles) : null
+  }
+
+  private borrarCredencialesUsuario(){
+    localStorage.removeItem('user');
+    localStorage.removeItem('roles');
   }
 }

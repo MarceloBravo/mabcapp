@@ -198,7 +198,7 @@ class MenusController extends Controller
         $subMenu = Menu::join('pantallas','menus.id','=','pantallas.menus_id')
                     ->join('permisos','pantallas.id','=','permisos.pantallas_id')
                     ->join('roles','permisos.roles_id','=','roles.id')
-                    ->select('menus.*')
+                    ->select('menus.*','permisos.acceder')
                     ->where('roles.id','=',$rolId)
                     ->where('menus.menu_padre_id','=',$menuId)
                     ->orderBy('posicion','asc')

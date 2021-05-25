@@ -1,5 +1,9 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { ChildActivationStart } from '@angular/router';
+import { ChildActivationStart, Router } from '@angular/router';
+import { PermisosService } from '../../services/permisos/permisos.service';
+import { LoginService } from '../../services/login/login.service';
+import { ToastService } from '../../services/toast/toast.service';
+import { Rol } from '../../class/rol/rol';
 
 @Component({
   selector: 'app-grid',
@@ -16,15 +20,49 @@ export class GridComponent implements OnInit {
   @Input() titulo: string = ''
   @Input() urlEditar: string = 'edit';
   @Input() urlNuevo: string = 'nuevo';
-  @Input() mostrarNuevo: boolean = true;
-  @Input() mostrarEditar: boolean = true;
-  @Input() mostrarEliminar: boolean = true;
   @Output() idEliminar: EventEmitter<number> = new EventEmitter();
   @Output() textoFiltro: EventEmitter<string> = new EventEmitter();
+  public mostrarNuevo: boolean = false;
+  public mostrarEditar: boolean = false;
+  public mostrarEliminar: boolean = false;
 
-  constructor() { }
+  constructor(
+    private _permisos: PermisosService,
+    private _login: LoginService,
+    private router: Router,
+    private _toast: ToastService
+  ) {
+    let roles: Rol[] = this._login.getRolesUsuarioLogueado();
+    if(roles){
+      let idsRoles = roles.map(r => r.id)
+      let url = this.router.url.split('/')[2]
+      this.obtenerPermisos(idsRoles, url)
+    }else{
+      this._toast.showErrorMessage('El usuario no posee datos de ingreso y debe loguearse nuevamente.')
+      this.router.navigate(['/'])
+    }
+  }
 
   ngOnInit(): void {
+  }
+
+  private obtenerPermisos(idsRoles: number[], url: string)
+  {
+    this._permisos.getRolPermissions(idsRoles, url).subscribe((res: any) => {
+      let permisos: boolean[] = [false, false, false]
+      res.forEach((p: any) => {
+        if(p.crear)permisos[0] = true
+        if(p.modificar)permisos[1] = true
+        if(p.eliminar)permisos[2] = true
+      })
+      this.mostrarNuevo = permisos[0]
+      this.mostrarEditar = permisos[1]
+      this.mostrarEliminar = permisos[2]
+      console.log('PERMISOS', idsRoles, res, this.mostrarNuevo, this.mostrarEditar, this.mostrarEliminar)
+    },error=> {
+      console.log(error)
+      this._toast.showErrorMessage('Ocurrió un error al consultar los permisos: ' + error.message)
+    })
   }
 
   eliminar(id: number){

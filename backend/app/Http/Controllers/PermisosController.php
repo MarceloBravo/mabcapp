@@ -16,9 +16,19 @@ class PermisosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($pag = 0)
+    public function getPermisos(Request $arrRoles, $url)
     {
+        $res = Permisos::join('pantallas','permisos.pantallas_id','=','pantallas.id')
+                        ->join('menus','pantallas.menus_id','=','menus.id')
+                        ->select('acceder', 'crear','modificar','eliminar')
+                        ->whereIn('roles_id',$arrRoles)
+                        ->where('url','=',$url)
+                        //->whereIsNull('permisos.deleted_at')
+                        ->get();
 
+        return response()->json($res);
+
+        /*
         $data = Role::orderBy('name','asc')
                     ->whereNull('deleted_at');
 
@@ -29,8 +39,8 @@ class PermisosController extends Controller
                         ->get();
 
         return response()->json(['data' => $permisos, 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag, 'rows' => $totRows]);
+        */
     }
-
 
     //Retorna todos los permisos
     public function getAll()
@@ -47,10 +57,9 @@ class PermisosController extends Controller
             DB::beginTransaction();
             foreach($request->permisos as $permiso ){
                 //Validando datos
-                //$permiso['roles_id'] = $request->id;
                 $validator = $this->validaDatos($permiso, $request->id);
                 if($validator->fails()){
-                    dd($permiso);
+                    //dd($permiso);
                     return response()->json(['mensaje' => 'Datos incompletos o no válidos', 'tipoMensaje' => 'danger', 'errores' => $validator->errors()]);
                 }
 
@@ -78,14 +87,15 @@ class PermisosController extends Controller
             $found = Permisos::find($permiso['id']);
         }
 
-        if($found){
-            return $this->update($permiso);
-        }else{
-            return $this->insert($permiso);
+        if(!$found){
+            $record = new Permisos();
         }
+        $res = $found->fill($permiso)->save();
 
+        return $res;
     }
 
+    /*
     //Actualiza en la base de datos, los permisos asociados a un rol
     private function update($permiso)
     {
@@ -101,7 +111,7 @@ class PermisosController extends Controller
         $res = $record->fill($permiso)->save();
         return $res;
     }
-
+    */
 
     /**
      * Display the specified resource.
@@ -113,16 +123,16 @@ class PermisosController extends Controller
     {
         $data = DB::select('SELECT
                             p.id,
-                            pantallas.id as pantallas_id,
-                            pantallas.nombre as pantalla,
+                            pt.id AS pantallas_id,
+                            pt.nombre AS pantalla,
                             roles_id,
                             acceder,
                             crear,
                             modificar,
                             eliminar,
-                            pantallas.permite_crear,
-                            pantallas.permite_modificar,
-                            pantallas.permite_eliminar,
+                            pt.permite_crear,
+                            pt.permite_modificar,
+                            pt.permite_eliminar,
                             p.created_at,
                             p.updated_at,
                             p.deleted_at
@@ -143,8 +153,20 @@ class PermisosController extends Controller
                                 permisos
                             WHERE
                                 permisos.roles_id =  '.$id.'
+                                AND deleted_at IS NULL
                         ) p
-                        RIGHT JOIN pantallas ON p.pantallas_id = pantallas.id '
+                        RIGHT JOIN (
+                            SELECT
+                                id,
+                                nombre,
+                                permite_crear,
+                                permite_modificar,
+                                permite_eliminar
+                            FROM
+                                pantallas
+                            WHERE
+                                deleted_at IS NULL
+                        ) AS pt ON p.pantallas_id = pt.id'
                     );
     /*
         $data = Permisos::rightJoin('roles','permisos.roles_id','=','roles.id')
@@ -171,6 +193,7 @@ class PermisosController extends Controller
         //
     }
 
+    /*
     public function filter($texto, $pag = 0)
     {
         $data = Permisos::join('roles','permisos.roles_id','=','roles.id')
@@ -191,6 +214,7 @@ class PermisosController extends Controller
 
         return response()->json(['data' => $permisos, 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag, 'rows' => $totRows]);
     }
+    */
 
 
     private function validaDatos($permisos, $id)

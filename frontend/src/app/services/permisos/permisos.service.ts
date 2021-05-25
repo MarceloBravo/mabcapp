@@ -29,8 +29,13 @@ export class PermisosService {
         p.eliminar = p.eliminar?true: false
       }
       );
-    console.log(data, JSON.stringify(data));
+    //console.log(data, JSON.stringify(data));
+    //debugger
     return this.httpClient.post(`${this._constantes.endPoint}${this.url}`,data,{headers: this._constantes.header()});
+  }
+
+  getRolPermissions(arrRoles: number[], url: string){
+    return this.httpClient.post(`${this._constantes.endPoint}${this.url}/url/${url}`,arrRoles, {headers: this._constantes.header()});
   }
 
 }

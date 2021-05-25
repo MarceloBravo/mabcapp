@@ -118,7 +118,7 @@ class UserController extends Controller
             }
             return response()->json(['mensaje' => $res, 'tipoMensaje' => 'success']);
         }catch(Exception $e){
-            return response()->json(['mensaje' => 'Ocurrió un error al intentar actualizar la foto: '.$e->getMessage(), 'tipoMensaje' => 'danger', 'id'=> $id]);
+            return response()->json(['men.l aje' => 'Ocurrió un error al intentar actualizar la foto: '.$e->getMessage(), 'tipoMensaje' => 'danger', 'id'=> $id]);
         }
     }
 

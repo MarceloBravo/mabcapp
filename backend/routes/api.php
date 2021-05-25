@@ -58,7 +58,7 @@ Route::group([
     //Route::resource('permisos','PermisosController');
     Route::post('permisos','PermisosController@save');
     Route::get('permisos/{id}','PermisosController@show');
-    Route::get('permisos/pag/{pag}','PermisosController@index');
+    Route::post('permisos/url/{url}','PermisosController@getPermisos');
     Route::get('permisos/filtrar/{buscado}/{pag}','PermisosController@filter');
     Route::get('permisos/get/all','PermisosController@getAll');
 
