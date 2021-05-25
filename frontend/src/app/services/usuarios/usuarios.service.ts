@@ -8,7 +8,6 @@ import { User } from 'src/app/class/User/user';
 })
 export class UsuariosService {
   private url: string = 'usuarios';
-  private url_servidor_imagenes: string = ''
 
   constructor(
     private http: HttpClient,

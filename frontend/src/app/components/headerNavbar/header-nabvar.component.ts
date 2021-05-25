@@ -1,5 +1,9 @@
 import { Component, EventEmitter, HostBinding, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { User } from 'src/app/class/User/user';
 import { ScriptServicesService } from 'src/app/services/scriptServices/script-services.service';
+import { LoginService } from '../../services/login/login.service';
+import { ConstantesService } from '../../services/constantes/constantes.service';
+import { userInfo } from 'os';
 
 @Component({
   selector: 'app-header-nabvar',
@@ -15,14 +19,30 @@ export class HeaderNabvarComponent implements OnInit {
   @Output() showLeftMenu = new EventEmitter<boolean>()
   public showProfileMenu: boolean = false
   public leftMenuIsVisible: boolean = true
+  public srcAvatar: string = ''
+  public nombreUsuario: string = ''
 
 
   constructor(
-    private _scriptService: ScriptServicesService
-  ) { }
+    private _scriptService: ScriptServicesService,
+    private _login: LoginService,
+    private _const: ConstantesService
+  ) {
+    let user: User | null = this._login.getUsuarioLogueado()
+    this.updateAvatarPicture(user)
+  }
 
   ngOnInit(): void {
+    this._login.activeUserChange$.subscribe((res: User) => {
+      this.updateAvatarPicture(res)
+    })
     this.loadScripts()
+  }
+
+  private updateAvatarPicture(user: User | null)
+  {
+      this.srcAvatar = (user && user.foto) ? this._const.storageImages + user.foto : this._const.srcDefault
+      this.nombreUsuario = user ? user.name : 'Desconocido...'
   }
 
   private loadScripts(){
