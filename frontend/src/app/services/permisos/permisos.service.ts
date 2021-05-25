@@ -30,6 +30,7 @@ export class PermisosService {
       }
       );
     //console.log(data, JSON.stringify(data));
+    //debugger
     return this.httpClient.post(`${this._constantes.endPoint}${this.url}`,data,{headers: this._constantes.header()});
   }
 
