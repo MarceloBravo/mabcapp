@@ -7,6 +7,8 @@ import { LoginService } from 'src/app/services/login/login.service';
 import { SharedService } from '../../../services/shared/shared.service';
 import { ScriptServicesService } from '../../../services/scriptServices/script-services.service';
 import { ToastService } from '../../../services/toast/toast.service';
+import { PersonalizarService } from '../../../services/personalizar/personalizar.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +24,7 @@ export class LoginComponent implements OnInit {
     remember: new FormControl()
   })
   public showToast: boolean = false
+  public nombreApp: string = ''
 
   constructor(
     private _loginService: LoginService,
@@ -29,7 +32,9 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private _scriptService: ScriptServicesService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private _configService: PersonalizarService,
+    private title: Title
   ) {
     this._scriptService.load([
       '//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js',
@@ -38,6 +43,7 @@ export class LoginComponent implements OnInit {
       '//code.jquery.com/jquery-1.11.1.min.js'
       ]);
     this.initForm();
+    this.getTituloApp();
    }
 
   ngOnInit(): void {
@@ -48,6 +54,16 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(15)]],
       email:['',[Validators.required, Validators.email]],
       remember:false
+    })
+  }
+
+  private getTituloApp(){
+    this._configService.getConfig().subscribe((res: any) => {
+      this.title.setTitle(res[0].nombre_app);
+      this.nombreApp = res[0].nombre_app
+    }, error => {
+      console.log(error)
+      this.title.setTitle('...');
     })
   }
 

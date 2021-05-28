@@ -11,7 +11,7 @@ import { ToastService } from '../../services/toast/toast.service';
   styleUrls: ['./form-buttons.component.css']
 })
 export class FormButtonsComponent implements OnInit {
-  @Input() id: number = -1
+  @Input() id: number | null = null
   @Input() formValid: boolean = false
   @Output() eventCancelar: EventEmitter<boolean> = new EventEmitter()
   @Output() eventGrabar: EventEmitter<boolean> = new EventEmitter()

@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         //$this->call(menus_seeders::class);
         //$this->call(pantallas_seeders::class);
         //$this->call(permisos_seeders::class);
+        //$this->call(configuracionSeeder::class);
     }
 }

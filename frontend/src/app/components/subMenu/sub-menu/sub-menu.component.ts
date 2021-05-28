@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Menu } from '../../../class/menus/menu';
+import { ToastService } from '../../../services/toast/toast.service';
 
 @Component({
   selector: 'app-sub-menu',
@@ -11,9 +12,15 @@ export class SubMenuComponent implements OnInit {
   @Input() menu?: Menu
   @Input() className: string = 'sidebar-item'
 
-  constructor() {}
+  constructor(
+    private _toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
+  }
+
+  clearToast(){
+    this._toastService.clearToast()
   }
 
 }

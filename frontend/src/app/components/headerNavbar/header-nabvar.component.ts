@@ -4,6 +4,7 @@ import { ScriptServicesService } from 'src/app/services/scriptServices/script-se
 import { LoginService } from '../../services/login/login.service';
 import { ConstantesService } from '../../services/constantes/constantes.service';
 import { userInfo } from 'os';
+import { PersonalizarService } from '../../services/personalizar/personalizar.service';
 
 @Component({
   selector: 'app-header-nabvar',
@@ -26,7 +27,7 @@ export class HeaderNabvarComponent implements OnInit {
   constructor(
     private _scriptService: ScriptServicesService,
     private _login: LoginService,
-    private _const: ConstantesService
+    private _const: ConstantesService,
   ) {
     let user: User | null = this._login.getUsuarioLogueado()
     this.updateAvatarPicture(user)

@@ -19,6 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('configuracion', 'ConfiguracionController@index');
+
 Route::group([
     'prefix' => 'auth',
 
@@ -27,11 +29,15 @@ Route::group([
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
+
+
 });
 
 Route::group([
     'middleware' => ['jwt.verify']
 ], function(){
+    Route::post('configuracion', 'ConfiguracionController@store');
+
     Route::resource('roles','RolesController');
     Route::get('roles/pag/{pag}','RolesController@index');
     Route::get('roles/filtrar/{buscado}/{pag}','RolesController@filter');

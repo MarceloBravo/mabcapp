@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { PersonalizarService } from 'src/app/services/personalizar/personalizar.service';
 import { ScriptServicesService } from 'src/app/services/scriptServices/script-services.service';
 
 @Component({
@@ -14,15 +16,28 @@ export class MainComponent implements OnInit {
   public mostrarMenu: boolean = true
 
   constructor(
-    private _scriptService: ScriptServicesService,
-  ) { }
-
-  ngOnInit(): void {
+    private _configService: PersonalizarService,
+    private title: Title
+  ) {
+    this.getTituloApp()
   }
 
-  private loadScript(){
-    this._scriptService.load([
-    ]);
+  ngOnInit(): void {
+    this._configService.changeNombreApp$.subscribe((res: string) => {
+      this.title.setTitle(res);
+    }, (error: any) => {
+      console.log(error)
+      this.title.setTitle('...');
+    })
+  }
+
+  private getTituloApp(){
+    this._configService.getConfig().subscribe((res: any) => {
+      this.title.setTitle(res[0].nombre_app);
+    }, error => {
+      console.log(error)
+      this.title.setTitle('...');
+    })
   }
 
   public mostrarMenuIzquierdo(value: boolean){
