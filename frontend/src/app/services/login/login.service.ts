@@ -5,12 +5,13 @@ import { TokenService } from '../token/token.service';
 import { FormGroup } from '@angular/forms';
 import { User } from '../../class/User/user';
 import { Rol } from '../../class/rol/rol';
+import { ConstantesService } from '../constantes/constantes.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-  private endPoint = 'auth/login';
+  private endPoint = 'auth/';
   private header: HttpHeaders = new HttpHeaders({'Content-type': 'application/json'});
   public activeUserChange$: EventEmitter<User> = new EventEmitter<User>()  //Observable
   public rolesUserChange$: EventEmitter<Rol[]> = new EventEmitter<Rol[]>()  //Observable
@@ -18,13 +19,14 @@ export class LoginService {
   constructor(
     private httpClient: HttpClient,
     private _sharedServices: SharedService,
-    private _tokenService: TokenService
+    private _tokenService: TokenService,
+    public _const: ConstantesService,
   ) { }
 
   login(loginForm: FormGroup){
     let remember: boolean = <boolean><unknown>loginForm.value['remember'];
     this._sharedServices.globalRememberUser = remember;
-    return this.httpClient.post(this._sharedServices.globalURL + this.endPoint, loginForm.value, {headers: this.header});
+    return this.httpClient.post(this._sharedServices.globalURL + this.endPoint + 'login', loginForm.value, {headers: this.header});
   }
 
   validaToken(token: string){
@@ -32,7 +34,7 @@ export class LoginService {
       let tokenArr = token.split('.');
       if(tokenArr.length > 1){
         const decodeToken = JSON.parse(atob(tokenArr[1]));
-        return decodeToken.iss === this._sharedServices.globalURL + this.endPoint
+        return decodeToken.iss === this._sharedServices.globalURL + this.endPoint  + 'login'
       }
     }
     return false
@@ -48,11 +50,12 @@ export class LoginService {
 
   logOut(){
     let token: any = this._tokenService.getToken();
+    let header = this._const.header();
     this.borrarCredencialesUsuario();
     return this.httpClient.post(
-            `${this._sharedServices.globalURL}${this.endPoint}/logout`,
+            `${this._sharedServices.globalURL}${this.endPoint}logout`,
             {},
-            {headers: this._sharedServices.header(<string><unknown>token)}
+            {headers: header}
           );
   }
 
@@ -61,7 +64,7 @@ export class LoginService {
     return this.httpClient.post(
       `${this._sharedServices.globalURL}${this.endPoint}/refresh`,
       {},
-      {headers: this._sharedServices.header(<string><unknown>token)}
+      {headers: this._const.header()}
       );
   }
 
@@ -87,6 +90,7 @@ export class LoginService {
 
   private borrarCredencialesUsuario(){
     sessionStorage.removeItem('user');
+    sessionStorage.removeItem('mabc-token');
     sessionStorage.removeItem('roles');
   }
 }
