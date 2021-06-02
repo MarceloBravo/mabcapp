@@ -10,7 +10,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('jwt', ['except' => ['login']]);
+        $this->middleware('jwt', ['except' => ['login', 'logout']]);
     }
 
     /**
@@ -47,7 +47,7 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->logout();
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'La sessión ha finalizado.']);
     }
     /**
      * Refresh a token.

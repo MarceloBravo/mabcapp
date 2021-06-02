@@ -5,6 +5,8 @@ import { LoginService } from '../../services/login/login.service';
 import { ConstantesService } from '../../services/constantes/constantes.service';
 import { userInfo } from 'os';
 import { PersonalizarService } from '../../services/personalizar/personalizar.service';
+import { ToastService } from '../../services/toast/toast.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header-nabvar',
@@ -28,6 +30,8 @@ export class HeaderNabvarComponent implements OnInit {
     private _scriptService: ScriptServicesService,
     private _login: LoginService,
     private _const: ConstantesService,
+    private _toast: ToastService,
+    private router: Router,
   ) {
     let user: User | null = this._login.getUsuarioLogueado()
     this.updateAvatarPicture(user)
@@ -38,6 +42,16 @@ export class HeaderNabvarComponent implements OnInit {
       this.updateAvatarPicture(res)
     })
     this.loadScripts()
+  }
+
+  logout(){
+    this._login.logOut().subscribe(res => {
+      this._toast.showSuccessMessage('Has finalizado la sessión correctamente.')
+      this.router.navigate(['/'])
+    }, error => {
+      console.log(error)
+      this._toast.showErrorMessage(error.message)
+    })
   }
 
   private updateAvatarPicture(user: User | null)

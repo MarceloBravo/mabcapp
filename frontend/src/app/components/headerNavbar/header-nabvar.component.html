@@ -218,7 +218,7 @@
         </span>
         <div *ngIf="showProfileMenu" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="pages-profile.html"
-            ><i class="align-middle mr-1" data-feather="user"></i> Profile</a
+            ><i class="align-middle mr-1" data-feather="user"></i> Perfil</a
           >
           <a class="dropdown-item" href="#"
             ><i class="align-middle mr-1" data-feather="pie-chart"></i>
@@ -234,7 +234,7 @@
             Center</a
           >
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Log out</a>
+          <label class="dropdown-item" (click)="logout()">Salir</label>
         </div>
       </li>
     </ul>
