@@ -29,6 +29,7 @@ import { SubMenuComponent } from './components/subMenu/sub-menu/sub-menu.compone
 import { ImageUploadModule } from 'angular2-image-upload';
 import { FormButtonsComponent } from './components/form-buttons/form-buttons.component';
 import { PersonalizarComponent } from './pages/back-office/personalizar/personalizar.component';
+import { PerfilComponent } from './pages/back-office/perfil/perfil.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -57,6 +58,7 @@ import { PersonalizarComponent } from './pages/back-office/personalizar/personal
     SubMenuComponent,
     FormButtonsComponent,
     PersonalizarComponent,
+    PerfilComponent,
   ],
   imports: [
     BrowserModule,

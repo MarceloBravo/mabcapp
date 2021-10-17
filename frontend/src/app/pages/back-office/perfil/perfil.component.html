@@ -8,13 +8,12 @@
     [titulo]="'Grabar'"
     [mensaje]="messageDialog"
     [mostrar]="mostrarModal"
-    (cerrar)="cancelarModal($event)"
     (aceptar)="aceptarModal($event)"
     >
   </app-modal-dialog>
 
 
-  <h1 class="h3 mb-3">Usuarios</h1>
+  <h1 class="h3 mb-3">Perfil de usuario</h1>
 
   <div class="row">
 
@@ -22,7 +21,7 @@
         <div class="card">
           <div class="card-header">
             <!-- <h6 class="card-subtitle text-muted">{{ url }}</h6> -->
-            <h5 class="card-title">Mantenedor de Usuarios</h5>
+            <h5 class="card-title">Mis datos de perfil</h5>
           </div>
           <div class="card-body">
             <form [formGroup]="form" id="form">
@@ -89,7 +88,6 @@
                     <input type="file"
                            id="btn-file"
                            accept=".png, .jpg"
-                            formControlName="foto"
                            (change)="cargarFoto($event.target)">
                   </div>
 
@@ -115,19 +113,6 @@
                 <div *ngIf="form.get('direccion')?.hasError('minlength') && form.get('direccion')?.dirty" class="error-input">La dirección debe tener almenos 10 carácteres. Ingresa una dirección más largo.</div>
                 <div *ngIf="form.get('direccion')?.hasError('maxlength') && form.get('direccion')?.dirty" class="error-input">La dirección debe tener un máximo de 150 carácteres. Ingresa una dirección más corto.</div>
                 <!-- /Mensajes de error -->
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Roles</label>
-                <div class="col-sm-10">
-                  <select class="custom-select col-md-5" multiple formControlName="roles" [compareWith]="comparaRoles">
-                    <option *ngFor="let item of roles" [ngValue]="item">{{ item.name }}</option>
-                  </select>
-
-                  <!-- Mensajes de error -->
-                  <div *ngIf="form.get('roles')?.hasError('required') && form.get('roles')?.dirty" class="error-input">Selecciona almeno un rol del la lista.</div>
-                  <!-- /Mensajes de error -->
                 </div>
               </div>
 
@@ -168,8 +153,8 @@
 
               <app-form-buttons
                 (eventCancelar)="cancelar()"
-                (eventEliminar)="modalEliminar()"
-                (eventGrabar)="modalGrabar()"
+                (eventGrabar)="grabar()"
+                [forzarMostrarBtnCrear]="true"
                 [id]="id"
                 [formValid]="form.invalid"
               ></app-form-buttons>

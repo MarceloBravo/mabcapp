@@ -13,6 +13,7 @@ import { PantallasGridComponent } from './pages/back-office/pantallas/pantallas-
 import { PantallasFormComponent } from './pages/back-office/pantallas/pantallas-form/pantallas-form.component';
 import { PermisosFormComponent } from './pages/back-office/permisos/permisos-form/permisos-form.component';
 import { PersonalizarComponent } from './pages/back-office/personalizar/personalizar.component';
+import { PerfilComponent } from './pages/back-office/perfil/perfil.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
       { path: 'usuarios', component: UsuariosGridComponent},
       { path: 'usuarios/nuevo', component: UsuariosFormComponent },
       { path: 'usuarios/edit/:id', component: UsuariosFormComponent },
+      { path: 'perfil', component: PerfilComponent},
 
       { path: 'menus', component: MenusGridComponent},
       { path: 'menus/nuevo', component: MenusFormComponent },

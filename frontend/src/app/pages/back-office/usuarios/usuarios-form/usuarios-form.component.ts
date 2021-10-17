@@ -1,5 +1,5 @@
 import { Component, OnInit, ɵCodegenComponentFactoryResolver } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { UsuariosService } from '../../../../services/usuarios/usuarios.service';
 import { User } from '../../../../class/User/user';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -148,8 +148,8 @@ export class UsuariosFormComponent implements OnInit {
       this.router.navigate(['/admin/usuarios'])
     }
     this.mostrarModal = false;
-    this.tipoModal = '';
-    this.messageDialog = '';
+    //this.tipoModal = '';
+    //this.messageDialog = '';
   }
 
   cancelar(){
@@ -212,6 +212,7 @@ export class UsuariosFormComponent implements OnInit {
     this._userServices.update(this.id, this.form.value).subscribe((res: any)=> {
       if(this.isSuccess(res)){
         this.subirFoto(res['id'], res);
+        this._login.setCredencialesUsuario(this.form.value, this.form.value.roles)  //Actualizando los datos del usuario logueado
       }
       this.handlerSuccess(res);
     },error=>{
@@ -227,7 +228,6 @@ export class UsuariosFormComponent implements OnInit {
   private subirFoto(id: number, res: any){
     if(this.fileToUpload){
       this._files.uploadFile(<File>this.fileToUpload, 'usuarios/subir/foto').subscribe(() => {
-        this._login.setCredencialesUsuario(this.form.value, this.form.value.roles)
       },error=>{
         console.log(error)
         this.handlerError(error);

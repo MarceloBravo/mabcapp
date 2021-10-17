@@ -1,5 +1,5 @@
 import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 
 export class CustomValidators {
 
@@ -43,4 +43,16 @@ export class CustomValidators {
       }
     }
   // ----------------   /Confirmar contraseña   ----------------
+
+
+  public findInvalidControls(form: FormGroup) {
+    const invalid = [];
+    const controls = form.controls;
+    for (const name in controls) {
+        if (controls[name].invalid) {
+            invalid.push(name);
+        }
+    }
+    return invalid;
+}
 }

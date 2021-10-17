@@ -20,28 +20,20 @@ export class ModalDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-
-    this.mostrarChange(changes.mostrar.currentValue);
-
-}
-
   btnCancelar(){
+    this.resetValues()
     this.cerrar.emit(false);
   }
 
   btnAceptar(){
+    this.resetValues()
     this.aceptar.emit(true);
   }
 
-
-  private mostrarChange(mostrar: any){
-    //console.log('MOSTRAR  MODAL', mostrar ? 'show' : 'hide')
-    if(mostrar){
-      var el = <HTMLButtonElement>document.getElementById('btnShowModal');
-    }else{
-      var el = <HTMLButtonElement>document.getElementById('btnHidewModal');
-    }
-    el.click();
+  private resetValues(){
+    this.mostrar = false
+    this.mensaje = ''
+    this.titulo = ''
   }
+
 }

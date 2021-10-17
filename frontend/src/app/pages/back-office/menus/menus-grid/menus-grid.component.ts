@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class MenusGridComponent implements OnInit {
   public showSpinner: boolean = false;
-  public mostrarModalEliminar: boolean = false;
+  public mostrarModal: boolean = false;
   public headers: string[] = ['Nombre','Url','posición','Fecha creación','Fecha actualización'];
   public visibleColumns: string[] = ['nombre','url','posicion','created_at','updated_at'];
   public menus: Menu[] = [];
@@ -57,7 +57,7 @@ export class MenusGridComponent implements OnInit {
 
   cancelarEliminar(e: any){
     this.idEliminar = null;
-    this.mostrarModalEliminar = false;
+    this.mostrarModal = false;
   }
 
   aceptarEliminar(e: any){
@@ -66,7 +66,7 @@ export class MenusGridComponent implements OnInit {
       (res: any)=>{
         this._toastService.showSuccessMessage(res.mensaje, res.tipoMensaje);
         this.obtenerDatos();
-        this.mostrarModalEliminar = false;
+        this.mostrarModal = false;
     },error=>{
       this.handlerError(error);
     })
@@ -74,7 +74,7 @@ export class MenusGridComponent implements OnInit {
   }
 
   eliminar(id: number){
-    this.mostrarModalEliminar = true;
+    this.mostrarModal = true;
     this.idEliminar = id;
   }
 

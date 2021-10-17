@@ -106,18 +106,23 @@ export class MenusFormComponent implements OnInit {
   }
 
   aceptarModal(e: any){
+    this.mostrarModal = false
     if(this.tipoModal === 'grabar' || this.tipoModal === 'confirmar cambios'){
-      this.grabar();
+      if(this.form.invalid){
+        this.handlerError({message: 'Existen datos incompletos o no válidos.'})
+      }else{
+        this.grabar();
+      }
     }else{
       this.eliminar();
     }
   }
 
   cancelarModal(e: any){
+    this.mostrarModal = false;
     if(this.tipoModal === 'confirmar cambios'){
       this.router.navigate(['/admin/menus'])
     }
-    this.mostrarModal = false;
     this.tipoModal = ''
     this.messageDialog = '';
   }
@@ -129,14 +134,19 @@ export class MenusFormComponent implements OnInit {
       this.mostrarModal = true;
       this.tipoModal = 'confirmar cambios';
     }else{
+      this.mostrarModal = false
       //No se han detectado cambios, se redirige al listado de roles
       this.router.navigate(['/admin/menus']);
     }
   }
 
   private detectarCambios(){
-    let arrDiferencias = Object.keys(this.form.value).filter(k => this.form.get(k)?.value !== (<any>this.menu)[k]);
-    return arrDiferencias.length > 0;
+    if(this.form.dirty ){
+      let arrDiferencias = Object.keys(this.form.value).filter(k => this.form.get(k)?.value !== (<any>this.menu)[k]);
+      return arrDiferencias.length > 0;
+    }else{
+      return false
+    }
   }
 
   private grabar(){

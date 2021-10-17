@@ -1,11 +1,6 @@
 <!-- BEGIN success modal -->
-<div
-  class="fade"
-  id="defaultModalSuccess"
-  tabindex="-1"
-  role="dialog"
-  aria-hidden="true"
->
+<div class="modalDialog-container" *ngIf="mostrar">
+  <div class="opacity-modal-backgroud"></div>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -30,7 +25,9 @@
       </div>
     </div>
   </div>
+  <!--
   <button id="btnShowModal" class="trigger-modal" data-toggle="modal" data-target="#defaultModalSuccess"></button>
   <button id="btnHidewModal" class="trigger-modal" data-dismiss="modal" data-target="#defaultModalSuccess"></button>
+  -->
 </div>
 <!-- END success modal -->

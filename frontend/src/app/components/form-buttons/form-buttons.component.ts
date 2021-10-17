@@ -13,6 +13,10 @@ import { ToastService } from '../../services/toast/toast.service';
 export class FormButtonsComponent implements OnInit {
   @Input() id: number | null = null
   @Input() formValid: boolean = false
+  @Input() forzarMostrarBtnCrear: boolean = false
+  @Input() forzarMostrarBtnModificar: boolean = false
+  @Input() forzarMostrarBtnEliminar: boolean = false
+  @Input() ocultarBtnCerrar: boolean = false
   @Output() eventCancelar: EventEmitter<boolean> = new EventEmitter()
   @Output() eventGrabar: EventEmitter<boolean> = new EventEmitter()
   @Output() eventEliminar: EventEmitter<boolean> = new EventEmitter()
