@@ -30,6 +30,7 @@ import { ImageUploadModule } from 'angular2-image-upload';
 import { FormButtonsComponent } from './components/form-buttons/form-buttons.component';
 import { PersonalizarComponent } from './pages/back-office/personalizar/personalizar.component';
 import { PerfilComponent } from './pages/back-office/perfil/perfil.component';
+import { LoguedGuard } from './guards/logued.guard';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -58,7 +59,7 @@ import { PerfilComponent } from './pages/back-office/perfil/perfil.component';
     SubMenuComponent,
     FormButtonsComponent,
     PersonalizarComponent,
-    PerfilComponent,
+    PerfilComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +69,7 @@ import { PerfilComponent } from './pages/back-office/perfil/perfil.component';
     FormsModule,
     ImageUploadModule.forRoot()
   ],
-  providers: [],
+  providers: [LoguedGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

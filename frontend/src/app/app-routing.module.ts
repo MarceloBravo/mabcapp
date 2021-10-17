@@ -14,10 +14,12 @@ import { PantallasFormComponent } from './pages/back-office/pantallas/pantallas-
 import { PermisosFormComponent } from './pages/back-office/permisos/permisos-form/permisos-form.component';
 import { PersonalizarComponent } from './pages/back-office/personalizar/personalizar.component';
 import { PerfilComponent } from './pages/back-office/perfil/perfil.component';
+import { LoguedGuard } from './guards/logued.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'admin', component: MainComponent ,
+    canActivateChild: [LoguedGuard],
     children: [
       { path: 'roles', component: RolesGridComponent },
       { path: 'roles/nuevo', component: RolesFormComponent },

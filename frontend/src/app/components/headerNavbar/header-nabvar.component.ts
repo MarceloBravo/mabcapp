@@ -1,10 +1,8 @@
-import { Component, EventEmitter, HostBinding, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, HostBinding, HostListener, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { User } from 'src/app/class/User/user';
 import { ScriptServicesService } from 'src/app/services/scriptServices/script-services.service';
 import { LoginService } from '../../services/login/login.service';
 import { ConstantesService } from '../../services/constantes/constantes.service';
-import { userInfo } from 'os';
-import { PersonalizarService } from '../../services/personalizar/personalizar.service';
 import { ToastService } from '../../services/toast/toast.service';
 import { Router } from '@angular/router';
 
@@ -24,6 +22,7 @@ export class HeaderNabvarComponent implements OnInit {
   public leftMenuIsVisible: boolean = true
   public srcAvatar: string = ''
   public nombreUsuario: string = ''
+  private secondOutClick: boolean = false
 
 
   constructor(
@@ -44,6 +43,22 @@ export class HeaderNabvarComponent implements OnInit {
     this.loadScripts()
   }
 
+  /*
+  @HostListener('click')
+  clickInside() {
+    this.isOutClik = false;
+  }
+  */
+
+  @HostListener('document:click')
+  clickout() {
+    if(this.showProfileMenu && this.secondOutClick){
+      this.showProfileMenu = false;
+    }
+    this.secondOutClick = true
+  }
+
+
   logout(){
     this._login.logOut().subscribe(res => {
       this._toast.showSuccessMessage('Has finalizado la sessión correctamente.')
@@ -52,6 +67,7 @@ export class HeaderNabvarComponent implements OnInit {
       console.log(error)
       this._toast.showErrorMessage(error.message)
     })
+    this.showProfileMenu = false;
   }
 
   private updateAvatarPicture(user: User | null)
