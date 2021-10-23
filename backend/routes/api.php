@@ -68,4 +68,9 @@ Route::group([
     Route::get('permisos/filtrar/{buscado}/{pag}','PermisosController@filter');
     Route::get('permisos/get/all','PermisosController@getAll');
 
+    Route::resource('marcas', 'MarcasController');
+    Route::get('marcas/pag/{pag}', 'MarcasController@index');
+    Route::get('marcas/filtrar/{texto}{pag}', 'MarcasController@filter');
+    Route::get('marcas/get/all', 'MarcasController@getAll');
+
 });

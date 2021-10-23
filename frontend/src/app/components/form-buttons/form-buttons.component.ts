@@ -65,7 +65,7 @@ export class FormButtonsComponent implements OnInit {
 
 
   modalEliminar(){
-    return this.eventGrabar.emit(true)
+    return this.eventEliminar.emit(true)
   }
 
   modalGrabar(){

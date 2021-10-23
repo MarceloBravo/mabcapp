@@ -16,6 +16,8 @@ import { PerfilComponent } from './pages/back-office/perfil/perfil.component';
 import { LoguedGuard } from './guards/logued.guard';
 import { MainTiendaComponent } from './pages/front-office/main-tienda/main-tienda.component';
 import { HomeTiendaComponent } from './pages/front-office/home-tienda/home-tienda.component';
+import { MarcaFormComponent } from './pages/back-office/marcas/marca-form/marca-form.component';
+import { MarcasGridComponent } from './pages/back-office/marcas/marcas-grid/marcas-grid.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -42,6 +44,11 @@ const routes: Routes = [
       { path: 'permisos', component: PermisosFormComponent },
 
       { path: 'personalizar', component: PersonalizarComponent },
+
+      { path: 'marcas', component: MarcasGridComponent},
+      { path: 'marcas/nuevo', component: MarcaFormComponent },
+      { path: 'marcas/edit/:id', component: MarcaFormComponent },
+
     ]
 },
 

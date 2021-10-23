@@ -38,6 +38,8 @@ import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.
 import { MainTiendaComponent } from './pages/front-office/main-tienda/main-tienda.component';
 import { HomeTiendaComponent } from './pages/front-office/home-tienda/home-tienda.component';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
+import { MarcasGridComponent } from './pages/back-office/marcas/marcas-grid/marcas-grid.component';
+import { MarcaFormComponent } from './pages/back-office/marcas/marca-form/marca-form.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -72,7 +74,9 @@ import { IvyCarouselModule } from 'angular-responsive-carousel';
     ShoppingCartComponent,
     FoFooterComponent,
     MainTiendaComponent,
-    HomeTiendaComponent
+    HomeTiendaComponent,
+    MarcasGridComponent,
+    MarcaFormComponent
   ],
   imports: [
     BrowserModule,
