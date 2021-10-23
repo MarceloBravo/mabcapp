@@ -1,0 +1,73 @@
+.carousel{
+  z-index: 100;
+}
+
+.product-img{
+  cursor: default;
+}
+
+.product-description{
+  position: absolute;
+  bottom: 0;
+  width: 100% !important;
+  background: white;
+}
+
+[_nghost-otd-c73]
+.carousel-cells
+.carousel-cell img,
+[_nghost-otd-c73] .carousel-cells .carousel-cell video
+{
+  width: 100%;
+  height: 69%;
+  position: absolute;
+  object-fit: contain;
+}
+
+.hover-img{
+  position: absolute !important;
+  top: -51px;
+  left: 0;
+  z-index: -1;
+  transition: opacity .5s;
+  transition: transform .5s;
+  opacity: 0;
+}
+
+.image1{
+  transition: opacity .5s;
+  transition: transform .5s;
+}
+
+.image1:hover{
+  opacity: 0;
+  transform: rotateY(90deg);
+}
+
+.image1:hover ~ .hover-img{
+  transform: rotateY(180deg);
+  opacity: 1;
+}
+
+.product-description a > h6{
+  background: white;
+  width: 100%;
+}
+
+
+.product-description{
+  height: 82px;
+}
+
+.essence-btn{
+  position: absolute;
+  top: -100%;
+  left: 18%;
+}
+
+
+.texto{
+  min-height: 25px;
+  display: block;
+}
+

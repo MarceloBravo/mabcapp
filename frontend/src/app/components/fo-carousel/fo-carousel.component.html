@@ -1,0 +1,55 @@
+<carousel
+  class="carousel-html-content"
+  [height]="450"
+  [loop]="true"
+  [cellsToShow]="4"
+  [dots]="true"
+  [margin]="30"
+  [arrowsOutside]="true"
+  [pauseOnHover]="true"
+  [autoplay]="true"
+>
+
+    <div class="carousel-cell" *ngFor="let item of imagenes; index as i">
+      <div >
+        <div class="product-img">
+          <img src="{{ sourceImage }}{{ item.srcImg }}" alt="{{ item.srcImg }}" class="image1">
+          <!-- Hover Thumb -->
+          <img class="hover-img" src="{{ sourceImage }}{{ item.srcImg2 }}" alt="{{ item.srcImg2 }}">
+          <!-- Favourite -->
+          <div class="product-favourite">
+              <a href="#" class="favme fa fa-heart"></a>
+          </div>
+
+          <!-- Product Description -->
+          <div class="product-description">
+            <span class="texto">{{ item.texto1 }}</span>
+            <a href="single-product-details.html">
+                <h6 class="texto">{{ item.texto2 }}</h6>
+            </a>
+            <p class="product-price texto">$ {{ item.precio }}</p>
+
+            <!-- Hover Content -->
+            <div class="hover-content">
+                <!-- Add to Cart -->
+                <div class="add-to-cart-btn">
+                    <button class="btn essence-btn" (click)="itemOnClick(i)">{{ item.textoBoton }}</button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</carousel>
+<!--
+<carousel
+  [images]="images"
+  [height]="350"
+  [loop]="true"
+  [cellsToShow]="4"
+  [autoplay]="true"
+  [dots]="true"
+  [margin]="30"
+></carousel>
+-->

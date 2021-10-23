@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,6 +31,13 @@ import { FormButtonsComponent } from './components/form-buttons/form-buttons.com
 import { PersonalizarComponent } from './pages/back-office/personalizar/personalizar.component';
 import { PerfilComponent } from './pages/back-office/perfil/perfil.component';
 import { LoguedGuard } from './guards/logued.guard';
+import { FoCarouselComponent } from './components/fo-carousel/fo-carousel.component';
+import { FoFooterComponent } from './components/fo-footer/fo-footer.component';
+import { FoHeaderNavbarComponent } from './components/fo-header-navbar/fo-header-navbar.component';
+import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
+import { MainTiendaComponent } from './pages/front-office/main-tienda/main-tienda.component';
+import { HomeTiendaComponent } from './pages/front-office/home-tienda/home-tienda.component';
+import { IvyCarouselModule } from 'angular-responsive-carousel';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -59,7 +66,13 @@ import { LoguedGuard } from './guards/logued.guard';
     SubMenuComponent,
     FormButtonsComponent,
     PersonalizarComponent,
-    PerfilComponent
+    PerfilComponent,
+    FoCarouselComponent,
+    FoHeaderNavbarComponent,
+    ShoppingCartComponent,
+    FoFooterComponent,
+    MainTiendaComponent,
+    HomeTiendaComponent
   ],
   imports: [
     BrowserModule,
@@ -67,9 +80,14 @@ import { LoguedGuard } from './guards/logued.guard';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    ImageUploadModule.forRoot()
+    ImageUploadModule.forRoot(),
+    IvyCarouselModule
   ],
   providers: [LoguedGuard],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA
+  ]
 })
 export class AppModule { }

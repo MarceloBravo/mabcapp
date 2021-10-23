@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './pages/back-office/home/home.component';
 import { LoginComponent } from  './pages/back-office/login/login.component';
 import { MainComponent } from './pages/back-office/main/main.component';
 import { RolesGridComponent } from './pages/back-office/roles/roles-grid/roles-grid.component';
@@ -15,6 +14,8 @@ import { PermisosFormComponent } from './pages/back-office/permisos/permisos-for
 import { PersonalizarComponent } from './pages/back-office/personalizar/personalizar.component';
 import { PerfilComponent } from './pages/back-office/perfil/perfil.component';
 import { LoguedGuard } from './guards/logued.guard';
+import { MainTiendaComponent } from './pages/front-office/main-tienda/main-tienda.component';
+import { HomeTiendaComponent } from './pages/front-office/home-tienda/home-tienda.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -43,6 +44,12 @@ const routes: Routes = [
       { path: 'personalizar', component: PersonalizarComponent },
     ]
 },
+
+{ path: '', component: MainTiendaComponent,
+    children: [
+      { path: '', component: HomeTiendaComponent },
+    ]
+  },
   { path: '**', pathMatch: 'full', redirectTo: 'login' },
 ];
 

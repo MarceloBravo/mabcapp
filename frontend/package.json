@@ -21,6 +21,7 @@
     "@angular/router": "^11.0.2",
     "@popperjs/core": "^2.5.4",
     "@types/scriptjs": "0.0.2",
+    "angular-responsive-carousel": "^2.1.2",
     "angular2-image-upload": "^1.0.0-rc.2",
     "bootstrap": "^4.5.3",
     "jquery": "^3.5.1",
