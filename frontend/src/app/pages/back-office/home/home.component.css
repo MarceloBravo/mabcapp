@@ -9,3 +9,7 @@
 app-main-menu{
   display: contents;
 }
+
+.page-wrapper{
+  padding: 0px !important;
+}

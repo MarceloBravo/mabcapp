@@ -18,12 +18,14 @@ import { MainTiendaComponent } from './pages/front-office/main-tienda/main-tiend
 import { HomeTiendaComponent } from './pages/front-office/home-tienda/home-tienda.component';
 import { MarcaFormComponent } from './pages/back-office/marcas/marca-form/marca-form.component';
 import { MarcasGridComponent } from './pages/back-office/marcas/marcas-grid/marcas-grid.component';
+import { HomeComponent } from './pages/back-office/home/home.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'admin', component: MainComponent ,
     canActivateChild: [LoguedGuard],
     children: [
+      { path: '', component: HomeComponent},
       { path: 'roles', component: RolesGridComponent },
       { path: 'roles/nuevo', component: RolesFormComponent },
       { path: 'roles/edit/:id', component: RolesFormComponent },

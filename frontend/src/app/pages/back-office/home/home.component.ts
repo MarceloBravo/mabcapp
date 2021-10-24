@@ -7,7 +7,7 @@ import { ScriptServicesService } from 'src/app/services/scriptServices/script-se
   styleUrls: [
     './home.component.css',
     '../../../../assets/css/googleapi.css',
-    '../../../../assets/css/bootstrap/css/bootstrap.min.css',
+    //'../../../../assets/css/bootstrap/css/bootstrap.min.css',
     '../../../../assets/icon/themify-icons/themify-icons.css',
     '../../../../assets/icon/icofont/css/icofont.css',
     '../../../../assets/css/style.css',
@@ -39,10 +39,10 @@ export class HomeComponent implements OnInit {
       '../../../../assets/pages/widget/amchart/serial.min.js',
       '../../../../assets/pages/todo/todo.js',
       '../../../../assets/pages/dashboard/custom-dashboard.js',
-      '../../../../assets/js/script.js',
+      //'../../../../assets/js/script.js',
       '../../../../assets/js/SmoothScroll.js',
       '../../../../assets/js/pcoded.min.js',
-      '../../../../assets/js/demo-12.js',
+      //'../../../../assets/js/demo-12.js',
       '../../../../assets/js/jquery.mCustomScrollbar.concat.min.js',
     ]);
   }
