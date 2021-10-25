@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Permisos } from 'src/app/class/permisos/permisos';
 import { Rol } from 'src/app/class/rol/rol';
+import { SharedService } from 'src/app/services/shared/shared.service';
 import { PermisosService } from '../../../../services/permisos/permisos.service';
 import { RolesService } from '../../../../services/roles/roles.service';
 import { ToastService } from '../../../../services/toast/toast.service';
@@ -30,6 +31,7 @@ export class PermisosFormComponent implements OnInit {
     private _permisosService: PermisosService,
     private _rolesService: RolesService,
     private _toastService: ToastService,
+    private _sharedServices: SharedService,
     ) {
       this.getRoles();
     }
@@ -43,7 +45,7 @@ export class PermisosFormComponent implements OnInit {
       (res: any)=>{
         this.roles = res;
       },error=>{
-        this.handlerErrors(error);
+        this.showSpinner = !this._sharedServices.handlerError(error)
       }
     )
   }
@@ -56,9 +58,8 @@ export class PermisosFormComponent implements OnInit {
       (res: any)=>{
         this.permisos = res;
         this.showSpinner = false;
-        console.log(this.permisos);
       },error=>{
-        this.handlerErrors(error)
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     )
   }
@@ -84,15 +85,10 @@ export class PermisosFormComponent implements OnInit {
         }
         this.showSpinner = false;
       },error=>{
-        this.handlerErrors(error);
+        this.showSpinner = !this._sharedServices.handlerError(error)
       }
     )
   }
 
-  private handlerErrors(error: any){
-    console.log(error);
-    this.showSpinner = false;
-    this._toastService.showErrorMessage(error.message);
-  }
 
 }

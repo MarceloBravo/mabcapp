@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Marca } from 'src/app/class/marca/marca';
 import { Paginacion } from 'src/app/class/paginacion/paginacion';
 import { MarcasService } from 'src/app/services/marcas/marcas.service';
+import { SharedService } from 'src/app/services/shared/shared.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 
 @Component({
@@ -21,6 +22,7 @@ export class MarcasGridComponent implements OnInit {public showSpinner: boolean 
   constructor(
     private _marcasService: MarcasService,
     private _toastService: ToastService,
+    private _sharedServices: SharedService,
     private router: Router,
   ) {
     this.obtenerDatos();
@@ -41,7 +43,7 @@ export class MarcasGridComponent implements OnInit {public showSpinner: boolean 
           this.showSpinner = false;
         }
     },error=>{
-      this.handlerError(error);
+      this.showSpinner = !this._sharedServices.handlerError(error);
     })
   }
 
@@ -67,7 +69,7 @@ export class MarcasGridComponent implements OnInit {public showSpinner: boolean 
         this.obtenerDatos();
         this.mostrarModal = false;
     },error=>{
-      this.handlerError(error);
+      this.showSpinner = !this._sharedServices.handlerError(error);
     })
 
   }
@@ -98,15 +100,9 @@ export class MarcasGridComponent implements OnInit {public showSpinner: boolean 
         this.cargarDatos(res);
         this.showSpinner = false;
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     )
-  }
-
-  private handlerError(error: any){
-    console.log(error);
-    this.showSpinner = false;
-    this._toastService.showErrorMessage(error.message);
   }
 
 }

@@ -28,6 +28,7 @@ export class UsuariosGridComponent implements OnInit {
   constructor(
     private _usuariosServices: UsuariosService,
     private _toastService: ToastService,
+    private _shared: SharedService,
     private router: Router,
   ) {
     this.obtenerDatos();
@@ -48,8 +49,7 @@ export class UsuariosGridComponent implements OnInit {
         this.showSpinner = false;
       }
     },error => {
-      console.log('Error',error);
-      this.showSpinner = false;
+      this.showSpinner = !this._shared.handlerError(error);
     })
   }
 
@@ -83,9 +83,7 @@ export class UsuariosGridComponent implements OnInit {
         }
         this.showSpinner = false
       },error=>{
-        this._toastService.showErrorMessage(error.message);
-        console.log(error);
-        this.showSpinner = false
+        this.showSpinner = !this._shared.handlerError(error);
       }
     );
   }
@@ -111,9 +109,7 @@ export class UsuariosGridComponent implements OnInit {
         this.cargarDatos(res);
         this.showSpinner = false;
       },error=>{
-        console.log(error);
-        this.showSpinner = false;
-        this._toastService.showErrorMessage(error.message);
+        this.showSpinner = !this._shared.handlerError(error);
       }
     )
   }

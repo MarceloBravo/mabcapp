@@ -161,8 +161,11 @@ class MenusController extends Controller
     {
         $rules = [
             'nombre' => 'required|min:3|max:50|unique:menus,nombre,'.$id,
-            'url' => 'required|min:3|max:200'
         ];
+
+        if(!$request['url']){
+            $rules += ['url' => 'min:3|max:200'];
+        }
 
         $messages = [
             'nombre.required' => 'El nombre del menú el obligatorio.',
@@ -170,7 +173,6 @@ class MenusController extends Controller
             'nombre.max' => 'El nombre del menú debe tener un máximo de 50 carácteres. Ingresa un nombre más corto.',
             'nombre.unique' => 'El nombre del menú ya se encuentra registrado. Ingresa un nombre diferente.',
 
-            'url.required' => 'La url del menú el obligatoria.',
             'url.min' => 'La url del menú debe tener almenos 3 carácteres. Ingresa una url más largo.',
             'url.max' => 'La url del menú debe tener un máximo de 200 carácteres. Ingresa una url más corto.',
         ];

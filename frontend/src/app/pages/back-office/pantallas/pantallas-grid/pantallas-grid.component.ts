@@ -4,6 +4,7 @@ import { Paginacion } from '../../../../class/paginacion/paginacion';
 import { PantallasService } from '../../../../services/pantallas/pantallas.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { Router } from '@angular/router';
+import { SharedService } from 'src/app/services/shared/shared.service';
 
 @Component({
   selector: 'app-pantallas-grid',
@@ -22,6 +23,7 @@ export class PantallasGridComponent implements OnInit {
   constructor(
     private _pantallasServices: PantallasService,
     private _toast: ToastService,
+    private _sharedServices: SharedService,
     private router: Router,
   ) {
     this.obtenerDatos();
@@ -40,7 +42,7 @@ export class PantallasGridComponent implements OnInit {
           this.cargarDatos(res);
         }
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error)
       }
     )
   }
@@ -71,7 +73,7 @@ export class PantallasGridComponent implements OnInit {
         }
         this.obtenerDatos();
       },error => {
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error)
       }
     )
   }
@@ -86,7 +88,7 @@ export class PantallasGridComponent implements OnInit {
       (res: any)=> {
         this.cargarDatos(res);
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error)
       }
     )
   }
@@ -96,10 +98,4 @@ export class PantallasGridComponent implements OnInit {
     this.obtenerDatos();
   }
 
-
-  private handlerError(error: any){
-    console.log(error);
-    this.showSpinner = false;
-    this._toast.showErrorMessage(error.message)
-  }
 }

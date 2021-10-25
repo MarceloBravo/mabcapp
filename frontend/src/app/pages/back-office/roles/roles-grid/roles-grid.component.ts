@@ -4,6 +4,7 @@ import { Paginacion } from '../../../../class/paginacion/paginacion';
 import { Rol } from '../../../../class/rol/rol';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { Router } from '@angular/router';
+import { SharedService } from 'src/app/services/shared/shared.service';
 
 @Component({
   selector: 'app-roles-grid',
@@ -23,6 +24,7 @@ export class RolesGridComponent implements OnInit {
   constructor(
     private _rolesService: RolesService,
     private _toastService: ToastService,
+    private _sharedServices: SharedService,
     private router: Router,
   ) {
     this.obtenerDatos();
@@ -42,9 +44,7 @@ export class RolesGridComponent implements OnInit {
         this.showSpinner = false
       }
     }, error => {
-      this.showSpinner = false
-      this._toastService.showErrorMessage(error.status !== 401 ? error.message : 'Usuario y/o contraseña no validos', 'Error!!')
-      console.log('error',error)
+      this.showSpinner = !this._sharedServices.handlerError(error);
     })
   }
 
@@ -83,9 +83,7 @@ export class RolesGridComponent implements OnInit {
         }
         this.showSpinner = false
       },error=>{
-        this._toastService.showErrorMessage(error.message);
-        console.log(error);
-        this.showSpinner = false
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     );
   }

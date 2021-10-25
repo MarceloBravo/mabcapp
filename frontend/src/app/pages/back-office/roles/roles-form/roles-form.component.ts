@@ -34,6 +34,7 @@ export class RolesFormComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private _toastService: ToastService,
+    private _sharedServices: SharedService,
     private _shared: SharedService,
   ) {
     this._toastService.clearToast();
@@ -41,7 +42,6 @@ export class RolesFormComponent implements OnInit {
     this.url = urlTree
 
     let id = this.activatedRoute.snapshot.paramMap.get('id');
-    console.log('ID',id);
     if(id != undefined){
       this.id = id
       this.buscarRol();
@@ -79,7 +79,7 @@ export class RolesFormComponent implements OnInit {
           this.showSpinner = false
         }
       }, error => {
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     )
   }
@@ -149,10 +149,10 @@ export class RolesFormComponent implements OnInit {
   private insertar(){
     this._rolesService.insert(this.form.value).subscribe(
       (res: any)=>{
-
-        this.handlerSuccess(res);
+        if(this._sharedServices.handlerSucces(res, '/admin/roles'))this.mostrarModal = false;
+        this.showSpinner = false;
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     );
   }
@@ -160,9 +160,10 @@ export class RolesFormComponent implements OnInit {
   private actualizar(){
     this._rolesService.update(this.id, this.form.value).subscribe(
       (res: any)=>{
-        this.handlerSuccess(res);
+        if(this._sharedServices.handlerSucces(res, '/admin/roles'))this.mostrarModal = false;
+        this.showSpinner = false;
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     );
   }
@@ -172,32 +173,12 @@ export class RolesFormComponent implements OnInit {
     this.showSpinner = true
     this._rolesService.delete(this.id).subscribe(
       (res: any)=>{
-        this.handlerSuccess(res);
+        if(this._sharedServices.handlerSucces(res, '/admin/roles'))this.mostrarModal = false;
+        this.showSpinner = false;
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     );
   }
 
-  private handlerSuccess(res: any){
-    if(res['status'] === 'Token is Expired'){
-      this.router.navigate(['/']);
-    }else{
-      if(res.errores){
-        let mensaje: string = res.mensaje;
-        mensaje += ': ' + Object.keys(res.errores).map(k => res.errores[k]).join(',');
-        this._toastService.showErrorMessage(mensaje);
-      }else if(res['tipoMensaje'] === "success"){
-        this._toastService.showSuccessMessage(res['mensaje']);
-        this.router.navigate(['/admin/roles']);
-      }
-      this.showSpinner = false
-    }
-  }
-
-  private handlerError(error: any){
-    this._toastService.showErrorMessage(error.message);
-    console.log(error);
-    this.showSpinner = false
-  }
 }

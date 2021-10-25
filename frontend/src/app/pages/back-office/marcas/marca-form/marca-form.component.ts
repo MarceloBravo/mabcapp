@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { Marca } from 'src/app/class/marca/marca';
 import { Paginacion } from 'src/app/class/paginacion/paginacion';
+import { SharedService } from 'src/app/services/shared/shared.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { MarcasService } from '../../../../services/marcas/marcas.service';
 
@@ -16,7 +17,7 @@ export class MarcaFormComponent implements OnInit {
   public messageDialog: string = '¿Desea grabar el registro?';
   public mostrarModal: boolean = false;
   public tipoModal: string = 'grabar';
-  public tituloModal: string = 'Grabar';
+  public tituloModal: string = 'Grabar'
   private menu: Marca = new Marca();
   public form: FormGroup = new FormGroup({
     id: new FormControl(),
@@ -31,6 +32,7 @@ export class MarcaFormComponent implements OnInit {
     private _marcasService: MarcasService,
     private _toastService: ToastService,
     private activatedRoute: ActivatedRoute,
+    private _sharedServices: SharedService,
     private fb: FormBuilder,
     private router: Router
   ) {
@@ -66,7 +68,7 @@ export class MarcaFormComponent implements OnInit {
       this.cargarDatos(res);
       this.showSpinner = false;
     },error=>{
-      this.handlerError(error);
+      this.showSpinner = !this._sharedServices.handlerError(error);
     })
   }
 
@@ -94,7 +96,7 @@ export class MarcaFormComponent implements OnInit {
     this.mostrarModal = false
     if(this.tipoModal === 'grabar' || this.tipoModal === 'confirmar cambios'){
       if(this.form.invalid){
-        this.handlerError({message: 'Existen datos incompletos o no válidos.'})
+        this.showSpinner = !this._sharedServices.handlerError({message: 'Existen datos incompletos o no válidos.'});
       }else{
         this.grabar();
       }
@@ -147,9 +149,10 @@ export class MarcaFormComponent implements OnInit {
     this.showSpinner = true;
     this._marcasService.insert(this.form.value).subscribe(
       (res: any)=>{
-        this.handlerSucces(res);
+        if(this._sharedServices.handlerSucces(res, '/admin/marcas'))this.mostrarModal = false;
+        this.showSpinner = false;
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     )
   }
@@ -158,9 +161,10 @@ export class MarcaFormComponent implements OnInit {
     this.showSpinner = true;
     this._marcasService.update(this.form.value).subscribe(
       (res: any)=>{
-        this.handlerSucces(res);
+        if(this._sharedServices.handlerSucces(res, '/admin/marcas'))this.mostrarModal = false;
+        this.showSpinner = false;
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     )
   }
@@ -169,33 +173,11 @@ export class MarcaFormComponent implements OnInit {
     this.showSpinner = true;
     this._marcasService.delete(this.id).subscribe(
       (res: any)=>{
-        this.handlerSucces(res);
+        if(this._sharedServices.handlerSucces(res, '/admin/marcas'))this.mostrarModal = false;
+        this.showSpinner = false;
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     )
   }
-
-  private handlerSucces(res: any){
-    if(res['status'] === 'Token is Expired'){
-      this.router.navigate(['/']);
-    }else{
-      if(res.tipoMensaje == 'success'){
-        this._toastService.showSuccessMessage(res.mensaje);
-        this.router.navigate(['/admin/marcas']);
-      }else{
-        let keys = Object.keys(res.errores);
-        let errores: string = keys.map(k => res.errores[k]).join('');
-        this._toastService.showErrorMessage(res.mensaje + ': ' + errores);
-      }
-      this.showSpinner = false;
-    }
-  }
-
-  private handlerError(error: any){
-    console.log(error);
-    this.showSpinner = false;
-    this._toastService.showErrorMessage(error.message, 'Error');
-  }
-
 }

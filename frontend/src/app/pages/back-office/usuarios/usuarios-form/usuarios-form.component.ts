@@ -54,7 +54,7 @@ export class UsuariosFormComponent implements OnInit {
     private _shared: SharedService,
     private _toastService: ToastService,
     private _const: ConstantesService,
-    private _login: LoginService
+    private _login: LoginService,
   ) {
     this._toastService.clearToast();
     let id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -109,7 +109,7 @@ export class UsuariosFormComponent implements OnInit {
         this.showSpinner = false;
       }
     },error => {
-      this.handlerError(error);
+      this.showSpinner = !this._shared.handlerError(error);
     });
   }
 
@@ -201,9 +201,10 @@ export class UsuariosFormComponent implements OnInit {
       if(this.isSuccess(res)){
         this.subirFoto(res['id'], res);
       }
-      this.handlerSuccess(res);
+      if(this._shared.handlerSucces(res, '/admin/usuarios'))this.mostrarModal = false;
+      this.showSpinner = false;
     },error=>{
-      this.handlerError(error);
+      this.showSpinner = !this._shared.handlerError(error);
     });
   }
 
@@ -214,9 +215,10 @@ export class UsuariosFormComponent implements OnInit {
         this.subirFoto(res['id'], res);
         this._login.setCredencialesUsuario(this.form.value, this.form.value.roles)  //Actualizando los datos del usuario logueado
       }
-      this.handlerSuccess(res);
+      if(this._shared.handlerSucces(res, '/admin/usuarios'))this.mostrarModal = false;
+      this.showSpinner = false;
     },error=>{
-      this.handlerError(error);
+      this.showSpinner = !this._shared.handlerError(error);
     });
   }
 
@@ -230,7 +232,7 @@ export class UsuariosFormComponent implements OnInit {
       this._files.uploadFile(<File>this.fileToUpload, 'usuarios/subir/foto').subscribe(() => {
       },error=>{
         console.log(error)
-        this.handlerError(error);
+        this.showSpinner = !this._shared.handlerError(error);
       })
     }
   }
@@ -240,9 +242,10 @@ export class UsuariosFormComponent implements OnInit {
     this.showSpinner = true;
 
     this._userServices.delete(this.id).subscribe((res: any) => {
-      this.handlerSuccess(res);
+      if(this._shared.handlerSucces(res, '/admin/usuarios'))this.mostrarModal = false;
+      this.showSpinner = false;
     },error=>{
-      this.handlerError(error);
+      this.showSpinner = !this._shared.handlerError(error);
     });
   }
 
@@ -273,29 +276,4 @@ export class UsuariosFormComponent implements OnInit {
     let img: HTMLImageElement = <HTMLImageElement>document.getElementById('img-foto')
     img.src = object ? object : url ? this._const.storageImages + url : this._const.srcDefault
   }
-
-
-  private handlerSuccess(res: any){
-    if(res['status'] === 'Token is Expired'){
-      this.router.navigate(['/']);
-    }else{
-      if(res.errores){
-        let mensaje: string = res.mensaje;
-        mensaje += ': ' + Object.keys(res.errores).map(k => res.errores[k]).join(',');
-        this._toastService.showErrorMessage(mensaje);
-      }else if(res['tipoMensaje'] === "success"){
-        this._toastService.showSuccessMessage(res['mensaje']);
-        this.router.navigate(['/admin/usuarios']);
-      }
-      this.showSpinner = false
-
-    }
-  }
-
-  private handlerError(error: any){
-    this._toastService.showErrorMessage(error.message);
-    console.log(error);
-    this.showSpinner = false
-  }
-
 }

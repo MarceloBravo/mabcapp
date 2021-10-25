@@ -4,6 +4,7 @@ import { Menu } from '../../../../class/menus/menu';
 import { MenusService } from '../../../../services/menus/menus.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { Router } from '@angular/router';
+import { SharedService } from 'src/app/services/shared/shared.service';
 
 @Component({
   selector: 'app-menus-grid',
@@ -22,6 +23,7 @@ export class MenusGridComponent implements OnInit {
   constructor(
     private _menusService: MenusService,
     private _toastService: ToastService,
+    private _sharedServices: SharedService,
     private router: Router,
   ) {
     this.obtenerDatos();
@@ -34,15 +36,14 @@ export class MenusGridComponent implements OnInit {
     this.showSpinner = true;
     this._menusService.list(this.paginacion.pagina).subscribe(
       (res: any)=>{
-        console.log(res);
         if(res['status'] === 'Token is Expired'){
           this.router.navigate(['/']);
         }else{
           this.cargarDatos(res);
-          this.showSpinner = false;
         }
+        this.showSpinner = false;
     },error=>{
-      this.handlerError(error);
+      this.showSpinner = !this._sharedServices.handlerError(error);
     })
   }
 
@@ -67,8 +68,9 @@ export class MenusGridComponent implements OnInit {
         this._toastService.showSuccessMessage(res.mensaje, res.tipoMensaje);
         this.obtenerDatos();
         this.mostrarModal = false;
+        this.showSpinner = false;
     },error=>{
-      this.handlerError(error);
+      this.showSpinner = !this._sharedServices.handlerError(error);
     })
 
   }
@@ -99,15 +101,8 @@ export class MenusGridComponent implements OnInit {
         this.cargarDatos(res);
         this.showSpinner = false;
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     )
   }
-
-  private handlerError(error: any){
-    console.log(error);
-    this.showSpinner = false;
-    this._toastService.showErrorMessage(error.message);
-  }
-
 }

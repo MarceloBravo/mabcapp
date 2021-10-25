@@ -4,6 +4,7 @@ import { Menu } from '../../../../class/menus/menu';
 import { MenusService } from '../../../../services/menus/menus.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastService } from '../../../../services/toast/toast.service';
+import { SharedService } from 'src/app/services/shared/shared.service';
 
 @Component({
   selector: 'app-menus-form',
@@ -33,6 +34,7 @@ export class MenusFormComponent implements OnInit {
     private _menusService: MenusService,
     private _toastService: ToastService,
     private activatedRoute: ActivatedRoute,
+    private _sharedServices: SharedService,
     private fb: FormBuilder,
     private router: Router
   ) {
@@ -54,7 +56,7 @@ export class MenusFormComponent implements OnInit {
     this.form = this.fb.group({
       id: [this.menu.id,[Validators.min(0)]],
       nombre: [this.menu.nombre,[Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      url: [this.menu.url,[Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
+      url: [this.menu.url,[Validators.minLength(3), Validators.maxLength(200)]],
       menu_padre_id: this.menu.menu_padre_id,
       posicion: [this.menu.posicion,[Validators.min(0)]],
       created_at: this.menu.created_at,
@@ -67,9 +69,9 @@ export class MenusFormComponent implements OnInit {
     this._menusService.getAll().subscribe(
       (res: any)=>{
         this.menusPadre = res;
-        this.menusPadre = this.menusPadre.filter(m  => m.id !== this.id)
+        this.menusPadre = this.menusPadre.filter(m  => m.id !== this.id);
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     )
   }
@@ -79,11 +81,10 @@ export class MenusFormComponent implements OnInit {
     this.showSpinner = true;
     this._menusService.find(this.id).subscribe(
       (res: any)=>{
-      console.log(res)
       this.cargarDatos(res);
       this.showSpinner = false;
     },error=>{
-      this.handlerError(error);
+      this.showSpinner = !this._sharedServices.handlerError(error)
     })
   }
 
@@ -109,7 +110,7 @@ export class MenusFormComponent implements OnInit {
     this.mostrarModal = false
     if(this.tipoModal === 'grabar' || this.tipoModal === 'confirmar cambios'){
       if(this.form.invalid){
-        this.handlerError({message: 'Existen datos incompletos o no válidos.'})
+        this.mostrarModal = !this._sharedServices.handlerError({message: 'Existen datos incompletos o no válidos.'});
       }else{
         this.grabar();
       }
@@ -128,7 +129,8 @@ export class MenusFormComponent implements OnInit {
   }
 
   cancelar() {
-    if(this.detectarCambios()){
+    //if(this.detectarCambios()){
+    if(this.form.dirty){
       //Se han detectado cambios sin guardar
       this.messageDialog = 'Existen cambios sin guardar. ¿Desea guardar los cambios?';
       this.mostrarModal = true;
@@ -139,7 +141,7 @@ export class MenusFormComponent implements OnInit {
       this.router.navigate(['/admin/menus']);
     }
   }
-
+  /*
   private detectarCambios(){
     if(this.form.dirty ){
       let arrDiferencias = Object.keys(this.form.value).filter(k => this.form.get(k)?.value !== (<any>this.menu)[k]);
@@ -148,6 +150,7 @@ export class MenusFormComponent implements OnInit {
       return false
     }
   }
+  */
 
   private grabar(){
     this.cancelarModal(null);
@@ -162,9 +165,10 @@ export class MenusFormComponent implements OnInit {
     this.showSpinner = true;
     this._menusService.insert(this.form.value).subscribe(
       (res: any)=>{
-        this.handlerSucces(res);
+        if(this._sharedServices.handlerSucces(res, '/admin/menus'))this.mostrarModal = false;
+        this.showSpinner = false;
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     )
   }
@@ -173,9 +177,10 @@ export class MenusFormComponent implements OnInit {
     this.showSpinner = true;
     this._menusService.update(this.id, this.form.value).subscribe(
       (res: any)=>{
-        this.handlerSucces(res);
+        if(this._sharedServices.handlerSucces(res, '/admin/menus'))this.mostrarModal = false;
+        this.showSpinner = false
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error)
       }
     )
   }
@@ -184,33 +189,11 @@ export class MenusFormComponent implements OnInit {
     this.showSpinner = true;
     this._menusService.delete(this.id).subscribe(
       (res: any)=>{
-        this.handlerSucces(res);
+        if(this._sharedServices.handlerSucces(res, '/admin/menus'))this.mostrarModal = false;
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     )
-  }
-
-  private handlerSucces(res: any){
-    if(res['status'] === 'Token is Expired'){
-      this.router.navigate(['/']);
-    }else{
-      if(res.tipoMensaje == 'success'){
-        this._toastService.showSuccessMessage(res.mensaje);
-        this.router.navigate(['/admin/menus']);
-      }else{
-        let keys = Object.keys(res.errores);
-        let errores: string = keys.map(k => res.errores[k]).join('');
-        this._toastService.showErrorMessage(res.mensaje + ': ' + errores);
-      }
-      this.showSpinner = false;
-    }
-  }
-
-  private handlerError(error: any){
-    console.log(error);
-    this.showSpinner = false;
-    this._toastService.showErrorMessage(error.message, 'Error');
   }
 
 }

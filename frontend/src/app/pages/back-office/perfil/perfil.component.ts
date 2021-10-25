@@ -11,6 +11,7 @@ import { ConstantesService } from 'src/app/services/constantes/constantes.servic
 import { LoginService } from 'src/app/services/login/login.service';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { FilesService } from 'src/app/services/files/files.service';
+import { SharedService } from 'src/app/services/shared/shared.service';
 
 @Component({
   selector: 'app-perfil',
@@ -49,8 +50,8 @@ export class PerfilComponent implements OnInit {
   constructor(
     private _usersService: UsuariosService,
     private _toastService: ToastService,
-    private _rolesService: RolesService,
     private _const: ConstantesService,
+    private _sharedServices: SharedService,
     private _login: LoginService,
     private _files: FilesService,
     private router: Router,
@@ -80,12 +81,14 @@ export class PerfilComponent implements OnInit {
       if(res['tipoMensaje'] === 'success'){
         this.subirFoto(this.form.value.id, this._files)
         this._login.setCredencialesUsuario(this.form.value, this.form.value.roles)
-        this.handlerSuccess(res)
+
+        if(this._sharedServices.handlerSucces(res, '/'))this.mostrarModal = false;
+        this.showSpinner = false;
       }else{
         this._toastService.showErrorMessage(res['mensaje'],'Error')
       }
     }, error =>{
-      this.handlerError(error)
+      this.showSpinner = !this._sharedServices.handlerError(error);
     })
   }
 
@@ -139,12 +142,12 @@ export class PerfilComponent implements OnInit {
       this._files.uploadFile(<File>this.fileToUpload, 'usuarios/subir/foto').subscribe(() => {
       },error=>{
         console.log(error)
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       })
     }
   }
 
-
+  /*
   //Gestión de resultados de operaciones (Exitoso o Error)
   private handlerSuccess(res: any){
     if(res['status'] === 'Token is Expired'){
@@ -161,10 +164,6 @@ export class PerfilComponent implements OnInit {
 
     }
   }
+  */
 
-  private handlerError(error: any){
-    this._toastService.showErrorMessage(error.message);
-    console.log(error);
-    this.showSpinner = false
-  }
 }
