@@ -32,15 +32,16 @@
                   maxlength="15"
                 />
               </div>
-              <div *ngIf="form.get('nombre_app')?.hasError('required') && form.get('nombre_app')?.dirty" class="error-input">
-                El nombre de la aplicación es obligatorio.
-              </div>
-              <div *ngIf="form.get('nombre_app')?.hasError('minlength') && form.get('nombre_app')?.dirty" class="error-input">
-                El nombre de la aplicación debe tener almenos 3 carácteres. Ingresa un nombre más largo.
-              </div>
-              <div *ngIf="form.get('nombre_app')?.hasError('maxlength') && form.get('nombre_app')?.dirty" class="error-input">
-                El nombre de la aplicación debe tener un máximo de 15 carácteres. Ingresa un nombre más corto.
-              </div>
+              <!-- Mensajes de error -->
+              <app-input-errors
+                [control]="form.get('nombre_app')"
+                [mensajes]="{
+                  required: 'El nombre de la aplicación es obligatorio.',
+                  minlength: 'El nombre de la aplicación debe tener almenos 3 carácteres. Ingresa un nombre más largo.',
+                  maxlength: 'El nombre de la aplicación debe tener un máximo de 15 carácteres. Ingresa un nombre más corto.'
+                }"
+              ></app-input-errors>
+              <!-- /Mensajes de error -->
             </div>
 
             <app-form-buttons
