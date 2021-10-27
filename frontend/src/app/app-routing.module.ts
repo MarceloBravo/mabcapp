@@ -19,6 +19,8 @@ import { HomeTiendaComponent } from './pages/front-office/home-tienda/home-tiend
 import { MarcaFormComponent } from './pages/back-office/marcas/marca-form/marca-form.component';
 import { MarcasGridComponent } from './pages/back-office/marcas/marcas-grid/marcas-grid.component';
 import { HomeComponent } from './pages/back-office/home/home.component';
+import { ImpuestosGridComponent } from './pages/back-office/impuestos/impuestos-grid/impuestos-grid.component';
+import { ImpuestosFormComponent } from './pages/back-office/impuestos/impuestos-form/impuestos-form.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -50,6 +52,10 @@ const routes: Routes = [
       { path: 'marcas', component: MarcasGridComponent},
       { path: 'marcas/nuevo', component: MarcaFormComponent },
       { path: 'marcas/edit/:id', component: MarcaFormComponent },
+
+      { path: 'impuestos', component: ImpuestosGridComponent },
+      { path: 'impuestos/nuevo', component: ImpuestosFormComponent },
+      { path: 'impuestos/edit/:id', component: ImpuestosFormComponent },
 
     ]
 },

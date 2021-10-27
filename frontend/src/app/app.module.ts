@@ -40,6 +40,9 @@ import { HomeTiendaComponent } from './pages/front-office/home-tienda/home-tiend
 import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { MarcasGridComponent } from './pages/back-office/marcas/marcas-grid/marcas-grid.component';
 import { MarcaFormComponent } from './pages/back-office/marcas/marca-form/marca-form.component';
+import { ImpuestosGridComponent } from './pages/back-office/impuestos/impuestos-grid/impuestos-grid.component';
+import { ImpuestosFormComponent } from './pages/back-office/impuestos/impuestos-form/impuestos-form.component';
+import { InputErrorsComponent } from './components/input-errors/input-errors.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -76,7 +79,10 @@ import { MarcaFormComponent } from './pages/back-office/marcas/marca-form/marca-
     MainTiendaComponent,
     HomeTiendaComponent,
     MarcasGridComponent,
-    MarcaFormComponent
+    MarcaFormComponent,
+    ImpuestosGridComponent,
+    ImpuestosFormComponent,
+    InputErrorsComponent
   ],
   imports: [
     BrowserModule,

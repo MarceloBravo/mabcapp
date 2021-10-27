@@ -73,4 +73,8 @@ Route::group([
     Route::get('marcas/filtrar/{texto}{pag}', 'MarcasController@filter');
     Route::get('marcas/get/all', 'MarcasController@getAll');
 
+    Route::resource('impuestos', 'ImpuestosController');
+    Route::get('impuestos/pag/{pag}', 'ImpuestosController@index');
+    Route::get('impuestos/get/all', 'ImpuestosController@getAll');
+    Route::get('impuestos/filter/{texto}/{pag}', 'ImpuestosController@filter');
 });

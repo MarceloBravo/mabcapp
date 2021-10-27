@@ -34,36 +34,16 @@
                   max="50"
                 />
                 <!-- Mensajes de error -->
-                <div
-                  *ngIf="
-                    form.get('nombre')?.hasError('required') &&
-                    form.get('nombre')?.dirty
-                  "
-                  class="error-input"
-                >
-                  El nombre de la marca es obligatoria.
-                </div>
-                <div
-                  *ngIf="
-                    form.get('nombre')?.hasError('minlength') &&
-                    form.get('nombre')?.dirty
-                  "
-                  class="error-input"
-                >
-                  El nombre de la marca debe tener almenos 2 carácteres. Ingresa un
-                  nombre más largo.
-                </div>
-                <div
-                  *ngIf="
-                    form.get('nombre')?.hasError('maxlength') &&
-                    form.get('nombre')?.dirty
-                  "
-                  class="error-input"
-                >
-                  El nombre de la marca debe tener un máximo de 50 carácteres.
-                  Ingresa un nombre más corto.
-                </div>
+                <app-input-errors
+                  [control]="form.get('nombre')"
+                  [mensajes]="{
+                    required:'El nombre de la marca es obligatoria.',
+                    minlength: 'El nombre debe tener almenos 2 carácteres. Ingresa un nombre más largo.',
+                    maxlength: 'El nombre debe ser de hasta 50 carácteres. Ingresa un nombre más corto.'
+                  }"
+                ></app-input-errors>
                 <!-- /Mensajes de error -->
+
               </div>
             </div>
 

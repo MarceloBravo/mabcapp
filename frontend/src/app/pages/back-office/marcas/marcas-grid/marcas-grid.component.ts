@@ -35,7 +35,6 @@ export class MarcasGridComponent implements OnInit {public showSpinner: boolean 
     this.showSpinner = true;
     this._marcasService.list(this.paginacion.pagina).subscribe(
       (res: any)=>{
-        console.log(res);
         if(res['status'] === 'Token is Expired'){
           this.router.navigate(['/']);
         }else{

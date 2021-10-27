@@ -1,0 +1,110 @@
+<div class="row">
+  <app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+  <app-toasts></app-toasts>
+
+  <app-modal-dialog
+    [titulo]="tituloModal"
+    [mensaje]="messageDialog"
+    [mostrar]="mostrarModal"
+    (cerrar)="cancelarModal($event)"
+    (aceptar)="aceptarModal($event)"
+  >
+  </app-modal-dialog>
+
+  <h1 class="h3 mb-3">Impuestos</h1>
+
+  <div class="row">
+    <div class="col-12 col-xl-12">
+      <div class="card">
+        <div class="card-header">
+          <!-- <h6 class="card-subtitle text-muted">{{ url }}</h6> -->
+          <h5 class="card-title">Mantenedor de Impuestos</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="form">
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Nombre</label>
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  formControlName="nombre"
+                  class="form-control col-md-5"
+                  placeholder="Ingresa el nombre del impuesto"
+                  max="50"
+                />
+                <!-- Mensajes de error -->
+                <app-input-errors 
+                  [control]="form.get('nombre')"
+                  [mensajes]="{
+                    required: 'El nombre del impuesto es obligatorio',
+                    minlength: 'El nombre debe tener entre 3 y 50 carácteres. Ingresa un nombre más largo',
+                    maxlength: 'El nombre debe tener entre 3 y 50 carácteres. Ingresa un nombre más corto'
+                  }"></app-input-errors>
+                <!-- /Mensajes de error -->
+
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Sigla</label>
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  formControlName="sigla"
+                  class="form-control col-md-4"
+                  placeholder="Ingresa la sigla para el impuesto"
+                  max="15"
+                />
+                <!-- Mensajes de error -->
+                <app-input-errors 
+                  [control]="form.get('sigla')"
+                  [mensajes]="{
+                    required: 'La sigla del impuesto es obligatoria',
+                    minlength: 'La sigla debe tener entre 3 y 50 carácteres. Ingresa una sigla más largo',
+                    maxlength: 'La sigla debe tener entre 3 y 50 carácteres. Ingresa una sigla más corto'
+                  }"></app-input-errors>
+                <!-- /Mensajes de error -->
+
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Porcentaje</label>
+              <div class="col-sm-10">
+                <input
+                  type="number"
+                  formControlName="porcentaje"
+                  class="form-control col-md-4"
+                  placeholder="Ingresa el porcentaje del impuesto"
+                  max="0"
+                  max="100"
+                />
+                <!-- Mensajes de error -->
+                <app-input-errors
+                  [control]="form.get('porcentaje')"
+                  [mensajes]="{
+                    required: 'El porcentaje es obligatoria',
+                    min: 'El porcentaje debe ser igual o superior a cero',
+                    max: 'El porcentaje debe ser inferior o igual a 100'
+                  }"
+                ></app-input-errors>
+                <!-- /Mensajes de error -->
+
+              </div>
+            </div>
+
+            <app-form-buttons
+              (eventCancelar)="cancelar()"
+              (eventEliminar)="modalEliminar()"
+              (eventGrabar)="modalGrabar()"
+              [id]="form.value.id"
+              [formValid]="form.invalid"
+            ></app-form-buttons>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
