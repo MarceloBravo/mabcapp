@@ -21,6 +21,8 @@ import { MarcasGridComponent } from './pages/back-office/marcas/marcas-grid/marc
 import { HomeComponent } from './pages/back-office/home/home.component';
 import { ImpuestosGridComponent } from './pages/back-office/impuestos/impuestos-grid/impuestos-grid.component';
 import { ImpuestosFormComponent } from './pages/back-office/impuestos/impuestos-form/impuestos-form.component';
+import { CategoriasGridComponent } from './pages/back-office/categorias/categorias-grid/categorias-grid.component';
+import { CategoriasFormComponent } from './pages/back-office/categorias/categorias-form/categorias-form.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -56,6 +58,10 @@ const routes: Routes = [
       { path: 'impuestos', component: ImpuestosGridComponent },
       { path: 'impuestos/nuevo', component: ImpuestosFormComponent },
       { path: 'impuestos/edit/:id', component: ImpuestosFormComponent },
+
+      { path: 'categorias', component: CategoriasGridComponent },
+      { path: 'categorias/nuevo', component: CategoriasFormComponent },
+      { path: 'categorias/edit/:id', component: CategoriasFormComponent },
 
     ]
 },

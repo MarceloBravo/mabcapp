@@ -133,7 +133,7 @@
                   [control]="form.get('email')"
                   [mensajes]="{
                     required: 'Debes ingresar la dirección del usuario.',
-                    maxlength: 'La dirección debe tener almenos 10 carácteres. Ingresa una dirección más largo.',
+                    minlength: 'La dirección debe tener almenos 10 carácteres. Ingresa una dirección más largo.',
                     maxlength: 'La dirección debe tener un máximo de 150 carácteres. Ingresa una dirección más corto.'
                   }"
                 ></app-input-errors>

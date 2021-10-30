@@ -43,6 +43,8 @@ import { MarcaFormComponent } from './pages/back-office/marcas/marca-form/marca-
 import { ImpuestosGridComponent } from './pages/back-office/impuestos/impuestos-grid/impuestos-grid.component';
 import { ImpuestosFormComponent } from './pages/back-office/impuestos/impuestos-form/impuestos-form.component';
 import { InputErrorsComponent } from './components/input-errors/input-errors.component';
+import { CategoriasGridComponent } from './pages/back-office/categorias/categorias-grid/categorias-grid.component';
+import { CategoriasFormComponent } from './pages/back-office/categorias/categorias-form/categorias-form.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -82,7 +84,9 @@ import { InputErrorsComponent } from './components/input-errors/input-errors.com
     MarcaFormComponent,
     ImpuestosGridComponent,
     ImpuestosFormComponent,
-    InputErrorsComponent
+    InputErrorsComponent,
+    CategoriasGridComponent,
+    CategoriasFormComponent
   ],
   imports: [
     BrowserModule,

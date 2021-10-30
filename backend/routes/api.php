@@ -77,4 +77,10 @@ Route::group([
     Route::get('impuestos/pag/{pag}', 'ImpuestosController@index');
     Route::get('impuestos/get/all', 'ImpuestosController@getAll');
     Route::get('impuestos/filter/{texto}/{pag}', 'ImpuestosController@filter');
+
+    Route::resource('categorias', 'CategoriasController');
+    Route::get('categorias/pag/{pag}', 'CategoriasController@index');
+    Route::get('categorias/get/all', 'CategoriasController@getAll');
+    Route::get('categorias/filter/{texto}/{pag}', 'CategoriasController@filter');
+
 });

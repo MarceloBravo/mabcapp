@@ -38,8 +38,8 @@
                   [control]="form.get('nombre')"
                   [mensajes]="{
                     required: 'El nombre del menú es obligatorio.',
-                    min: 'El nombre del menú debe tener almenos 5 carácteres. Ingresa un nombre más largo.',
-                    max: 'El nombre del menú debe tener un máximo de 50 carácteres. Ingresa un nombre más corto.'
+                    minlength: 'El nombre del menú debe tener almenos 5 carácteres. Ingresa un nombre más largo.',
+                    maxlength: 'El nombre del menú debe tener un máximo de 50 carácteres. Ingresa un nombre más corto.'
                   }"
                 ></app-input-errors>
                 <!-- /Mensajes de error -->
@@ -61,8 +61,8 @@
                   [control]="form.get('url')"
                   [mensajes]="{
                     required: 'La url del menú es obligatoria.',
-                    min: 'La url del menú debe tener almenos 3 carácteres. Ingresa una url más larga.',
-                    max: 'La url del menú debe tener un máximo de 200 carácteres. Ingresa una url más corta.'
+                    minlenth: 'La url del menú debe tener almenos 3 carácteres. Ingresa una url más larga.',
+                    maxlength: 'La url del menú debe tener un máximo de 200 carácteres. Ingresa una url más corta.'
                   }"
                 ></app-input-errors>
                 <!-- /Mensajes de error -->
@@ -93,6 +93,28 @@
                 ></app-input-errors>
                 <!-- /Mensajes de error -->
 
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Posición</label>
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  formControlName="posicion"
+                  class="form-control col-md-5"
+                  placeholder="Ingresa la posición del menú"
+                  max="50"
+                />
+                <!-- Mensajes de error -->
+                <app-input-errors
+                  [control]="form.get('posicion')"
+                  [mensajes]="{
+                    required: 'La posición del menú es obligatoria.',
+                    min: 'La posición debe ser un número positivo.'
+                  }"
+                ></app-input-errors>
+                <!-- /Mensajes de error -->
               </div>
             </div>
 
