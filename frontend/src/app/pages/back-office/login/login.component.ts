@@ -70,7 +70,6 @@ export class LoginComponent implements OnInit {
   login(){
     this._loginService.login(this.loginForm).subscribe(
       (res: any) => {
-        console.log(res);
         if(res.status !== 200){
           if(this._loginService.validaToken(res['access_token'])){
             this._loginService.registrarToken(res['access_token'], this.loginForm.value['remember']);

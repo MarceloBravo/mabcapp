@@ -49,7 +49,6 @@ export class LoginService {
   }
 
   logOut(){
-    let token: any = this._tokenService.getToken();
     let header = this._const.header();
     this.borrarCredencialesUsuario();
     return this.httpClient.post(
@@ -60,7 +59,6 @@ export class LoginService {
   }
 
   refreshToken(){
-    let token: any = this._tokenService.getToken();
     return this.httpClient.post(
       `${this._sharedServices.globalURL}${this.endPoint}/refresh`,
       {},
@@ -92,5 +90,17 @@ export class LoginService {
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('mabc-token');
     sessionStorage.removeItem('roles');
+  }
+
+  public getSeesionInfo(){
+    let token: any = this._tokenService.getToken();
+    if(token){
+      let tokenArr = token.split('.');
+      if(tokenArr.length > 1){
+        const decodeToken = JSON.parse(atob(tokenArr[1]));
+        return decodeToken;
+      }
+    }
+    return null
   }
 }

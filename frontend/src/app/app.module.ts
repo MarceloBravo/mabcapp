@@ -45,6 +45,7 @@ import { ImpuestosFormComponent } from './pages/back-office/impuestos/impuestos-
 import { InputErrorsComponent } from './components/input-errors/input-errors.component';
 import { CategoriasGridComponent } from './pages/back-office/categorias/categorias-grid/categorias-grid.component';
 import { CategoriasFormComponent } from './pages/back-office/categorias/categorias-form/categorias-form.component';
+import { InfoSessionComponent } from './components/info-session/info-session.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -86,7 +87,8 @@ import { CategoriasFormComponent } from './pages/back-office/categorias/categori
     ImpuestosFormComponent,
     InputErrorsComponent,
     CategoriasGridComponent,
-    CategoriasFormComponent
+    CategoriasFormComponent,
+    InfoSessionComponent
   ],
   imports: [
     BrowserModule,
