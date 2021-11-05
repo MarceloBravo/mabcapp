@@ -19,8 +19,28 @@ export class SubMenuComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
+  dblClick(){
+    return false
+  }
+
   clearToast(){
     this._toastService.clearToast()
+  }
+
+
+  getInitialStyle(menu: any): string{
+    return !menu?.sub_menu ? 'display: none' : "display: block"
+  }
+
+
+  expandMenu(id: any){
+    let ul = <HTMLUListElement> document.getElementById(id);
+    (<HTMLLinkElement>ul.children[0]).style.height = (<HTMLLinkElement>ul.children[0]).style.height === '0px' ? '' : '0px';
+    for(let i = 0;i < ul.children.length; i++ ){
+      let isExpanded = (<HTMLLinkElement> ul.children[i].children[0]).style.display !== 'none';
+      (<HTMLLinkElement> ul.children[i].children[0]).style.display = isExpanded ? 'none' : 'block';
+    }
   }
 
 }
