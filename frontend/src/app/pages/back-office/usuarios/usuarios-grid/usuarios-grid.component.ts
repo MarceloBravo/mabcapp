@@ -5,6 +5,7 @@ import { User } from '../../../../class/User/user';
 import { UsuariosService } from '../../../../services/usuarios/usuarios.service';
 import { SharedService } from '../../../../services/shared/shared.service';
 import { Router } from '@angular/router';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-usuarios-grid',
@@ -16,7 +17,6 @@ import { Router } from '@angular/router';
 })
 export class UsuariosGridComponent implements OnInit {
   public showSpinner: boolean = false;
-  public mostrarModalEliminar: boolean = false;
   public paginacion: Paginacion = new Paginacion();
   public usuarios: User[] = [];
   public titulos: string[] = ['Nombre','A. Paterno','A. Materno','Email','Dirección','Fecha Creación','Ult. Actualización']
@@ -29,6 +29,7 @@ export class UsuariosGridComponent implements OnInit {
     private _usuariosServices: UsuariosService,
     private _toastService: ToastService,
     private _shared: SharedService,
+    private _modalDialogService: ModalDialogService,
     private router: Router,
   ) {
     this.obtenerDatos();
@@ -62,18 +63,12 @@ export class UsuariosGridComponent implements OnInit {
   }
 
 
-
-  cancelarEliminar(e: any){
-    this.mostrarModalEliminar = e;
-  }
-
   eliminar(id: number){
     this.idDelete = id;
-    this.mostrarModalEliminar = true;
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
   }
 
   aceptarEliminar(e: any){
-    this.mostrarModalEliminar = false;
     this.showSpinner = true
     this._usuariosServices.delete(this.idDelete).subscribe(
       (res: any)=>{

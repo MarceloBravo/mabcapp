@@ -6,12 +6,11 @@ import { CustomValidators } from 'src/app/validators/custom-validators';
 import { UsuariosService } from '../../../services/usuarios/usuarios.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { Router } from '@angular/router';
-import { RolesService } from '../../../services/roles/roles.service';
 import { ConstantesService } from 'src/app/services/constantes/constantes.service';
 import { LoginService } from 'src/app/services/login/login.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { FilesService } from 'src/app/services/files/files.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
+import { ModalDialogService } from '../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-perfil',
@@ -20,8 +19,6 @@ import { SharedService } from 'src/app/services/shared/shared.service';
 })
 export class PerfilComponent implements OnInit {
   public showSpinner: boolean = false;
-  public messageDialog: string = '';
-  public mostrarModal: boolean = false;
   public form: FormGroup = new FormGroup({
     id: new FormControl(null),
     name: new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(50)]),
@@ -44,7 +41,8 @@ export class PerfilComponent implements OnInit {
   public id: any = null;
   public fileToUpload: File | undefined;
   public fotoObject: string = ''
-  private url: string = 'app/public/'
+  private url: string = '/admin'
+  private accion: string = ''
 
 
   constructor(
@@ -54,6 +52,7 @@ export class PerfilComponent implements OnInit {
     private _sharedServices: SharedService,
     private _login: LoginService,
     private _files: FilesService,
+    private _modalDialogService: ModalDialogService,
     private router: Router,
   ) {
   }
@@ -70,7 +69,7 @@ export class PerfilComponent implements OnInit {
       this.cargaFotoEnImageControl('', user.foto)
     }else{
       this._toastService.showErrorMessage('No se han podido cargar su información de usuario', 'Error')
-      this.router.navigate(['/admin'])
+      this.router.navigate([this.url])
     }
   }
 
@@ -82,7 +81,7 @@ export class PerfilComponent implements OnInit {
         this.subirFoto(this.form.value.id, this._files)
         this._login.setCredencialesUsuario(this.form.value, this.form.value.roles)
 
-        if(this._sharedServices.handlerSucces(res, '/'))this.mostrarModal = false;
+        this._sharedServices.handlerSucces(res, this.url)
         this.showSpinner = false;
       }else{
         this._toastService.showErrorMessage(res['mensaje'],'Error')
@@ -93,10 +92,17 @@ export class PerfilComponent implements OnInit {
   }
 
 
+  cancelarModal(){
+    if(this.accion === 'volver'){
+      this.router.navigate([this.url])
+    }
+  }
+
+
   public grabar(){
     if((this.form.dirty || this.fileToUpload) && !this.form.invalid){
-      this.mostrarModal = true
-      this.messageDialog = '¿Desea grabar los cambios?'
+      this._modalDialogService.mostrarModalDialog('¿Desea grabar los cambios?', 'Grabar')
+      this.accion = 'grabar'
     }else{
       this._toastService.showWarningMessage('No se han detectado cambios que grabar', 'Sin cambios')
     }
@@ -105,10 +111,10 @@ export class PerfilComponent implements OnInit {
 
   public cancelar(){
     if(this.form.dirty){
-      this.mostrarModal = true
-      this.messageDialog = '¿Desea grabar los cambios?'
+      this._modalDialogService.mostrarModalDialog('¿Desea grabar los cambios?','Confirmar cambios')
+      this.accion = 'volver'
     }else{
-      this.router.navigate(['/admin'])
+      this.router.navigate([this.url])
     }
   }
 
@@ -146,24 +152,5 @@ export class PerfilComponent implements OnInit {
       })
     }
   }
-
-  /*
-  //Gestión de resultados de operaciones (Exitoso o Error)
-  private handlerSuccess(res: any){
-    if(res['status'] === 'Token is Expired'){
-      this.router.navigate(['/']);
-    }else{
-      if(res.errores){
-        let mensaje: string = res.mensaje;
-        mensaje += ': ' + Object.keys(res.errores).map(k => res.errores[k]).join(',');
-        this._toastService.showErrorMessage(mensaje);
-      }else if(res['tipoMensaje'] === "success"){
-        this._toastService.showSuccessMessage(res['mensaje']);
-      }
-      this.showSpinner = false
-
-    }
-  }
-  */
 
 }

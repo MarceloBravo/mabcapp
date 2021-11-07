@@ -5,6 +5,7 @@ import { Rol } from '../../../../class/rol/rol';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/services/shared/shared.service';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-roles-grid',
@@ -17,7 +18,6 @@ import { SharedService } from 'src/app/services/shared/shared.service';
 export class RolesGridComponent implements OnInit {
   public paginacion: Paginacion = new Paginacion();
   public roles: Rol[] = [];
-  public mostrarModalEliminar: boolean = false;
   private idDelete: number = 0;
   public showSpinner: boolean = false;
 
@@ -25,6 +25,7 @@ export class RolesGridComponent implements OnInit {
     private _rolesService: RolesService,
     private _toastService: ToastService,
     private _sharedServices: SharedService,
+    private _modalDialogService: ModalDialogService,
     private router: Router,
   ) {
     this.obtenerDatos();
@@ -69,16 +70,15 @@ export class RolesGridComponent implements OnInit {
 
   eliminar(id: number){
     this.idDelete = id;
-    this.mostrarModalEliminar = true;
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
   }
 
   aceptarEliminar(e: any){
-    this.mostrarModalEliminar = false;
     this.showSpinner = true
     this._rolesService.delete(this.idDelete).subscribe(
       (res: any)=>{
         if(res['tipoMensaje'] === "success"){
-          this._toastService.showSuccessMessage(res['mensage']);
+          this._toastService.showSuccessMessage(res['mensaje']);
           this.obtenerDatos();
         }
         this.showSpinner = false
@@ -88,9 +88,6 @@ export class RolesGridComponent implements OnInit {
     );
   }
 
-  cancelarEliminar(e: any){
-    this.mostrarModalEliminar = e;
-  }
 
   filtrar(texto: string){
     this.paginacion.pagina = 0;

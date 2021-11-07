@@ -5,6 +5,7 @@ import { Paginacion } from 'src/app/class/paginacion/paginacion';
 import { MarcasService } from 'src/app/services/marcas/marcas.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-marcas-grid',
@@ -12,7 +13,6 @@ import { ToastService } from 'src/app/services/toast/toast.service';
   styleUrls: ['./marcas-grid.component.css']
 })
 export class MarcasGridComponent implements OnInit {public showSpinner: boolean = false;
-  public mostrarModal: boolean = false;
   public headers: string[] = ['Nombre','Fecha creación','Fecha actualización'];
   public visibleColumns: string[] = ['nombre','created_at','updated_at'];
   public marcas: Marca[] = [];
@@ -23,6 +23,7 @@ export class MarcasGridComponent implements OnInit {public showSpinner: boolean 
     private _marcasService: MarcasService,
     private _toastService: ToastService,
     private _sharedServices: SharedService,
+    private _modalDialogService: ModalDialogService,
     private router: Router,
   ) {
     this.obtenerDatos();
@@ -55,9 +56,8 @@ export class MarcasGridComponent implements OnInit {public showSpinner: boolean 
     this.paginacion.arrPaginas = Array.from({length: this.paginacion.totPaginas},(k ,v)=> v + 1);
   }
 
-  cancelarEliminar(e: any){
+  cancelarEliminar(e: boolean){
     this.idEliminar = null;
-    this.mostrarModal = false;
   }
 
   aceptarEliminar(e: any){
@@ -66,7 +66,6 @@ export class MarcasGridComponent implements OnInit {public showSpinner: boolean 
       (res: any)=>{
         this._toastService.showSuccessMessage(res.mensaje, res.tipoMensaje);
         this.obtenerDatos();
-        this.mostrarModal = false;
     },error=>{
       this.showSpinner = !this._sharedServices.handlerError(error);
     })
@@ -74,7 +73,7 @@ export class MarcasGridComponent implements OnInit {public showSpinner: boolean 
   }
 
   eliminar(id: number){
-    this.mostrarModal = true;
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
     this.idEliminar = id;
   }
 

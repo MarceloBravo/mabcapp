@@ -1,10 +1,10 @@
 <!-- BEGIN success modal -->
-<div class="modalDialog-container" *ngIf="mostrar">
+<div class="modalDialog-container" *ngIf="_modalDialogService.mostrar">
   <div class="opacity-modal-backgroud"></div>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{{ titulo }}</h5>
+        <h5 class="modal-title">{{ _modalDialogService.titulo }}</h5>
         <button
           type="button"
           class="close"
@@ -16,12 +16,12 @@
       </div>
       <div class="modal-body m-3">
         <p class="mb-0">
-          {{ mensaje }}
+          {{ _modalDialogService.mensaje }}
         </p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" (click)="btnAceptar()">{{ textoBtnAceptar }}</button>
-        <button type="button" class="btn btn-secondary" (click)="btnCancelar()">{{ textoBtnCancelar }}</button>
+        <button type="button" class="btn btn-success" (click)="btnAceptar()">{{ _modalDialogService.textoBtnAceptar }}</button>
+        <button type="button" class="btn btn-secondary" (click)="btnCancelar()">{{ _modalDialogService.textoBtnCancelar }}</button>
       </div>
     </div>
   </div>

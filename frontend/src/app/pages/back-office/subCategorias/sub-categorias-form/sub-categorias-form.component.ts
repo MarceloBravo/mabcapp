@@ -6,6 +6,7 @@ import { SharedService } from 'src/app/services/shared/shared.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { SubCategoriasService } from '../../../../services/subCategorias/sub-categorias.service';
 import { Categoria } from '../../../../class/Categoria/categoria';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-sub-categorias-form',
@@ -14,9 +15,6 @@ import { Categoria } from '../../../../class/Categoria/categoria';
 })
 export class SubCategoriasFormComponent implements OnInit {
   public showSpinner: boolean = false
-  public tituloModal: string = ''
-  public mensajeModal: string = ''
-  public mostrarModal: boolean = false
   public form: FormGroup = new FormGroup({
     id: new FormControl(null),
     nombre: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
@@ -26,8 +24,8 @@ export class SubCategoriasFormComponent implements OnInit {
     deleted_at: new FormControl(null),
   })
   public categorias: Categoria[] = []
-  private id: number | null = null
   private url: string = '/admin/sub_categorias'
+  private accion: string = ''
 
   constructor(
     private _subCategoriasService: SubCategoriasService,
@@ -35,6 +33,7 @@ export class SubCategoriasFormComponent implements OnInit {
     private _toastService: ToastService,
     private activatedRoute: ActivatedRoute,
     private _sharedService: SharedService,
+    private _modalDialogService: ModalDialogService,
     private router: Router
   ) {
     this.cargarCategorias();
@@ -74,12 +73,9 @@ export class SubCategoriasFormComponent implements OnInit {
     })
   }
 
-  cancelarModal(e: any){
 
-  }
-
-  aceptarModal(e: any){
-    if(this.tituloModal !== 'Eliminar'){
+  aceptarModal(e: boolean){
+    if(this.accion !== 'eliminar'){
       if(this.form.value.id){
         this.actualizarRegistro()
       }else{
@@ -93,6 +89,15 @@ export class SubCategoriasFormComponent implements OnInit {
       }
     }
   }
+
+
+
+  cancelarModal(){
+    if(this.accion === 'volver'){
+      this.router.navigate([this.url])
+    }
+  }
+
 
   private insertarRegistro(){
     this.showSpinner = true
@@ -129,23 +134,20 @@ export class SubCategoriasFormComponent implements OnInit {
 
   cancelarFormulario(){
     if(this.form.dirty){
-      this.tituloModal = 'Cambios sin guardar'
-      this.mensajeModal = `¿Desea guardar los cambios?`
-      this.mostrarModal = true
+      this._modalDialogService.mostrarModalDialog(`¿Desea guardar los cambios?`, 'Cambios sin guardar')
+      this.accion = 'volver'
     }else{
       this.router.navigate([this.url])
     }
   }
 
   modalEliminar(){
-    this.tituloModal = 'Eliminar'
-    this.mensajeModal = '¿Desea eliminar el registro?'
-    this.mostrarModal = true
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?', 'Eliminar')
+    this.accion = 'eliminar'
   }
 
   modalGrabar(){
-    this.tituloModal = this.form.dirty ? 'Grabar' : 'Actualizar'
-    this.mensajeModal = `¿Desea ${this.form.dirty ? 'grabar' : 'actualizar'} los datos del registro?`
-    this.mostrarModal = true
+    this._modalDialogService.mostrarModalDialog(`¿Desea ${this.form.dirty ? 'grabar' : 'actualizar'} los datos del registro?`, this.form.dirty ? 'Grabar' : 'Actualizar')
+    this.accion = 'grabar'
   }
 }

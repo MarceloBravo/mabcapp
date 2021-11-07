@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CategoriasService } from 'src/app/services/categorias/categorias.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Categoria } from '../../../../class/Categoria/categoria';
 import { SharedService } from '../../../../services/shared/shared.service';
-import { HttpParams } from '@angular/common/http';
 import { ToastService } from '../../../../services/toast/toast.service';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-categorias-form',
@@ -14,9 +13,6 @@ import { ToastService } from '../../../../services/toast/toast.service';
 })
 export class CategoriasFormComponent implements OnInit {
   public showSpinner: boolean = false;
-  public tituloModal: string = '';
-  public mensajeModal: string = '';
-  public mostrarModal: boolean = false;
   public form: FormGroup = new FormGroup({
     id: new FormControl(null),
     nombre: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
@@ -25,6 +21,7 @@ export class CategoriasFormComponent implements OnInit {
     deleted_at: new FormControl(null),
   })
   private url: string = 'admin/categorias'
+  private accion: string = ''
 
 
   constructor(
@@ -32,6 +29,7 @@ export class CategoriasFormComponent implements OnInit {
     private _sharedService: SharedService,
     private _toastService: ToastService,
     private activatedRoute: ActivatedRoute,
+    private _modalDialogService: ModalDialogService,
     private router: Router
   ) {
     let id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -61,12 +59,14 @@ export class CategoriasFormComponent implements OnInit {
   }
 
   cancelarModal(e: any){
-
+    if(this.accion === 'volver'){
+      this.router.navigate([this.url])
+    }
   }
 
 
   aceptarModal(e: any){
-    if(this.tituloModal !== 'Eliminar'){
+    if(this.accion !== 'eliminar'){
       if(this.form.value.id){
         this.actualizarRegistro()
       }else{
@@ -117,24 +117,21 @@ export class CategoriasFormComponent implements OnInit {
   //Click en el botón cancelar del formulario
   cancelarFormulario(){
     if(this.form.dirty){
-      this.tituloModal = 'Cambios sin guardar'
-      this.mensajeModal = `¿Desea guardar los cambios?`
-      this.mostrarModal = true
+      this._modalDialogService.mostrarModalDialog('¿Desea guardar los cambios?','Cambios sin guardar')
+      this.accion = 'volver'
     }else{
       this.router.navigate([this.url])
     }
   }
 
   modalEliminar(){
-    this.tituloModal = 'Eliminar'
-    this.mensajeModal = '¿Desea eliminar el registro?'
-    this.mostrarModal = true
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
+    this.accion = 'eliminar'
   }
 
 
   modalGrabar(){
-    this.tituloModal = this.form.dirty ? 'Grabar' : 'Actualizar'
-    this.mensajeModal = `¿Desea ${this.form.dirty ? 'grabar' : 'actualizar'} los datos del registro?`
-    this.mostrarModal = true
+    this._modalDialogService.mostrarModalDialog(`¿Desea ${this.form.dirty ? 'grabar' : 'actualizar'} los datos del registro?`, this.form.dirty ? 'Grabar' : 'Actualizar')
+    this.accion = 'grabar'
   }
 }

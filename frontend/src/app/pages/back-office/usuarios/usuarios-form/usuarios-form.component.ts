@@ -11,6 +11,7 @@ import { CustomValidators } from '../../../../validators/custom-validators';
 import { FilesService } from '../../../../services/files/files.service';
 import { ConstantesService } from '../../../../services/constantes/constantes.service';
 import { LoginService } from '../../../../services/login/login.service';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-usuarios-form',
@@ -19,10 +20,8 @@ import { LoginService } from '../../../../services/login/login.service';
 })
 export class UsuariosFormComponent implements OnInit {
   public showSpinner: boolean = false;
-  public messageDialog: string = '';
-  private tipoModal = 'grabar';
-  public mostrarModal: boolean = false;
-  public url: string = '';
+  private accion = 'grabar';
+  public url: string = '/admin/usuarios';
   private usuario: User = new User();
   public roles: Rol[] = [];
   public form: FormGroup = new FormGroup({
@@ -55,6 +54,7 @@ export class UsuariosFormComponent implements OnInit {
     private _toastService: ToastService,
     private _const: ConstantesService,
     private _login: LoginService,
+    private _modalDialogService: ModalDialogService,
   ) {
     this._toastService.clearToast();
     let id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -130,55 +130,41 @@ export class UsuariosFormComponent implements OnInit {
   }
 
   modalGrabar(){
-    this.mostrarModal = true;
-    this.tipoModal = 'grabar';
-    this.messageDialog = '¿Desea grabar el registro';
+    this._modalDialogService.mostrarModalDialog('¿Desea grabar el registro?','Grabar')
+    this.accion = 'grabar';
   }
 
 
   modalEliminar(){
-    this.mostrarModal = true;
-    this.tipoModal = 'eliminar';
-    this.messageDialog = '¿Desea eliminar el registro';
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
+    this.accion = 'eliminar';
   }
 
-
-  cancelarModal(e: any){
-    if(this.tipoModal === 'confirmar cambios'){
-      this.router.navigate(['/admin/usuarios'])
-    }
-    this.mostrarModal = false;
-    //this.tipoModal = '';
-    //this.messageDialog = '';
-  }
 
   cancelar(){
-    if(this.id !== null && this.detectarCambios()){
+    if(this.form.dirty){
       //Se han detectado cambios sin guardar
-      this.messageDialog = 'Existen cambios sin guardar. ¿Desea guardar los cambios?';
-      this.mostrarModal = true;
-      this.tipoModal = 'confirmar cambios';
+      this._modalDialogService.mostrarModalDialog('Existen cambios sin guardar. ¿Desea grabar los cambios?','Confirmar cambios')
+      this.accion = 'volver';
     }else{
       //No se han detectado cambios, se redirige al listado de roles
-      this.router.navigate(['/admin/usuarios']);
+      this.router.navigate([this.url]);
     }
-  }
-
-  private detectarCambios(){
-    //Itera por cada elemento (campo) del objeto form y lo compara con su homonimo pero del objeto
-    //usuario (El objeto usuario contiene los datos de la base de dato, el objeto form contiene los
-    //cambios del usuario) y retorna un array con los campos con diferencias
-    let arrDiferencias = Object.keys(this.form.value).filter(k => k !== 'password' && k !== 'confirm_password' && k !== 'foto').filter((k : string) => this.form.get(k)?.value !== (<any>this.usuario)[k])
-    return arrDiferencias.length > 0 || this.fileToUpload !== undefined
   }
 
   aceptarModal(e: any){
-    if(this.tipoModal === 'grabar' || this.tipoModal === 'confirmar cambios'){
+    if(this.accion !== 'eliminar'){
       this.grabar();
     }else{
       this.eliminar();
     }
-    this.cancelarModal(null);
+  }
+
+
+  cancelarModal(){
+    if(this.accion === 'volver'){
+      this.router.navigate([this.url])
+    }
   }
 
 
@@ -201,7 +187,7 @@ export class UsuariosFormComponent implements OnInit {
       if(this.isSuccess(res)){
         this.subirFoto(res['id'], res);
       }
-      if(this._shared.handlerSucces(res, '/admin/usuarios'))this.mostrarModal = false;
+      this._shared.handlerSucces(res, this.url)
       this.showSpinner = false;
     },error=>{
       this.showSpinner = !this._shared.handlerError(error);
@@ -215,7 +201,7 @@ export class UsuariosFormComponent implements OnInit {
         this.subirFoto(res['id'], res);
         this._login.setCredencialesUsuario(this.form.value, this.form.value.roles)  //Actualizando los datos del usuario logueado
       }
-      if(this._shared.handlerSucces(res, '/admin/usuarios'))this.mostrarModal = false;
+      this._shared.handlerSucces(res, this.url)
       this.showSpinner = false;
     },error=>{
       this.showSpinner = !this._shared.handlerError(error);
@@ -242,7 +228,7 @@ export class UsuariosFormComponent implements OnInit {
     this.showSpinner = true;
 
     this._userServices.delete(this.id).subscribe((res: any) => {
-      if(this._shared.handlerSucces(res, '/admin/usuarios'))this.mostrarModal = false;
+      this._shared.handlerSucces(res, this.url)
       this.showSpinner = false;
     },error=>{
       this.showSpinner = !this._shared.handlerError(error);

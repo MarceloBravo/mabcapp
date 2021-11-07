@@ -4,6 +4,7 @@ import { Paginacion } from 'src/app/class/paginacion/paginacion';
 import { ImpuestosService } from '../../../../services/impuestos/impuestos.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
 import { Router } from '@angular/router';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-impuestos-grid',
@@ -12,7 +13,6 @@ import { Router } from '@angular/router';
 })
 export class ImpuestosGridComponent implements OnInit {
   public showSpinner: boolean = false;
-  public mostrarModal: boolean = false;
   public data: Impuesto[] = [];
   public paginacion: Paginacion = new Paginacion();
   private textoFiltro: string = '';
@@ -21,6 +21,7 @@ export class ImpuestosGridComponent implements OnInit {
   constructor(
     private _impuestosService: ImpuestosService,
     private _sharedService: SharedService,
+    private _modalDialogService: ModalDialogService,
     private router: Router
   ) { }
 
@@ -52,7 +53,7 @@ export class ImpuestosGridComponent implements OnInit {
         this._sharedService.handlerError(error);
       })
     }else{
-     this.obtenerDatos() 
+     this.obtenerDatos()
     }
   }
 
@@ -73,16 +74,16 @@ export class ImpuestosGridComponent implements OnInit {
 
   eliminar(id: any){
     this.idDelete = id;
-    this.mostrarModal = true;
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
   }
 
 
-  cancelarEliminar(e: any){
+  cancelarEliminar(e: boolean){
     this.idDelete = null
   }
 
 
-  aceptarEliminar(e: any){
+  aceptarEliminar(e: boolean){
     if(this.idDelete === null)return
     this.showSpinner = true;
     this._impuestosService.delete(this.idDelete).subscribe((res: any) => {

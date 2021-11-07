@@ -4,11 +4,9 @@
   <app-toasts></app-toasts>
 
   <app-modal-dialog
-    [titulo]="tituloModal"
-    [mensaje]="messageDialog"
-    [mostrar]="mostrarModal"
-    (cerrar)="cancelarModal($event)"
     (aceptar)="aceptarModal($event)"
+    (cerrar)="cancelarModal()"
+
   >
   </app-modal-dialog>
 
@@ -34,7 +32,7 @@
                   max="50"
                 />
                 <!-- Mensajes de error -->
-                <app-input-errors 
+                <app-input-errors
                   [control]="form.get('nombre')"
                   [mensajes]="{
                     required: 'El nombre del impuesto es obligatorio',
@@ -57,7 +55,7 @@
                   max="15"
                 />
                 <!-- Mensajes de error -->
-                <app-input-errors 
+                <app-input-errors
                   [control]="form.get('sigla')"
                   [mensajes]="{
                     required: 'La sigla del impuesto es obligatoria',

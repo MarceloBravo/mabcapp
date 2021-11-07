@@ -5,10 +5,8 @@
   <app-toasts></app-toasts>
 
   <app-modal-dialog
-    [titulo]="'Grabar'"
-    [mensaje]="messageDialog"
-    [mostrar]="mostrarModal"
     (aceptar)="aceptarModal($event)"
+    (cerrar)="cancelarModal()"
     >
   </app-modal-dialog>
 

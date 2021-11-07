@@ -5,6 +5,7 @@ import { MenusService } from '../../../../services/menus/menus.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastService } from '../../../../services/toast/toast.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-menus-form',
@@ -13,9 +14,6 @@ import { SharedService } from 'src/app/services/shared/shared.service';
 })
 export class MenusFormComponent implements OnInit {
   public showSpinner: boolean = false;
-  public messageDialog: string = '¿Desea grabar el registro?';
-  public mostrarModal: boolean = false;
-  public tipoModal: string = 'grabar';
   private menu: Menu = new Menu();
   public form: FormGroup = new FormGroup({
     id: new FormControl(),
@@ -29,12 +27,15 @@ export class MenusFormComponent implements OnInit {
   });
   public id: any = null;
   public menusPadre: Menu[] = [];
+  private url: string = '/admin/menus'
+  private accion: string =''
 
   constructor(
     private _menusService: MenusService,
     private _toastService: ToastService,
     private activatedRoute: ActivatedRoute,
     private _sharedServices: SharedService,
+    private _modalDialogService: ModalDialogService,
     private fb: FormBuilder,
     private router: Router
   ) {
@@ -95,22 +96,19 @@ export class MenusFormComponent implements OnInit {
 
 
   modalGrabar(){
-    this.mostrarModal = true;
-    this.messageDialog = '¿Desea grabar el registro?';
-    this.tipoModal = 'grabar';
+    this._modalDialogService.mostrarModalDialog('¿Desea grabar el registro?','Grabar')
+    this.accion = 'grabar'
   }
 
   modalEliminar(){
-    this.mostrarModal = true;
-    this.tipoModal = 'eliminar'
-    this.messageDialog = '¿Desea eliminar el registro?';
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
+    this.accion = 'eliminar'
   }
 
   aceptarModal(e: any){
-    this.mostrarModal = false
-    if(this.tipoModal === 'grabar' || this.tipoModal === 'confirmar cambios'){
+    if(this.accion !== 'eliminar'){
       if(this.form.invalid){
-        this.mostrarModal = !this._sharedServices.handlerError({message: 'Existen datos incompletos o no válidos.'});
+        this._sharedServices.handlerError({message: 'Existen datos incompletos o no válidos.'});
       }else{
         this.grabar();
       }
@@ -119,41 +117,27 @@ export class MenusFormComponent implements OnInit {
     }
   }
 
-  cancelarModal(e: any){
-    this.mostrarModal = false;
-    if(this.tipoModal === 'confirmar cambios'){
-      this.router.navigate(['/admin/menus'])
+
+  cancelarModal(){
+    if(this.accion === 'volver'){
+      this.router.navigate([this.url])
     }
-    this.tipoModal = ''
-    this.messageDialog = '';
   }
 
   cancelar() {
     //if(this.detectarCambios()){
     if(this.form.dirty){
       //Se han detectado cambios sin guardar
-      this.messageDialog = 'Existen cambios sin guardar. ¿Desea guardar los cambios?';
-      this.mostrarModal = true;
-      this.tipoModal = 'confirmar cambios';
+      this._modalDialogService.mostrarModalDialog('¿Existen cambios sin guardar. ¿Desea grabar los cambios?','Confirmar cambios')
+      this.accion = 'volver'
     }else{
-      this.mostrarModal = false
       //No se han detectado cambios, se redirige al listado de roles
-      this.router.navigate(['/admin/menus']);
+      this.router.navigate([this.url]);
     }
   }
-  /*
-  private detectarCambios(){
-    if(this.form.dirty ){
-      let arrDiferencias = Object.keys(this.form.value).filter(k => this.form.get(k)?.value !== (<any>this.menu)[k]);
-      return arrDiferencias.length > 0;
-    }else{
-      return false
-    }
-  }
-  */
+
 
   private grabar(){
-    this.cancelarModal(null);
     if(this.id !== null){
       this.actualizar();
     }else{
@@ -165,7 +149,7 @@ export class MenusFormComponent implements OnInit {
     this.showSpinner = true;
     this._menusService.insert(this.form.value).subscribe(
       (res: any)=>{
-        if(this._sharedServices.handlerSucces(res, '/admin/menus'))this.mostrarModal = false;
+        this._sharedServices.handlerSucces(res, this.url)
         this.showSpinner = false;
       },error=>{
         this.showSpinner = !this._sharedServices.handlerError(error);
@@ -177,7 +161,7 @@ export class MenusFormComponent implements OnInit {
     this.showSpinner = true;
     this._menusService.update(this.id, this.form.value).subscribe(
       (res: any)=>{
-        if(this._sharedServices.handlerSucces(res, '/admin/menus'))this.mostrarModal = false;
+        this._sharedServices.handlerSucces(res, this.url)
         this.showSpinner = false
       },error=>{
         this.showSpinner = !this._sharedServices.handlerError(error)
@@ -189,7 +173,7 @@ export class MenusFormComponent implements OnInit {
     this.showSpinner = true;
     this._menusService.delete(this.id).subscribe(
       (res: any)=>{
-        if(this._sharedServices.handlerSucces(res, '/admin/menus'))this.mostrarModal = false;
+        this._sharedServices.handlerSucces(res, this.url)
       },error=>{
         this.showSpinner = !this._sharedServices.handlerError(error);
       }

@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImpuestosService } from 'src/app/services/impuestos/impuestos.service';
 import { SharedService } from '../../../../services/shared/shared.service';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-impuestos-form',
@@ -11,9 +12,6 @@ import { SharedService } from '../../../../services/shared/shared.service';
 })
 export class ImpuestosFormComponent implements OnInit {
   public showSpinner: boolean = false;
-  public tituloModal: string = 'Grabar';
-  public messageDialog: string =  '';
-  public mostrarModal: boolean = false;
   public form: FormGroup = new FormGroup({
     id: new FormControl(null),
     nombre: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
@@ -24,12 +22,15 @@ export class ImpuestosFormComponent implements OnInit {
     deleted_at: new FormControl(null),
   });
   public id: number | null = null;
+  private url: string = '/admin/impuestos'
+  private accion: string = ''
 
 
   constructor(
     private activatedRouter: ActivatedRoute,
     private _impuestoService: ImpuestosService,
     private _sharedService: SharedService,
+    private _modalDialogService: ModalDialogService,
     private router: Router,
   ) {
     let id = this.activatedRouter.snapshot.paramMap.get('id')
@@ -51,21 +52,23 @@ export class ImpuestosFormComponent implements OnInit {
   }
 
 
-  cancelarModal(e: any){
-    this.mostrarModal = false
-  }
-
-
   aceptarModal(e: any){
     this.showSpinner = true
-    if(this.tituloModal === 'Grabar'){
+    if(this.accion !== 'eliminar'){
       if(!this.form.value.id){
         this.ingresarNuevoRegistro()
       }else{
         this.actualizarRegistro()
-      }      
+      }
     }else{
       this.eliminarRegistro()
+    }
+  }
+
+
+  cancelarModal(){
+    if(this.accion === 'volver'){
+      this.router.navigate([this.url])
     }
   }
 
@@ -98,34 +101,30 @@ export class ImpuestosFormComponent implements OnInit {
 
 
   private successResult(res: any){
-    this._sharedService.handlerSucces(res, '/admin/impuestos')
-    this.mostrarModal = false
+    this._sharedService.handlerSucces(res, this.url)
     this.showSpinner = false
   }
 
 
   cancelar(){
     if(this.form.dirty){
-      this.mostrarModal = true
-      this.messageDialog = "¿Desea grabar los cambios?"
-      this.tituloModal = "Grabar"
+      this._modalDialogService.mostrarModalDialog('¿Desea grabar los cambios?','Cambios sin guardar')
+      this.accion = 'volver'
     }else{
-      this.router.navigate(['/admin/impuestos'])
+      this.router.navigate([this.url])
     }
   }
 
 
   modalEliminar(){
-    this.mostrarModal = true
-    this.tituloModal = "Eliminar"
-    this.messageDialog = "¿Desea eliminar el registro?"
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
+    this.accion = 'eliminar'
   }
 
 
   modalGrabar(){
-    this.mostrarModal = true
-    this.tituloModal = "Grabar"
-    this.messageDialog = "¿Desea grabar el registro?"
+    this._modalDialogService.mostrarModalDialog('¿Desea grabar el registro?','Grabar')
+    this.accion = 'grabar'
   }
 
 }

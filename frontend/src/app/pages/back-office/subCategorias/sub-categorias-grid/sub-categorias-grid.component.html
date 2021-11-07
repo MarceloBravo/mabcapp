@@ -5,23 +5,19 @@
   <app-toasts></app-toasts>
 
   <app-modal-dialog
-    [titulo]="'Eliminar'"
-    [mensaje]="'¿Desea eliminar el registro?'"
-    [mostrar]="mostrarModal"
-    [textoBtnAceptar]="'Eliminar'"
     (cerrar)="cancelarEliminar($event)"
     (aceptar)="aceptarEliminar($event)"
     >
   </app-modal-dialog>
 
-  <h1 class="h3 mb-3">Categorías</h1>
+  <h1 class="h3 mb-3">Subcategorías</h1>
 
   <div class="row">
 
     <div class="col-12 col-xl-12">
 
       <app-grid
-        [titulo]="'Listado de categorías'"
+        [titulo]="'Listado de subcategorías'"
         [cabeceras]="['Nombre','Fecha creación','Fecha actualización']"
         [registros]="data"
         [columnasVisibles]="['nombre','created_at','updated_at']"

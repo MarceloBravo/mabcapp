@@ -6,6 +6,7 @@ import { Paginacion } from 'src/app/class/paginacion/paginacion';
 import { SharedService } from 'src/app/services/shared/shared.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { MarcasService } from '../../../../services/marcas/marcas.service';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-marca-form',
@@ -14,10 +15,6 @@ import { MarcasService } from '../../../../services/marcas/marcas.service';
 })
 export class MarcaFormComponent implements OnInit {
   public showSpinner: boolean = false;
-  public messageDialog: string = '¿Desea grabar el registro?';
-  public mostrarModal: boolean = false;
-  public tipoModal: string = 'grabar';
-  public tituloModal: string = 'Grabar'
   private menu: Marca = new Marca();
   public form: FormGroup = new FormGroup({
     id: new FormControl(),
@@ -27,12 +24,15 @@ export class MarcaFormComponent implements OnInit {
     deleted_at: new FormControl(),
   });
   public id: any = null;
+  private accion: string = ''
+  private url: string = '/admin/marcas'
 
   constructor(
     private _marcasService: MarcasService,
     private _toastService: ToastService,
     private activatedRoute: ActivatedRoute,
     private _sharedServices: SharedService,
+    private _modalDialogService: ModalDialogService,
     private fb: FormBuilder,
     private router: Router
   ) {
@@ -79,22 +79,17 @@ export class MarcaFormComponent implements OnInit {
 
 
   modalGrabar(){
-    this.mostrarModal = true;
-    this.messageDialog = '¿Desea grabar el registro?';
-    this.tipoModal = 'grabar';
-    this.tituloModal = this.id ? 'Actualizar' : 'Grabar';
+    this._modalDialogService.mostrarModalDialog('¿Desea grabar el registro?',this.id ? 'Actualizar' : 'Grabar')
+    this.accion = 'grabar'
   }
 
   modalEliminar(){
-    this.mostrarModal = true;
-    this.tipoModal = 'eliminar'
-    this.messageDialog = '¿Desea eliminar el registro?';
-    this.tituloModal = 'Eliminar';
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el regsitro?','Eliminar')
+    this.accion = 'eliminar'
   }
 
   aceptarModal(e: any){
-    this.mostrarModal = false
-    if(this.tipoModal === 'grabar' || this.tipoModal === 'confirmar cambios'){
+    if(this.accion !== 'eliminar'){
       if(this.form.invalid){
         this.showSpinner = !this._sharedServices.handlerError({message: 'Existen datos incompletos o no válidos.'});
       }else{
@@ -105,39 +100,26 @@ export class MarcaFormComponent implements OnInit {
     }
   }
 
-  cancelarModal(e: any){
-    this.mostrarModal = false;
-    if(this.tipoModal === 'confirmar cambios'){
-      this.router.navigate(['/admin/marcas'])
+
+  cancelarModal(){
+    if(this.accion === 'volver'){
+      this.router.navigate([this.url])
     }
-    this.tipoModal = ''
-    this.messageDialog = '';
   }
 
   cancelar() {
-    if(this.detectarCambios()){
+    if(this.form.dirty){
       //Se han detectado cambios sin guardar
-      this.messageDialog = 'Existen cambios sin guardar. ¿Desea guardar los cambios?';
-      this.mostrarModal = true;
-      this.tipoModal = 'confirmar cambios';
+      this._modalDialogService.mostrarModalDialog('Existen cambios sin guardar. ¿Desea grabar los cambios?', 'Confirmar cambios')
+      this.accion = 'volver'
     }else{
-      this.mostrarModal = false
-      //No se han detectado cambios, se redirige al listado de roles
-      this.router.navigate(['/admin/marcas']);
+      //No se han detectado cambios, se redirige al listado de marcas
+      this.router.navigate([this.url]);
     }
   }
 
-  private detectarCambios(){
-    if(this.form.dirty ){
-      let arrDiferencias = Object.keys(this.form.value).filter(k => this.form.get(k)?.value !== (<any>this.menu)[k]);
-      return arrDiferencias.length > 0;
-    }else{
-      return false
-    }
-  }
 
   private grabar(){
-    this.cancelarModal(null);
     if(this.id !== null){
       this.actualizar();
     }else{
@@ -149,7 +131,7 @@ export class MarcaFormComponent implements OnInit {
     this.showSpinner = true;
     this._marcasService.insert(this.form.value).subscribe(
       (res: any)=>{
-        if(this._sharedServices.handlerSucces(res, '/admin/marcas'))this.mostrarModal = false;
+        this._sharedServices.handlerSucces(res, this.url)
         this.showSpinner = false;
       },error=>{
         this.showSpinner = !this._sharedServices.handlerError(error);
@@ -161,7 +143,7 @@ export class MarcaFormComponent implements OnInit {
     this.showSpinner = true;
     this._marcasService.update(this.form.value).subscribe(
       (res: any)=>{
-        if(this._sharedServices.handlerSucces(res, '/admin/marcas'))this.mostrarModal = false;
+        this._sharedServices.handlerSucces(res, this.url)
         this.showSpinner = false;
       },error=>{
         this.showSpinner = !this._sharedServices.handlerError(error);
@@ -173,7 +155,7 @@ export class MarcaFormComponent implements OnInit {
     this.showSpinner = true;
     this._marcasService.delete(this.id).subscribe(
       (res: any)=>{
-        if(this._sharedServices.handlerSucces(res, '/admin/marcas'))this.mostrarModal = false;
+        this._sharedServices.handlerSucces(res, this.url)
         this.showSpinner = false;
       },error=>{
         this.showSpinner = !this._sharedServices.handlerError(error);

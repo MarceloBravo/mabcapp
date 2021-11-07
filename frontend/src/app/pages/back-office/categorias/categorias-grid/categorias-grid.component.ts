@@ -4,6 +4,7 @@ import { CategoriasService } from 'src/app/services/categorias/categorias.servic
 import { SharedService } from 'src/app/services/shared/shared.service';
 import { Paginacion } from '../../../../class/paginacion/paginacion';
 import { Router } from '@angular/router';
+import { ModalDialogService } from 'src/app/services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-categorias-grid',
@@ -12,15 +13,15 @@ import { Router } from '@angular/router';
 })
 export class CategoriasGridComponent implements OnInit {
   public showSpinner: boolean = false;
-  public mostrarModal: boolean = false;
   public data: Categoria[] = [];
   public paginacion: Paginacion = new Paginacion();
   private textoFiltro: string = '';
-  private idDelete: number = -1
+  private idDelete: number | null = null;
 
   constructor(
     private _categoriasServioce: CategoriasService,
     private _sharedServices: SharedService,
+    private _modalDialogService: ModalDialogService,
     private router: Router
   ) { }
 
@@ -75,19 +76,20 @@ export class CategoriasGridComponent implements OnInit {
     }
   }
 
+
   eliminar(id: any){
     this.idDelete = id
-    this.mostrarModal = true
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
   }
 
 
-  cancelarEliminar(e: any){
+  cancelarEliminar(e: boolean){
     this.idDelete = -1
   }
 
 
-  aceptarEliminar(res: any){
-    if(res){
+  aceptarEliminar(res: boolean){
+    if(this.idDelete){
       this.showSpinner = true
       this._categoriasServioce.delete(this.idDelete).subscribe((res: any) => {
         this.obtenerDatos();

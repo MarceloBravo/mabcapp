@@ -5,6 +5,7 @@ import { PantallasService } from '../../../../services/pantallas/pantallas.servi
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/services/shared/shared.service';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-pantallas-grid',
@@ -13,7 +14,6 @@ import { SharedService } from 'src/app/services/shared/shared.service';
 })
 export class PantallasGridComponent implements OnInit {
   public showSpinner: boolean = false;
-  public mostrarModalEliminar: boolean = false;
   public gridHeaders: string[] = ['Nombre','Menú','Url','Fecha creación','Fecha actualización'];
   public visibleColumns: string[] = ['nombre','menu','url','created_at','updated_at'];
   public data: Pantalla[] = [];
@@ -24,6 +24,7 @@ export class PantallasGridComponent implements OnInit {
     private _pantallasServices: PantallasService,
     private _toast: ToastService,
     private _sharedServices: SharedService,
+    private _modalDialogService: ModalDialogService,
     private router: Router,
   ) {
     this.obtenerDatos();
@@ -59,7 +60,6 @@ export class PantallasGridComponent implements OnInit {
 
 
   cancelarEliminar(e: any){
-    this.mostrarModalEliminar = false;
   }
 
   aceptarEliminar(e: any){
@@ -79,7 +79,7 @@ export class PantallasGridComponent implements OnInit {
   }
 
   eliminar(){
-    this.mostrarModalEliminar = true;
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
   }
 
   filtrar(texto: string){

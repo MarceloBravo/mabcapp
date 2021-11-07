@@ -4,7 +4,7 @@ import { SharedService } from 'src/app/services/shared/shared.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { Paginacion } from '../../../../class/paginacion/paginacion';
 import { SubCategoriasService } from '../../../../services/subCategorias/sub-categorias.service';
-import { LoguedGuard } from '../../../../guards/logued.guard';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-sub-categorias-grid',
@@ -13,7 +13,6 @@ import { LoguedGuard } from '../../../../guards/logued.guard';
 })
 export class SubCategoriasGridComponent implements OnInit {
   public showSpinner: boolean = false;
-  public mostrarModal: boolean = false;
   public data: SubCategoria[] = [];
   public paginacion: Paginacion = new Paginacion();
   private idDelete: number | null = null;
@@ -23,6 +22,7 @@ export class SubCategoriasGridComponent implements OnInit {
     private _subCategoriasService: SubCategoriasService,
     private _sharedServices: SharedService,
     private _toastService: ToastService,
+    private _modalDialogService: ModalDialogService,
   ) {
     this.obtenerDatos()
   }
@@ -50,13 +50,13 @@ export class SubCategoriasGridComponent implements OnInit {
   }
 
 
-  cancelarEliminar(e: any){
+  cancelarEliminar(e: boolean){
     this.idDelete = null
   }
 
 
-  aceptarEliminar(res: boolean){
-    if(res && this.idDelete){
+  aceptarEliminar(e: boolean){
+    if(this.idDelete){
       this.showSpinner = true
       this._subCategoriasService.delete(this.idDelete).subscribe((res: any) => {
         this.showSpinner = false
@@ -76,7 +76,8 @@ export class SubCategoriasGridComponent implements OnInit {
 
 
   eliminar(id: number){
-    this.mostrarModal = true;
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?', 'Eliminar')
+    //this.mostrarModal = true;
     this.idDelete = id;
   }
 

@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Menu } from '../../../../class/menus/menu';
 import { MenusService } from '../../../../services/menus/menus.service';
-import { RolesService } from '../../../../services/roles/roles.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PantallasService } from '../../../../services/pantallas/pantallas.service';
 import { Pantalla } from '../../../../class/pantalla/pantalla';
-import { ToastService } from '../../../../services/toast/toast.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-pantallas-form',
@@ -16,10 +15,8 @@ import { SharedService } from 'src/app/services/shared/shared.service';
 })
 export class PantallasFormComponent implements OnInit {
   public showSpinner: boolean = false;
-  public messageDialog: string = '';
-  public mostrarModal: boolean = false;
+  private accion = '';
   private pantalla: Pantalla = new Pantalla();
-  private tipoModal: string = 'grabar';
   public form: FormGroup = new FormGroup({
     id: new FormControl(),
     nombre: new FormControl(),
@@ -33,12 +30,14 @@ export class PantallasFormComponent implements OnInit {
   });
   public menus: Menu[] = [];
   public id: any = null
+  private url: string = '/admin/pantallas'
 
   constructor(
     private _pantallasService: PantallasService,
     private _menusService: MenusService,
     private activatedRoute: ActivatedRoute,
     private _sharedServices: SharedService,
+    private _modalDialogService: ModalDialogService,
     private router: Router,
     private fb: FormBuilder,
   ) {
@@ -99,34 +98,30 @@ export class PantallasFormComponent implements OnInit {
   }
 
   modalGrabar(){
-    this.mostrarModal = true;
-    this.tipoModal = 'grabar';
-    this.messageDialog = '¿Desea grabar el registro?';
+    this._modalDialogService.mostrarModalDialog('¿Desea grabar el registro?','Grabar')
+    this.accion = 'grabar';
   }
 
   modalEliminar(){
-    this.mostrarModal = true;
-    this.tipoModal = 'eliminar';
-    this.messageDialog = '¿Desea eliminar el registro?';
-  }
-
-  cancelarModal(e: any){
-    if(this.tipoModal === 'confirmar cambios'){
-      this.router.navigate(['/admin/pantallas'])
-    }
-    this.mostrarModal = false;
-    this.messageDialog = '';
-    this.tipoModal = '';
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
+    this.accion = 'eliminar'
   }
 
   aceptarModal(e: any){
-    if(this.tipoModal === 'grabar' || this.tipoModal === 'confirmar cambios'){
+    if(this.accion !== 'eliminar'){
       this.grabar()
     }else{
       this.eliminar();
     }
-    this.cancelarModal(null);
   }
+
+
+  cancelarModal(){
+    if(this.accion === 'volver'){
+      this.router.navigate([this.url])
+    }
+  }
+
 
   private grabar(){
     this.showSpinner = true;
@@ -140,7 +135,7 @@ export class PantallasFormComponent implements OnInit {
   private insertar(){
     this._pantallasService.insert(this.form.value).subscribe(
       (res: any)=>{
-        if(this._sharedServices.handlerSucces(res, '/admin/pantallas'))this.mostrarModal = false;
+        this._sharedServices.handlerSucces(res, this.url)
         this.showSpinner = false;
 
       }, error=>{
@@ -152,7 +147,7 @@ export class PantallasFormComponent implements OnInit {
   private actualizar(){
     this._pantallasService.update(this.id, this.form.value).subscribe(
       (res: any)=>{
-        if(this._sharedServices.handlerSucces(res, '/admin/pantallas'))this.mostrarModal = false;
+        this._sharedServices.handlerSucces(res, this.url)
         this.showSpinner = false;
 
       }, error=>{
@@ -164,7 +159,7 @@ export class PantallasFormComponent implements OnInit {
   private eliminar(){
     this._pantallasService.delete(this.id).subscribe(
       (res: any)=>{
-        if(this._sharedServices.handlerSucces(res, '/admin/pantallas'))this.mostrarModal = false;
+        this._sharedServices.handlerSucces(res, this.url)
         this.showSpinner = false;
 
       }, error=>{
@@ -177,19 +172,13 @@ export class PantallasFormComponent implements OnInit {
     delete this.pantalla.url
     delete this.pantalla.menu
 
-    if(this.detectarCambios()){
-      this.mostrarModal = true
-      this.messageDialog = "¿Desea grabar los cambios?";
-      this.tipoModal = 'confirmar cambios';
+    if(this.form.dirty){
+      this._modalDialogService.mostrarModalDialog('¿Desea grabar los cambios?','Confirmar cambios')
+      this.accion = 'volver';
     }else{
-      this.router.navigate(['/admin/pantallas']);
+      this.router.navigate([this.url]);
     }
   }
 
-  private detectarCambios(){
-    let arrDiferencias = Object.keys(this.form.value).filter(k => this.form.get(k)?.value !== (<any>this.pantalla)[k]);
-    return arrDiferencias.length > 0;
-
-  }
 
 }

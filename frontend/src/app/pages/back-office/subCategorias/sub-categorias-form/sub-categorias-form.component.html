@@ -4,11 +4,8 @@
   <app-toasts></app-toasts>
 
   <app-modal-dialog
-    [titulo]="tituloModal"
-    [mensaje]="mensajeModal"
-    [mostrar]="mostrarModal"
-    (cerrar)="cancelarModal($event)"
     (aceptar)="aceptarModal($event)"
+    (cerrar)="cancelarModal()"
   >
   </app-modal-dialog>
 

@@ -5,6 +5,7 @@ import { MenusService } from '../../../../services/menus/menus.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { Router } from '@angular/router';
 import { SharedService } from 'src/app/services/shared/shared.service';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-menus-grid',
@@ -13,7 +14,6 @@ import { SharedService } from 'src/app/services/shared/shared.service';
 })
 export class MenusGridComponent implements OnInit {
   public showSpinner: boolean = false;
-  public mostrarModal: boolean = false;
   public headers: string[] = ['Nombre','Url','posición','Fecha creación','Fecha actualización'];
   public visibleColumns: string[] = ['nombre','url','posicion','created_at','updated_at'];
   public menus: Menu[] = [];
@@ -24,6 +24,7 @@ export class MenusGridComponent implements OnInit {
     private _menusService: MenusService,
     private _toastService: ToastService,
     private _sharedServices: SharedService,
+    private _modalDialogService: ModalDialogService,
     private router: Router,
   ) {
     this.obtenerDatos();
@@ -58,7 +59,6 @@ export class MenusGridComponent implements OnInit {
 
   cancelarEliminar(e: any){
     this.idEliminar = null;
-    this.mostrarModal = false;
   }
 
   aceptarEliminar(e: any){
@@ -67,7 +67,6 @@ export class MenusGridComponent implements OnInit {
       (res: any)=>{
         this._toastService.showSuccessMessage(res.mensaje, res.tipoMensaje);
         this.obtenerDatos();
-        this.mostrarModal = false;
         this.showSpinner = false;
     },error=>{
       this.showSpinner = !this._sharedServices.handlerError(error);
@@ -76,7 +75,7 @@ export class MenusGridComponent implements OnInit {
   }
 
   eliminar(id: number){
-    this.mostrarModal = true;
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
     this.idEliminar = id;
   }
 
