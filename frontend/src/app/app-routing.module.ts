@@ -23,6 +23,8 @@ import { ImpuestosGridComponent } from './pages/back-office/impuestos/impuestos-
 import { ImpuestosFormComponent } from './pages/back-office/impuestos/impuestos-form/impuestos-form.component';
 import { CategoriasGridComponent } from './pages/back-office/categorias/categorias-grid/categorias-grid.component';
 import { CategoriasFormComponent } from './pages/back-office/categorias/categorias-form/categorias-form.component';
+import { SubCategoriasGridComponent } from './pages/back-office/subCategorias/sub-categorias-grid/sub-categorias-grid.component';
+import { SubCategoriasFormComponent } from './pages/back-office/subCategorias/sub-categorias-form/sub-categorias-form.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -63,6 +65,9 @@ const routes: Routes = [
       { path: 'categorias/nuevo', component: CategoriasFormComponent },
       { path: 'categorias/edit/:id', component: CategoriasFormComponent },
 
+      { path: 'sub_categorias', component: SubCategoriasGridComponent },
+      { path: 'sub_categorias/nuevo', component: SubCategoriasFormComponent },
+      { path: 'sub_categorias/edit/:id', component: SubCategoriasFormComponent },
     ]
 },
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ConstantesService } from '../constantes/constantes.service';
 import { Rol } from '../../class/rol/rol';
 
