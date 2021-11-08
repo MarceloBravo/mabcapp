@@ -199,7 +199,10 @@ export class UsuariosFormComponent implements OnInit {
     this._userServices.update(this.id, this.form.value).subscribe((res: any)=> {
       if(this.isSuccess(res)){
         this.subirFoto(res['id'], res);
-        this._login.setCredencialesUsuario(this.form.value, this.form.value.roles)  //Actualizando los datos del usuario logueado
+        let user = this._login.getUsuarioLogueado()
+        if(user && this.form.value.id === user.id){
+          this._login.setCredencialesUsuario(this.form.value, this.form.value.roles)  //Actualizando los datos del usuario logueado
+        }
       }
       this._shared.handlerSucces(res, this.url)
       this.showSpinner = false;
