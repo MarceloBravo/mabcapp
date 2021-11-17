@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Rol } from '../../class/rol/rol';
 import { SharedService } from '../shared/shared.service';
 import { ConstantesService } from '../constantes/constantes.service';
+import { Menu } from '../../class/menus/menu';
 
 @Injectable({
   providedIn: 'root'
@@ -28,12 +29,13 @@ export class MenusService {
     return this.http.get(`${this.constantes.endPoint}${this.url}/${id}`,{headers: this.constantes.header()});
   }
 
-  insert(rol: Rol){
-    return this.http.post(`${this.constantes.endPoint}${this.url}`, rol,{headers: this.constantes.header()});
+  insert(menu: Menu){
+    return this.http.post(`${this.constantes.endPoint}${this.url}`, menu,{headers: this.constantes.header()});
   }
 
-  update(id: number, rol: Rol){
-    return this.http.put(`${this.constantes.endPoint}${this.url}/${id}`, rol,{headers: this.constantes.header()});
+  update(id: number, menu: Menu){
+    console.log('DATOS MENU',menu)
+    return this.http.put(`${this.constantes.endPoint}${this.url}/${id}`, menu,{headers: this.constantes.header()});
   }
 
   delete(id: number){
@@ -44,7 +46,7 @@ export class MenusService {
     return this.http.get(`${this.constantes.endPoint}${this.url}/filtrar/${texto}/${pag}`,{headers: this.constantes.header()});
   }
 
-  getMenus(rolId: number){
-    return this.http.get(`${this.constantes.endPoint}${this.url}/rol/${rolId}`,{headers: this.constantes.header()});
+  getMenus(menuId: number){
+    return this.http.get(`${this.constantes.endPoint}${this.url}/rol/${menuId}`,{headers: this.constantes.header()});
   }
 }

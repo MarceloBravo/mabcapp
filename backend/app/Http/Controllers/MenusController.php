@@ -163,7 +163,7 @@ class MenusController extends Controller
             'nombre' => 'required|min:3|max:50|unique:menus,nombre,'.$id,
         ];
 
-        if(!$request['url']){
+        if($request['url']){
             $rules += ['url' => 'min:3|max:200'];
         }
 
@@ -172,10 +172,14 @@ class MenusController extends Controller
             'nombre.min' => 'El nombre del menú debe tener almenos 3 carácteres. Ingresa un nombre más largo.',
             'nombre.max' => 'El nombre del menú debe tener un máximo de 50 carácteres. Ingresa un nombre más corto.',
             'nombre.unique' => 'El nombre del menú ya se encuentra registrado. Ingresa un nombre diferente.',
-
-            'url.min' => 'La url del menú debe tener almenos 3 carácteres. Ingresa una url más largo.',
-            'url.max' => 'La url del menú debe tener un máximo de 200 carácteres. Ingresa una url más corto.',
         ];
+
+        if($request['url']){
+            $messages += [
+                'url.min' => 'La url del menú debe tener almenos 3 carácteres. Ingresa una url más largo.',
+                'url.max' => 'La url del menú debe tener un máximo de 200 carácteres. Ingresa una url más corto.',
+            ];
+        }
 
         return Validator::make($request->all(), $rules, $messages);
     }
