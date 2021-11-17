@@ -25,6 +25,8 @@ import { CategoriasGridComponent } from './pages/back-office/categorias/categori
 import { CategoriasFormComponent } from './pages/back-office/categorias/categorias-form/categorias-form.component';
 import { SubCategoriasGridComponent } from './pages/back-office/subCategorias/sub-categorias-grid/sub-categorias-grid.component';
 import { SubCategoriasFormComponent } from './pages/back-office/subCategorias/sub-categorias-form/sub-categorias-form.component';
+import { UnidadGridComponent } from './pages/back-office/unidad/unidad-grid/unidad-grid.component';
+import { UnidadFormComponent } from './pages/back-office/unidad/unidad-form/unidad-form.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -68,6 +70,10 @@ const routes: Routes = [
       { path: 'sub_categorias', component: SubCategoriasGridComponent },
       { path: 'sub_categorias/nuevo', component: SubCategoriasFormComponent },
       { path: 'sub_categorias/edit/:id', component: SubCategoriasFormComponent },
+
+      { path: 'unidades', component: UnidadGridComponent },
+      { path: 'unidades/nuevo', component: UnidadFormComponent },
+      { path: 'unidades/edit/:id', component: UnidadFormComponent },
     ]
 },
 

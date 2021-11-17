@@ -48,6 +48,8 @@ import { CategoriasFormComponent } from './pages/back-office/categorias/categori
 import { InfoSessionComponent } from './components/info-session/info-session.component';
 import { SubCategoriasGridComponent } from './pages/back-office/subCategorias/sub-categorias-grid/sub-categorias-grid.component';
 import { SubCategoriasFormComponent } from './pages/back-office/subCategorias/sub-categorias-form/sub-categorias-form.component';
+import { UnidadFormComponent } from './pages/back-office/unidad/unidad-form/unidad-form.component';
+import { UnidadGridComponent } from './pages/back-office/unidad/unidad-grid/unidad-grid.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -92,7 +94,9 @@ import { SubCategoriasFormComponent } from './pages/back-office/subCategorias/su
     CategoriasFormComponent,
     InfoSessionComponent,
     SubCategoriasGridComponent,
-    SubCategoriasFormComponent
+    SubCategoriasFormComponent,
+    UnidadFormComponent,
+    UnidadGridComponent
   ],
   imports: [
     BrowserModule,

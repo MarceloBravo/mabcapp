@@ -87,4 +87,9 @@ Route::group([
     Route::get('sub_categorias/pag/{pag}', 'SubCategoriasController@index');
     Route::get('sub_categorias/get/all', 'SubCategoriasController@getAll');
     Route::get('sub_categorias/filter/{texto}/{pag}', 'SubCategoriasController@filter');
+
+    Route::resource('unidades', 'UnidadesController');
+    Route::get('unidades/pag/{pag}', 'UnidadesController@index');
+    Route::get('unidades/get/all', 'UnidadesController@getAll');
+    Route::get('unidades/filter/{texto}/{pag}', 'UnidadesController@filter');
 });
