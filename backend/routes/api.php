@@ -92,4 +92,9 @@ Route::group([
     Route::get('unidades/pag/{pag}', 'UnidadesController@index');
     Route::get('unidades/get/all', 'UnidadesController@getAll');
     Route::get('unidades/filter/{texto}/{pag}', 'UnidadesController@filter');
+
+    Route::resource('clientes', 'ClientesController');
+    Route::get('clientes/pag/{pag}', 'ClientesController@index');
+    Route::get('clientes/get/all', 'ClientesController@getAll');
+    Route::get('clientes/filter/{texto}/{pag}', 'ClientesController@filter');
 });

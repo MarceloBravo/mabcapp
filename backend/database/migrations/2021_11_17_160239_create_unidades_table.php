@@ -16,6 +16,7 @@ class CreateUnidadesTable extends Migration
         Schema::create('unidades', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 50)->unique();
+            $table->string('nombre_plural', 50)->unique();
             $table->timestamps();
             $table->softDeletes();
         });

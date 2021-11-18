@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFieldNombrePluralToUnidades extends Migration
+class AddFieldRutToClientes extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddFieldNombrePluralToUnidades extends Migration
      */
     public function up()
     {
-        Schema::table('unidades', function (Blueprint $table) {
-            $table->string('nombre_plural', 50);
+        Schema::table('clientes', function (Blueprint $table) {
+            $table->string('rut',13)->unique();
         });
     }
 
@@ -25,7 +25,7 @@ class AddFieldNombrePluralToUnidades extends Migration
      */
     public function down()
     {
-        Schema::table('unidades', function (Blueprint $table) {
+        Schema::table('clientes', function (Blueprint $table) {
             //
         });
     }
