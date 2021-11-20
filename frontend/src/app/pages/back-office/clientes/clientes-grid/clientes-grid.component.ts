@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Cliente } from 'src/app/class/cliente/cliente';
-import { Paginacion } from '../../../../../class/paginacion/paginacion';
-import { ClientesService } from '../../../../../services/clientes/clientes.service';
-import { SharedService } from '../../../../../services/shared/shared.service';
-import { ModalDialogService } from '../../../../../services/modalDialog/modal-dialog.service';
-import { ToastService } from '../../../../../services/toast/toast.service';
+import { Paginacion } from '../../../../class/paginacion/paginacion';
+import { ClientesService } from '../../../../services/clientes/clientes.service';
+import { SharedService } from '../../../../services/shared/shared.service';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
+import { ToastService } from '../../../../services/toast/toast.service';
 
 @Component({
   selector: 'app-clientes-grid',
@@ -94,7 +94,8 @@ export class ClientesGridComponent implements OnInit {
   private obtenerfiltrarDatos(){
     this.showSpinner = true
       this._clientesService.filter(this.textoFiltro, this.paginacion.pagina).subscribe((res: any)=>{
-
+        this.cargarDatos(res)
+        this.showSpinner = false
       }, error =>{
         this.showSpinner = false
         this._sharedService.handlerError(error)
@@ -110,6 +111,4 @@ export class ClientesGridComponent implements OnInit {
     }
 
   }
-
-
 }
