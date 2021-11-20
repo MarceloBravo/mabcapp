@@ -26,7 +26,7 @@ class CreateClientesTable extends Migration
             $table->string('password',70);
             $table->string('email',255);
             $table->string('fono',20);
-            $table->string('foto',255);
+            $table->string('foto',255)->nullable();
             $table->string('casa_num',10);
             $table->string('block_num',10)->nullable();
             $table->string('referencia',255)->nullable();

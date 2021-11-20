@@ -1,4 +1,4 @@
-import { Component, OnInit, ɵCodegenComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { UsuariosService } from '../../../../services/usuarios/usuarios.service';
 import { User } from '../../../../class/User/user';
@@ -62,9 +62,8 @@ export class UsuariosFormComponent implements OnInit {
     if(id){
       this.id = parseInt(id);
       this.buscar();
-    }else{
-      this.iniciarForm();
     }
+    this.iniciarForm();
   }
 
   ngOnInit(): void {
