@@ -15,4 +15,9 @@ class Impuesto extends Model
     protected $table = "impuestos";
 
     protected $fillable = ['nombre', 'sigla', 'porcentaje'];
+
+    public function productos()
+    {
+        return $this->belongsToMany(Productos::class,'producto_impuesto')->get();;
+    }
 }

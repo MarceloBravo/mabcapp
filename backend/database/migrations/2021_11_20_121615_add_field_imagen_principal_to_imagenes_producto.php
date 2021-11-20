@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubCategoriaTable extends Migration
+class AddFieldImagenPrincipalToImagenesProducto extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateSubCategoriaTable extends Migration
      */
     public function up()
     {
-        Schema::create('sub_categorias', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre', 50)->unique();
-            $table->unsignedInteger('categoria_id');
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('imagenes_producto', function (Blueprint $table) {
+            $table->boolean('imagen_principal')->default(false);
         });
     }
 
@@ -29,6 +25,8 @@ class CreateSubCategoriaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sub_categoria');
+        Schema::table('imagenes_producto', function (Blueprint $table) {
+            //
+        });
     }
 }

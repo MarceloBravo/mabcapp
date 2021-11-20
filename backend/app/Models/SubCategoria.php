@@ -12,11 +12,16 @@ class SubCategoria extends Model
 
     use SoftDeletes;
 
-    protected $table =  'sub_categoria';
+    protected $table =  'sub_categorias';
 
     protected $fillable = ['nombre', 'categoria_id'];
 
     public function categoria(){
         return $this->hasOne(Categoria::class,'categoria_id')->get();
+    }
+
+    public function productos()
+    {
+        return $this->hasMany(Producto::class, 'id')->get();
     }
 }

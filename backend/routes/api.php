@@ -97,4 +97,9 @@ Route::group([
     Route::get('clientes/pag/{pag}', 'ClientesController@index');
     Route::get('clientes/get/all', 'ClientesController@getAll');
     Route::get('clientes/filter/{texto}/{pag}', 'ClientesController@filter');
+
+    Route::resource('productos', 'ProductosController');
+    Route::get('productos/pag/{pag}', 'ProductosController@index');
+    Route::get('productos/get/all', 'ProductosController@getAll');
+    Route::get('productos/filter/{texto}/{pag}', 'ProductosController@filter');
 });

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubCategoriaTable extends Migration
+class CreateProductoImpuestoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateSubCategoriaTable extends Migration
      */
     public function up()
     {
-        Schema::create('sub_categorias', function (Blueprint $table) {
+        Schema::create('producto_impuesto', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 50)->unique();
-            $table->unsignedInteger('categoria_id');
+            $table->bigInteger('producto_id')->references('productos')->on('id');
+            $table->bigInteger('impuesto_id')->references('impuestos')->on('id');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +29,6 @@ class CreateSubCategoriaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sub_categoria');
+        Schema::dropIfExists('producto_impuesto');
     }
 }

@@ -6,17 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Marca extends Model
+class ProductoImpuesto extends Model
 {
-    use SoftDeletes;
-
     use HasFactory;
 
-    protected $fillable = ['nombre'];
+    use SoftDeletes;
 
-    public function productos()
-    {
-        return $this->hasMany(Producto::class, 'id')->get();
-    }
+    protected $table = 'producto_impuesto';
 
+    protected $fillable = ['producto_id','impuesto_id'];
 }
