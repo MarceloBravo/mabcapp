@@ -86,6 +86,7 @@ Route::group([
     Route::resource('sub_categorias', 'SubCategoriasController');
     Route::get('sub_categorias/pag/{pag}', 'SubCategoriasController@index');
     Route::get('sub_categorias/get/all', 'SubCategoriasController@getAll');
+    Route::get('sub_categorias/get/all/{idCategoria}', 'SubCategoriasController@getAllByCategoria');
     Route::get('sub_categorias/filter/{texto}/{pag}', 'SubCategoriasController@filter');
 
     Route::resource('unidades', 'UnidadesController');
@@ -99,6 +100,7 @@ Route::group([
     Route::get('clientes/filter/{texto}/{pag}', 'ClientesController@filter');
 
     Route::resource('productos', 'ProductosController');
+    Route::post('productos/subir/imagenes','ProductosController@uploadImage');
     Route::get('productos/pag/{pag}', 'ProductosController@index');
     Route::get('productos/get/all', 'ProductosController@getAll');
     Route::get('productos/filter/{texto}/{pag}', 'ProductosController@filter');

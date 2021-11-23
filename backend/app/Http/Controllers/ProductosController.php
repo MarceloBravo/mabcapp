@@ -27,14 +27,19 @@ class ProductosController extends Controller
                         ->join('sub_categorias','productos.sub_categoria_id','=','sub_categorias.id')
                         ->join('unidades','productos.unidad_id','=','unidades.id')
                         ->select(
+                            'productos.id',
                             'productos.nombre',
                             'productos.descripcion',
                             'productos.precio_venta_normal',
                             'productos.stock',
                             'productos.unidad_id',
+                            'unidades.nombre as nombre_unidad',
                             'productos.marca_id',
+                            'marcas.nombre as nombre_marca',
                             'productos.categoria_id',
+                            'categorias.nombre as nombre_categoria',
                             'productos.sub_categoria_id',
+                            'sub_categorias.nombre as nombre_sub_categoria',
                             'productos.created_at',
                             'productos.updated_at',
                             'productos.deleted_at',
@@ -84,7 +89,7 @@ class ProductosController extends Controller
             $producto = new Producto();
             $res = $producto->fill($request->all())->save();
             if($res){
-                $this->subirImagenes($request, $producto);
+                $this->registrarImagenes($request, $producto);
             }
             if($res){
                 $res = $this->registrarImpuestos($request, $producto);
@@ -117,16 +122,30 @@ class ProductosController extends Controller
      */
     public function show($id)
     {
-        $data = Producto::find($id);
-        $data['impuestos'] = $data->impuestos();
-        $data['imagenes'] = $data->imagenes();
-        $data['categoria'] = $data->categoria();
-        $data['sub_categoria'] = $data->subCategoria();
-        $data['marca'] = $data->marca();
-        $data['unidad'] = $data->unidad();
+        $producto = Producto::find($id);
+        $data = $this->camposAdicionales($producto);
 
         return response()->json($data);
     }
+
+
+    private function camposAdicionales(Producto $data){
+
+        $data['impuestos'] = $data ? $data->impuestos() : [];
+        $data['imagenes'] = $data ? $data->imagenes() : [];
+        $data['categoria'] = $data ? $data->categoria() : null;
+        $data['sub_categoria'] = $data ? $data->subCategoria() : null;
+        $data['marca'] = $data ? $data->marca() : null;
+        $data['unidad'] = $data ? $data->unidad() : null;
+
+        $data['nombre_categoria'] = $data ? $data->categoria()[0]->nombre : '';
+        $data['nombre_sub_categoria'] = $data ? $data->subCategoria()[0]->nombre : '';
+        $data['nombre_marca'] = $data ? $data->marca()[0]->nombre : '';
+        $data['nombre_unidad'] = $data ? $data->unidad()[0]->nombre : '';
+
+        return $data;
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -156,8 +175,12 @@ class ProductosController extends Controller
             DB::beginTransaction();
             $producto = Producto::find($id);
             $res = $producto->fill($request->all())->save();
+
             if($res){
-                $res = $this->subirImagenes($request, $producto);
+                $res = $this->eliminarImagenes($request);
+            }
+            if($res){
+                $res = $this->registrarImagenes($request, $producto);
             }
             if($res){
                 $res = $this->registrarImpuestos($request, $producto);
@@ -230,14 +253,19 @@ class ProductosController extends Controller
                         ->orWhere('impuestos.nombre','like','%'.$texto.'%')
                         ->orWhere('unidades.nombre','like','%'.$texto.'%')
                         ->select(
+                            'productos.id',
                             'productos.nombre',
                             'productos.descripcion',
                             'productos.precio_venta_normal',
                             'productos.stock',
                             'productos.unidad_id',
+                            'unidades.nombre as nombre_unidad',
                             'productos.marca_id',
+                            'marcas.nombre as nombre_marca',
                             'productos.categoria_id',
+                            'categorias.nombre as nombre_categoria',
                             'productos.sub_categoria_id',
+                            'sub_categorias.nombre as nombre_sub_categoria',
                             'productos.created_at',
                             'productos.updated_at',
                             'productos.deleted_at',
@@ -257,7 +285,7 @@ class ProductosController extends Controller
     private function validaDatos(Request $request, $id = null){
         $rules = [
             'nombre' => 'required|min:3|max:255',
-            'descripcion' => 'required|min:5|max:100',
+            'descripcion' => 'required|min:5|max:1000',
             'precio_venta_normal' => 'required|min:0|integer',
             'stock' => 'required|min:0|integer',
             'unidad_id' => 'required|exists:unidades,id',
@@ -333,13 +361,55 @@ class ProductosController extends Controller
 
 
     /* --------------- SUBIR IMÁGENES --------------- */
-    private function subirImagenes(Request $request, Producto $producto){
-        ImagenProducto::where('producto_id','=',$producto->id)->delete();
-        //Iterando por las imágenes
-        $files = $request->file('fotos');
+    //Graba la foto en la carpeta public del backend
+    public function uploadImage(Request $request){
+        $res = '';
+        try{
+            
+            if(count($_FILES)>0){
+                $files = $_FILES["upload"];    
+                for($i = 0; $i < count($files['name']); $i++){
+                    move_uploaded_file($files["tmp_name"][$i],storage_path().'/app/public/productos/'.$files['name'][$i]);
+                }
+
+                $res = 'La foto ha sido actualizada exitosamente.';
+            }else{
+                $res = 'No se han encontrado archivos.';
+            }
+            return response()->json(['mensaje' => $res, 'tipoMensaje' => 'success']);
+        }catch(Exception $e){
+            return response()->json(['mensaje' => 'Ocurrió un error al intentar actualizar la foto: '.$e->getMessage(), 'tipoMensaje' => 'danger', 'id'=> $id]);
+        }
+    }
+
+    private function eliminarImagenes(Request $request){        
+        $files = $request->imagenes;
         if($files){
             foreach ($files as $imagen){
-                if(!$this->subirImagen($imagen, $producto)){
+
+                if(!is_null($imagen['id']) && !is_null($imagen['deleted_at'])){
+                    $producto = ImagenProducto::find($imagen['id']);
+                    if(!is_null($producto)){
+                        //dd($producto->id, $producto->source_image, $imagen["id"]);
+
+                        if(!$producto->delete()){
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+
+    private function registrarImagenes(Request $request, Producto $producto){
+        
+        //Iterando por las imágenes
+        $files = $request->imagenes;
+        if($files){
+            foreach ($files as $imagen){
+                if(!$this->registrarImagen($imagen, $producto)){
                     return false;
                 }
             }
@@ -348,33 +418,50 @@ class ProductosController extends Controller
     }
 
 
-    private function subirImagen($imagen, Producto $producto){
-        $res = false;
-        // script para subir la imagen
-        if($request->hasFile("foto")){
-           $imagen = $request->file("foto");
-           $nombreimagen = Str::slug($request->nombre).".".$imagen->guessExtension();
-           $ruta = public_path()."/productos";
+    private function registrarImagen($imagen, Producto $producto){
+        $res = true;
+        if(is_null($imagen['deleted_at'])){
+            $res = false;
+            $imagenProducto = null;
+            if(!is_null($imagen['id'])){
+                $imagenProducto = ImagenProducto::withTrashed()
+                                                ->where('id','=',$imagen['id'])
+                                                ->first();
+            }
+            if(is_null($imagenProducto)){
+                $imagenProducto = new ImagenProducto();
+            }
+            
+                                            //->where('producto_id','=',$producto->id)
+                                            //->where('source_image','=',$imagen["source_image"])
+                                            //->where('deleted_at')
+                                            //->first();
+              
+            $imagenProducto->producto_id = $producto->id;
+            $imagenProducto->source_image = $imagen['source_image'];
+            $imagenProducto->deleted_at = null;            
+            $imagenProducto->imagen_principal = $imagen['imagen_principal'];
 
-           copy($imagen->getRealPath(),$ruta."/".$nombreimagen);
-
-           $ImagenProducto = ImagenProducto::withTrashed()
-                                            ->where('producto_id','=',$producto->id)
-                                            ->where('source_image','=',$ruta)
-                                            ->where('deleted_at')
-                                            ->first();
-           if(!$ImagenProducto){
-                $ImagenProducto = new ImagenProducto();
-                $ImagenProducto->producto_id = $producto_id;
-                $ImagenProducto->source_image = $ruta;
-           }else{
-               $imageProducto->deleted_at = null;
-           }
-           $ImagenProducto->imagen_principal = $nombreimagen === $producto->imagen_principal;
-           $res = $imageProducto->save();
-       }
-
+            $res = $imagenProducto->save();
+        }
        return $res;
    }
+
+
+   private function actualizarImagenPrincipal($imagen){
+       $res = true;
+       if(!is_string($imagen) && !is_null($imagen["id"])){
+            $imagenProducto = ImagenProducto::find($imagen["id"]);
+            if(!is_null($imagenProducto)){
+                $imagenProducto->imagen_principal = $imagen["imagen_principal"];
+                $res = $ImagenProducto->save();
+                if(!$res){
+                    return false;
+                }
+            }
+        }
+        return $res;
+   }
+
    /* --------------- FIN SUBIR IMÁGENES --------------- */
 }

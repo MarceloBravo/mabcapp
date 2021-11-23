@@ -15,7 +15,11 @@ export class SubCategoriasService {
   ) { }
 
   getAll(){
-    return this.http.get(`${this._constService.endPoint}${this.url}`,{headers: this._constService.header()});
+    return this.http.get(`${this._constService.endPoint}${this.url}/get/all`,{headers: this._constService.header()});
+  }
+
+  getAllByCategoria(idCategoria: number){
+    return this.http.get(`${this._constService.endPoint}${this.url}/get/all/${idCategoria}`,{headers: this._constService.header()});
   }
 
   list(pag: number = 0){

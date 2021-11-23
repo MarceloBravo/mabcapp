@@ -36,6 +36,12 @@ class SubCategoriasController extends Controller
         return response()->json($data->toArray());
     }
 
+    public function getAllByCategoria($id){
+        $data = SubCategoria::where('categoria_id','=',$id)->get();
+
+        return response()->json($data->toArray());
+    }
+
     /**
      * Show the form for creating a new resource.
      *

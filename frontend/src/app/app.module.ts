@@ -52,6 +52,8 @@ import { UnidadFormComponent } from './pages/back-office/unidad/unidad-form/unid
 import { UnidadGridComponent } from './pages/back-office/unidad/unidad-grid/unidad-grid.component';
 import { ClientesGridComponent } from './pages/back-office/clientes/clientes-grid/clientes-grid.component';
 import { ClientesFormComponent } from './pages/back-office/clientes/clientes-form/clientes-form.component';
+import { ProductosGridComponent } from './pages/back-office/productos/productos-grid/productos-grid.component';
+import { ProductosFormComponent } from './pages/back-office/productos/productos-form/productos-form.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -100,7 +102,9 @@ import { ClientesFormComponent } from './pages/back-office/clientes/clientes-for
     UnidadFormComponent,
     UnidadGridComponent,
     ClientesGridComponent,
-    ClientesFormComponent
+    ClientesFormComponent,
+    ProductosGridComponent,
+    ProductosFormComponent
   ],
   imports: [
     BrowserModule,

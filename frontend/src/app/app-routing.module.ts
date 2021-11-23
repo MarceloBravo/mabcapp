@@ -29,6 +29,8 @@ import { UnidadGridComponent } from './pages/back-office/unidad/unidad-grid/unid
 import { UnidadFormComponent } from './pages/back-office/unidad/unidad-form/unidad-form.component';
 import { ClientesGridComponent } from './pages/back-office/clientes/clientes-grid/clientes-grid.component';
 import { ClientesFormComponent } from './pages/back-office/clientes/clientes-form/clientes-form.component';
+import { ProductosGridComponent } from './pages/back-office/productos/productos-grid/productos-grid.component';
+import { ProductosFormComponent } from './pages/back-office/productos/productos-form/productos-form.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -80,6 +82,11 @@ const routes: Routes = [
       { path: 'clientes', component: ClientesGridComponent },
       { path: 'clientes/nuevo', component: ClientesFormComponent },
       { path: 'clientes/edit/:id', component: ClientesFormComponent },
+
+      { path: 'productos', component: ProductosGridComponent },
+      { path: 'productos/nuevo', component: ProductosFormComponent },
+      { path: 'productos/edit/:id', component: ProductosFormComponent },
+
     ]
 },
 
