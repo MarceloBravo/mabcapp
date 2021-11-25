@@ -3,6 +3,10 @@
   min-height: 140%;
 }
 
+.action-col0{
+  cursor: pointer;
+}
+
 .col-fecha{
   width: 140px;
 }
@@ -28,3 +32,19 @@ a{
   overflow: auto;
   padding: 0px 5px;
 }
+
+.editable-cell{
+  width: 100%;
+  border: none;
+  background: transparent;
+}
+
+.editable-cell:focus{
+  border: #ced4da solid thin;
+  background: white;
+}
+
+.rowError td{
+  background: #fbcbcb  !important;
+}
+

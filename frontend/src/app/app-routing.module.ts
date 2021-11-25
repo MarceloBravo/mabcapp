@@ -31,6 +31,7 @@ import { ClientesGridComponent } from './pages/back-office/clientes/clientes-gri
 import { ClientesFormComponent } from './pages/back-office/clientes/clientes-form/clientes-form.component';
 import { ProductosGridComponent } from './pages/back-office/productos/productos-grid/productos-grid.component';
 import { ProductosFormComponent } from './pages/back-office/productos/productos-form/productos-form.component';
+import { PreciosComponent } from './pages/back-office/precios/precios.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -86,6 +87,8 @@ const routes: Routes = [
       { path: 'productos', component: ProductosGridComponent },
       { path: 'productos/nuevo', component: ProductosFormComponent },
       { path: 'productos/edit/:id', component: ProductosFormComponent },
+
+      { path: 'precios', component: PreciosComponent },
 
     ]
 },

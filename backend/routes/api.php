@@ -104,4 +104,10 @@ Route::group([
     Route::get('productos/pag/{pag}', 'ProductosController@index');
     Route::get('productos/get/all', 'ProductosController@getAll');
     Route::get('productos/filter/{texto}/{pag}', 'ProductosController@filter');
+
+    //Route::resource('precios', 'PreciosController');
+    Route::post('precios','PreciosController@masiveStore');
+    Route::get('precios/pag/{pag}', 'PreciosController@index');
+    //Route::get('precios/get/all', 'PreciosController@getAll');
+    Route::get('precios/filter/{texto}/{pag}', 'PreciosController@filter');
 });

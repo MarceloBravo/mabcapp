@@ -54,6 +54,7 @@ import { ClientesGridComponent } from './pages/back-office/clientes/clientes-gri
 import { ClientesFormComponent } from './pages/back-office/clientes/clientes-form/clientes-form.component';
 import { ProductosGridComponent } from './pages/back-office/productos/productos-grid/productos-grid.component';
 import { ProductosFormComponent } from './pages/back-office/productos/productos-form/productos-form.component';
+import { PreciosComponent } from './pages/back-office/precios/precios.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -104,7 +105,8 @@ import { ProductosFormComponent } from './pages/back-office/productos/productos-
     ClientesGridComponent,
     ClientesFormComponent,
     ProductosGridComponent,
-    ProductosFormComponent
+    ProductosFormComponent,
+    PreciosComponent
   ],
   imports: [
     BrowserModule,

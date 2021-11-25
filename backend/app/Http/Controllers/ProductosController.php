@@ -33,6 +33,7 @@ class ProductosController extends Controller
                             'productos.precio_venta_normal',
                             'productos.stock',
                             'productos.unidad_id',
+                            'productos.descuento_maximo',
                             'unidades.nombre as nombre_unidad',
                             'productos.marca_id',
                             'marcas.nombre as nombre_marca',
@@ -259,6 +260,7 @@ class ProductosController extends Controller
                             'productos.precio_venta_normal',
                             'productos.stock',
                             'productos.unidad_id',
+                            'productos.descuento_maximo',
                             'unidades.nombre as nombre_unidad',
                             'productos.marca_id',
                             'marcas.nombre as nombre_marca',
@@ -288,6 +290,7 @@ class ProductosController extends Controller
             'descripcion' => 'required|min:5|max:1000',
             'precio_venta_normal' => 'required|min:0|integer',
             'stock' => 'required|min:0|integer',
+            'descuento_maximo' => 'required|min:0|max:100',
             'unidad_id' => 'required|exists:unidades,id',
             'marca_id' => 'required|exists:marcas,id',
             'categoria_id' => 'required|exists:categorias,id',
@@ -310,6 +313,10 @@ class ProductosController extends Controller
             'stock.required' => 'Debe ingresar el stock del producto.',
             'stock.min' => 'El stock debe ser un número positivo.',
             'stock.integer' => 'El stock debe ser un número entero',
+
+            'descuento_maximo.required' => 'Debe ingresar el porcentaje máximo de descuento aplicable al producto.',
+            'descuento_maximo.min' => 'El porcentaje máxmimo de descuento debe ser un número positivo.',
+            'descuento_maximo.max' => 'El porcentaje máxmimo de descuento debe ser ingual o inferior a cien (100).',
 
             'unidad_id.required' => 'Debe seleccionar la unidad.',
             'unidad.exists' => 'La unidad no existe o no es válida.',
@@ -365,9 +372,9 @@ class ProductosController extends Controller
     public function uploadImage(Request $request){
         $res = '';
         try{
-            
+
             if(count($_FILES)>0){
-                $files = $_FILES["upload"];    
+                $files = $_FILES["upload"];
                 for($i = 0; $i < count($files['name']); $i++){
                     move_uploaded_file($files["tmp_name"][$i],storage_path().'/app/public/productos/'.$files['name'][$i]);
                 }
@@ -382,7 +389,7 @@ class ProductosController extends Controller
         }
     }
 
-    private function eliminarImagenes(Request $request){        
+    private function eliminarImagenes(Request $request){
         $files = $request->imagenes;
         if($files){
             foreach ($files as $imagen){
@@ -404,7 +411,7 @@ class ProductosController extends Controller
 
 
     private function registrarImagenes(Request $request, Producto $producto){
-        
+
         //Iterando por las imágenes
         $files = $request->imagenes;
         if($files){
@@ -431,15 +438,15 @@ class ProductosController extends Controller
             if(is_null($imagenProducto)){
                 $imagenProducto = new ImagenProducto();
             }
-            
+
                                             //->where('producto_id','=',$producto->id)
                                             //->where('source_image','=',$imagen["source_image"])
                                             //->where('deleted_at')
                                             //->first();
-              
+
             $imagenProducto->producto_id = $producto->id;
             $imagenProducto->source_image = $imagen['source_image'];
-            $imagenProducto->deleted_at = null;            
+            $imagenProducto->deleted_at = null;
             $imagenProducto->imagen_principal = $imagen['imagen_principal'];
 
             $res = $imagenProducto->save();

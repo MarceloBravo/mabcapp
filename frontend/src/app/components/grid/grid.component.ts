@@ -17,11 +17,21 @@ export class GridComponent implements OnInit {
   @Input() registros: any[] = []
   @Input() cabeceras: Object[] = []
   @Input() columnasVisibles: string[] = []
+  @Input() columnasEditables: string[] = []
+  @Input() columnasNumericasEditables: string[] = []
+  @Input() columnasEditablesFechas: string[] = []
+  @Input() columnasConImagenes: string[] = []
   @Input() titulo: string = ''
   @Input() urlEditar: string = 'edit';
-  @Input() urlNuevo: string = 'nuevo';
+  @Input() urlNuevo: string  = 'nuevo';
+  @Input() ocultarNuevo: boolean = false
+  @Input() mostrarCopiarFila: boolean = false
+  @Input() filtroHabilitado: boolean = true
   @Output() idEliminar: EventEmitter<number> = new EventEmitter();
   @Output() textoFiltro: EventEmitter<string> = new EventEmitter();
+  @Output() nuevoClick: EventEmitter<boolean> = new EventEmitter();
+  @Output() clickInFirstColumn: EventEmitter<number> = new EventEmitter();
+  @Output() changeColumn: EventEmitter<{fila: number, columna: string, nuevo_valor: any, valor_anterior: any}> = new EventEmitter();
   public mostrarNuevo: boolean = false;
   public mostrarEditar: boolean = false;
   public mostrarEliminar: boolean = false;
@@ -92,4 +102,31 @@ export class GridComponent implements OnInit {
     return arrKeyNames;
   }
 
+  columnaEditable(col: string){
+    return this.columnasEditables.indexOf(col) > -1
+  }
+
+  columnaEditableNumerica(col: string){
+    return this.columnasNumericasEditables.indexOf(col) > -1
+  }
+
+  columnaEditableFecha(col: string){
+    return this.columnasEditablesFechas.indexOf(col) > -1
+  }
+
+  columnaImagen(col: string){
+    return this.columnasConImagenes.indexOf(col) > -1
+  }
+
+  //Actualizando el campo en la grilla de registros
+  updateData(target: any, col: string, index: any){
+    let valorAnterior = this.registros[index][col]
+    this.registros[index][col] = target.value
+    return this.changeColumn.emit({fila: index, columna: col, nuevo_valor: target.value, valor_anterior: valorAnterior})
+  }
+
+
+  clickActionRow(idRow: number){
+    this.clickInFirstColumn.emit(idRow)
+  }
 }

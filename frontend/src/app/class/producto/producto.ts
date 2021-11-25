@@ -11,6 +11,7 @@ export class Producto {
   descripcion: string = '';
   precio_venta_normal: number = 0;
   stock: number = 0;
+  descuento_maximo: number = 0;
   unidad_id: number = 0;
   marca_id: number = 0;
   categoria_id: number = 0;
