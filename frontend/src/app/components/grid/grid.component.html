@@ -31,7 +31,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of registros; index as i"  [id]="i">
+          <tr *ngFor="let item of registros; index as i"  [id]="i" >
 
             <td *ngIf="mostrarCopiarFila">
               <a (click)="clickActionRow(i)" class="action-col0" title="Duplicar fila">
@@ -81,7 +81,7 @@
               {{ (!columnaImagen(col) && !columnaEditable(col) && !columnaEditableNumerica(col) && !columnaEditableFecha(col)) ? formatDate(item[col]) : ''}}
             </td>
 
-            <td *ngIf="mostrarEditar || mostrarEliminar">
+            <td *ngIf="mostrarEditar || mostrarEliminar || cargandoDatos(i)">
 
               <a *ngIf="item.id && mostrarEditar && urlEditar.length > 0" routerLink="{{ urlEditar }}/{{item.id}}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">

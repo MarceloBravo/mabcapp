@@ -20,7 +20,7 @@
           <button type="submit" class="btn btn-primary" (click)="cancelarEdicion()" [disabled]="!editando">
             Cancelar
           </button>
-          <button type="submit" class="btn btn-success" (click)="grabar()" [disabled]="!editando">
+          <button type="submit" class="btn btn-success" (click)="grabar()" [disabled]="!editando || msgError !== ''">
             Grabar
           </button>
         </div>

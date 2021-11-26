@@ -4,6 +4,9 @@ import { PreciosService } from '../../../services/precios/precios.service';
 import { SharedService } from '../../../services/shared/shared.service';
 import { ModalDialogService } from '../../../services/modalDialog/modal-dialog.service';
 import { ToastService } from '../../../services/toast/toast.service';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpEvent } from '@angular/common/http';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-precios',
@@ -38,6 +41,7 @@ export class PreciosComponent implements OnInit {
   public editando: boolean = false
   private accion: string | null = null
   public msgError: string = ''
+  //private appendRowEvent$ = new BehaviorSubject(false);
 
 
   constructor(
@@ -47,6 +51,9 @@ export class PreciosComponent implements OnInit {
     private _toastService: ToastService,
   ) {
     this.obtenerDatos()
+    //this.appendRowEvent$.subscribe(appendRow => {
+    //  this.resaltarTopeFechas(this.validaTopeFechas())
+    //});
   }
 
   ngOnInit(): void {
@@ -101,6 +108,8 @@ export class PreciosComponent implements OnInit {
     newRow.id = Math.random() * (0 + 1000) - 1000
     this.data.splice(idFila,0,newRow)
     this.editando = true
+    //this.appendRowEvent$.next(!this.appendRowEvent$.getValue());
+    this.detectarTopeFechas()
   }
 
 
@@ -160,7 +169,6 @@ export class PreciosComponent implements OnInit {
         this.data[e['fila']]['fecha_hasta'] = fechaHasta.toJSON().split('T')[0]
         break;
     }
-    //let topeFechas: {fila1: number, fila2: number}[] = this.validaTopeFechas()
     this.resaltarTopeFechas(this.validaTopeFechas())
   }
 
@@ -169,17 +177,21 @@ export class PreciosComponent implements OnInit {
     let topeFechas: {fila1: number, fila2: number}[] = []
 
     this.data.forEach((i1, key1) =>{
-      (<HTMLTableRowElement>document.getElementById(`${key1}`)).className = ''
-      this.data.forEach((i2, key2) => {
-        if(i1.producto === i2.producto && key1 !== key2 &&
-          ((i2.fecha_desde >= i1.fecha_desde && i2.fecha_desde <= i1.fecha_hasta) ||
-          (i2.fecha_hasta >= i1.fecha_desde && i2.fecha_hasta <= i1.fecha_hasta))){
-            topeFechas.push({fila1: key1, fila2: key2})
-          }
-      })
+      let row = (<HTMLTableRowElement>document.getElementById(`${key1}`))
+      if(row){
+        row.className = ''
+
+        this.data.forEach((i2, key2) => {
+          if(i1.producto === i2.producto && key1 !== key2 &&
+            ((i2.fecha_desde >= i1.fecha_desde && i2.fecha_desde <= i1.fecha_hasta) ||
+            (i2.fecha_hasta >= i1.fecha_desde && i2.fecha_hasta <= i1.fecha_hasta))){
+              topeFechas.push({fila1: key1, fila2: key2})
+            }
+        })
+      }
     })
 
-    this.msgError = topeFechas ? 'ERROR: Existen topes de fechas...' : ''
+    this.msgError = topeFechas.length > 0 ? 'ERROR: Existen topes de fechas...' : ''
 
     return topeFechas
   }
@@ -191,6 +203,9 @@ export class PreciosComponent implements OnInit {
     })
   }
 
+  detectarTopeFechas(){
+    setTimeout(this.resaltarTopeFechas, 100, this.validaTopeFechas())
+  }
 
   private calcularPrecio(porcentaje: number, precioNormal: number){
     return precioNormal - (porcentaje * precioNormal / 100)
@@ -243,7 +258,7 @@ export class PreciosComponent implements OnInit {
     }else if(this.accion === 'eliminar' && this.idEliminar){
         this.deletedIds.push(this.idEliminar)
         this.data.forEach((d, i) => {if(d['id'] === this.idEliminar){this.data.splice(i, 1)}})
-
+        this.detectarTopeFechas()
     }
   }
 

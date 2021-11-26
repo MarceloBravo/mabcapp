@@ -30,6 +30,7 @@ export class GridComponent implements OnInit {
   @Output() idEliminar: EventEmitter<number> = new EventEmitter();
   @Output() textoFiltro: EventEmitter<string> = new EventEmitter();
   @Output() nuevoClick: EventEmitter<boolean> = new EventEmitter();
+  @Output() grillaActualizada: EventEmitter<boolean> = new EventEmitter();
   @Output() clickInFirstColumn: EventEmitter<number> = new EventEmitter();
   @Output() changeColumn: EventEmitter<{fila: number, columna: string, nuevo_valor: any, valor_anterior: any}> = new EventEmitter();
   public mostrarNuevo: boolean = false;
@@ -128,5 +129,14 @@ export class GridComponent implements OnInit {
 
   clickActionRow(idRow: number){
     this.clickInFirstColumn.emit(idRow)
+  }
+
+  cargandoDatos(i: number){
+    this.datosCargados(i)
+    return false
+  }
+
+  datosCargados(index: number){
+    return this.grillaActualizada.emit(index === this.registros.length - 1)
   }
 }
