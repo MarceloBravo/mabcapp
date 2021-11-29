@@ -110,4 +110,7 @@ Route::group([
     Route::get('precios/pag/{pag}', 'PreciosController@index');
     //Route::get('precios/get/all', 'PreciosController@getAll');
     Route::get('precios/filter/{texto}/{pag}', 'PreciosController@filter');
+
+    Route::post('tienda','TiendaController@update');
+    Route::get('tienda/{id}', 'TiendaController@show');
 });

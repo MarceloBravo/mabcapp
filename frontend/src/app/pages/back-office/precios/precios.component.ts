@@ -6,7 +6,6 @@ import { ModalDialogService } from '../../../services/modalDialog/modal-dialog.s
 import { ToastService } from '../../../services/toast/toast.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpEvent } from '@angular/common/http';
-import { Console } from 'console';
 
 @Component({
   selector: 'app-precios',
