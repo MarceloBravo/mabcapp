@@ -1,0 +1,15 @@
+::ng-deep .panel-default{
+  margin: 0px !important;
+}
+
+::ng-deep .accordion-tab .card-header{
+  padding: 5px !important;
+}
+
+::ng-deep .card button{
+  color: black;
+}
+
+::ng-deep .button-group .btn{
+  color: white;
+}

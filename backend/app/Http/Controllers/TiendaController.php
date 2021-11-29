@@ -123,6 +123,6 @@ class TiendaController extends Controller
             'direccion.max' => 'La dirección debe tener hasta 255 carácteres. Ingresa una dirección más corta.',
         ];
 
-        return Validator::make($request-all(), $rules, $messages);
+        return Validator::make($request->all(), $rules, $messages);
     }
 }

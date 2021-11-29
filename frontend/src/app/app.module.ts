@@ -55,6 +55,9 @@ import { ClientesFormComponent } from './pages/back-office/clientes/clientes-for
 import { ProductosGridComponent } from './pages/back-office/productos/productos-grid/productos-grid.component';
 import { ProductosFormComponent } from './pages/back-office/productos/productos-form/productos-form.component';
 import { PreciosComponent } from './pages/back-office/precios/precios.component';
+import { ConfigTiendaComponent } from './pages/back-office/config-tienda/config-tienda.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -106,7 +109,8 @@ import { PreciosComponent } from './pages/back-office/precios/precios.component'
     ClientesFormComponent,
     ProductosGridComponent,
     ProductosFormComponent,
-    PreciosComponent
+    PreciosComponent,
+    ConfigTiendaComponent
   ],
   imports: [
     BrowserModule,
@@ -115,7 +119,9 @@ import { PreciosComponent } from './pages/back-office/precios/precios.component'
     ReactiveFormsModule,
     FormsModule,
     ImageUploadModule.forRoot(),
-    IvyCarouselModule
+    IvyCarouselModule,
+    BrowserAnimationsModule,
+    AccordionModule.forRoot()
   ],
   providers: [LoguedGuard],
   bootstrap: [AppComponent],
