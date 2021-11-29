@@ -83,74 +83,7 @@ class PreciosController extends Controller
         }
 
         return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
-
-        //dd($precios, $eliminados);
-        /*
-        array:2 [
-                "data" => array:3 [
-                    0 => array:17 [
-                    "producto" => "Celular LG k41s"
-                    "precio_venta_normal" => 110000
-                    "stock" => 50
-                    "descuento_maximo" => 15
-                    "marca" => "Samsung"
-                    "unidad" => "Unidad"
-                    "categoria" => "Electrodomésticos"
-                    "sub_categoria" => "Notebooks"
-                    "id" => 1
-                    "producto_id" => 6
-                    "precio" => 95700
-                    "descuento" => "13"
-                    "fecha_desde" => "2021-11-23"
-                    "fecha_hasta" => "2021-11-30"
-                    "created_at" => "2021-11-23T18:43:11.000000Z"
-                    "updated_at" => "2021-11-23T18:43:11.000000Z"
-                    "deleted_at" => null
-                    ]
-                    1 => array:17 [
-                    "producto" => "Disco duro"
-                    "precio_venta_normal" => 33000
-                    "stock" => 20
-                    "descuento_maximo" => 20
-                    "marca" => "LG"
-                    "unidad" => "Unidad"
-                    "categoria" => "Informática"
-                    "sub_categoria" => "Almacenamiento"
-                    "id" => -352.23347119554
-                    "producto_id" => 7
-                    "precio" => 28380
-                    "descuento" => "14"
-                    "fecha_desde" => "2021-11-23"
-                    "fecha_hasta" => "2021-11-26"
-                    "created_at" => "2021-11-23T18:44:11.000000Z"
-                    "updated_at" => "2021-11-23T18:44:11.000000Z"
-                    "deleted_at" => null
-                    ]
-                    2 => array:17 [
-                    "producto" => "Disco duro"
-                    "precio_venta_normal" => 33000
-                    "stock" => 20
-                    "descuento_maximo" => 20
-                    "marca" => "LG"
-                    "unidad" => "Unidad"
-                    "categoria" => "Informática"
-                    "sub_categoria" => "Almacenamiento"
-                    "id" => -952.40113747927
-                    "producto_id" => 7
-                    "precio" => 28050
-                    "descuento" => "15"
-                    "fecha_desde" => "2021-11-23"
-                    "fecha_hasta" => "2021-11-26"
-                    "created_at" => "2021-11-23T18:44:11.000000Z"
-                    "updated_at" => "2021-11-23T18:44:11.000000Z"
-                    "deleted_at" => null
-                    ]
-                ]
-                "deleted" => array:1 [
-                    0 => 2
-                ]
-                ]*/
-    }
+     }
 
 
 
@@ -174,9 +107,9 @@ class PreciosController extends Controller
             $precio = Precio::find($idEliminado);
             if(!is_null($precio)){
                 $res = $precio->delete();
-            }
-            if(!$res){
-                return false;
+                if(!$res){
+                    return false;
+                }
             }
         }
         return true;

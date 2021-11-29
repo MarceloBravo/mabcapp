@@ -439,11 +439,6 @@ class ProductosController extends Controller
                 $imagenProducto = new ImagenProducto();
             }
 
-                                            //->where('producto_id','=',$producto->id)
-                                            //->where('source_image','=',$imagen["source_image"])
-                                            //->where('deleted_at')
-                                            //->first();
-
             $imagenProducto->producto_id = $producto->id;
             $imagenProducto->source_image = $imagen['source_image'];
             $imagenProducto->deleted_at = null;
