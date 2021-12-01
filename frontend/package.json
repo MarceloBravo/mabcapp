@@ -24,6 +24,7 @@
     "angular-responsive-carousel": "^2.1.2",
     "angular2-image-upload": "^1.0.0-rc.2",
     "bootstrap": "^4.5.3",
+    "file-exists": "^5.0.1",
     "jquery": "^3.5.1",
     "ngx-bootstrap": "^7.1.0",
     "rxjs": "~6.6.0",

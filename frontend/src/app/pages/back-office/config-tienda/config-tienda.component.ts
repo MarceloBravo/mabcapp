@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ConfigTiendaService } from '../../../services/configTienda/config-tienda.service';
 import { ToastService } from '../../../services/toast/toast.service';
 import { SharedService } from '../../../services/shared/shared.service';
-import { AccordionComponent } from 'ngx-bootstrap/accordion';
-import { Tienda } from 'src/app/class/tienda/tienda';
 import { ModalDialogService } from '../../../services/modalDialog/modal-dialog.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { ConfigMarquesinaService } from '../../../services/configMarquesina/config-marquesina.service';
+import { ImagenMarquesina } from '../../../class/imagenMarquesina/imagen-marquesina';
+import { ConstantesService } from '../../../services/constantes/constantes.service';
+import { FilesService } from '../../../services/files/files.service';
+import { runInThisContext } from 'vm';
 
 @Component({
   selector: 'app-config-tienda',
@@ -14,40 +15,48 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
   styleUrls: ['./config-tienda.component.css']
 })
 export class ConfigTiendaComponent implements OnInit {
-  public showSpinner: boolean = false
   public titulo: string = 'Configuración de la Tienda'
-  public form: FormGroup = new FormGroup({
-    id: new FormControl(null),
-    nombre_tienda: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
-    fono_venta: new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(30)]),
-    email: new FormControl(null, [Validators.required, Validators.email, Validators.maxLength(150)]),
-    direccion: new FormControl(null, [Validators.required, Validators.minLength(8), Validators.maxLength(255)]),
-  })
-  public formImages: FormGroup = new FormGroup({})
-  public id: number | null = null
-  private tienda: Tienda = new Tienda()
   public isOpen1: boolean = false
   public isOpen2: boolean = false
-  private accion: string | null = ''
+
+  public showSpinner: boolean = false
+  public form: FormGroup = new FormGroup({
+    id: new FormControl(null),
+    src_imagen: new FormControl(null, [Validators.required, Validators.maxLength(500)]),
+    texto: new FormControl(null, [Validators.required, Validators.maxLength(200)]),
+    link: new FormControl(null, [Validators.required, Validators.maxLength(255)]),
+    posicion: new FormControl(null, [Validators.required, Validators.min(0)]),
+    created_at: new FormControl(null),
+    uodated_at: new FormControl(null),
+    deleted_at: new FormControl(null),
+  })
+  public imagenesMarquesina: any[] = []
+  private indiceEliminar: number | null = null
+  private deleted: number[] = []
+  private fileToUpload: File[] = []
+  private accion: string | null = null
+  private loadedData: string = ''
 
   constructor(
-    private _tiendaService: ConfigTiendaService,
+    private _configMarquesina: ConfigMarquesinaService,
     private _toastService: ToastService,
     private _sharedService: SharedService,
     private _modalService: ModalDialogService,
+    private _files: FilesService,
+    private _const: ConstantesService
   ) {
-    this.obtenerDatos()
+    this.resetForm()
   }
 
   ngOnInit(): void {
+
   }
 
-  /* ********************** DATOS TIENDA - ACCORDION1 ************************ */
   private obtenerDatos(){
     this.showSpinner = true
-    this._tiendaService.get().subscribe((res: any) => {
-      this.tienda = res
-      this.form.patchValue(res)
+    this._configMarquesina.getAll().subscribe((res: any) => {
+      this.imagenesMarquesina = res
+      this.loadedData = JSON.stringify(this.imagenesMarquesina)
       this.showSpinner = false
     }, error =>{
       this.showSpinner = false
@@ -55,46 +64,122 @@ export class ConfigTiendaComponent implements OnInit {
     })
   }
 
+  eliminarImagen(index: number, id: any){
+    this._modalService.mostrarModalDialog('¿Desea eliminar la imagen?' + index,'Eliminar imagen','Eliminar')
+    this.indiceEliminar = index
+    this.accion = 'eliminar'
+  }
+
   aceptarModal(){
+    if(this.accion === 'eliminar' && this.indiceEliminar !== null){
+      this.deleted.push(this.imagenesMarquesina[this.indiceEliminar].id)
+      this.imagenesMarquesina.splice(this.indiceEliminar, 1)
+    }else if(this.accion === 'salir' || this.accion === 'grabar'){
+      this.uploadFiles()
+    }
+  }
+
+  private guardarDatos(){
     this.showSpinner = true
-    this._tiendaService.update(this.form.value).subscribe((res: any) => {
-      this.showSpinner = false
-      if(res['tipoMensaje'] === 'success'){
-        this._toastService.showSuccessMessage(res['mensaje']);
-        this.tienda = this.form.value
-        if(this.accion === 'cancelarTienda'){
-          this.cerrarAccordeon1()
-        }
+    this._configMarquesina.save({imagenes: this.imagenesMarquesina, deleted: this.deleted}).subscribe((res: any) =>{
+
+      if(res['tipoMensaje'] === 'success' ){
+        this._toastService.showSuccessMessage(res['mensaje'])
+        this.resetForm()
       }else{
-        this._toastService.showErrorMessage(res['mensaje'])
+        this._toastService.showErrorMessage(res['mensaje'] + ' ' + this.errores(res['errores']))
       }
-    }, error => {
+      this.showSpinner = false
+    }, error =>{
+      this.showSpinner = false
+      this._sharedService.handlerError(error)
+    })
+  }
+
+  private uploadFiles(){
+    this.showSpinner = true
+    this._files.uploadFiles(this.fileToUpload, 'imagenes_marquesina/files').subscribe((res: any) =>{
+      if(res?.body?.tipoMensaje === 'success'){
+        this.guardarDatos()
+      }
+      this.showSpinner = false
+    }, error =>{
       this.showSpinner = false
       this._sharedService.handlerError(error)
     })
   }
 
   cancelarModal(){
-    this.accion = null
-  }
-
-  cancelarTienda(){
-    if(this.form.dirty){
-      this._modalService.mostrarModalDialog('Existen datos sin guardar. ¿Desea grabar los cambios?','Actualizar datos tienda','Actualizar')
-      this.accion = 'cancelarTienda'
-    }else{
-      this.cerrarAccordeon1();
+    this.indiceEliminar = null
+    if(this.accion === 'salir'){
+      this.isOpen2 = false
     }
   }
 
-  cerrarAccordeon1(){
-    this.isOpen1 = false
-    this.form.patchValue(this.tienda)
+  nuevaImagen(){
+    this.imagenesMarquesina.unshift(new ImagenMarquesina())
   }
 
-  grabarTienda(){
-    this._modalService.mostrarModalDialog('¿Desea actualizar los datos de la tienda?','Actualizar datos tienda','Actualizar')
-    this.accion = 'grabarTienda'
+  buscarImagen(index: number){
+    (<HTMLInputElement>document.getElementById('file'+index)).click()
   }
-  /* ********************** FIN DATOS TIENDA - ACCORDION1 ************************ */
+
+
+  grabar(){
+    this._modalService.mostrarModalDialog('¿Desea grabar los datos?','Actualizar marquesina','Grabar')
+    this.accion = 'grabar'
+  }
+
+
+  cancelar(){
+    if(this.fileToUpload.length > 0 || this.loadedData !== JSON.stringify(this.imagenesMarquesina)){
+      this._modalService.mostrarModalDialog('Existen cambios sin guardar. ¿Desea grabar los datos?','Actualizar marquesina','Grabar','Cerrar')
+      this.accion = 'salir'
+    }else{
+      this.isOpen2 = false
+      this.resetForm()
+    }
+  }
+
+
+  updateData(index: any, col: string,  e:any){
+    this.imagenesMarquesina[index][col] = e.target.value
+  }
+
+  cargarImagen(index: number){
+    let file = <HTMLInputElement>document.getElementById('file'+index)
+    if(file.files){
+      if(this.fileToUpload[index]){
+        this.fileToUpload.splice(index, 1)
+      }
+      this.imagenesMarquesina[index].src_imagen = file.files[0].name
+      this.fileToUpload.push(file.files[0]);
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.cargaFotoEnImageControl(reader.result as string, null, index)
+      }
+      reader.readAsDataURL(<File>file.files[0])
+    }
+  }
+
+  cargaFotoEnImageControl(object: any, url: any, index: number){
+    let img: HTMLImageElement = <HTMLImageElement>document.getElementById('img'+index)
+    img.src = object ? object : url ? this._const.storageImages + 'marquesina/' + url : 'Archivo no encontrado'
+  }
+
+
+  getFullPathImage(imageName: string){
+    return imageName ? this._const.storageImages + 'marquesina/' + imageName : '#'
+  }
+
+
+  private resetForm(){
+    this.obtenerDatos()
+    this.fileToUpload = []
+  }
+
+
+  private errores(errors: any){
+    return errors ? Object.keys(errors).map(e => errors[e]).reduce((msg, e) => msg += e) : ''
+  }
 }

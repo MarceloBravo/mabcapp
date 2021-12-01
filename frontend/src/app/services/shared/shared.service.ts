@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { User } from '../../class/User/user';
 import { Rol } from 'src/app/class/rol/rol';
-import { TokenService } from '../token/token.service';
 import { ToastService } from '../toast/toast.service';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class SharedService {
 
   constructor(
     private _toastService: ToastService,
-    private router: Router
+    private router: Router,
+    private httpClient: HttpClient
   ) { }
 
   header(token: string){
@@ -62,4 +64,12 @@ export class SharedService {
     return true;
   }
 
+  public checkFileExist(urlToFile: string): Observable<boolean>  {
+    return this.httpClient
+      .get(urlToFile, { observe: 'response', responseType: 'blob' })
+      .pipe(
+        map(() => true), catchError(() => of(false))
+      );
+  }
 }
+

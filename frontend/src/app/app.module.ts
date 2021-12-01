@@ -58,6 +58,7 @@ import { PreciosComponent } from './pages/back-office/precios/precios.component'
 import { ConfigTiendaComponent } from './pages/back-office/config-tienda/config-tienda.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { FormDatosTiendaComponent } from './pages/back-office/config-tienda/form-datos-tienda/form-datos-tienda.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -110,7 +111,8 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
     ProductosGridComponent,
     ProductosFormComponent,
     PreciosComponent,
-    ConfigTiendaComponent
+    ConfigTiendaComponent,
+    FormDatosTiendaComponent
   ],
   imports: [
     BrowserModule,

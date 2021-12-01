@@ -33,7 +33,7 @@ class ImagenesMarquesinaController extends Controller
             if($res){
                 DB::commit();
                 $mensaje = 'Las imagenes han sido actualizadas.';
-                $tipoMensaje = 'danger';
+                $tipoMensaje = 'success';
                 $id = 0;
             }else{
                 DB::rollback();
@@ -53,6 +53,7 @@ class ImagenesMarquesinaController extends Controller
 
 
     private function eliminarImagenes($idEliminados){
+
         foreach($idEliminados as $id){
             $imagen = ImagenMarquesina::find($id);
             if(!is_null($imagen)){

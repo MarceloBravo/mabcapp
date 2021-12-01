@@ -13,3 +13,21 @@
 ::ng-deep .button-group .btn{
   color: white;
 }
+
+.image-containner{
+  height: 250px;
+}
+
+.input-image-file{
+  display: none;
+}
+
+.img-item{
+  max-width: 100%;
+  max-height: 200px;
+}
+
+.btn-open-file{
+  bottom: 0px;
+  position: absolute;
+}
