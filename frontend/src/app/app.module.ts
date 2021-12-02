@@ -59,6 +59,7 @@ import { ConfigTiendaComponent } from './pages/back-office/config-tienda/config-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { FormDatosTiendaComponent } from './pages/back-office/config-tienda/form-datos-tienda/form-datos-tienda.component';
+import { SeccionesHomeGridComponent } from './pages/back-office/seccionesHome/secciones-home-grid/secciones-home-grid.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -112,7 +113,8 @@ import { FormDatosTiendaComponent } from './pages/back-office/config-tienda/form
     ProductosFormComponent,
     PreciosComponent,
     ConfigTiendaComponent,
-    FormDatosTiendaComponent
+    FormDatosTiendaComponent,
+    SeccionesHomeGridComponent
   ],
   imports: [
     BrowserModule,

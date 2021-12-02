@@ -7,8 +7,6 @@ import { ConfigMarquesinaService } from '../../../services/configMarquesina/conf
 import { ImagenMarquesina } from '../../../class/imagenMarquesina/imagen-marquesina';
 import { ConstantesService } from '../../../services/constantes/constantes.service';
 import { FilesService } from '../../../services/files/files.service';
-import { runInThisContext } from 'vm';
-
 @Component({
   selector: 'app-config-tienda',
   templateUrl: './config-tienda.component.html',

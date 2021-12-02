@@ -115,4 +115,10 @@ Route::group([
     Route::get('imagenes_marquesina', 'ImagenesMarquesinaController@getAll');
     Route::post('imagenes_marquesina', 'ImagenesMarquesinaController@store');
     Route::post('imagenes_marquesina/files', 'ImagenesMarquesinaController@uploadFiles');
+
+    Route::resource('secciones_home', 'SeccionesHomeController');
+    Route::get('secciones_home/pag/{pag}', 'SeccionesHomeController@index');
+    Route::get('secciones_home/get/all', 'SeccionesHomeController@getAll');
+    Route::get('secciones_home/filter/{texto}/{pag}', 'SeccionesHomeController@filter');
+
 });
