@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConstantesService } from '../constantes/constantes.service';
-import { Producto } from '../../class/producto/producto';
+import { SeccionHome } from '../../class/seccionHome/seccion-home';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductosService {
-  private url: string = 'productos'
+export class SeccionesHomeService {
+  private url: string = 'secciones_home'
 
   constructor(
     private http: HttpClient,
@@ -26,20 +26,16 @@ export class ProductosService {
     return this.http.get(`${this._const.endPoint}${this.url}/filter/${texto}/${page}`,{headers: this._const.header()});
   }
 
-  getAllFilter(texto: string){
-    return this.http.get(`${this._const.endPoint}${this.url}/filter/${texto}`,{headers: this._const.header()});
-  }
-
   find(id: number){
     return this.http.get(`${this._const.endPoint}${this.url}/${id}`,{headers: this._const.header()});
   }
 
-  insert(producto: Producto){
-    return this.http.post(`${this._const.endPoint}${this.url}`, producto, {headers: this._const.header()});
+  insert(seccion: SeccionHome){
+    return this.http.post(`${this._const.endPoint}${this.url}`, seccion, {headers: this._const.header()});
   }
 
-  update(producto: Producto){
-    return this.http.put<object>(`${this._const.endPoint}${this.url}/${producto.id}`, producto, {headers: this._const.headerAttachFile()});
+  update(seccion: SeccionHome){
+    return this.http.put<object>(`${this._const.endPoint}${this.url}/${seccion.id}`, seccion, {headers: this._const.headerAttachFile()});
   }
 
   delete(id: number){

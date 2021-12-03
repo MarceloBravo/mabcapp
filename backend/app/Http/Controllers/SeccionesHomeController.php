@@ -37,6 +37,13 @@ class SeccionesHomeController extends Controller
 
     public function show($id){
         $seccion = SeccionesHome::find($id);
+        if(!is_null($seccion)){
+            $seccion['productos'] = $seccion->productos();
+            foreach($seccion['productos'] as $producto){
+                $producto['nombre'] = $producto->producto()[0]['nombre'];
+                $producto['nombre_marca'] = $producto->producto()[0]->marca()[0]['nombre'];
+            }
+        }
 
         return response()->json($seccion);
     }

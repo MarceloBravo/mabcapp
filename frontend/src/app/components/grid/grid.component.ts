@@ -25,6 +25,9 @@ export class GridComponent implements OnInit {
   @Input() urlEditar: string = 'edit';
   @Input() urlNuevo: string  = 'nuevo';
   @Input() ocultarNuevo: boolean = false
+  @Input() ocultarEditar: boolean = false
+  @Input() ocultarEliminar: boolean = false
+  @Input() ocultarFiltro: boolean = false
   @Input() mostrarCopiarFila: boolean = false
   @Input() filtroHabilitado: boolean = true
   @Output() idEliminar: EventEmitter<number> = new EventEmitter();
@@ -33,9 +36,9 @@ export class GridComponent implements OnInit {
   @Output() grillaActualizada: EventEmitter<boolean> = new EventEmitter();
   @Output() clickInFirstColumn: EventEmitter<number> = new EventEmitter();
   @Output() changeColumn: EventEmitter<{fila: number, columna: string, nuevo_valor: any, valor_anterior: any}> = new EventEmitter();
-  public mostrarNuevo: boolean = false;
-  public mostrarEditar: boolean = false;
-  public mostrarEliminar: boolean = false;
+  mostrarNuevo: boolean = false;
+  mostrarEditar: boolean = false;
+  mostrarEliminar: boolean = false;
 
   constructor(
     private _permisos: PermisosService,
@@ -66,10 +69,10 @@ export class GridComponent implements OnInit {
         if(p.modificar)permisos[1] = true
         if(p.eliminar)permisos[2] = true
       })
-      this.mostrarNuevo = permisos[0]
-      this.mostrarEditar = permisos[1]
-      this.mostrarEliminar = permisos[2]
-      console.log('PERMISOS', idsRoles, res, this.mostrarNuevo, this.mostrarEditar, this.mostrarEliminar)
+      if(!this.ocultarNuevo)this.mostrarNuevo = permisos[0]
+      if(!this.ocultarEditar)this.mostrarEditar = permisos[1]
+      if(!this.ocultarEliminar)this.mostrarEliminar = permisos[2]
+      //console.log('PERMISOS', idsRoles, res, this.mostrarNuevo, this.mostrarEditar, this.mostrarEliminar)
     },error=> {
       console.log(error)
       this._toast.showErrorMessage('Ocurrió un error al consultar los permisos: ' + error.message)

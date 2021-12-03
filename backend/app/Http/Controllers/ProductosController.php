@@ -63,6 +63,49 @@ class ProductosController extends Controller
         return response()->json($data->toArray());
     }
 
+
+    public function getAllFilter($texto){
+
+        $allRecords = Producto::join('producto_impuesto','productos.id','=','producto_impuesto.producto_id')
+                        ->join('impuestos','producto_impuesto.impuesto_id','=','impuestos.id')
+                        ->join('marcas','productos.marca_id','=','marcas.id')
+                        ->join('categorias','productos.categoria_id','=','categorias.id')
+                        ->join('sub_categorias','productos.sub_categoria_id','=','sub_categorias.id')
+                        ->join('unidades','productos.unidad_id','=','unidades.id')
+                        ->where('productos.nombre','like','%'.$texto.'%')
+                        ->orWhere('productos.descripcion','like','%'.$texto.'%')
+                        ->orWhere('precio_venta_normal','like','%'.$texto.'%')
+                        ->orWhere('stock','like','%'.$texto.'%')
+                        ->orWhere('marcas.nombre','like','%'.$texto.'%')
+                        ->orWhere('categorias.nombre','like','%'.$texto.'%')
+                        ->orWhere('sub_categorias.nombre','like','%'.$texto.'%')
+                        ->orWhere('impuestos.nombre','like','%'.$texto.'%')
+                        ->orWhere('unidades.nombre','like','%'.$texto.'%')
+                        ->select(
+                            'productos.id',
+                            'productos.nombre',
+                            'productos.descripcion',
+                            'productos.precio_venta_normal',
+                            'productos.stock',
+                            'productos.unidad_id',
+                            'productos.descuento_maximo',
+                            'unidades.nombre as nombre_unidad',
+                            'productos.marca_id',
+                            'marcas.nombre as nombre_marca',
+                            'productos.categoria_id',
+                            'categorias.nombre as nombre_categoria',
+                            'productos.sub_categoria_id',
+                            'sub_categorias.nombre as nombre_sub_categoria',
+                            'productos.created_at',
+                            'productos.updated_at',
+                            'productos.deleted_at',
+                            )
+                        ->orderBy('nombre','asc')
+                        ->get();
+
+        return response()->json($allRecords);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -124,9 +167,11 @@ class ProductosController extends Controller
     public function show($id)
     {
         $producto = Producto::find($id);
-        $data = $this->camposAdicionales($producto);
-
-        return response()->json($data);
+        if(!is_null($producto)){
+            $data = $this->camposAdicionales($producto);
+            return response()->json($data);
+        }
+        return response()->json($producto);
     }
 
 

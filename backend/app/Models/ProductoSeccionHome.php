@@ -18,6 +18,10 @@ class ProductoSeccionHome extends Model
 
     public function seccion()
     {
-        return $this->hasMany(SeccionesHome::class, 'id')->get();
+        return $this->belongsTo(SeccionesHome::class, 'seccion_id', 'id')->get();
+    }
+
+    public function producto(){
+        return $this->belongsTo(Producto::class,'producto_id')->get();
     }
 }

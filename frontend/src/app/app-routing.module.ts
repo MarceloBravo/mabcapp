@@ -33,6 +33,8 @@ import { ProductosGridComponent } from './pages/back-office/productos/productos-
 import { ProductosFormComponent } from './pages/back-office/productos/productos-form/productos-form.component';
 import { PreciosComponent } from './pages/back-office/precios/precios.component';
 import { ConfigTiendaComponent } from './pages/back-office/config-tienda/config-tienda.component';
+import { SeccionesHomeGridComponent } from './pages/back-office/seccionesHome/secciones-home-grid/secciones-home-grid.component';
+import { SeccionesHomeFormComponent } from './pages/back-office/seccionesHome/secciones-home-form/secciones-home-form.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -92,6 +94,10 @@ const routes: Routes = [
       { path: 'precios', component: PreciosComponent },
 
       { path: 'configuracion_tienda', component: ConfigTiendaComponent },
+
+      { path: 'secciones_home', component: SeccionesHomeGridComponent },
+      { path: 'secciones_home/nuevo', component: SeccionesHomeFormComponent },
+      { path: 'secciones_home/edit/:id', component: SeccionesHomeFormComponent },
 
     ]
 },

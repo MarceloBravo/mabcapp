@@ -17,6 +17,6 @@ class SeccionesHome extends Model
     protected $fillable = ['nombre'];
 
     public function productos(){
-        return $this->belongsToMany(ProductoSeccionHome::class, 'producto_id')->get();
+        return $this->hasMany(ProductoSeccionHome::class, 'seccion_id')->get();
     }
 }
