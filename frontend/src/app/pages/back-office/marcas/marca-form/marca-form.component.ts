@@ -3,6 +3,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { Marca } from 'src/app/class/marca/marca';
 import { Paginacion } from 'src/app/class/paginacion/paginacion';
+import { ConstantesService } from 'src/app/services/constantes/constantes.service';
+import { FilesService } from 'src/app/services/files/files.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { MarcasService } from '../../../../services/marcas/marcas.service';
@@ -15,10 +17,11 @@ import { ModalDialogService } from '../../../../services/modalDialog/modal-dialo
 })
 export class MarcaFormComponent implements OnInit {
   public showSpinner: boolean = false;
-  private menu: Marca = new Marca();
+  private marca: Marca = new Marca();
   public form: FormGroup = new FormGroup({
     id: new FormControl(),
     nombre: new FormControl(),
+    src_imagen: new FormControl(),
     created_at: new FormControl(),
     updated_at: new FormControl(),
     deleted_at: new FormControl(),
@@ -26,6 +29,8 @@ export class MarcaFormComponent implements OnInit {
   public id: any = null;
   private accion: string = ''
   private url: string = '/admin/marcas'
+  public fileToUpload: File | undefined;
+  public fotoObject: string = ''
 
   constructor(
     private _marcasService: MarcasService,
@@ -33,6 +38,8 @@ export class MarcaFormComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private _sharedServices: SharedService,
     private _modalDialogService: ModalDialogService,
+    private _const: ConstantesService,
+    private _files: FilesService,
     private fb: FormBuilder,
     private router: Router
   ) {
@@ -51,11 +58,12 @@ export class MarcaFormComponent implements OnInit {
 
   private initForm(){
     this.form = this.fb.group({
-      id: [this.menu.id,[Validators.min(0)]],
-      nombre: [this.menu.nombre,[Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      created_at: this.menu.created_at,
-      updated_at: this.menu.updated_at,
-      deleted_at: this.menu.deleted_at,
+      id: [this.marca.id,[Validators.min(0)]],
+      nombre: [this.marca.nombre,[Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      src_imagen: [this.marca.src_imagen,[Validators.maxLength(500)]],
+      created_at: this.marca.created_at,
+      updated_at: this.marca.updated_at,
+      deleted_at: this.marca.deleted_at,
     });
   }
 
@@ -73,8 +81,9 @@ export class MarcaFormComponent implements OnInit {
   }
 
   private cargarDatos(res: any){
-    this.menu = res;
+    this.marca = res;
     this.initForm();
+    this.cargaFotoEnImageControl('', this.marca.src_imagen)
   }
 
 
@@ -120,6 +129,7 @@ export class MarcaFormComponent implements OnInit {
 
 
   private grabar(){
+    if(this.fileToUpload?.name)this.form.value.src_imagen = this.fileToUpload.name
     if(this.id !== null){
       this.actualizar();
     }else{
@@ -132,6 +142,7 @@ export class MarcaFormComponent implements OnInit {
     this._marcasService.insert(this.form.value).subscribe(
       (res: any)=>{
         this._sharedServices.handlerSucces(res, this.url)
+        if(res['tipoMensaje'] === 'success')this.subirFoto(res['id'], this._files)
         this.showSpinner = false;
       },error=>{
         this.showSpinner = !this._sharedServices.handlerError(error);
@@ -144,6 +155,7 @@ export class MarcaFormComponent implements OnInit {
     this._marcasService.update(this.form.value).subscribe(
       (res: any)=>{
         this._sharedServices.handlerSucces(res, this.url)
+        if(res['tipoMensaje'] === 'success')this.subirFoto(this.form.value.id, this._files)
         this.showSpinner = false;
       },error=>{
         this.showSpinner = !this._sharedServices.handlerError(error);
@@ -162,4 +174,38 @@ export class MarcaFormComponent implements OnInit {
       }
     )
   }
+
+  //Código para la gestión de archivos de imágenes
+  handlerCargarImagen(){
+    (<HTMLButtonElement>document.getElementById('btn-file')).click();
+  }
+
+  cargarImagen(target: any){
+    this.fileToUpload = target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.fotoObject = reader.result as string;
+      this.cargaFotoEnImageControl(this.fotoObject)
+    }
+    reader.readAsDataURL(<File>this.fileToUpload)
+  }
+
+
+  private cargaFotoEnImageControl(object: string, url: string = ''){
+    let img: HTMLImageElement = <HTMLImageElement>document.getElementById('img-foto')
+    img.src = object ? object : url ?  `${this._const.storageImages}marcas/${url}` : this._const.srcDefault
+  }
+
+
+  private subirFoto(id: number, res: any){
+    if(this.fileToUpload){
+      this._files.uploadFile(<File>this.fileToUpload, 'marcas/subir/imagen').subscribe(() => {
+      },error=>{
+        console.log(error)
+        this.showSpinner = !this._sharedServices.handlerError(error);
+      })
+    }
+  }
+
+
 }

@@ -14,7 +14,7 @@ class AddFieldSrcImageToMarcas extends Migration
     public function up()
     {
         Schema::table('marcas', function (Blueprint $table) {
-            $table->string('src_imagen',500);
+            $table->string('src_imagen',500)->nullable();
         });
     }
 

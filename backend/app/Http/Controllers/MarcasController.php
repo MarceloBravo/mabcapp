@@ -149,18 +149,23 @@ class MarcasController extends Controller
 
     private function validaDatos(Request $request, $id = null){
         $rules = [
-            'nombre' => 'required|min:2|max:50|unique:marcas,nombre,'.$id,
-            'src_imagen' => 'max:500'
+            'nombre' => 'required|min:2|max:50|unique:marcas,nombre,'.$id
         ];
+
+        if(!is_null($request->src_marca)){
+            $rules += ['src_imagen' => 'max:500'];
+        }
 
         $messages = [
             'nombre.required' => 'Debe ingresar el nombre de la marca.',
             'nombre.min' => 'El nombre ingresado debe tener almenos 2 carácteres. Ingrese un nombre más largo.',
             'nombre.max' => 'El nombre ingresado debe tener hasta 50 carácteres. Ingrese un nombre más corto.',
             'nombre.unique' => 'El nombre ingresado ya se encuentra registrado. Ingrese un nombre diferente.',
-
-            'src_imagen.max' => 'La ruta de la imagen debe tener un máximo de 500 carácteres. Ingresa una imágen con una ruta más corta.'
         ];
+
+        if(!is_null($request->src_marca)){
+            $messages += ['src_imagen.max' => 'La ruta de la imagen debe tener un máximo de 500 carácteres. Ingresa una imágen con una ruta más corta.'];
+        }
 
         return Validator::make($request->all(), $rules, $messages);
     }
