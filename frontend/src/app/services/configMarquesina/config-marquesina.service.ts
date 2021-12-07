@@ -17,6 +17,10 @@ export class ConfigMarquesinaService {
     return this.http.get(this._const.endPoint + this.url,{headers: this._const.header()})
   }
 
+  getImages(){  //No requiere login
+    return this.http.get(this._const.endPoint + this.url + '/imagenes',{headers: this._const.header()})
+  }
+
   save(data: any){
     return this.http.post(`${this._const.endPoint + this.url}`, data, {headers: this._const.header()})
   }

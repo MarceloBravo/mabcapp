@@ -15,5 +15,8 @@ class ImagenMarquesina extends Model
 
     protected $table = 'imagenes_marquesina_home';
 
-    protected $fillable = ['src_imagen','texto','link','posicion'];
+    protected $fillable = [
+        'src_imagen','texto','texto2','texto_boton',
+        'link','posicion','posicion_horizontal','posicion_vertical'
+    ];
 }

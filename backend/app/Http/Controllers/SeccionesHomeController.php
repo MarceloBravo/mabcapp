@@ -40,8 +40,10 @@ class SeccionesHomeController extends Controller
         if(!is_null($seccion)){
             $seccion['productos'] = $seccion->productos();
             foreach($seccion['productos'] as $producto){
-                $producto['nombre'] = $producto->producto()[0]['nombre'];
-                $producto['nombre_marca'] = $producto->producto()[0]->marca()[0]['nombre'];
+                if(count($producto->producto()) > 0){
+                    $producto['nombre'] = $producto->producto()[0]['nombre'];
+                    $producto['nombre_marca'] = $producto->producto()[0]->marca()[0]['nombre'];
+                }
             }
         }
 

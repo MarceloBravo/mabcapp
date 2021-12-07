@@ -17,8 +17,12 @@ class CreateImagenesMarquesinaHomeTable extends Migration
             $table->id();
             $table->string('src_imagen', 500);
             $table->string('texto',200)->nullable();
+            $table->string('texto2',200)->nullable();
+            $table->string('texto_boton',20)->nullable();
             $table->string('link',255)->nullable();
             $table->integer('posicion')->unsigned();
+            $table->string('posicion_horizontal',10)->default('pos_left');
+            $table->string('posicion_vertical',10)->nullable('pos_middle');
             $table->timestamps();
             $table->softDeletes();
         });

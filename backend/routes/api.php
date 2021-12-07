@@ -124,3 +124,4 @@ Route::group([
     Route::get('secciones_home/filter/{texto}/{pag}', 'SeccionesHomeController@filter');
 
 });
+Route::get('imagenes_marquesina/imagenes', 'ImagenesMarquesinaController@getImages');

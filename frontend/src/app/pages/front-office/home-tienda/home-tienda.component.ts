@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemsCarousel } from 'src/app/class/ItemsCarousel/items-carousel';
+import { ConfigMarquesinaService } from 'src/app/services/configMarquesina/config-marquesina.service';
 import { ScriptServicesService } from 'src/app/services/scriptServices/script-services.service';
+import { ImagenMarquesina } from '../../../class/imagenMarquesina/imagen-marquesina';
+import { SharedService } from '../../../services/shared/shared.service';
+import { ConstantesService } from '../../../services/constantes/constantes.service';
 
 @Component({
   selector: 'app-home-tienda',
@@ -13,9 +17,17 @@ export class HomeTiendaComponent implements OnInit {
   private sourceScript: string =  '../../../../assets/front-office/js/'
   public imagenes: ItemsCarousel[] = []
   public imgMarcas: string[] = []
+  public imagenesMarquesina: ImagenMarquesina[] = []
 
-  constructor(private _scriptService: ScriptServicesService) {
+  constructor(
+    private _scriptService: ScriptServicesService,
+    private _imagenesMarquesina: ConfigMarquesinaService,
+    private _sharedService: SharedService,
+    private _const: ConstantesService,
+
+    ) {
     this.loadScript()
+    this.cargarImagenesMarquesina()
    }
 
   ngOnInit(): void {
@@ -33,6 +45,17 @@ export class HomeTiendaComponent implements OnInit {
       `${this.sourceScript}active.js`,
     ])
   }
+
+
+  private cargarImagenesMarquesina(){
+    this._imagenesMarquesina.getImages().subscribe((res: any) => {
+      this.imagenesMarquesina = res
+      this.imagenesMarquesina.forEach(i => i.src_imagen = `${this._const.storageImages}marquesina/${i.src_imagen}` )
+    }, error =>{
+      this._sharedService.handlerError(error)
+    })
+  }
+
 
   private loadImages(){
     this.imagenes.push({srcImg: 'product-img/product-1.jpg', srcImg2: 'product-img/product-1.jpg', texto1:'topshop', texto2: 'Knot Front Mini Dress', precio: 80.000, textoBoton: 'Comprar'})

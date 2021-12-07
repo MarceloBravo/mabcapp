@@ -15,6 +15,12 @@ class ImagenesMarquesinaController extends Controller
         return response()->json($imagenes->toArray());
     }
 
+    public function getImages(){
+        $imagenes = ImagenMarquesina::orderBy('posicion','asc')->get();
+
+        return response()->json($imagenes->toArray());
+    }
+
 
     public function store(Request $request)
     {
@@ -107,17 +113,29 @@ class ImagenesMarquesinaController extends Controller
         $rules = [
             'src_imagen' => 'required|max:500' ,
             'texto' => 'max:200',
+            'texto2' => 'max:200',
+            'texto_boton' => 'max:15',
             'link' => 'max:255',
-            'posicion' => 'required|min:0'
+            'posicion' => 'required|min:0',
+            'posicion_horizontal' => 'required|max:10',
+            'posicion_vertical' => 'required|max:10'
         ];
 
         $messages = [
             'src_imagen.required' => 'Debe seleccionar una imágen.',
             'src_imagen.max' => 'La ruta de la imagen es demasiado larga. seleccione una imagen en una ruta más corta',
-            'texto.max' => 'El texto de la imagen debe tener un máximo de 200 carácteres. Ingrese un texto más corto. ',
+            'texto.max' => 'El texto principal de la imagen debe tener un máximo de 200 carácteres. Ingrese un texto más corto. ',
+            'texto2.max' => 'El texto secundario de la imagen debe tener un máximo de 200 carácteres. Ingrese un texto más corto. ',
+            'texto_boton.max' => 'El texto del botón debe tener un máximo de 15 carácteres. Ingrese un texto más corto.',
             'link.max' => 'El link de la imagen debe tener un máximo de 255 carácteres. Ingrese un link más corto. ',
             'posicion.required' => 'La posicuón de la imagen es obligatoria.',
             'posición.min' => 'La posición debe ser un valor positivo.',
+
+            'posicion_horizontal.required' => 'La posición horizontal del texto de la imagen es obligatoria.',
+            'posicion_horizontal.max' => 'La posición horizontal del texto no debe superar los 10 carácteres. Ingresa un texto más corto.',
+
+            'posicion_vertical.required' => 'La posición vertical del texto de la imagen es obligatoria.',
+            'posición_vertical.max' => 'La posición vertical del texto no debe superar los 10 carácteres. Ingresa un texto más corto.',
         ];
 
         return Validator::make($item, $rules, $messages);
