@@ -112,7 +112,6 @@ Route::group([
     Route::get('precios/filter/{texto}/{pag}', 'PreciosController@filter');
 
     Route::put('tienda/{id}','TiendaController@update');
-    Route::get('tienda', 'TiendaController@show');
 
     Route::get('imagenes_marquesina', 'ImagenesMarquesinaController@getAll');
     Route::post('imagenes_marquesina', 'ImagenesMarquesinaController@store');
@@ -125,3 +124,5 @@ Route::group([
 
 });
 Route::get('imagenes_marquesina/imagenes', 'ImagenesMarquesinaController@getImages');
+
+Route::get('tienda', 'TiendaController@show');

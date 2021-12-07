@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Tienda } from 'src/app/class/tienda/tienda';
+import { ConfigTiendaService } from 'src/app/services/configTienda/config-tienda.service';
+import { SharedService } from '../../services/shared/shared.service';
 
 @Component({
   selector: 'app-fo-footer',
@@ -8,10 +11,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FoFooterComponent implements OnInit {
   public sourceImage: string = '../../../assets/front-office/img/'
+  public datosTienda: Tienda = new Tienda()
 
-  constructor() { }
+  constructor(
+    private _configTiendaService: ConfigTiendaService,
+    private _sharedService: SharedService,
+  ) {
+    this.obtenerDatos()
+  }
 
   ngOnInit(): void {
+  }
+
+  private obtenerDatos(){
+    this._configTiendaService.get().subscribe((res: any) =>{
+      this.datosTienda = res
+    }, error => {
+      this._sharedService.handlerError(error)
+    })
   }
 
 }
