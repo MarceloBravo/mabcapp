@@ -121,6 +121,7 @@ Route::group([
     Route::get('secciones_home/pag/{pag}', 'SeccionesHomeController@index');
     Route::get('secciones_home/get/all', 'SeccionesHomeController@getAll');
     Route::get('secciones_home/filter/{texto}/{pag}', 'SeccionesHomeController@filter');
+    Route::post('secciones_home/subir/imagen', 'SeccionesHomeController@uploadImage');
 
 });
 Route::get('imagenes_marquesina/imagenes', 'ImagenesMarquesinaController@getImages');

@@ -212,6 +212,7 @@ class SeccionesHomeController extends Controller
     private function validaDatos(Request $request, $id = null){
         $rules = [
             'nombre' => 'required|min:3|max:100|unique:secciones_home,id,'.$id,
+            'src_imagen' => 'max:500'
         ];
 
         $messages = [
@@ -219,8 +220,28 @@ class SeccionesHomeController extends Controller
             'nombre.min' => 'El nombre de la sección debe tener un mínimo de 3 carácteres. Ingresa un nombre más largo.',
             'nombre.max' => 'El nombre de la sección debe tener un máximo de 100 carácteres. Ingresa un nombre más corto.',
             'nombre.unique' => 'El nombre de la sección ya se encuentra registrado. Ingresa un nombre diferente.',
+
+            'src_imagen.max' => 'La ruta de la imagen debe tener un máximo de 500 carácteres. Ingresa una imagen con una ruta más corta.',
         ];
 
         return Validator::make($request->all(), $rules, $messages);
     }
+
+    //Graba la foto en la carpeta public del backend
+    public function uploadImage(Request $request){
+        $res = '';
+        try{
+            if(count($_FILES)>0){
+                move_uploaded_file($_FILES["upload"]["tmp_name"],storage_path().'/app/public/secciones/'.$_FILES['upload']['name']);
+
+                $res = 'La imagen ha sido subida exitosamente.';
+            }else{
+                $res = 'No se han encontrado archivos.';
+            }
+            return response()->json(['mensaje' => $res, 'tipoMensaje' => 'success']);
+        }catch(Exception $e){
+            return response()->json(['mensaje' => 'Ocurrió un error al intentar actualizar la imagen: '.$e->getMessage(), 'tipoMensaje' => 'danger', 'id'=> $id]);
+        }
+    }
+
 }

@@ -16,6 +16,7 @@ class CreateSeccionesHomeTable extends Migration
         Schema::create('secciones_home', function (Blueprint $table) {
             $table->id();
             $table->string('nombre',100)->unique();
+            $table->string('src_imagen',500)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

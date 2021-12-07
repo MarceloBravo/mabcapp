@@ -98,6 +98,7 @@ h2{
   right: 0px;
   height: 20%;
   cursor: pointer;
+  opacity: .6;
 }
 
 .left-arrow{
@@ -107,4 +108,5 @@ h2{
   transform: scaleX(-1);
   height: 20%;
   cursor: pointer;
+  opacity: .6;
 }
