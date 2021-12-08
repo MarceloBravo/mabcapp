@@ -14,7 +14,7 @@ class SeccionesHome extends Model
 
     protected $table = 'secciones_home';
 
-    protected $fillable = ['nombre','src_imagen'];
+    protected $fillable = ['nombre'];
 
     public function productos(){
         return $this->hasMany(ProductoSeccionHome::class, 'seccion_id')->get();

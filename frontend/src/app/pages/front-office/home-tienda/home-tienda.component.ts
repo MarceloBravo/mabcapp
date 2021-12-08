@@ -5,6 +5,9 @@ import { ScriptServicesService } from 'src/app/services/scriptServices/script-se
 import { ImagenMarquesina } from '../../../class/imagenMarquesina/imagen-marquesina';
 import { SharedService } from '../../../services/shared/shared.service';
 import { ConstantesService } from '../../../services/constantes/constantes.service';
+import { CategoriasService } from '../../../services/categorias/categorias.service';
+import { ImageCover } from 'src/app/enum/carousel/imageCover';
+import { Categoria } from '../../../class/Categoria/categoria';
 
 @Component({
   selector: 'app-home-tienda',
@@ -18,21 +21,26 @@ export class HomeTiendaComponent implements OnInit {
   public imagenes: ItemsCarousel[] = []
   public imgMarcas: string[] = []
   public imagenesMarquesina: ImagenMarquesina[] = []
+  public imgCategorias: {imagen: string, link: string, label: string, imageClass: string, linkClass: string}[] = []
+  public srcImagen: string = ''
 
   constructor(
     private _scriptService: ScriptServicesService,
     private _imagenesMarquesina: ConfigMarquesinaService,
     private _sharedService: SharedService,
-    private _const: ConstantesService,
+    public _const: ConstantesService,
+    private _categoriasService: CategoriasService,
 
     ) {
     this.loadScript()
     this.cargarImagenesMarquesina()
+    this.srcImagen = this._const.storageImages + 'categorias/'
    }
 
   ngOnInit(): void {
     this.loadImages()
     this.loadMarcas()
+    this.loadCategories()
   }
 
   private loadScript(){
@@ -46,6 +54,25 @@ export class HomeTiendaComponent implements OnInit {
     ])
   }
 
+
+  private loadCategories(){
+    this._categoriasService.getAll().subscribe((res: any) => {
+      res.forEach((i: Categoria) => {
+        if(i.src_imagen){
+          this.imgCategorias.push({
+            imagen: i.src_imagen,
+            link: '',
+            label: i.nombre,
+            linkClass: 'link-categorias-class',
+            imageClass: 'images-categorias'
+          })
+        }
+      })
+      console.log(this.imgCategorias)
+    }, error =>{
+      this._sharedService.handlerError(error)
+    })
+  }
 
   private cargarImagenesMarquesina(){
     this._imagenesMarquesina.getImages().subscribe((res: any) => {

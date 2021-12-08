@@ -98,7 +98,7 @@ class CategoriasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validate = $this->validaDatos($request);
+        $validate = $this->validaDatos($request, $id);
         if($validate->fails()){
             return response()->json(['mensaje' => 'Datos no válidos o incompletos.', 'tipoMensaje' => 'danger', 'errores' => $validate->errors()]);
         }
@@ -149,6 +149,7 @@ class CategoriasController extends Controller
     private function validaDatos(Request $request, $id = null){
         $rules = [
             'nombre' => 'required|min:3|max:50|unique:categorias,nombre,'.$id,
+            'src_imagen' => 'max:500'
         ];
 
         $messages = [
@@ -156,8 +157,28 @@ class CategoriasController extends Controller
             'nombre.min' => 'El nombre de la categoría debe tener almenos 3 carácteres. Ingresa unnombre más largo.',
             'nombre.max' => 'El nombre de la categoría debe tener hasta 50 carácteres. Ingresa unnombre más corto.',
             'nombre.unique' => 'El nombre ingresado ya se encuentra registrado. Ingresa un nombre diferente.',
+
+            'src_imagen.max' => 'La ruta de la imagen debe tener un máximo de 500 carácteres. Ingresa una imagen con una ruta más corta.',
         ];
 
         return Validator::make($request->all(), $rules, $messages);
     }
+
+    //Graba la foto en la carpeta public del backend
+    public function uploadImage(Request $request){
+        $res = '';
+        try{
+            if(count($_FILES)>0){
+                move_uploaded_file($_FILES["upload"]["tmp_name"],storage_path().'/app/public/categorias/'.$_FILES['upload']['name']);
+
+                $res = 'La imagen ha sido subida exitosamente.';
+            }else{
+                $res = 'No se han encontrado archivos.';
+            }
+            return response()->json(['mensaje' => $res, 'tipoMensaje' => 'success']);
+        }catch(Exception $e){
+            return response()->json(['mensaje' => 'Ocurrió un error al intentar actualizar la imagen: '.$e->getMessage(), 'tipoMensaje' => 'danger', 'id'=> $id]);
+        }
+    }
+
 }

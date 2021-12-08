@@ -31,9 +31,6 @@ export class SeccionesHomeFormComponent implements OnInit {
   public productos: any[] = []
   public visibleColumns: string[] = ['nombre','nombre_marca','texto1','texto2']
   public idSelectedProd: any = null
-  private fileToUpload?: File
-  public fotoObject: string = ''
-
 
   constructor(
     private _seccionesService: SeccionesHomeService,
@@ -42,8 +39,6 @@ export class SeccionesHomeFormComponent implements OnInit {
     private avctivatedRoute: ActivatedRoute,
     private _modalService: ModalDialogService,
     private _toastService: ToastService,
-    private _const: ConstantesService,
-    private _files: FilesService,
     private router: Router,
   ) {
     let id = this.avctivatedRoute.snapshot.paramMap.get('id')
@@ -60,7 +55,6 @@ export class SeccionesHomeFormComponent implements OnInit {
     if(this.id){
       this._seccionesService.find(this.id).subscribe((res: any) =>{
         this.form.patchValue(res)
-        this.cargaFotoEnImageControl('', this.form.value.src_imagen)
         this.showSpinner = false
       }, error =>{
         this.showSpinner = false
@@ -72,7 +66,6 @@ export class SeccionesHomeFormComponent implements OnInit {
 
   aceptarModal(){
     if(this.accion === 'grabar'){
-      if(this.fileToUpload?.name)this.form.value.src_imagen = this.fileToUpload.name
       if(this.id){
         this.actualizar()
       }else{
@@ -89,7 +82,6 @@ export class SeccionesHomeFormComponent implements OnInit {
     this._seccionesService.insert(this.form.value).subscribe((res: any) =>{
       if(res['tipoMensaje'] === 'success'){
         this._sharedService.handlerSucces(res, this.url)
-        this.subirFoto(res['id'], this._files)
       }else{
         this._sharedService.handlerError(res['mensaje'])
       }
@@ -106,7 +98,6 @@ export class SeccionesHomeFormComponent implements OnInit {
       this._seccionesService.update(this.form.value).subscribe((res: any) =>{
         if(res['tipoMensaje'] === 'success'){
           this._sharedService.handlerSucces(res, this.url)
-          this.subirFoto(res['id'], this._files)
         }else{
           this._sharedService.handlerError(res['mensaje'])
         }
@@ -217,40 +208,6 @@ export class SeccionesHomeFormComponent implements OnInit {
       })
     }else{
       this._toastService.showErrorMessage('El producto ya se encuentra en el listado','Producto ya ingresado')
-    }
-  }
-
-
-
-  //Código para la gestión de archivos de imágenes
-  handlerCargarImagen(){
-    (<HTMLButtonElement>document.getElementById('btn-file')).click();
-  }
-
-  cargarImagen(target: any){
-    this.fileToUpload = target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.fotoObject = reader.result as string;
-      this.cargaFotoEnImageControl(this.fotoObject)
-    }
-    reader.readAsDataURL(<File>this.fileToUpload)
-  }
-
-
-  private cargaFotoEnImageControl(object: string, url: string = ''){
-    let img: HTMLImageElement = <HTMLImageElement>document.getElementById('img-foto')
-    img.src = object ? object : url ?  `${this._const.storageImages}secciones/${url}` : this._const.noImage
-  }
-
-
-  private subirFoto(id: number, res: any){
-    if(this.fileToUpload){
-      this._files.uploadFile(<File>this.fileToUpload, 'secciones_home/subir/imagen').subscribe(() => {
-      },error=>{
-        console.log(error)
-        this.showSpinner = !this._sharedService.handlerError(error);
-      })
     }
   }
 

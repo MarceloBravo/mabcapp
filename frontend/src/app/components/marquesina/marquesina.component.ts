@@ -48,17 +48,13 @@ export class MarquesinaComponent implements OnInit {
   }
 
   nextImage(){
-    console.log('ACTUAL',this.imagenActual)
     this.imagenActual = (this.imagenActual === this.imagenes.length - 1) ? 0 : this.imagenActual+1
     this.count = 0
-    console.log('Siguiente',this.imagenActual)
   }
 
   previousImage(){
-    console.log('actual',this.imagenActual)
     this.imagenActual = (this.imagenActual === 0) ? this.imagenes.length - 1  : this.imagenActual-1
     this.count = 0
-    console.log('anterior',this.imagenActual)
   }
 
 }

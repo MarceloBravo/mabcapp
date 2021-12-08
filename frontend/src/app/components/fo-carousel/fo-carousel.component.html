@@ -1,13 +1,16 @@
 <carousel
   class="carousel-html-content"
-  [height]="450"
-  [loop]="true"
-  [cellsToShow]="4"
-  [dots]="true"
-  [margin]="30"
-  [arrowsOutside]="true"
-  [pauseOnHover]="true"
-  [autoplay]="true"
+  [height]="height"
+  [loop]="loop"
+  [cellsToShow]="cellsToShow"
+  [dots]="dots"
+  [margin]="margin"
+  [arrows]="arrows"
+  [arrowsOutside]="arrowsOutside"
+  [pauseOnHover]="pauseOnHover"
+  [autoplay]="autoplay"
+  [autoplayInterval]="autoplayInterval"
+  [lightDOM]="lightDOM"
 >
 
     <div class="carousel-cell" *ngFor="let item of imagenes; index as i">

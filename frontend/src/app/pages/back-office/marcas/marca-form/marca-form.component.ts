@@ -38,7 +38,7 @@ export class MarcaFormComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private _sharedServices: SharedService,
     private _modalDialogService: ModalDialogService,
-    private _const: ConstantesService,
+    public _const: ConstantesService,
     private _files: FilesService,
     private fb: FormBuilder,
     private router: Router
@@ -60,7 +60,7 @@ export class MarcaFormComponent implements OnInit {
     this.form = this.fb.group({
       id: [this.marca.id,[Validators.min(0)]],
       nombre: [this.marca.nombre,[Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      src_imagen: [this.marca.src_imagen,[Validators.maxLength(500)]],
+      src_imagen: [this.marca.src_imagen ? this.marca.src_imagen : this._const.noImage,[Validators.maxLength(500)]],
       created_at: this.marca.created_at,
       updated_at: this.marca.updated_at,
       deleted_at: this.marca.deleted_at,
@@ -193,7 +193,7 @@ export class MarcaFormComponent implements OnInit {
 
   private cargaFotoEnImageControl(object: string, url: string = ''){
     let img: HTMLImageElement = <HTMLImageElement>document.getElementById('img-foto')
-    img.src = object ? object : url ?  `${this._const.storageImages}marcas/${url}` : this._const.srcDefault
+    img.src = object ? object : url ?  `${this._const.storageImages}marcas/${url}` : this._const.noImage
   }
 
 

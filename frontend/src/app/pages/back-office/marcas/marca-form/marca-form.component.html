@@ -54,7 +54,7 @@
                        (change)="cargarImagen($event.target)">
 
 
-                <img id="img-foto" src="#" alt="Imagen marca" class="foto-marca col-md-6"/>
+                <img id="img-foto" [src]="_const.noImage" alt="Imagen marca" class="foto-marca col-md-6"/>
                 <button
                   type="submit"
                   class="btn btn-primary btn-load-photo col-md-3 offset-2"

@@ -81,8 +81,8 @@ Route::group([
 
     Route::resource('categorias', 'CategoriasController');
     Route::get('categorias/pag/{pag}', 'CategoriasController@index');
-    Route::get('categorias/get/all', 'CategoriasController@getAll');
     Route::get('categorias/filter/{texto}/{pag}', 'CategoriasController@filter');
+    Route::post('categorias/subir/imagen', 'CategoriasController@uploadImage');
 
     Route::resource('sub_categorias', 'SubCategoriasController');
     Route::get('sub_categorias/pag/{pag}', 'SubCategoriasController@index');
@@ -121,9 +121,10 @@ Route::group([
     Route::get('secciones_home/pag/{pag}', 'SeccionesHomeController@index');
     Route::get('secciones_home/get/all', 'SeccionesHomeController@getAll');
     Route::get('secciones_home/filter/{texto}/{pag}', 'SeccionesHomeController@filter');
-    Route::post('secciones_home/subir/imagen', 'SeccionesHomeController@uploadImage');
 
 });
 Route::get('imagenes_marquesina/imagenes', 'ImagenesMarquesinaController@getImages');
 
 Route::get('tienda', 'TiendaController@show');
+
+Route::get('categorias/get/all', 'CategoriasController@getAll');

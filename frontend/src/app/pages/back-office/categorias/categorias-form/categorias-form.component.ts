@@ -5,6 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SharedService } from '../../../../services/shared/shared.service';
 import { ToastService } from '../../../../services/toast/toast.service';
 import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
+import { ConstantesService } from 'src/app/services/constantes/constantes.service';
+import { FilesService } from 'src/app/services/files/files.service';
 
 @Component({
   selector: 'app-categorias-form',
@@ -16,12 +18,16 @@ export class CategoriasFormComponent implements OnInit {
   public form: FormGroup = new FormGroup({
     id: new FormControl(null),
     nombre: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+    src_imagen: new FormControl(null, [Validators.maxLength(50)]),
     created_at: new FormControl(null),
     updated_at: new FormControl(null),
     deleted_at: new FormControl(null),
   })
   private url: string = 'admin/categorias'
   private accion: string = ''
+  private fileToUpload?: File
+  public fotoObject: string = ''
+
 
 
   constructor(
@@ -30,6 +36,8 @@ export class CategoriasFormComponent implements OnInit {
     private _toastService: ToastService,
     private activatedRoute: ActivatedRoute,
     private _modalDialogService: ModalDialogService,
+    private _const: ConstantesService,
+    private _files: FilesService,
     private router: Router
   ) {
     let id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -47,6 +55,7 @@ export class CategoriasFormComponent implements OnInit {
     this._categoriasService.find(id).subscribe(res => {
       if(res){
       this.form.patchValue(res)
+      this.cargaFotoEnImageControl('', this.form.value.src_imagen)
       }else{
         this._toastService.showErrorMessage('Registro no encontrado o no existe.', 'No encontrado')
         this.router.navigate([this.url])
@@ -67,6 +76,7 @@ export class CategoriasFormComponent implements OnInit {
 
   aceptarModal(e: any){
     if(this.accion !== 'eliminar'){
+      if(this.fileToUpload?.name)this.form.value.src_imagen = this.fileToUpload.name
       if(this.form.value.id){
         this.actualizarRegistro()
       }else{
@@ -85,6 +95,7 @@ export class CategoriasFormComponent implements OnInit {
     this.showSpinner = true
     this._categoriasService.insert(this.form.value).subscribe((res: any) => {
       this._sharedService.handlerSucces(res, this.url)
+      this.subirFoto(res['id'], this._files)
       this.showSpinner = false
     }, error => {
       this.showSpinner = !this._sharedService.handlerError(error)
@@ -96,6 +107,7 @@ export class CategoriasFormComponent implements OnInit {
     this.showSpinner = true
     this._categoriasService.update(this.form.value).subscribe((res: any) => {
       this._sharedService.handlerSucces(res, this.url)
+      this.subirFoto(res['id'], this._files)
       this.showSpinner = false
     }, error => {
       this.showSpinner = !this._sharedService.handlerError(error)
@@ -134,4 +146,37 @@ export class CategoriasFormComponent implements OnInit {
     this._modalDialogService.mostrarModalDialog(`¿Desea ${this.form.dirty ? 'grabar' : 'actualizar'} los datos del registro?`, this.form.dirty ? 'Grabar' : 'Actualizar')
     this.accion = 'grabar'
   }
+
+    //Código para la gestión de archivos de imágenes
+    handlerCargarImagen(){
+      (<HTMLButtonElement>document.getElementById('btn-file')).click();
+    }
+
+    cargarImagen(target: any){
+      this.fileToUpload = target.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.fotoObject = reader.result as string;
+        this.cargaFotoEnImageControl(this.fotoObject)
+      }
+      reader.readAsDataURL(<File>this.fileToUpload)
+    }
+
+
+    private cargaFotoEnImageControl(object: string, url: string = ''){
+      let img: HTMLImageElement = <HTMLImageElement>document.getElementById('img-foto')
+      img.src = object ? object : url ?  `${this._const.storageImages}categorias/${url}` : this._const.noImage
+    }
+
+
+    private subirFoto(id: number, res: any){
+      if(this.fileToUpload){
+        this._files.uploadFile(<File>this.fileToUpload, 'categorias/subir/imagen').subscribe(() => {
+        },error=>{
+          console.log(error)
+          this.showSpinner = !this._sharedService.handlerError(error);
+        })
+      }
+    }
+
 }
