@@ -14,7 +14,7 @@ class Categoria extends Model
 
     protected $table = 'categorias';
 
-    protected $fillable = ['nombre','src_imagen'];
+    protected $fillable = ['nombre','src_imagen','link'];
 
     public function subCategorias(){
         return $this->hasMany(SubCategorias::class,'id','categoria_id')->get();

@@ -149,7 +149,8 @@ class CategoriasController extends Controller
     private function validaDatos(Request $request, $id = null){
         $rules = [
             'nombre' => 'required|min:3|max:50|unique:categorias,nombre,'.$id,
-            'src_imagen' => 'max:500'
+            'src_imagen' => 'max:500',
+            'link' => 'max:500'
         ];
 
         $messages = [
@@ -159,6 +160,8 @@ class CategoriasController extends Controller
             'nombre.unique' => 'El nombre ingresado ya se encuentra registrado. Ingresa un nombre diferente.',
 
             'src_imagen.max' => 'La ruta de la imagen debe tener un máximo de 500 carácteres. Ingresa una imagen con una ruta más corta.',
+
+            'link.max' => 'El hipervínculo debe tener un máximo de 500 carácteres. Ingresa un link más corto.',
         ];
 
         return Validator::make($request->all(), $rules, $messages);

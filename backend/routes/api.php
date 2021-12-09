@@ -128,3 +128,5 @@ Route::get('imagenes_marquesina/imagenes', 'ImagenesMarquesinaController@getImag
 Route::get('tienda', 'TiendaController@show');
 
 Route::get('categorias/get/all', 'CategoriasController@getAll');
+
+Route::get('marcas/get/home', 'MarcasController@getMarcasHome');

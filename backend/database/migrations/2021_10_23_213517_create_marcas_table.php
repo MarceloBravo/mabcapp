@@ -16,6 +16,7 @@ class CreateMarcasTable extends Migration
         Schema::create('marcas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 50)->unique();
+            $table->boolean('mostrar_en_home')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

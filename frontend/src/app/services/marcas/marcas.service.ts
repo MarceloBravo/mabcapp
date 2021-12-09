@@ -18,6 +18,9 @@ export class MarcasService {
     return this.http.get(`${this.constantes.endPoint}${this.url}/get/all`,{headers: this.constantes.header()});
   }
 
+  getHome(){
+    return this.http.get(`${this.constantes.endPoint}${this.url}/get/home`,{headers: this.constantes.header()});
+  }
 
   list(pag: number){
     return this.http.get(`${this.constantes.endPoint}${this.url}/pag/${pag}`,{headers: this.constantes.header()});

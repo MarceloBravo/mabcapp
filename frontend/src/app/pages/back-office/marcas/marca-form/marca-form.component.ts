@@ -22,6 +22,7 @@ export class MarcaFormComponent implements OnInit {
     id: new FormControl(),
     nombre: new FormControl(),
     src_imagen: new FormControl(),
+    mostrar_en_home: new FormControl(),
     created_at: new FormControl(),
     updated_at: new FormControl(),
     deleted_at: new FormControl(),
@@ -31,6 +32,7 @@ export class MarcaFormComponent implements OnInit {
   private url: string = '/admin/marcas'
   public fileToUpload: File | undefined;
   public fotoObject: string = ''
+  public imagenCargada: boolean = false
 
   constructor(
     private _marcasService: MarcasService,
@@ -61,6 +63,7 @@ export class MarcaFormComponent implements OnInit {
       id: [this.marca.id,[Validators.min(0)]],
       nombre: [this.marca.nombre,[Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       src_imagen: [this.marca.src_imagen ? this.marca.src_imagen : this._const.noImage,[Validators.maxLength(500)]],
+      mostrar_en_home: [this.marca.mostrar_en_home,[Validators.required]],
       created_at: this.marca.created_at,
       updated_at: this.marca.updated_at,
       deleted_at: this.marca.deleted_at,
@@ -194,6 +197,7 @@ export class MarcaFormComponent implements OnInit {
   private cargaFotoEnImageControl(object: string, url: string = ''){
     let img: HTMLImageElement = <HTMLImageElement>document.getElementById('img-foto')
     img.src = object ? object : url ?  `${this._const.storageImages}marcas/${url}` : this._const.noImage
+    this.imagenCargada = (object || url) ? true : false
   }
 
 

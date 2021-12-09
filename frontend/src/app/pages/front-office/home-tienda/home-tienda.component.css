@@ -20,3 +20,8 @@
 ::ng-deep .images-categorias{
   opacity: .5;
 }
+
+::ng-deep .single-brands-logo,
+.carousel-marcas{
+  height: 50px !important;
+}

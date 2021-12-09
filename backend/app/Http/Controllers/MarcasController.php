@@ -35,6 +35,15 @@ class MarcasController extends Controller
         return response()->json($marcas->toArray());
     }
 
+
+    public function getMarcasHome(){
+        $marcas = Marca::where('mostrar_en_home','=',true)
+                        ->orderBy('nombre', 'asc')
+                        ->get();
+
+        return response()->json($marcas->toArray());
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -149,7 +158,7 @@ class MarcasController extends Controller
 
     private function validaDatos(Request $request, $id = null){
         $rules = [
-            'nombre' => 'required|min:2|max:50|unique:marcas,nombre,'.$id
+            'nombre' => 'required|min:2|max:50|unique:marcas,nombre,'.$id,
         ];
 
         if(!is_null($request->src_marca)){

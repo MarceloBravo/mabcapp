@@ -6,8 +6,9 @@ import { ImagenMarquesina } from '../../../class/imagenMarquesina/imagen-marques
 import { SharedService } from '../../../services/shared/shared.service';
 import { ConstantesService } from '../../../services/constantes/constantes.service';
 import { CategoriasService } from '../../../services/categorias/categorias.service';
-import { ImageCover } from 'src/app/enum/carousel/imageCover';
 import { Categoria } from '../../../class/Categoria/categoria';
+import { MarcasService } from '../../../services/marcas/marcas.service';
+import { Marca } from '../../../class/marca/marca';
 
 @Component({
   selector: 'app-home-tienda',
@@ -19,7 +20,7 @@ export class HomeTiendaComponent implements OnInit {
   public sourceImage: string = '../../../assets/front-office/img/'
   private sourceScript: string =  '../../../../assets/front-office/js/'
   public imagenes: ItemsCarousel[] = []
-  public imgMarcas: string[] = []
+  public imgMarcas: {imagen: string, link: string, label: string, imageClass: string, linkClass: string}[] = []
   public imagenesMarquesina: ImagenMarquesina[] = []
   public imgCategorias: {imagen: string, link: string, label: string, imageClass: string, linkClass: string}[] = []
   public srcImagen: string = ''
@@ -30,11 +31,12 @@ export class HomeTiendaComponent implements OnInit {
     private _sharedService: SharedService,
     public _const: ConstantesService,
     private _categoriasService: CategoriasService,
+    private _marcasService: MarcasService,
 
     ) {
     this.loadScript()
     this.cargarImagenesMarquesina()
-    this.srcImagen = this._const.storageImages + 'categorias/'
+    this.srcImagen = this._const.storageImages
    }
 
   ngOnInit(): void {
@@ -97,12 +99,30 @@ export class HomeTiendaComponent implements OnInit {
   }
 
   private loadMarcas(){
+    this._marcasService.getHome().subscribe((res: any)=>{
+        res.forEach((i: Marca) => {
+          if(i.src_imagen){
+            this.imgMarcas.push({ 
+                imagen: i.src_imagen, 
+                link: '', 
+                label: '', 
+                imageClass: 'single-brands-logo', 
+                linkClass: ''
+              })
+            }
+        })
+        console.log('MARCAS',this.imgMarcas)
+    }, error =>{
+      this._sharedService.handlerError(error)
+    })
+    /*
     this.imgMarcas.push('core-img/brand1.png')
     this.imgMarcas.push('core-img/brand2.png')
     this.imgMarcas.push('core-img/brand3.png')
     this.imgMarcas.push('core-img/brand4.png')
     this.imgMarcas.push('core-img/brand5.png')
     this.imgMarcas.push('core-img/brand6.png')
+    */
   }
 
   public itemClick(id: any){

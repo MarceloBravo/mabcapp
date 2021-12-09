@@ -18,7 +18,8 @@ export class CategoriasFormComponent implements OnInit {
   public form: FormGroup = new FormGroup({
     id: new FormControl(null),
     nombre: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
-    src_imagen: new FormControl(null, [Validators.maxLength(50)]),
+    src_imagen: new FormControl(null, [Validators.maxLength(500)]),
+    link: new FormControl(null, [Validators.maxLength(500)]),
     created_at: new FormControl(null),
     updated_at: new FormControl(null),
     deleted_at: new FormControl(null),

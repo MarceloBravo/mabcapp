@@ -17,6 +17,7 @@ class CreateCategoriasTable extends Migration
             $table->id();
             $table->string('nombre', 50)->unique();
             $table->string('src_imagen',500)->nullable();
+            $table->string('link',500)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -12,7 +12,7 @@ class Marca extends Model
 
     use HasFactory;
 
-    protected $fillable = ['nombre','src_imagen'];
+    protected $fillable = ['nombre','src_imagen','mostrar_en_home'];
 
     public function productos()
     {
