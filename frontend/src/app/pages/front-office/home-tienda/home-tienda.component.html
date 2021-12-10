@@ -19,16 +19,16 @@
 <!-- ##### Top Catagory Area End ##### -->
 
 <!-- ##### CTA Area Start ##### -->
-<div class="cta-area">
+<div class="cta-area" *ngIf="ofertaPrincipal.src_imagen">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="cta-content bg-img background-overlay" style="background-image: url({{sourceImage}}bg-img/bg-5.jpg);">
+                <div class="cta-content bg-img background-overlay" style="background-image: url({{sourceImage}});">
                     <div class="h-100 d-flex align-items-center justify-content-end">
-                        <div class="cta--text">
-                            <h6>-60%</h6>
-                            <h2>Global Sale</h2>
-                            <a href="#" class="btn essence-btn">Buy Now</a>
+                        <div [class]="'cta--text ' + ofertaPrincipal.posicion_horizontal + ' ' + ofertaPrincipal.posicion_vertical">
+                            <h6>{{ ofertaPrincipal.texto1 }}</h6>
+                            <h2>{{ ofertaPrincipal.texto2 }}</h2>
+                            <a routerLink="{{ ofertaPrincipal.link }}" class="btn essence-btn">{{ ofertaPrincipal.texto_boton }}</a>
                         </div>
                     </div>
                 </div>
@@ -77,8 +77,8 @@
           [cellsToShow]="5"
         >
       </app-carousel>
-    </div>        
-    
+    </div>
+
 </div>
 <!-- ##### Brands Area End ##### <img src="{{sourceImage}}{{ item }}" alt="">-->
 

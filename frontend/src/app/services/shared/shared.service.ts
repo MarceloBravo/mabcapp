@@ -59,8 +59,8 @@ export class SharedService {
 
   public handlerError(error: any): boolean{
     console.log(error);
-    //this.showSpinner = false;
-    this._toastService.showErrorMessage(error.message, 'Error');
+    let detalles = error.errores ?  ': ' + this.detalleErrores(error.errores) : ''
+    this._toastService.showErrorMessage(error.message + detalles, 'Error');
     return true;
   }
 
@@ -70,6 +70,10 @@ export class SharedService {
       .pipe(
         map(() => true), catchError(() => of(false))
       );
+  }
+
+  public detalleErrores(errors: any){
+    return errors ? Object.keys(errors).map(e => errors[e]).reduce((msg, e) => msg += e) : ''
   }
 }
 

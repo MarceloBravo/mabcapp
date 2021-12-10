@@ -25,3 +25,33 @@
 .carousel-marcas{
   height: 50px !important;
 }
+
+.cta--text{
+  position: absolute;
+}
+
+.izquierda{
+  left: 0px;
+}
+
+.centrado{
+  left: 20%;
+  padding-right: 150px !important;
+}
+
+.derecha{
+  right: 0px;
+  padding-right: 0px !important;
+}
+
+.arriba{
+  top: 0px;
+}
+
+.medio{
+  top: 25%;
+}
+
+.abajo{
+  bottom: 0px;
+}

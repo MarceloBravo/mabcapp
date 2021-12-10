@@ -122,6 +122,8 @@ Route::group([
     Route::get('secciones_home/get/all', 'SeccionesHomeController@getAll');
     Route::get('secciones_home/filter/{texto}/{pag}', 'SeccionesHomeController@filter');
 
+    Route::resource('oferta_principal_home', 'ConfigImagenPrincipalController');
+    Route::post('oferta_principal_home/subir/imagen', 'ConfigImagenPrincipalController@uploadImage');
 });
 Route::get('imagenes_marquesina/imagenes', 'ImagenesMarquesinaController@getImages');
 
@@ -130,3 +132,5 @@ Route::get('tienda', 'TiendaController@show');
 Route::get('categorias/get/all', 'CategoriasController@getAll');
 
 Route::get('marcas/get/home', 'MarcasController@getMarcasHome');
+
+Route::get('oferta_principal_home', 'ConfigImagenPrincipalController@show');

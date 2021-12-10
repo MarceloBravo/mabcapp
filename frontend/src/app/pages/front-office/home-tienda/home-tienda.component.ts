@@ -9,6 +9,8 @@ import { CategoriasService } from '../../../services/categorias/categorias.servi
 import { Categoria } from '../../../class/Categoria/categoria';
 import { MarcasService } from '../../../services/marcas/marcas.service';
 import { Marca } from '../../../class/marca/marca';
+import { ConfigOfertaService } from '../../../services/configOferta/config-oferta.service';
+import { OfertaPrincipal } from '../../../class/ofertaPrincipal/oferta-principal';
 
 @Component({
   selector: 'app-home-tienda',
@@ -24,6 +26,7 @@ export class HomeTiendaComponent implements OnInit {
   public imagenesMarquesina: ImagenMarquesina[] = []
   public imgCategorias: {imagen: string, link: string, label: string, imageClass: string, linkClass: string}[] = []
   public srcImagen: string = ''
+  public ofertaPrincipal: OfertaPrincipal = new OfertaPrincipal()
 
   constructor(
     private _scriptService: ScriptServicesService,
@@ -32,6 +35,7 @@ export class HomeTiendaComponent implements OnInit {
     public _const: ConstantesService,
     private _categoriasService: CategoriasService,
     private _marcasService: MarcasService,
+    private _configOfertaService: ConfigOfertaService,
 
     ) {
     this.loadScript()
@@ -43,6 +47,7 @@ export class HomeTiendaComponent implements OnInit {
     this.loadImages()
     this.loadMarcas()
     this.loadCategories()
+    this.cargarOfertaPrincipal()
   }
 
   private loadScript(){
@@ -85,6 +90,15 @@ export class HomeTiendaComponent implements OnInit {
     })
   }
 
+  private cargarOfertaPrincipal(){
+    this._configOfertaService.get().subscribe((res: any) => {
+      this.ofertaPrincipal = res
+      this.sourceImage = this._const.storageImages + 'oferta_home/' + this.ofertaPrincipal.src_imagen
+    }, error =>{
+      this._sharedService.handlerError(error)
+    })
+  }
+
 
   private loadImages(){
     this.imagenes.push({srcImg: 'product-img/product-1.jpg', srcImg2: 'product-img/product-1.jpg', texto1:'topshop', texto2: 'Knot Front Mini Dress', precio: 80.000, textoBoton: 'Comprar'})
@@ -102,27 +116,18 @@ export class HomeTiendaComponent implements OnInit {
     this._marcasService.getHome().subscribe((res: any)=>{
         res.forEach((i: Marca) => {
           if(i.src_imagen){
-            this.imgMarcas.push({ 
-                imagen: i.src_imagen, 
-                link: '', 
-                label: '', 
-                imageClass: 'single-brands-logo', 
+            this.imgMarcas.push({
+                imagen: i.src_imagen,
+                link: '',
+                label: '',
+                imageClass: 'single-brands-logo',
                 linkClass: ''
               })
             }
         })
-        console.log('MARCAS',this.imgMarcas)
     }, error =>{
       this._sharedService.handlerError(error)
     })
-    /*
-    this.imgMarcas.push('core-img/brand1.png')
-    this.imgMarcas.push('core-img/brand2.png')
-    this.imgMarcas.push('core-img/brand3.png')
-    this.imgMarcas.push('core-img/brand4.png')
-    this.imgMarcas.push('core-img/brand5.png')
-    this.imgMarcas.push('core-img/brand6.png')
-    */
   }
 
   public itemClick(id: any){
