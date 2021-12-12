@@ -18,6 +18,7 @@ import { ImpuestosService } from '../../../../services/impuestos/impuestos.servi
 import { ConstantesService } from 'src/app/services/constantes/constantes.service';
 import { FilesService } from 'src/app/services/files/files.service';
 import { ImagenProducto } from '../../../../class/imagenProducto/imagen-producto';
+import { Precio } from 'src/app/class/precio/precio';
 
 @Component({
   selector: 'app-productos-form',
@@ -32,6 +33,8 @@ export class ProductosFormComponent implements OnInit {
     nombre: new FormControl(),
     descripcion: new FormControl(),
     precio_venta_normal: new FormControl(),
+    precio_costo: new FormControl(),
+    precios: new FormControl([]),
     stock: new FormControl(),
     descuento_maximo: new FormControl(),
     unidad_id: new FormControl(),
@@ -113,7 +116,6 @@ export class ProductosFormComponent implements OnInit {
   }
 
   public cargarSubCategorias(idCategoria?: any){
-    console.log('idCategoria',idCategoria)
     if(idCategoria){
       this.showSpinner = true
       this._subCategoriasService.getAllByCategoria(idCategoria).subscribe((res: any) => {
@@ -164,7 +166,9 @@ export class ProductosFormComponent implements OnInit {
       descripcion: [this.producto.descripcion, [Validators.required, Validators.minLength(5), Validators.maxLength(1000)]],
       stock: [this.producto.stock, [Validators.required, Validators.min(0)]],
       descuento_maximo: [this.producto.descuento_maximo, [Validators.required, Validators.min(0), Validators.max(100)]],
+      precio_costo: [this.producto.precio_costo, [Validators.required, Validators.min(0)]],
       precio_venta_normal: [this.producto.precio_venta_normal, [Validators.required, Validators.min(0)]],
+      precios: [this.producto.precios],
       unidad_id: [this.producto.unidad_id, [Validators.required]],
       marca_id: [this.producto.marca_id, [Validators.required]],
       categoria_id: [this.producto.categoria_id, [Validators.required]],
@@ -183,6 +187,7 @@ export class ProductosFormComponent implements OnInit {
       this.showSpinner = true
       this._productosService.find(this.id).subscribe((res: any)=> {
         this.producto = res
+        //console.log(this.obtenerPrecioActual(this.producto))
         this.cargarSubCategorias(res['categoria_id'])
         this.iniciarForm()
         this.cargarRutasImagenes()
@@ -233,6 +238,8 @@ export class ProductosFormComponent implements OnInit {
   }
 
   private actualizar(){
+    //console.log(this.form.value, JSON.stringify(this.form.value))
+    //debugger
     this.showSpinner = true
     this._productosService.update(this.form.value).subscribe((res: any) => {
       this.subirImagenes()
@@ -344,5 +351,32 @@ export class ProductosFormComponent implements OnInit {
       i.imagen_principal = fileName === i.source_image
     })
     this.principalImage = fileName
+  }
+
+
+  obtenerPrecioActual(producto: Producto): Precio{
+    let precio = new Precio()
+    if(!producto.id)return precio
+    if(producto.precios?.length > 0){
+      let fecha = new Date()
+      producto.precios.forEach((p: any) =>{
+        if(new Date(p.fecha_desde) >= fecha && new Date(p.fecha_hasta) <= fecha){
+          precio = p
+        }else{
+          precio.fecha_desde = producto.updated_at
+          precio.fecha_hasta = 'Indefinido'
+        }
+      })
+    }else{
+      precio.precio = producto.precio_venta_normal
+      precio.fecha_desde = producto.updated_at
+      precio.fecha_hasta = 'Indefinido'
+    }
+    return precio
+  }
+
+
+  formatearFecha(fecha?: string){
+    return fecha ? fecha.split('T')[0].split('-').reverse().join('-') : 'Indefeinido'
   }
 }

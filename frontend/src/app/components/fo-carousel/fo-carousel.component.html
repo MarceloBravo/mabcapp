@@ -21,7 +21,7 @@
           <img class="hover-img" src="{{ sourceImage }}{{ item.srcImg2 }}" alt="{{ item.srcImg2 }}">
           <!-- Favourite -->
           <div class="product-favourite">
-              <a href="#" class="favme fa fa-heart"></a>
+              <a (routerLink)="clickFavorite(i)" class="favme fa fa-heart"></a>
           </div>
 
           <!-- Product Description -->

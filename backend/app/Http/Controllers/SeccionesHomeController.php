@@ -27,6 +27,16 @@ class SeccionesHomeController extends Controller
     }
 
 
+    public function seccionesHome(){
+        $data = SeccionesHome::all();
+        foreach($data as $seccion){
+            $seccion['productos'] = $seccion->detalleProductos();
+            //SeccionesHome::find(18)->detalleProductos();
+        }
+
+        return response()->json($data->toArray());
+    }
+
 
     public function getAll(){
         $data = SeccionesHome::all();

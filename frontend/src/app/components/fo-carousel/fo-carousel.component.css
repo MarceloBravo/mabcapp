@@ -37,6 +37,7 @@
 .image1{
   transition: opacity .5s;
   transition: transform .5s;
+  height: 348px !important;
 }
 
 .image1:hover{
@@ -71,3 +72,21 @@
   display: block;
 }
 
+
+
+.fa-heart{
+  position: absolute;
+  height: 25px;
+  width: 45px;
+  font-size: 14px !important;
+  color: #ccc;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  line-height: 25px !important;
+  background-color: #ffffff;
+  box-shadow: 0 0 3px rgb(0 0 0 / 15%);
+  text-align: center;
+  /* opacity: 0; */
+  /* visibility: hidden;*/
+}

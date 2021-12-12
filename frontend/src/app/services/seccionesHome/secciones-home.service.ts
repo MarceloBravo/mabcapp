@@ -22,6 +22,10 @@ export class SeccionesHomeService {
     return this.http.get(`${this._const.endPoint}${this.url}/get/all`, {headers: this._const.header()});
   }
 
+  getSeccionesHome(){
+    return this.http.get(`${this._const.endPoint}${this.url}/secciones/home`, {headers: this._const.header()});
+  }
+
   filter(texto: string, page: number){
     return this.http.get(`${this._const.endPoint}${this.url}/filter/${texto}/${page}`,{headers: this._const.header()});
   }

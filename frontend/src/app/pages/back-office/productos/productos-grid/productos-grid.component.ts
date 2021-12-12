@@ -14,9 +14,10 @@ import { ConstantesService } from '../../../../services/constantes/constantes.se
 export class ProductosGridComponent implements OnInit {
   public showSpinner: boolean = false
   public titulo: string = 'Productos'
-  public headers: string[] = ['Nombre', 'Descripción', 'Precio', 'Categoría', 'Sub-categoría', 'Marca', 'Stock', 'Fecha creación', 'Fecha actualizacón']
-  public visibleColumns: string[] = ['nombre', 'descripcion', 'precio_venta_normal', 'nombre_categoria', 'nombre_sub_categoria', 'nombre_marca', 'stock', 'created_at', 'updated_at']
+  public headers: string[] = ['Foto','Nombre', 'Descripción', 'Precio', 'Categoría', 'Sub-categoría', 'Marca', 'Stock', 'Fecha creación', 'Fecha actualizacón']
+  public visibleColumns: string[] = ['imagen_principal','nombre', 'descripcion', 'precio_venta_normal', 'nombre_categoria', 'nombre_sub_categoria', 'nombre_marca', 'stock', 'created_at', 'updated_at']
   public data: Producto[] = []
+  public imagesColumn: string[] = ['imagen_principal']
   public paginacion: Paginacion = new Paginacion()
   private idEliminar: number | null = null
   private textoFiltro: string = ''
@@ -25,6 +26,7 @@ export class ProductosGridComponent implements OnInit {
     private _productosServices: ProductosService,
     private _sharedService: SharedService,
     private _modalDialogService: ModalDialogService,
+    private _const: ConstantesService,
   ) {
     this.obtenerDatos()
   }
@@ -46,7 +48,11 @@ export class ProductosGridComponent implements OnInit {
 
   private cargarDatos(res: any){
     this.data = res.data
-    this.paginacion.pagina = res.pagina
+    res.data.forEach((p: any) => {
+      p.imagen_principal = this._const.storageImages + 'productos/' + p.imagen_principal
+    })
+
+    this.paginacion.pagina = res.page
     this.paginacion.totRegistros = res.rows
     this.paginacion.registrosPorPagina = res.rowsPerPage
     this.paginacion.totPaginas = Math.ceil(res.rows / res.rowsPerPage)
@@ -81,6 +87,7 @@ export class ProductosGridComponent implements OnInit {
     if(this.textoFiltro !== texto)this.paginacion.pagina = 0
 
     if(texto.length > 0){
+      debugger
       this._productosServices.filter(texto, this.paginacion.pagina).subscribe((res: any) => {
         this.cargarDatos(res)
         this.showSpinner = false

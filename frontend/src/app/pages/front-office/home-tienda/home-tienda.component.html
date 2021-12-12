@@ -8,7 +8,7 @@
 
         <app-carousel
           [imagenes]="imgCategorias"
-          [sourceImage]="srcImagen + 'categorias/'"
+          [sourceImage]="imageFolder + 'categorias/'"
           [arrows]="false"
           [cellsToShow]="3"
         >
@@ -39,12 +39,12 @@
 <!-- ##### CTA Area End ##### -->
 
 <!-- ##### New Arrivals Area Start ##### -->
-<section class="new_arrivals_area section-padding-80 clearfix">
+<section *ngFor="let seccion of secciones" class="new_arrivals_area section-padding-80 clearfix">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="section-heading text-center">
-                    <h2>Popular Products</h2>
+                    <h2>{{ seccion.nombre }}</h2>
                 </div>
             </div>
         </div>
@@ -54,10 +54,11 @@
         <div class="row">
           <div class="col-12">
             <app-fo-carousel
-              [imagenes]="imagenes"
-              [sourceImage]="'../../../assets/front-office/img/'"
+              [imagenes]="seccion.productos"
+              [sourceImage]="imageFolder + 'productos/'"
               (itemClick)="itemClick($event)"
               [lightDOM]="true"
+              (clickFavorito)="clickFavorito($event)"
             ></app-fo-carousel>
 
           </div>
@@ -72,7 +73,7 @@
     <div class="container carousel-marcas">
       <app-carousel
           [imagenes]="imgMarcas"
-          [sourceImage]="srcImagen + 'marcas/'"
+          [sourceImage]="imageFolder + 'marcas/'"
           [arrows]="false"
           [cellsToShow]="5"
         >

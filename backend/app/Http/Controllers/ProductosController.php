@@ -26,11 +26,25 @@ class ProductosController extends Controller
                         ->join('categorias','productos.categoria_id','=','categorias.id')
                         ->join('sub_categorias','productos.sub_categoria_id','=','sub_categorias.id')
                         ->join('unidades','productos.unidad_id','=','unidades.id')
+                        ->join(DB::raw('(SELECT source_image, producto_id, id FROM `imagenes_producto` WHERE imagen_principal AND deleted_at IS NULL
+                                        UNION
+                                        SELECT source_image, producto_id, min(id) FROM `imagenes_producto`
+                                        WHERE NOT imagen_principal
+                                        AND producto_id NOT IN (SELECT producto_id FROM `imagenes_producto` WHERE imagen_principal AND deleted_at IS NULL)
+                                        AND deleted_at IS NULL
+                                        GROUP BY source_image, producto_id
+                                        )
+                                imagen_producto'),
+                            function($join)
+                            {
+                                $join->on('productos.id', '=', 'imagen_producto.producto_id');
+                            })
                         ->select(
                             'productos.id',
                             'productos.nombre',
                             'productos.descripcion',
                             'productos.precio_venta_normal',
+                            'productos.precio_costo',
                             'productos.stock',
                             'productos.unidad_id',
                             'productos.descuento_maximo',
@@ -44,6 +58,7 @@ class ProductosController extends Controller
                             'productos.created_at',
                             'productos.updated_at',
                             'productos.deleted_at',
+                            'imagen_producto.source_image as imagen_principal'
                             )
                         ->orderBy('nombre','asc');
 
@@ -86,6 +101,7 @@ class ProductosController extends Controller
                             'productos.nombre',
                             'productos.descripcion',
                             'productos.precio_venta_normal',
+                            'productos.precio_costo',
                             'productos.stock',
                             'productos.unidad_id',
                             'productos.descuento_maximo',
@@ -188,7 +204,24 @@ class ProductosController extends Controller
         $data['nombre_sub_categoria'] = $data ? $data->subCategoria()[0]->nombre : '';
         $data['nombre_marca'] = $data ? $data->marca()[0]->nombre : '';
         $data['nombre_unidad'] = $data ? $data->unidad()[0]->nombre : '';
-
+        $data['precios'] = $data->precios();
+        /*
+        $precioVentaActual = 0;
+        $fechaDesde = $data ? $data->updated_at : null;
+        $fechaHasta = null;
+        if($data && count($data->precios()) > 0){
+            $precioVentaActual = $data->precios()[0]->precio;
+            $fechaDesde = $data->precios()[0]->fecha_desde;
+            $fechaHasta = $data->precios()[0]->fecha_hasta;
+        }else if($data){
+            $precioVentaActual = $data->previo_venta_normal;
+            $fechaDesde = $data->precios()[0]->fecha_desde;
+            $fechaHasta = $data->precios()[0]->fecha_hasta;
+        }
+        $data['precio_venta_actual'] = $precioVentaActual;
+        $data['fecha_desde'] = $fechaDesde;
+        $data['fecha_hasta'] = $fechaHasta;
+        */
         return $data;
     }
 
@@ -289,6 +322,19 @@ class ProductosController extends Controller
                         ->join('categorias','productos.categoria_id','=','categorias.id')
                         ->join('sub_categorias','productos.sub_categoria_id','=','sub_categorias.id')
                         ->join('unidades','productos.unidad_id','=','unidades.id')
+                        ->join(DB::raw('(SELECT source_image, producto_id, id FROM `imagenes_producto` WHERE imagen_principal AND deleted_at IS NULL
+                                        UNION
+                                        SELECT source_image, producto_id, min(id) FROM `imagenes_producto`
+                                        WHERE NOT imagen_principal
+                                        AND producto_id NOT IN (SELECT producto_id FROM `imagenes_producto` WHERE imagen_principal AND deleted_at IS NULL)
+                                        AND deleted_at IS NULL
+                                        GROUP BY source_image, producto_id
+                                        )
+                                imagen_producto'),
+                            function($join)
+                            {
+                                $join->on('productos.id', '=', 'imagen_producto.producto_id');
+                            })
                         ->where('productos.nombre','like','%'.$texto.'%')
                         ->orWhere('productos.descripcion','like','%'.$texto.'%')
                         ->orWhere('precio_venta_normal','like','%'.$texto.'%')
@@ -303,6 +349,7 @@ class ProductosController extends Controller
                             'productos.nombre',
                             'productos.descripcion',
                             'productos.precio_venta_normal',
+                            'productos.precio_costo',
                             'productos.stock',
                             'productos.unidad_id',
                             'productos.descuento_maximo',
@@ -316,6 +363,7 @@ class ProductosController extends Controller
                             'productos.created_at',
                             'productos.updated_at',
                             'productos.deleted_at',
+                            'imagen_producto.source_image as imagen_principal'
                             )
                         ->orderBy('nombre','asc');
 
@@ -334,6 +382,7 @@ class ProductosController extends Controller
             'nombre' => 'required|min:3|max:255',
             'descripcion' => 'required|min:5|max:1000',
             'precio_venta_normal' => 'required|min:0|integer',
+            'precio_costo' => 'required|min:0|integer',
             'stock' => 'required|min:0|integer',
             'descuento_maximo' => 'required|min:0|max:100',
             'unidad_id' => 'required|exists:unidades,id',
@@ -354,6 +403,10 @@ class ProductosController extends Controller
             'precio_venta_normal.required' => 'Debe ingresar el precio de venta normal.',
             'precio_venta_normal.min' => 'El precio de venta normal debe ser un número positivo.',
             'precio_venta_normal.integer' => 'El precio de venta debe ser un número entero',
+
+            'precio_costo.required' => 'Debe ingresar el precio costo del producto.',
+            'precio_costo.min' => 'El precio costo debe ser un número positivo.',
+            'precio_costo.integer' => 'El precio costo debe ser un número entero',
 
             'stock.required' => 'Debe ingresar el stock del producto.',
             'stock.min' => 'El stock debe ser un número positivo.',

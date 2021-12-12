@@ -4,12 +4,15 @@ import { SubCategoria } from '../subCategoria/sub-categoria';
 import { Marca } from '../marca/marca';
 import { Unidad } from '../Unidad/unidad';
 import { ImagenProducto } from '../imagenProducto/imagen-producto';
+import { Precio } from '../precio/precio';
 
 export class Producto {
   id?: number;
   nombre: string = '';
   descripcion: string = '';
   precio_venta_normal: number = 0;
+  precio_costo: number = 0;
+  precios: Precio[] = [];
   stock: number = 0;
   descuento_maximo: number = 0;
   unidad_id: number = 0;
@@ -20,7 +23,6 @@ export class Producto {
   created_at: string = '';
   updated_at: string = '';
   deleted_at?: string = '';
-
   imagen_principal: string = '';
   nombre_categoria: string = '';
   nombre_sub_categoria: string = '';

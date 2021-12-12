@@ -17,7 +17,7 @@ class Producto extends Model
     protected $fillable = [
         'nombre','descripcion','precio_venta_normal',
         'stock','unidad_id','marca_id','categoria_id',
-        'sub_categoria_id','descuento_maximo'
+        'sub_categoria_id','descuento_maximo','precio_costo'
     ];
 
     public function unidad()
@@ -52,6 +52,6 @@ class Producto extends Model
 
     public function precios()
     {
-        return $this->hasMany(Precios::class, 'producto_id')->get();
+        return $this->hasMany(Precio::class, 'producto_id')->get();
     }
 }

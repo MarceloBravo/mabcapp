@@ -16,9 +16,9 @@ class SubCategoriasController extends Controller
      */
     public function index($pag)
     {
-        $data = SubCategoria::join('categorias','sub_categoria.categoria_id','=','categorias.id')
-                            ->orderBy('sub_categoria.nombre','asc')
-                            ->select('sub_categoria.*','categorias.nombre as nombre_categoria');
+        $data = SubCategoria::join('categorias','sub_categorias.categoria_id','=','categorias.id')
+                            ->orderBy('sub_categorias.nombre','asc')
+                            ->select('sub_categorias.*','categorias.nombre as nombre_categoria');
 
         $totRows = count($data->get());
 
@@ -138,10 +138,10 @@ class SubCategoriasController extends Controller
 
 
     public function filter($texto, $pag){
-        $data = SubCategoria::join('categorias','sub_categoria.categoria_id','=','categorias.id')
+        $data = SubCategoria::join('categorias','sub_categorias.categoria_id','=','categorias.id')
                             ->orderBy('nombre','asc')
-                            ->select('sub_categoria.*','categorias.nombre as nombre_categoria')
-                            ->where('sub_categoria.nombre','like','%'.$texto.'%');
+                            ->select('sub_categorias.*','categorias.nombre as nombre_categoria')
+                            ->where('sub_categorias.nombre','like','%'.$texto.'%');
 
         $totRows = count($data->get());
 
@@ -155,7 +155,7 @@ class SubCategoriasController extends Controller
 
     private function validaDatos(Request $request, $id = null){
         $rules = [
-            'nombre' => 'required|min:3|max:50|unique:sub_categoria,id,'.$id,
+            'nombre' => 'required|min:3|max:50|unique:sub_categorias,id,'.$id,
             'categoria_id' => 'required|exists:categorias,id'
         ];
 

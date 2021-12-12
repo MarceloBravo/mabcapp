@@ -11,6 +11,8 @@ import { MarcasService } from '../../../services/marcas/marcas.service';
 import { Marca } from '../../../class/marca/marca';
 import { ConfigOfertaService } from '../../../services/configOferta/config-oferta.service';
 import { OfertaPrincipal } from '../../../class/ofertaPrincipal/oferta-principal';
+import { SeccionesHomeService } from '../../../services/seccionesHome/secciones-home.service';
+import { SeccionHome } from 'src/app/class/seccionHome/seccion-home';
 
 @Component({
   selector: 'app-home-tienda',
@@ -19,7 +21,8 @@ import { OfertaPrincipal } from '../../../class/ofertaPrincipal/oferta-principal
   '../../../../assets/front-office/css/core-style.css']
 })
 export class HomeTiendaComponent implements OnInit {
-  public sourceImage: string = '../../../assets/front-office/img/'
+  public sourceImage: string = ''
+  public imageFolder: string = ''
   private sourceScript: string =  '../../../../assets/front-office/js/'
   public imagenes: ItemsCarousel[] = []
   public imgMarcas: {imagen: string, link: string, label: string, imageClass: string, linkClass: string}[] = []
@@ -27,6 +30,7 @@ export class HomeTiendaComponent implements OnInit {
   public imgCategorias: {imagen: string, link: string, label: string, imageClass: string, linkClass: string}[] = []
   public srcImagen: string = ''
   public ofertaPrincipal: OfertaPrincipal = new OfertaPrincipal()
+  public secciones: any[] = []
 
   constructor(
     private _scriptService: ScriptServicesService,
@@ -36,11 +40,12 @@ export class HomeTiendaComponent implements OnInit {
     private _categoriasService: CategoriasService,
     private _marcasService: MarcasService,
     private _configOfertaService: ConfigOfertaService,
+    private _seccionesService: SeccionesHomeService,
 
     ) {
     this.loadScript()
     this.cargarImagenesMarquesina()
-    this.srcImagen = this._const.storageImages
+    this.imageFolder = this._const.storageImages
    }
 
   ngOnInit(): void {
@@ -48,6 +53,7 @@ export class HomeTiendaComponent implements OnInit {
     this.loadMarcas()
     this.loadCategories()
     this.cargarOfertaPrincipal()
+    this.cargarSecciones()
   }
 
   private loadScript(){
@@ -84,7 +90,7 @@ export class HomeTiendaComponent implements OnInit {
   private cargarImagenesMarquesina(){
     this._imagenesMarquesina.getImages().subscribe((res: any) => {
       this.imagenesMarquesina = res
-      this.imagenesMarquesina.forEach(i => i.src_imagen = `${this._const.storageImages}marquesina/${i.src_imagen}` )
+      this.imagenesMarquesina.forEach(i => i.src_imagen = `${this.imageFolder}marquesina/${i.src_imagen}` )
     }, error =>{
       this._sharedService.handlerError(error)
     })
@@ -99,6 +105,42 @@ export class HomeTiendaComponent implements OnInit {
     })
   }
 
+
+  private cargarSecciones(){
+    this._seccionesService.getSeccionesHome().subscribe((res: any) => {
+      console.log(res)
+      //this.secciones =
+      res.forEach((prod: any) => {
+        this.secciones.push({
+          nombre: prod.nombre,
+          productos: prod.productos.map((p: any) => ({
+            srcImg: p.source_image,
+            srcImg2: p.source_image,
+            texto1: p.texto1 ? p.texto1 : p.marca,
+            texto2: p.texto2 ? p.texto2 : p.nombre,
+            precio: p.precio_venta_normal,
+            textoBoton: 'Comprar'
+          }))
+        })
+      })
+      /*
+      this.secciones.push({
+        nombre: res.nombre,
+        producto: res.productos.map((p: any) => ({
+          srcImg: p.src_imagen,
+          srcImg2: p.src_imagen,
+          texto1: p.texto1,
+          texto2: p.texto2,
+          precio: p.precio,
+          texto_boton: 'Comprar'
+        }))
+      })
+      */
+      console.log(this.secciones)
+    }, error => {
+      this._sharedService.handlerError(error)
+    })
+  }
 
   private loadImages(){
     this.imagenes.push({srcImg: 'product-img/product-1.jpg', srcImg2: 'product-img/product-1.jpg', texto1:'topshop', texto2: 'Knot Front Mini Dress', precio: 80.000, textoBoton: 'Comprar'})
@@ -131,6 +173,10 @@ export class HomeTiendaComponent implements OnInit {
   }
 
   public itemClick(id: any){
+
+  }
+
+  public clickFavorito(id: any){
 
   }
 

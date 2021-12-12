@@ -134,3 +134,5 @@ Route::get('categorias/get/all', 'CategoriasController@getAll');
 Route::get('marcas/get/home', 'MarcasController@getMarcasHome');
 
 Route::get('oferta_principal_home', 'ConfigImagenPrincipalController@show');
+
+Route::get('secciones_home/secciones/home', 'SeccionesHomeController@seccionesHome');

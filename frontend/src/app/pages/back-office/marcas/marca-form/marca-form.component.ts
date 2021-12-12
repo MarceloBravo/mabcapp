@@ -63,7 +63,7 @@ export class MarcaFormComponent implements OnInit {
       id: [this.marca.id,[Validators.min(0)]],
       nombre: [this.marca.nombre,[Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       src_imagen: [this.marca.src_imagen ? this.marca.src_imagen : this._const.noImage,[Validators.maxLength(500)]],
-      mostrar_en_home: [this.marca.mostrar_en_home,[Validators.required]],
+      mostrar_en_home: [this.marca.mostrar_en_home && this.marca.src_imagen ? this.marca.mostrar_en_home : 0,[Validators.required]],
       created_at: this.marca.created_at,
       updated_at: this.marca.updated_at,
       deleted_at: this.marca.deleted_at,
@@ -132,7 +132,8 @@ export class MarcaFormComponent implements OnInit {
 
 
   private grabar(){
-    if(this.fileToUpload?.name)this.form.value.src_imagen = this.fileToUpload.name
+    this.form.value.src_imagen = this.fileToUpload?.name ? this.fileToUpload.name : this.form.value.src_imagen ? this.form.value.src_imagen : ''
+    //this.form.value.mostrar_en_home = this.fileToUpload?.name ? 1 : 0
     if(this.id !== null){
       this.actualizar();
     }else{
