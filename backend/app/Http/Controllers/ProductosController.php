@@ -205,23 +205,7 @@ class ProductosController extends Controller
         $data['nombre_marca'] = $data ? $data->marca()[0]->nombre : '';
         $data['nombre_unidad'] = $data ? $data->unidad()[0]->nombre : '';
         $data['precios'] = $data->precios();
-        /*
-        $precioVentaActual = 0;
-        $fechaDesde = $data ? $data->updated_at : null;
-        $fechaHasta = null;
-        if($data && count($data->precios()) > 0){
-            $precioVentaActual = $data->precios()[0]->precio;
-            $fechaDesde = $data->precios()[0]->fecha_desde;
-            $fechaHasta = $data->precios()[0]->fecha_hasta;
-        }else if($data){
-            $precioVentaActual = $data->previo_venta_normal;
-            $fechaDesde = $data->precios()[0]->fecha_desde;
-            $fechaHasta = $data->precios()[0]->fecha_hasta;
-        }
-        $data['precio_venta_actual'] = $precioVentaActual;
-        $data['fecha_desde'] = $fechaDesde;
-        $data['fecha_hasta'] = $fechaHasta;
-        */
+
         return $data;
     }
 
