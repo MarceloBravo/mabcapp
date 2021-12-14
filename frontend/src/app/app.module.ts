@@ -65,6 +65,8 @@ import { MarquesinaComponent } from './components/marquesina/marquesina.componen
 import { CarouselComponent } from './components/carousel/carousel.component';
 import { FormConfigMarquesinaHomeComponent } from './pages/back-office/config-tienda/form-config-marquesina-home/form-config-marquesina-home/form-config-marquesina-home.component';
 import { FormConfigOfertaPrincipalComponent } from './pages/back-office/config-tienda/form-config-oferta-principal/form-config-oferta-principal/form-config-oferta-principal.component';
+import { CatalogoComponent } from './pages/front-office/catalogo/catalogo.component';
+import { CardProductoComponent } from './components/card-producto/card-producto.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -124,7 +126,9 @@ import { FormConfigOfertaPrincipalComponent } from './pages/back-office/config-t
     MarquesinaComponent,
     CarouselComponent,
     FormConfigMarquesinaHomeComponent,
-    FormConfigOfertaPrincipalComponent
+    FormConfigOfertaPrincipalComponent,
+    CatalogoComponent,
+    CardProductoComponent
   ],
   imports: [
     BrowserModule,

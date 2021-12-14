@@ -38,11 +38,11 @@ export class FoCarouselComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  itemOnClick(id: any){
+  onItemClick(id: any){
     return this.itemClick.emit(id)
   }
 
-  clickFavorite(id: any){
+  onClickFavorito(id: any){
     return this.clickFavorito.emit(id)
   }
 }

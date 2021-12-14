@@ -36,4 +36,7 @@ export class CarouselComponent implements OnInit {
     console.log(this.imagenes, this.sourceImage)
   }
 
+  onItemClick(e: any){
+    return this.itemClick.emit(e)
+  }
 }

@@ -1,0 +1,14 @@
+.single-product-wrapper{
+  height: 100%;
+  position: absolute;
+  overflow: hidden;
+}
+
+.row-product{
+  height: 450px;
+  margin-bottom: 10%;
+}
+
+.paginacion{
+  width: 100%;
+}

@@ -7,10 +7,10 @@
         </li>
 
         <ng-container *ngFor="let pag of paginacion.arrPaginas">
-          <li class="page-item" *ngIf="(pag-1) !== paginacion.pagina">
+          <li class="page-item" *ngIf="(pag-1) != paginacion.pagina">
             <a class="page-link" (click)="irA(pag-1)" >{{ pag }}</a>
           </li>
-          <li class="page-item active" *ngIf="(pag-1) === paginacion.pagina">
+          <li class="page-item active" *ngIf="(pag-1) == paginacion.pagina">
             <a class="page-link" (click)="irA(pag-1)" >{{ pag }}
                 <span class="sr-only">(current)</span>
             </a>

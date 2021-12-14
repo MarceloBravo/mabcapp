@@ -12,7 +12,6 @@ import { Marca } from '../../../class/marca/marca';
 import { ConfigOfertaService } from '../../../services/configOferta/config-oferta.service';
 import { OfertaPrincipal } from '../../../class/ofertaPrincipal/oferta-principal';
 import { SeccionesHomeService } from '../../../services/seccionesHome/secciones-home.service';
-import { SeccionHome } from 'src/app/class/seccionHome/seccion-home';
 
 @Component({
   selector: 'app-home-tienda',
@@ -49,7 +48,6 @@ export class HomeTiendaComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.loadImages()
     this.loadMarcas()
     this.loadCategories()
     this.cargarOfertaPrincipal()
@@ -142,18 +140,6 @@ export class HomeTiendaComponent implements OnInit {
     })
   }
 
-  private loadImages(){
-    this.imagenes.push({srcImg: 'product-img/product-1.jpg', srcImg2: 'product-img/product-1.jpg', texto1:'topshop', texto2: 'Knot Front Mini Dress', precio: 80.000, textoBoton: 'Comprar'})
-    this.imagenes.push({srcImg: 'product-img/product-2.jpg', srcImg2: 'product-img/product-2.jpg', texto1:'topshop', texto2: 'Poplin Displaced Wrap Dress', precio: 80.000, textoBoton: 'Comprar'})
-    this.imagenes.push({srcImg: 'product-img/product-3.jpg', srcImg2: 'product-img/product-3.jpg', texto1:'Mango', texto2: 'PETITE Crepe Wrap Mini Dress', precio: 55.000, textoBoton: 'Comprar'})
-    this.imagenes.push({srcImg: 'product-img/product-4.jpg', srcImg2: 'product-img/product-4.jpg', texto1:'Mango', texto2: 'PETITE Belted Jumper Dress', precio: 60.000, textoBoton: 'Comprar'})
-    this.imagenes.push({srcImg: 'product-img/product-5.jpg', srcImg2: 'product-img/product-5.jpg', texto1:'', texto2: '', precio: 0, textoBoton: 'Comprar'})
-    this.imagenes.push({srcImg: 'product-img/product-6.jpg', srcImg2: 'product-img/product-6.jpg', texto1:'', texto2: '', precio: 0, textoBoton: 'Comprar'})
-    this.imagenes.push({srcImg: 'product-img/product-7.jpg', srcImg2: 'product-img/product-7.jpg', texto1:'', texto2: '', precio: 0, textoBoton: 'Comprar'})
-    this.imagenes.push({srcImg: 'product-img/product-8.jpg', srcImg2: 'product-img/product-8.jpg', texto1:'', texto2: '', precio: 0, textoBoton: 'Comprar'})
-    this.imagenes.push({srcImg: 'product-img/product-9.jpg', srcImg2: 'product-img/product-9.jpg', texto1:'', texto2: '', precio: 0, textoBoton: 'Comprar'})
-  }
-
   private loadMarcas(){
     this._marcasService.getHome().subscribe((res: any)=>{
         res.forEach((i: Marca) => {
@@ -173,11 +159,11 @@ export class HomeTiendaComponent implements OnInit {
   }
 
   public itemClick(id: any){
-
+    console.log('itemClick',id)
   }
 
   public clickFavorito(id: any){
-
+    console.log('clickFavorito', id)
   }
 
 }

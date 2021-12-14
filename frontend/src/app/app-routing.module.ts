@@ -35,6 +35,7 @@ import { PreciosComponent } from './pages/back-office/precios/precios.component'
 import { ConfigTiendaComponent } from './pages/back-office/config-tienda/config-tienda.component';
 import { SeccionesHomeGridComponent } from './pages/back-office/seccionesHome/secciones-home-grid/secciones-home-grid.component';
 import { SeccionesHomeFormComponent } from './pages/back-office/seccionesHome/secciones-home-form/secciones-home-form.component';
+import { CatalogoComponent } from './pages/front-office/catalogo/catalogo.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -105,9 +106,10 @@ const routes: Routes = [
 { path: '', component: MainTiendaComponent,
     children: [
       { path: '', component: HomeTiendaComponent },
+      { path: 'catalogo', component: CatalogoComponent },
     ]
   },
-  { path: '**', pathMatch: 'full', redirectTo: 'login' },
+  { path: '**', pathMatch: 'full', redirectTo: '/' },
 ];
 
 @NgModule({
