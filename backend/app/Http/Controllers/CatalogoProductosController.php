@@ -60,9 +60,8 @@ class CatalogoProductosController extends Controller
                         );
 
         if(!is_null($request->filtro) && $request->filtro !== ''){
-            $data = $data->where('productos.nombre','like','*'.$texto.'%')
-                        ->orWhere('CONVERT(p.precio_venta, CHAR)','like','*'.$texto.'%')
-                        ->orWhere('CONVERT(p.descuento, CHAR)','like','*'.$texto.'%');
+            $data = $data->where('productos.nombre','like','%'.$request->filtro.'%')
+                        ->orWhere('marcas.nombre','like','%'.$request->filtro.'%');
         }
 
         if(!is_null($request->marca_id)){
@@ -88,9 +87,17 @@ class CatalogoProductosController extends Controller
         }
         if(!is_null($rangoPrecioDesde)){
             $data = $data->havingRaw('precio_venta BETWEEN ? AND ?',[$rangoPrecioDesde, $rangoPrecioHasta]);
+            if($request->filtro){
+                $data = $data->orHavingRaw("CONVERT(p.descuento, CHAR) like '%".$request->filtro."%'");
+            }
+        }else{
+            if($request->filtro){
+                $data = $data->havingRaw("CONVERT(p.descuento, CHAR) like '%".$request->filtro."%'");
+            }
         }
-        $data = $data->orderBy($ordenarPor, $tipoOrden);
 
+        $data = $data->orderBy($ordenarPor, $tipoOrden);
+        //dd($data->toSql());
         $totRows = count($data->get());
 
         $data = $data->skip($request->productos_por_pagina * $pag)

@@ -45,6 +45,7 @@ export class CatalogoComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
   ) {
     this.loadScript()
+    this.params.filtro = this._catalogoService.getTextoFiltro()
     this.obtenerDatos()
     this.cargarCategorias()
     this.cargarMarcas()
@@ -58,6 +59,10 @@ export class CatalogoComponent implements OnInit {
     }, error => {
       this.titulo = 'Catalogo'
     } )
+    this._catalogoService.textoFiltro$.subscribe((res: string) => {
+      this.params.filtro = res
+      this.obtenerDatos()
+    })
   }
 
   private loadScript(){
