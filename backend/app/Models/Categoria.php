@@ -17,7 +17,7 @@ class Categoria extends Model
     protected $fillable = ['nombre','src_imagen','link'];
 
     public function subCategorias(){
-        return $this->hasMany(SubCategorias::class,'id','categoria_id')->get();
+        return $this->hasMany(SubCategoria::class,'categoria_id','id')->get();
     }
 
     public function productos()

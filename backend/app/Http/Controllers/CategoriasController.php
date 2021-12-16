@@ -31,6 +31,9 @@ class CategoriasController extends Controller
 
     public function getAll(){
         $data = Categoria::orderBy('nombre','asc')->get();
+        foreach($data as $categoria){
+            $categoria['subcategorias'] = $categoria->subCategorias();
+        }
 
         return response()->json($data->toArray());
     }

@@ -8,6 +8,7 @@ import { FoCatalogoParams } from 'src/app/class/fo-catalogo-params/fo-catalogo-p
 })
 export class CatalogoService {
   private url: string = 'catalogo'
+  public textoFiltro: string = ''
 
   constructor(
     private http: HttpClient,
@@ -15,6 +16,15 @@ export class CatalogoService {
   ) { }
 
   get(pag: number, params: FoCatalogoParams){
+    console.log('catalogo',params)
     return this.http.post(`${this._const.endPoint + this.url}/pag/${pag}`, params, {headers: this._const.header()});
+  }
+
+  filter(texto: string, pag: number, params: FoCatalogoParams){
+    return this.http.post(`${this._const.endPoint + this.url}/filter/${texto}/${pag}`, params, {headers: this._const.header()});
+  }
+
+  minMaxPrice(){
+    return this.http.get(`${this._const.endPoint + this.url}/precio-min-max`,{headers: this._const.header()});
   }
 }

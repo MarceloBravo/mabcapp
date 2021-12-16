@@ -128,7 +128,7 @@ import { CardProductoComponent } from './components/card-producto/card-producto.
     FormConfigMarquesinaHomeComponent,
     FormConfigOfertaPrincipalComponent,
     CatalogoComponent,
-    CardProductoComponent
+    CardProductoComponent,
   ],
   imports: [
     BrowserModule,
@@ -139,7 +139,8 @@ import { CardProductoComponent } from './components/card-producto/card-producto.
     ImageUploadModule.forRoot(),
     IvyCarouselModule,
     BrowserAnimationsModule,
-    AccordionModule.forRoot()
+    AccordionModule.forRoot(),
+
   ],
   providers: [LoguedGuard],
   bootstrap: [AppComponent],

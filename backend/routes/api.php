@@ -71,7 +71,6 @@ Route::group([
     Route::resource('marcas', 'MarcasController');
     Route::get('marcas/pag/{pag}', 'MarcasController@index');
     Route::get('marcas/filtrar/{texto}{pag}', 'MarcasController@filter');
-    Route::get('marcas/get/all', 'MarcasController@getAll');
     Route::post('marcas/subir/imagen', 'MarcasController@uploadImage');
 
     Route::resource('impuestos', 'ImpuestosController');
@@ -138,3 +137,7 @@ Route::get('oferta_principal_home', 'ConfigImagenPrincipalController@show');
 Route::get('secciones_home/secciones/home', 'SeccionesHomeController@seccionesHome');
 
 Route::post('catalogo/pag/{pag}', 'CatalogoProductosController@catalogo');
+
+Route::get('catalogo/precio-min-max', 'CatalogoProductosController@minMaxPrice');
+
+Route::get('marcas/get/all', 'MarcasController@getAll');
