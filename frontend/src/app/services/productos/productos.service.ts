@@ -34,6 +34,10 @@ export class ProductosService {
     return this.http.get(`${this._const.endPoint}${this.url}/${id}`,{headers: this._const.header()});
   }
 
+  getDetail(id: number){
+    return this.http.get(`${this._const.endPoint}detalle_${this.url}/${id}`,{headers: this._const.header()});
+  }
+
   insert(producto: Producto){
     return this.http.post(`${this._const.endPoint}${this.url}`, producto, {headers: this._const.header()});
   }

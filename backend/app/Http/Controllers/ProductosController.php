@@ -197,7 +197,7 @@ class ProductosController extends Controller
         $data['imagenes'] = $data ? $data->imagenes() : [];
         $data['categoria'] = $data ? $data->categoria() : null;
         $data['sub_categoria'] = $data ? $data->subCategoria() : null;
-        $data['marca'] = $data ? $data->marca() : null;
+        $data['marca'] = $data ? $data->marca()[0] : null;
         $data['unidad'] = $data ? $data->unidad() : null;
 
         $data['nombre_categoria'] = $data ? $data->categoria()[0]->nombre : '';

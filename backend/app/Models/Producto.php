@@ -52,6 +52,9 @@ class Producto extends Model
 
     public function precios()
     {
-        return $this->hasMany(Precio::class, 'producto_id')->get();
+        return $this->hasMany(Precio::class, 'producto_id')
+                    ->whereDate('fecha_desde','>=',Date('Y-m-d'))
+                    ->whereDate('fecha_hasta','<=',Date('Y-m-d'))
+                    ->get();
     }
 }

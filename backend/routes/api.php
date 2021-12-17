@@ -141,3 +141,5 @@ Route::post('catalogo/pag/{pag}', 'CatalogoProductosController@catalogo');
 Route::get('catalogo/precio-min-max', 'CatalogoProductosController@minMaxPrice');
 
 Route::get('marcas/get/all', 'MarcasController@getAll');
+
+Route::get('detalle_productos/{id}', 'ProductosController@show');

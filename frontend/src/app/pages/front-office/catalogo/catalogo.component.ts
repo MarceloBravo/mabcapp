@@ -6,11 +6,10 @@ import { FoCatalogoParams } from '../../../class/fo-catalogo-params/fo-catalogo-
 import { Paginacion } from '../../../class/paginacion/paginacion';
 import { ConstantesService } from 'src/app/services/constantes/constantes.service';
 import { ItemsCarousel } from '../../../class/ItemsCarousel/items-carousel';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriasService } from '../../../services/categorias/categorias.service';
 import { Categoria } from '../../../class/Categoria/categoria';
 import { SubCategoriasService } from '../../../services/subCategorias/sub-categorias.service';
-import { SubCategoria } from 'src/app/class/subCategoria/sub-categoria';
 import { MarcasService } from '../../../services/marcas/marcas.service';
 import { Marca } from '../../../class/marca/marca';
 import { OrdenarPor } from '../../../enum/catalogoParams/ordenarPor';
@@ -39,10 +38,10 @@ export class CatalogoComponent implements OnInit {
     private _catalogoService: CatalogoService,
     private _sharedService: SharedService,
     public _categoriasService: CategoriasService,
-    private _subCategoriasService: SubCategoriasService,
     private _marcasService: MarcasService,
     public _const: ConstantesService,
     public activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
     this.loadScript()
     this.params.filtro = this._catalogoService.getTextoFiltro()
@@ -136,7 +135,7 @@ export class CatalogoComponent implements OnInit {
   }
 
   itemClick(e: any){
-    console.log('itemClick',e)
+    this.router.navigate(['detalle_producto/' + e.id])
   }
 
   clickFavorito(e: any){

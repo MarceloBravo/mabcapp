@@ -22,7 +22,9 @@ export class FoHeaderNavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.url.subscribe(res => {
-      this.ruta = res[0].path
+      if(res[0]){
+        this.ruta = res[0].path
+      }
     })
   }
 

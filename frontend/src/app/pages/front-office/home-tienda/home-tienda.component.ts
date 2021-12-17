@@ -12,6 +12,7 @@ import { Marca } from '../../../class/marca/marca';
 import { ConfigOfertaService } from '../../../services/configOferta/config-oferta.service';
 import { OfertaPrincipal } from '../../../class/ofertaPrincipal/oferta-principal';
 import { SeccionesHomeService } from '../../../services/seccionesHome/secciones-home.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-tienda',
@@ -40,6 +41,7 @@ export class HomeTiendaComponent implements OnInit {
     private _marcasService: MarcasService,
     private _configOfertaService: ConfigOfertaService,
     private _seccionesService: SeccionesHomeService,
+    private router: Router
 
     ) {
     this.loadScript()
@@ -112,6 +114,7 @@ export class HomeTiendaComponent implements OnInit {
         this.secciones.push({
           nombre: prod.nombre,
           productos: prod.productos.map((p: any) => ({
+            id: p.id,
             srcImg: p.source_image,
             srcImg2: p.source_image,
             texto1: p.texto1 ? p.texto1 : p.marca,
@@ -158,8 +161,9 @@ export class HomeTiendaComponent implements OnInit {
     })
   }
 
-  public itemClick(id: any){
-    console.log('itemClick',id)
+  public itemClick(e: any){
+    console.log('itemClick',e)
+    this.router.navigate(['detalle_producto/' + e.id])
   }
 
   public clickFavorito(id: any){

@@ -67,6 +67,7 @@ import { FormConfigMarquesinaHomeComponent } from './pages/back-office/config-ti
 import { FormConfigOfertaPrincipalComponent } from './pages/back-office/config-tienda/form-config-oferta-principal/form-config-oferta-principal/form-config-oferta-principal.component';
 import { CatalogoComponent } from './pages/front-office/catalogo/catalogo.component';
 import { CardProductoComponent } from './components/card-producto/card-producto.component';
+import { DetalleProductoComponent } from './pages/front-office/detalle-producto/detalle-producto.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -129,6 +130,7 @@ import { CardProductoComponent } from './components/card-producto/card-producto.
     FormConfigOfertaPrincipalComponent,
     CatalogoComponent,
     CardProductoComponent,
+    DetalleProductoComponent,
   ],
   imports: [
     BrowserModule,
