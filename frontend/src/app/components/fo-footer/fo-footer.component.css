@@ -14,3 +14,8 @@
   font-family: "Ubuntu", sans-serif;
   text-transform: capitalize;
 }
+
+
+.footer_area{
+  z-index: 100 !important;
+}
