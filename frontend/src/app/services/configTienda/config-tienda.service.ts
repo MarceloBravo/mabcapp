@@ -19,7 +19,7 @@ export class ConfigTiendaService {
   }
 
   update(data: Tienda){
-    console.log('update tienda', `${this._const.endPoint}${this.url}/${data.id}`, JSON.stringify(data))
+    //console.log('update tienda', `${this._const.endPoint}${this.url}/${data.id}`, JSON.stringify(data))
     return this.http.put(`${this._const.endPoint}${this.url}/${data.id}`, data, {headers: this._const.header()});
   }
 

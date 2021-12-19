@@ -10,6 +10,7 @@ import { ItemsCarousel } from 'src/app/class/ItemsCarousel/items-carousel';
 export class CardProductoComponent implements OnInit {
   @Input() sourceImage: string = ''
   @Input() imagen: ItemsCarousel = new ItemsCarousel()
+  @Input() esFavorito: boolean = false
   @Output() clickFavorito: EventEmitter<ItemsCarousel> = new EventEmitter()
   @Output() itemClick: EventEmitter<ItemsCarousel> = new EventEmitter()
 

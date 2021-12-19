@@ -4,7 +4,7 @@
   <img class="hover-img" src="{{ sourceImage }}{{ imagen.srcImg2 }}" alt="{{ imagen.srcImg2 }}">
   <!-- Favourite -->
   <div class="product-favourite">
-      <a (click)="clickFavorite()" class="favme fa fa-heart"></a>
+      <a (click)="clickFavorite()" class="favme fa fa-heart {{ esFavorito ? 'favorito' : ''}}"></a>
   </div>
 
   <!-- Product Description -->

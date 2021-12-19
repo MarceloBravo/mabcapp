@@ -107,3 +107,7 @@
 .product-description {
   bottom: auto !important;
 }
+
+.favorito{
+  color: red !important;
+}

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ItemsCarousel } from 'src/app/class/ItemsCarousel/items-carousel';
+import { CarritoService } from '../../services/carrito/carrito.service';
 //npm i angular-responsive-carousel
 //https://www.npmjs.com/package/angular-responsive-carousel?activeTab=versions
 
@@ -26,6 +27,8 @@ export class FoCarouselComponent implements OnInit {
   @Input() lightDOM: boolean = false  //Mantenga un número limitado de celdas en el árbol DOM para un número ilimitado de imágenes. A medida que el carrusel se desplaza, las imágenes se cargarán de forma diferida. Esto le permite no sobrecargar la memoria del navegador. Este modo funciona solo con imágenes pasadas como una matriz.
   @Output() clickFavorito: EventEmitter<number> = new EventEmitter()
   @Output() itemClick: EventEmitter<number> = new EventEmitter()
+  favoritos: number[] = []
+
   /*public images = [
     {path: this.sourceImage +'product-img/product-1.jpg'},
     {path: this.sourceImage +'product-img/product-2.jpg'},
@@ -33,9 +36,14 @@ export class FoCarouselComponent implements OnInit {
   ]
   */
 
-  constructor() { }
+  constructor(
+    private _carritoServices: CarritoService
+  ) { }
 
   ngOnInit(): void {
+    this._carritoServices.changeFavorite$.subscribe(res => {
+      this.favoritos = this._carritoServices.getFavorites()
+    } )
   }
 
   onItemClick(id: any){
@@ -44,5 +52,9 @@ export class FoCarouselComponent implements OnInit {
 
   onClickFavorito(id: any){
     return this.clickFavorito.emit(id)
+  }
+
+  esFavorito(item: ItemsCarousel){
+    return item.id ? this.favoritos.indexOf(item.id) > -1 : false
   }
 }

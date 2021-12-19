@@ -5,7 +5,7 @@ import { ProductosService } from '../../../services/productos/productos.service'
 import { SharedService } from '../../../services/shared/shared.service';
 import { Producto } from '../../../class/producto/producto';
 import { ConstantesService } from '../../../services/constantes/constantes.service';
-import { ImagenProducto } from '../../../class/imagenProducto/imagen-producto';
+import { CarritoService } from '../../../services/carrito/carrito.service';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -16,15 +16,15 @@ import { ImagenProducto } from '../../../class/imagenProducto/imagen-producto';
   '../../../../assets/front-office/css/classy-nav.min.css']
 })
 export class DetalleProductoComponent implements OnInit {
-  private sourceScript: string =  '../../../../assets/front-office/js/'
   private showSpinner: boolean = false
+  private id: number | null = null
   producto: Producto = new Producto()
   precios: {precio_venta: number, precio_normal: number} = {precio_venta: 0, precio_normal: 0}
   imageFolder: string = ''
   currentImage: number | null = null
   previewImageStyle: string = ''
-
   previewImage: string = ''
+  favoritos: number[] = []
 
   constructor(
     private _scriptService: ScriptServicesService,
@@ -32,36 +32,26 @@ export class DetalleProductoComponent implements OnInit {
     private _productosService: ProductosService,
     private _sharedService: SharedService,
     private _const: ConstantesService,
+    private _carritoService: CarritoService,
     private router: Router
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.imageFolder = this._const.storageImages
-    this.loadScript()
     let id: string | null = this.activatedRoute.snapshot.paramMap.get('id')
     if(id){
+      this.id = parseInt(id)
       this.buscarProducto(parseInt(id))
     }else{
       this.router.navigate(['/'])
     }
-  }
-
-  ngOnInit(): void {
-  }
-
-  private loadScript(){
-    this._scriptService.load([
-      `${this.sourceScript}jquery/jquery-2.2.4.min.js`,
-      `${this.sourceScript}popper.min.js`,
-      `${this.sourceScript}bootstrap.min.js`,
-      `${this.sourceScript}plugins.js`,
-      `${this.sourceScript}classy-nav.min.js`,
-      `${this.sourceScript}active.js`,
-    ])
+    this.favoritos = this._carritoService.getFavorites()
   }
 
   private buscarProducto(id: number){
     this.showSpinner = true
     this._productosService.getDetail(id).subscribe((res: any) => {
-      console.log('buscarProducto',res)
+
       this.showSpinner = false
       if(res){
         this.producto = res;
@@ -91,5 +81,10 @@ export class DetalleProductoComponent implements OnInit {
 
   closePreView(){
     this.previewImage = ''
+  }
+
+
+  agregarCarrito(){
+    this._carritoService.addToCart(this.producto)
   }
 }

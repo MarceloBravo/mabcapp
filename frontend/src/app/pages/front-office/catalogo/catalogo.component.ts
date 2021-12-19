@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ScriptServicesService } from '../../../services/scriptServices/script-services.service';
 import { CatalogoService } from '../../../services/catalogo/catalogo.service';
 import { SharedService } from '../../../services/shared/shared.service';
 import { FoCatalogoParams } from '../../../class/fo-catalogo-params/fo-catalogo-params';
@@ -9,10 +8,10 @@ import { ItemsCarousel } from '../../../class/ItemsCarousel/items-carousel';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriasService } from '../../../services/categorias/categorias.service';
 import { Categoria } from '../../../class/Categoria/categoria';
-import { SubCategoriasService } from '../../../services/subCategorias/sub-categorias.service';
 import { MarcasService } from '../../../services/marcas/marcas.service';
 import { Marca } from '../../../class/marca/marca';
 import { OrdenarPor } from '../../../enum/catalogoParams/ordenarPor';
+import { CarritoService } from 'src/app/services/carrito/carrito.service';
 
 @Component({
   selector: 'app-catalogo',
@@ -21,7 +20,6 @@ import { OrdenarPor } from '../../../enum/catalogoParams/ordenarPor';
   '../../../../assets/front-office/css/core-style.css']
 })
 export class CatalogoComponent implements OnInit {
-  private sourceScript: string =  '../../../../assets/front-office/js/'
   params: FoCatalogoParams = new FoCatalogoParams()
   productos: ItemsCarousel[] = []
   paginacion: Paginacion = new Paginacion()
@@ -31,19 +29,19 @@ export class CatalogoComponent implements OnInit {
   imageFolder: string = ''
   titulo: string | null = null
   ordernarPor: typeof OrdenarPor = OrdenarPor
+  favoritos: number[] = []
 
 
   constructor(
-    private _scriptService: ScriptServicesService,
     private _catalogoService: CatalogoService,
     private _sharedService: SharedService,
     public _categoriasService: CategoriasService,
     private _marcasService: MarcasService,
     public _const: ConstantesService,
     public activatedRoute: ActivatedRoute,
+    private _carritoServices: CarritoService,
     private router: Router
   ) {
-    this.loadScript()
     this.params.filtro = this._catalogoService.getTextoFiltro()
     this.obtenerDatos()
     this.cargarCategorias()
@@ -62,17 +60,11 @@ export class CatalogoComponent implements OnInit {
       this.params.filtro = res
       this.obtenerDatos()
     })
-  }
 
-  private loadScript(){
-    this._scriptService.load([
-      `${this.sourceScript}jquery/jquery-2.2.4.min.js`,
-      `${this.sourceScript}popper.min.js`,
-      `${this.sourceScript}bootstrap.min.js`,
-      `${this.sourceScript}plugins.js`,
-      `${this.sourceScript}classy-nav.min.js`,
-      `${this.sourceScript}active.js`,
-    ])
+    this._carritoServices.changeFavorite$.subscribe(res => {
+      this.favoritos = this._carritoServices.getFavorites()
+    })
+
   }
 
   private cargarCategorias(){
@@ -139,7 +131,7 @@ export class CatalogoComponent implements OnInit {
   }
 
   clickFavorito(e: any){
-    console.log('clickFavorito',e)
+    this._carritoServices.setFavorites(e.id); //Agrega y eliminar productos a los favoritos
   }
 
   mostrarPagina(pag: number){
@@ -187,4 +179,7 @@ export class CatalogoComponent implements OnInit {
     this.obtenerDatos()
   }
 
+  esFavorito(item: ItemsCarousel){
+    return item.id ? this.favoritos.indexOf(item.id) > -1 : false
+  }
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemsCarousel } from 'src/app/class/ItemsCarousel/items-carousel';
 import { ConfigMarquesinaService } from 'src/app/services/configMarquesina/config-marquesina.service';
-import { ScriptServicesService } from 'src/app/services/scriptServices/script-services.service';
 import { ImagenMarquesina } from '../../../class/imagenMarquesina/imagen-marquesina';
 import { SharedService } from '../../../services/shared/shared.service';
 import { ConstantesService } from '../../../services/constantes/constantes.service';
@@ -13,6 +12,7 @@ import { ConfigOfertaService } from '../../../services/configOferta/config-ofert
 import { OfertaPrincipal } from '../../../class/ofertaPrincipal/oferta-principal';
 import { SeccionesHomeService } from '../../../services/seccionesHome/secciones-home.service';
 import { Router } from '@angular/router';
+import { CarritoService } from '../../../services/carrito/carrito.service';
 
 @Component({
   selector: 'app-home-tienda',
@@ -23,7 +23,6 @@ import { Router } from '@angular/router';
 export class HomeTiendaComponent implements OnInit {
   public sourceImage: string = ''
   public imageFolder: string = ''
-  private sourceScript: string =  '../../../../assets/front-office/js/'
   public imagenes: ItemsCarousel[] = []
   public imgMarcas: {imagen: string, link: string, label: string, imageClass: string, linkClass: string}[] = []
   public imagenesMarquesina: ImagenMarquesina[] = []
@@ -33,7 +32,6 @@ export class HomeTiendaComponent implements OnInit {
   public secciones: any[] = []
 
   constructor(
-    private _scriptService: ScriptServicesService,
     private _imagenesMarquesina: ConfigMarquesinaService,
     private _sharedService: SharedService,
     public _const: ConstantesService,
@@ -41,30 +39,18 @@ export class HomeTiendaComponent implements OnInit {
     private _marcasService: MarcasService,
     private _configOfertaService: ConfigOfertaService,
     private _seccionesService: SeccionesHomeService,
+    private _carritoServices: CarritoService,
     private router: Router
-
-    ) {
-    this.loadScript()
-    this.cargarImagenesMarquesina()
-    this.imageFolder = this._const.storageImages
-   }
+  ) {
+      this.cargarImagenesMarquesina()
+      this.imageFolder = this._const.storageImages
+  }
 
   ngOnInit(): void {
     this.loadMarcas()
     this.loadCategories()
     this.cargarOfertaPrincipal()
     this.cargarSecciones()
-  }
-
-  private loadScript(){
-    this._scriptService.load([
-      `${this.sourceScript}jquery/jquery-2.2.4.min.js`,
-      `${this.sourceScript}popper.min.js`,
-      `${this.sourceScript}bootstrap.min.js`,
-      `${this.sourceScript}plugins.js`,
-      `${this.sourceScript}classy-nav.min.js`,
-      `${this.sourceScript}active.js`,
-    ])
   }
 
 
@@ -162,12 +148,11 @@ export class HomeTiendaComponent implements OnInit {
   }
 
   public itemClick(e: any){
-    console.log('itemClick',e)
-    this.router.navigate(['detalle_producto/' + e.id])
+    this.router.navigate(['/detalle_producto/' + e.id])
   }
 
-  public clickFavorito(id: any){
-    console.log('clickFavorito', id)
+  public clickFavorito(e: any){
+    this._carritoServices.setFavorites(e.id); //Agrega y eliminar productos a los favoritos
   }
 
 }
