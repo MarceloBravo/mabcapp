@@ -5,6 +5,7 @@ import { Marca } from '../marca/marca';
 import { Unidad } from '../Unidad/unidad';
 import { ImagenProducto } from '../imagenProducto/imagen-producto';
 import { Precio } from '../precio/precio';
+import { TallaProducto } from '../tallaProducto/talla-producto';
 
 export class Producto {
   id?: number;
@@ -30,6 +31,7 @@ export class Producto {
   nombre_unidad: string = '';
 
   impuestos: Impuesto[] = [];
+  tallas_producto: TallaProducto[] = []
   imagenes: ImagenProducto[] = [];
   categoria: Categoria = new Categoria();
   sub_categoria: SubCategoria = new SubCategoria();

@@ -57,4 +57,8 @@ class Producto extends Model
                     ->whereDate('fecha_hasta','<=',Date('Y-m-d'))
                     ->get();
     }
+
+    public function tallas(){
+        return $this->hasMany(TallasProducto::class, 'producto_id')->get();
+    }
 }

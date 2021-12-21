@@ -19,6 +19,9 @@ import { ConstantesService } from 'src/app/services/constantes/constantes.servic
 import { FilesService } from 'src/app/services/files/files.service';
 import { ImagenProducto } from '../../../../class/imagenProducto/imagen-producto';
 import { Precio } from 'src/app/class/precio/precio';
+import { Talla } from '../../../../class/talla/talla';
+import { TallasService } from '../../../../services/tallas/tallas.service';
+import { TallaProducto } from '../../../../class/tallaProducto/talla-producto';
 
 @Component({
   selector: 'app-productos-form',
@@ -43,13 +46,16 @@ export class ProductosFormComponent implements OnInit {
     sub_categoria_id: new FormControl(),
     impuestos: new FormControl(),
     foto: new FormControl(), //Contiene las imágenes asubir
-    imagenes: new FormControl()
+    imagenes: new FormControl(),
+    tallas: new FormControl()
   })
   public impuestos: Impuesto[] = []
   public categorias: Categoria[] = []
   public subCategorias: SubCategoria[] = []
   public marcas: Marca[] = []
   public unidades: Unidad[] = []
+  public tallasProductos: TallaProducto[] = []
+  public idTallas: number[] = []
   public id: number | null = null
   private producto: Producto = new Producto()
   private accion: string | null = null
@@ -57,6 +63,7 @@ export class ProductosFormComponent implements OnInit {
   public idImpuestos: number[] = []
   public principalImage: string = ''
   public arrURLImagenes: {source: string, name:string, imagen_principal: boolean}[] = []
+  tallas: Talla[] = []
 
 
   constructor(
@@ -68,12 +75,17 @@ export class ProductosFormComponent implements OnInit {
     private _subCategoriasService: SubCategoriasService,
     private _unidadesService: UnidadesService,
     private _impuestosService: ImpuestosService,
+    private _tallasService: TallasService,
     public _const: ConstantesService,
     private _file: FilesService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
   ) {
+
+  }
+
+  ngOnInit(): void {
     this.cargarMarcas()
     this.cargarCategorias()
     this.cargarUnidades()
@@ -86,8 +98,8 @@ export class ProductosFormComponent implements OnInit {
       this.cargarSubCategorias()
       this.iniciarForm()
     }
-
   }
+
 
   private cargarMarcas(){
     this.showSpinner = true
@@ -127,6 +139,7 @@ export class ProductosFormComponent implements OnInit {
       })
     }else{
       this.subCategorias = []
+      this.tallas = []
     }
   }
 
@@ -152,13 +165,29 @@ export class ProductosFormComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {
+  private cargarTallas(idSubCategoria?: number){
+    if(idSubCategoria){
+      this.showSpinner = true
+      this._tallasService.getBySubCategory(idSubCategoria).subscribe((res: any) => {
+        this.tallas =res
+        this.showSpinner = false
+      }, error => {
+        this.showSpinner = false
+        this._sharedService.handlerError(error)
+      } )
+    }else{
+      this.tallas = []
+    }
   }
 
+  subCategoriaChange(idSubCat: string){
+    this.cargarTallas(parseInt(idSubCat))
+  }
 
   iniciarForm(){
 
     this.producto.impuestos.forEach(i => {if(i.id)this.idImpuestos.push(i.id)})
+    this.producto.tallas_producto.forEach((i: TallaProducto) => {if(i.id)this.idTallas.push(i.talla_id)})
 
     this.form = this.fb.group({
       id: this.producto.id,
@@ -174,6 +203,7 @@ export class ProductosFormComponent implements OnInit {
       categoria_id: [this.producto.categoria_id, [Validators.required]],
       sub_categoria_id: [this.producto.sub_categoria_id, [Validators.required]],
       impuestos: [this.idImpuestos],
+      tallas:[this.idTallas],
       foto:[[]],
       imagenes: [this.producto.imagenes],
       created_at: [this.producto.created_at],
@@ -189,6 +219,7 @@ export class ProductosFormComponent implements OnInit {
         this.producto = res
         //console.log(this.obtenerPrecioActual(this.producto))
         this.cargarSubCategorias(res['categoria_id'])
+        this.cargarTallas(res['sub_categoria_id'])
         this.iniciarForm()
         this.cargarRutasImagenes()
         this.showSpinner = false

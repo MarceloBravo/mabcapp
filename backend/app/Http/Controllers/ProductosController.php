@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\ImagenProducto;
 use App\Models\ProductoImpuesto;
+use App\Models\TallasProducto;
 use Illuminate\Support\Facades\DB;
 use Validator;
 
@@ -148,13 +149,20 @@ class ProductosController extends Controller
             DB::beginTransaction();
             $producto = new Producto();
             $res = $producto->fill($request->all())->save();
+            $msg = '';
             if($res){
+                $msg = 'las imágenes';
                 $this->registrarImagenes($request, $producto);
             }
             if($res){
+                $msg = 'los impuestos';
                 $res = $this->registrarImpuestos($request, $producto);
             }
-            $mensaje = $res ? 'El producto ha sido registrado exitosamente.' : 'Ocurrió un error al intentar ingresar el producto.';
+            if($res){
+                $msg = 'las tallas';
+                $res = $this->registrarTallas($request, $producto);
+            }
+            $mensaje = $res ? 'El producto ha sido registrado exitosamente.' : 'Ocurrió un error al intentar registrar '.($msg !== '' ? $msg : 'el producto').'.';
             $tipoMensaje = $res ? 'success' : 'danger';
             $newId = $producto->id;
 
@@ -200,6 +208,7 @@ class ProductosController extends Controller
         $data['marca'] = $data ? $data->marca()[0] : null;
         $data['unidad'] = $data ? $data->unidad() : null;
 
+        $data['tallas_producto'] = $data ? $data->tallas() : [];
         $data['nombre_categoria'] = $data ? $data->categoria()[0]->nombre : '';
         $data['nombre_sub_categoria'] = $data ? $data->subCategoria()[0]->nombre : '';
         $data['nombre_marca'] = $data ? $data->marca()[0]->nombre : '';
@@ -238,17 +247,24 @@ class ProductosController extends Controller
             DB::beginTransaction();
             $producto = Producto::find($id);
             $res = $producto->fill($request->all())->save();
-
+            $msg = '';
             if($res){
+                $msg = 'eliminar las iagenes';
                 $res = $this->eliminarImagenes($request);
             }
             if($res){
+                $msg = 'actualizar las imagenes';
                 $res = $this->registrarImagenes($request, $producto);
             }
             if($res){
+                $msg = 'grabar las imagenes';
                 $res = $this->registrarImpuestos($request, $producto);
             }
-            $mensaje = $res ? 'El producto ha sido actualizado exitosamente.' : 'Ocurrió un error al intentar actualizar el producto.';
+            if($res){
+                $msg = 'grabar las tallas';
+                $res = $this->registrarTallas($request, $producto);
+            }
+            $mensaje = $res ? 'El producto ha sido actualizado exitosamente.' : 'Ocurrió un error al intentar '.($msg !== '' ? $msg : 'actualizar el producto').'.';
             $tipoMensaje = $res ? 'success' : 'danger';
             if($res){
                 DB::commit();
@@ -479,8 +495,6 @@ class ProductosController extends Controller
                 if(!is_null($imagen['id']) && !is_null($imagen['deleted_at'])){
                     $producto = ImagenProducto::find($imagen['id']);
                     if(!is_null($producto)){
-                        //dd($producto->id, $producto->source_image, $imagen["id"]);
-
                         if(!$producto->delete()){
                             return false;
                         }
@@ -548,4 +562,69 @@ class ProductosController extends Controller
    }
 
    /* --------------- FIN SUBIR IMÁGENES --------------- */
+
+
+   /* --------------- REGISTRAR TALLAS ----------------- */
+   private function registrarTallas(Request $request, $producto){
+       if(isset($request->all()['tallas'])){
+            $this->eliminarTallas($producto->id); //Borra todas las tallas del producto
+            foreach($request->all()['tallas'] as $idTalla){
+                $res = $this->grabarTalla($idTalla, $producto->id, $request->all()['sub_categoria_id']);    //Inserta o actualiza tallas, también desmarca el estado de borrado para las talla recibidas en el array de tallas
+                if(!$res)return false;
+            }
+
+        }
+        return true;
+   }
+
+
+   //Inserta o actualiza tallas, también desmarca el estado de borrado para las talla recibidas
+   //en el array de tallas
+   private function grabarTalla($idTalla, $idProducto, $idSubCategoria){
+        $talla = TallasProducto::withTrashed()
+                                ->where('talla_id','=',$idTalla)
+                                ->where('sub_categoria_id','=',$idSubCategoria)
+                                ->where('producto_id','=',$idProducto)
+                                ->first();
+
+        if(!is_null($talla)){
+            return $this->actualizarTalla($talla, $idTalla, $idProducto, $idSubCategoria);
+        }else{
+            return $this->registrarNuevaTalla($idTalla, $idProducto, $idSubCategoria);
+        }
+   }
+
+
+   private function registrarNuevaTalla($idTalla, $idProducto, $idSubCategoria){
+        $talla = new TallasProducto();
+        $talla->talla_id = $idTalla;
+        $talla->sub_categoria_id = $idSubCategoria;
+        $talla->producto_id = $idProducto;
+        $res = $talla->save();
+
+        return $res;
+   }
+
+
+   private function actualizarTalla($talla, $idTalla, $idProducto, $idSubCategoria){
+        $talla->talla_id = $idTalla;
+        $talla->sub_categoria_id = $idSubCategoria;
+        $talla->producto_id = $idProducto;
+        $talla->deleted_at = null;
+        $res = $talla->save();
+
+        return $res;
+   }
+
+
+   //Elimina todas las tallas para un producto
+   private function eliminarTallas($idProducto){
+
+        $tallaExistente = TallasProducto::where('producto_id','=',$idProducto);
+        $res = $tallaExistente->delete();
+        return $res;
+   }
+
+
+   /* --------------- FIN REGISTRAR TALLAS ------------------ */
 }
