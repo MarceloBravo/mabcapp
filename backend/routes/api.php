@@ -123,6 +123,16 @@ Route::group([
 
     Route::resource('oferta_principal_home', 'ConfigImagenPrincipalController');
     Route::post('oferta_principal_home/subir/imagen', 'ConfigImagenPrincipalController@uploadImage');
+
+    Route::resource('tallas', 'TallasController');
+    Route::get('tallas/pag/{pag}', 'TallasController@index');
+    Route::get('tallas/get/all', 'TallasController@getAll');
+    Route::get('tallas/filter/{texto}/{pag}', 'TallasController@filter');
+
+    Route::resource('tipo_productos', 'TipoProductosController');
+    Route::get('tipo_productos/pag/{pag}', 'TipoProductosController@index');
+    Route::get('tipo_productos/get/all', 'TipoProductosController@getAll');
+    Route::get('tipo_productos/filter/{texto}/{pag}', 'TipoProductosController@filter');
 });
 Route::get('imagenes_marquesina/imagenes', 'ImagenesMarquesinaController@getImages');
 
@@ -143,3 +153,5 @@ Route::get('catalogo/precio-min-max', 'CatalogoProductosController@minMaxPrice')
 Route::get('marcas/get/all', 'MarcasController@getAll');
 
 Route::get('detalle_productos/{id}', 'ProductosController@show');
+
+Route::get('tallas/get/all/{idSubCategoria}', 'TallasController@getAllByCategory');

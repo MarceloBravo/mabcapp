@@ -24,4 +24,8 @@ class SubCategoria extends Model
     {
         return $this->hasMany(Producto::class, 'id')->get();
     }
+
+    public function tallas(){
+        return $this->hasMany(Tallas::class,'sub_categoria_id')->get();
+    }
 }

@@ -68,6 +68,8 @@ import { FormConfigOfertaPrincipalComponent } from './pages/back-office/config-t
 import { CatalogoComponent } from './pages/front-office/catalogo/catalogo.component';
 import { CardProductoComponent } from './components/card-producto/card-producto.component';
 import { DetalleProductoComponent } from './pages/front-office/detalle-producto/detalle-producto.component';
+import { TallasGridComponent } from './pages/back-office/tallas/tallas-grid/tallas-grid.component';
+import { TallasFormComponent } from './pages/back-office/tallas/tallas-form/tallas-form.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -131,6 +133,8 @@ import { DetalleProductoComponent } from './pages/front-office/detalle-producto/
     CatalogoComponent,
     CardProductoComponent,
     DetalleProductoComponent,
+    TallasGridComponent,
+    TallasFormComponent,
   ],
   imports: [
     BrowserModule,

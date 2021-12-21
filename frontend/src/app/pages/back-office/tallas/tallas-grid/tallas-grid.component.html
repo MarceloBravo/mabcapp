@@ -1,0 +1,40 @@
+<div class="container-fluid p-0">
+
+  <app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+  <app-toasts></app-toasts>
+
+  <app-modal-dialog
+    (aceptar)="aceptarEliminar($event)"
+    >
+  </app-modal-dialog>
+
+  <h1 class="h3 mb-3">{{ titulo }}</h1>
+
+  <div class="row">
+
+    <div class="col-12 col-xl-12">
+
+      <app-grid
+        [titulo]="'Listado de ' + titulo"
+        [cabeceras]="['Talla','Sub-categoría','Fecha creación','Fecha actualización']"
+        [registros]="data"
+        [columnasVisibles]="['talla','sub_categoria','created_at','updated_at']"
+        (idEliminar)="eliminar($event)"
+        (textoFiltro)="filtrar($event)"
+      >
+      </app-grid>
+
+      <app-paginacion
+        [paginacion]="paginacion"
+        [rutaGet]="'/api/tallas/pag/'"
+        (paginaAnterior)="mostrarPagina($event)"
+        (paginaSiguiente)="mostrarPagina($event)"
+        (mostrarPagina)="mostrarPagina($event)"
+      ></app-paginacion>
+
+    </div>
+  </div>
+
+
+</div>

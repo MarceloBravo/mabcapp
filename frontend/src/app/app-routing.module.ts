@@ -37,6 +37,8 @@ import { SeccionesHomeGridComponent } from './pages/back-office/seccionesHome/se
 import { SeccionesHomeFormComponent } from './pages/back-office/seccionesHome/secciones-home-form/secciones-home-form.component';
 import { CatalogoComponent } from './pages/front-office/catalogo/catalogo.component';
 import { DetalleProductoComponent } from './pages/front-office/detalle-producto/detalle-producto.component';
+import { TallasGridComponent } from './pages/back-office/tallas/tallas-grid/tallas-grid.component';
+import { TallasFormComponent } from './pages/back-office/tallas/tallas-form/tallas-form.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -100,6 +102,10 @@ const routes: Routes = [
       { path: 'secciones_home', component: SeccionesHomeGridComponent },
       { path: 'secciones_home/nuevo', component: SeccionesHomeFormComponent },
       { path: 'secciones_home/edit/:id', component: SeccionesHomeFormComponent },
+
+      { path: 'tallas', component: TallasGridComponent },
+      { path: 'tallas/nuevo', component: TallasFormComponent },
+      { path: 'tallas/edit/:id', component: TallasFormComponent },
 
     ]
 },

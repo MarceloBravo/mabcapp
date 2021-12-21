@@ -141,7 +141,9 @@ class SubCategoriasController extends Controller
         $data = SubCategoria::join('categorias','sub_categorias.categoria_id','=','categorias.id')
                             ->orderBy('nombre','asc')
                             ->select('sub_categorias.*','categorias.nombre as nombre_categoria')
-                            ->where('sub_categorias.nombre','like','%'.$texto.'%');
+                            ->where('sub_categorias.nombre','like','%'.$texto.'%')
+                            ->orWhereDate("created_at",'=','%'.$texto.'%')
+                            ->orWhereDate("created_at",'=','%'.$texto.'%');
 
         $totRows = count($data->get());
 
