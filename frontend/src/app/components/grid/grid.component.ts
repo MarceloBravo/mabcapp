@@ -21,6 +21,8 @@ export class GridComponent implements OnInit {
   @Input() columnasNumericasEditables: string[] = []
   @Input() columnasEditablesFechas: string[] = []
   @Input() columnasConImagenes: string[] = []
+  @Input() columnasMonetarias: string[] = []
+  @Input() columnasPorcentuales: string[] = []
   @Input() titulo: string = ''
   @Input() urlEditar: string = 'edit';
   @Input() urlNuevo: string  = 'nuevo';
@@ -87,14 +89,20 @@ export class GridComponent implements OnInit {
     this.textoFiltro.emit(texto);
   }
 
-  formatDate(dato: any){
-    let parseDate = Date.parse(dato);
-    if(isNaN(dato) && !isNaN(parseDate)){
-      //Retorna la fecha con formato dd/mm/yyyy
-      return dato.toLocaleString().toString().substr(0,10).split('-').reverse().join('/');
+  formatData(dato: any, col: string){
+    if(this.columnasMonetarias.find(e => e === col)){
+      return `$ ${dato.toLocaleString('de-DE')}`
+    }else if(this.columnasPorcentuales.find(e => e === col)){
+      return `${dato} %`
     }else{
-      //Retorna el dato recibido
-      return dato;
+      let parseDate = Date.parse(dato);
+      if(isNaN(dato) && !isNaN(parseDate)){
+        //Retorna la fecha con formato dd/mm/yyyy
+        return dato.toLocaleString().toString().substr(0,10).split('-').reverse().join('/');
+      }else{
+        //Retorna el dato recibido
+        return dato;
+      }
     }
   }
 

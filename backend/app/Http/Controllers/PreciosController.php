@@ -22,9 +22,18 @@ class PreciosController extends Controller
                         ->join('unidades','productos.unidad_id','=','unidades.id')
                         ->join('categorias','productos.categoria_id','=','categorias.id')
                         ->join('sub_categorias','productos.sub_categoria_id','=','sub_categorias.id')
+                        ->join(DB::raw('(SELECT producto_id, AVG(impuestos.porcentaje) avg_impuesto
+                                        FROM producto_impuesto
+                                        INNER JOIN impuestos ON producto_impuesto.impuesto_id = impuestos.id
+                                        GROUP BY producto_id)
+                                    imp'),
+                                function($join){
+                                    $join->on('productos.id', '=', 'imp.producto_id');
+                                })
                         ->select(
                             'productos.nombre as producto',
                             'productos.precio_venta_normal',
+                            'imp.avg_impuesto as promedio_impuestos',
                             'productos.stock',
                             'productos.descuento_maximo',
                             'marcas.nombre as marca',
@@ -34,6 +43,9 @@ class PreciosController extends Controller
                             'precios.*'
                         )
                         ->orderBy('created_at','asc');
+
+        $allReg->addSelect(DB::raw('ROUND(precios.precio * imp.avg_impuesto / 100) as monto_impuestos'));
+        $allReg->addSelect(DB::raw('ROUND(precios.precio + (precios.precio * imp.avg_impuesto / 100)) as precio_final'));
 
         $totRows = count($allReg->get());
 
@@ -123,7 +135,14 @@ class PreciosController extends Controller
                         ->join('unidades','productos.unidad_id','=','unidades.id')
                         ->join('categorias','productos.categoria_id','=','categorias.id')
                         ->join('sub_categorias','productos.sub_categoria_id','=','sub_categorias.id')
-
+                        ->join(DB::raw('(SELECT producto_id, AVG(impuestos.porcentaje) avg_impuesto
+                                FROM producto_impuesto
+                                INNER JOIN impuestos ON producto_impuesto.impuesto_id = impuestos.id
+                                GROUP BY producto_id)
+                            imp'),
+                        function($join){
+                            $join->on('productos.id', '=', 'imp.producto_id');
+                        })
                         ->where('productos.nombre','like','%'.$texto.'%')
                         ->orWhere('productos.precio_venta_normal','like','%'.$texto.'%')
                         ->orWhere('productos.stock','like','%'.$texto.'%')
@@ -133,13 +152,14 @@ class PreciosController extends Controller
                         ->orWhere('sub_categorias.nombre','like','%'.$texto.'%')
                         ->orWhere('precios.precio','like','%'.$texto.'%')
                         ->orWhere('precios.descuento','like','%'.$texto.'%')
-                        ->orWhere('precios.descuento_maximo','like','%'.$texto.'%')
+                        ->orWhere('productos.descuento_maximo','like','%'.$texto.'%')
                         ->orWhere('precios.fecha_desde','like','%'.$texto.'%')
                         ->orWhere('precios.fecha_hasta','like','%'.$texto.'%')
 
                         ->select(
                             'productos.nombre as producto',
                             'productos.precio_venta_normal',
+                            'imp.avg_impuesto as promedio_impuestos',
                             'productos.stock',
                             'productos.descuento_maximo',
                             'marcas.nombre as marca',
@@ -149,6 +169,9 @@ class PreciosController extends Controller
                             'precios.*'
                         )
                         ->orderBy('created_at','asc');
+
+        $allReg->addSelect(DB::raw('ROUND(precios.precio * imp.avg_impuesto / 100) as monto_impuestos'));
+        $allReg->addSelect(DB::raw('ROUND(precios.precio + (precios.precio * imp.avg_impuesto / 100)) as precio_final'));
 
         $totRows = count($allReg->get());
 

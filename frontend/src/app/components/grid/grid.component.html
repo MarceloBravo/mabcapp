@@ -79,7 +79,7 @@
                 (change)="updateData($event.target, col, i)"
               />
 
-              {{ (!columnaImagen(col) && !columnaEditable(col) && !columnaEditableNumerica(col) && !columnaEditableFecha(col)) ? formatDate(item[col]) : ''}}
+              {{ (!columnaImagen(col) && !columnaEditable(col) && !columnaEditableNumerica(col) && !columnaEditableFecha(col)) ? formatData(item[col], col) : ''}}
             </td>
 
             <td *ngIf="mostrarEditar || mostrarEliminar || cargandoDatos(i)">

@@ -27,14 +27,16 @@
 
         <app-grid
           [titulo]="(!editando ? 'Listado de ' + titulo : 'Editando el listado...') + '  ' + msgError "
-          [cabeceras]="['Producto','Precio venta normal','Precio venta','Descuento (%)','Descuento máx. (%)','Fecha desde','Fecha hasta','Stock','Marca','Unidad','Categoría','Sub-categoría', 'Fecha creación','Fecha actualización']"
-          [columnasVisibles]="['producto','precio_venta_normal','precio','descuento','descuento_maximo','fecha_desde','fecha_hasta','stock','marca','unidad','categoria','sub_categoria','created_at','updated_at']"
+          [cabeceras]="['Producto','Precio venta normal','Precio venta ($)','Descuento (%)','Dcto máx.','Promedio en impuestos','Monto impuestos','Precio final','Fecha desde','Fecha hasta','Stock','Marca','Unidad','Categoría','Sub-categoría', 'Fecha creación','Fecha actualización']"
+          [columnasVisibles]="['producto','precio_venta_normal','precio','descuento','descuento_maximo','promedio_impuestos','monto_impuestos','precio_final','fecha_desde','fecha_hasta','stock','marca','unidad','categoria','sub_categoria','created_at','updated_at']"
           [columnasEditablesFechas]="['fecha_desde','fecha_hasta']"
           [columnasNumericasEditables]="['precio','descuento']"
           [mostrarCopiarFila]="true"
           [registros]="data"
           [mostrarEditar]="false"
           [filtroHabilitado]="!editando"
+          [columnasMonetarias]="['precio_venta_normal','monto_impuestos','precio_final']"
+          [columnasPorcentuales]="['descuento_maximo','promedio_impuestos']"
 
           (changeColumn)="onChangeColumn($event)"
           (clickInFirstColumn)="duplicarFila($event)"

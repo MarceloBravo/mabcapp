@@ -22,6 +22,9 @@ export class PreciosComponent implements OnInit {
     precio: number,
     descuento: number,
     descuento_maximo: number,
+    promedio_impuestos: number,
+    monto_impuestos: number,
+    precio_final: number,
     fecha_desde: string,
     fecha_hasta: string,
     stock: number,
@@ -136,6 +139,11 @@ export class PreciosComponent implements OnInit {
         }
         this.data[e['fila']]['descuento'] =  Math.round(descuento);
 
+        var impuesto: number = this.montoImpuestos( this.data[e['fila']]['promedio_impuestos'], this.data[e['fila']]['precio'])
+        //Actualiza monto impuestos
+        this.data[e['fila']]['monto_impuestos'] = impuesto
+        //Actualiza precio final
+        this.data[e['fila']]['precio_final'] = parseInt(`${this.data[e['fila']]['precio']}`) + impuesto
         break;
 
       case 'descuento': //Porcentaje de descuento aplicado
@@ -145,6 +153,12 @@ export class PreciosComponent implements OnInit {
           (<HTMLInputElement>document.getElementById(`${e['fila']}-descuento`)).value = e['nuevo_valor']
         }
         this.data[e['fila']]['precio'] = Math.round(this.calcularPrecio(e['nuevo_valor'], this.data[e['fila']]['precio_venta_normal']))
+
+        var impuesto: number = this.montoImpuestos( this.data[e['fila']]['promedio_impuestos'], this.data[e['fila']]['precio'])
+        //Actualiza monto impuestos
+        this.data[e['fila']]['monto_impuestos'] = impuesto
+        //Actualiza precio final
+        this.data[e['fila']]['precio_final'] = parseInt(`${this.data[e['fila']]['precio']}`) + impuesto
         break;
 
       case 'fecha_desde':
@@ -171,6 +185,9 @@ export class PreciosComponent implements OnInit {
     this.resaltarTopeFechas(this.validaTopeFechas())
   }
 
+  private montoImpuestos(impuesto: number, precio: number){
+    return Math.round(impuesto * precio / 100)
+  }
 
   private validaTopeFechas(){
     let topeFechas: {fila1: number, fila2: number}[] = []
