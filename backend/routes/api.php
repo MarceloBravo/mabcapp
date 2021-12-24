@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:clientes')->get('/cliente', function (Request $request) {
+    return $request->cliente();
+});
+
 Route::get('configuracion', 'ConfiguracionController@index');
+
+//Route::get('clientes/login', 'AuthClientController@login');
 
 Route::group([
     'prefix' => 'auth',
@@ -30,6 +37,10 @@ Route::group([
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
 
+    Route::post('clientes_login', [AuthClientController::class, 'login']);
+    Route::post('clientes_logout', [AuthClientController::class, 'logout']);
+    Route::post('clientes_refresh', [AuthClientController::class, 'refresh']);
+    Route::post('clientes_me', [AuthClientController::class, 'me']);
 
 });
 
@@ -94,7 +105,8 @@ Route::group([
     Route::get('unidades/get/all', 'UnidadesController@getAll');
     Route::get('unidades/filter/{texto}/{pag}', 'UnidadesController@filter');
 
-    Route::resource('clientes', 'ClientesController');
+    //Route::resource('clientes', 'ClientesController');
+    Route::delete('clientes/{id}', 'ClientesController@destroy');
     Route::get('clientes/pag/{pag}', 'ClientesController@index');
     Route::get('clientes/get/all', 'ClientesController@getAll');
     Route::get('clientes/filter/{texto}/{pag}', 'ClientesController@filter');
@@ -128,11 +140,12 @@ Route::group([
     Route::get('tallas/pag/{pag}', 'TallasController@index');
     Route::get('tallas/get/all', 'TallasController@getAll');
     Route::get('tallas/filter/{texto}/{pag}', 'TallasController@filter');
-
+    /*
     Route::resource('tipo_productos', 'TipoProductosController');
     Route::get('tipo_productos/pag/{pag}', 'TipoProductosController@index');
     Route::get('tipo_productos/get/all', 'TipoProductosController@getAll');
     Route::get('tipo_productos/filter/{texto}/{pag}', 'TipoProductosController@filter');
+    */
 });
 Route::get('imagenes_marquesina/imagenes', 'ImagenesMarquesinaController@getImages');
 
@@ -155,3 +168,8 @@ Route::get('marcas/get/all', 'MarcasController@getAll');
 Route::get('detalle_productos/{id}', 'ProductosController@show');
 
 Route::get('tallas/get/all/{idSubCategoria}', 'TallasController@getAllByCategory');
+
+Route::get('clientes/{id}', 'ClientesController@show');
+Route::get('clientes/rut/{rut}', 'ClientesController@findByRut');
+Route::post('clientes', 'ClientesController@store');
+Route::put('clientes/{id}', 'ClientesController@update');

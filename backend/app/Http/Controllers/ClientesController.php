@@ -85,6 +85,13 @@ class ClientesController extends Controller
         return response()->json($cliente);
     }
 
+
+    public function findByRut($rut){
+        $cliente = Cliente::where('rut','=',$rut)->first();
+
+        return response()->json($cliente);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

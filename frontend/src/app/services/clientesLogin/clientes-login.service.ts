@@ -1,20 +1,18 @@
-import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { EventEmitter, Injectable } from '@angular/core';
+import { ConstantesService } from '../constantes/constantes.service';
 import { SharedService } from '../shared/shared.service';
 import { TokenService } from '../token/token.service';
+import { Cliente } from '../../class/cliente/cliente';
 import { FormGroup } from '@angular/forms';
-import { User } from '../../class/User/user';
-import { Rol } from '../../class/rol/rol';
-import { ConstantesService } from '../constantes/constantes.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
-  private endPoint = 'auth/';
+export class ClientesLoginService {
+  private endPoint = 'auth';
   private header: HttpHeaders = new HttpHeaders({'Content-type': 'application/json'});
-  public activeUserChange$: EventEmitter<User> = new EventEmitter<User>()  //Observable
-  public rolesUserChange$: EventEmitter<Rol[]> = new EventEmitter<Rol[]>()  //Observable
+  public activeUserChange$: EventEmitter<Cliente> = new EventEmitter<Cliente>()  //Observable
 
   constructor(
     private httpClient: HttpClient,
@@ -26,7 +24,9 @@ export class LoginService {
   login(loginForm: FormGroup){
     let remember: boolean = <boolean><unknown>loginForm.value['remember'];
     this._sharedServices.globalRememberUser = remember;
-    return this.httpClient.post(this._sharedServices.globalURL + this.endPoint + 'login', loginForm.value, {headers: this.header});
+    console.log(this._sharedServices.globalURL + this.endPoint + 'cliente_login', loginForm.value)
+    debugger
+    return this.httpClient.post(this._sharedServices.globalURL + this.endPoint + 'cliente_login', loginForm.value, {headers: this.header});
   }
 
   validaToken(token: string){
@@ -34,14 +34,14 @@ export class LoginService {
       let tokenArr = token.split('.');
       if(tokenArr.length > 1){
         const decodeToken = JSON.parse(atob(tokenArr[1]));
-        return decodeToken.iss === this._sharedServices.globalURL + this.endPoint  + 'login'
+        return decodeToken.iss === this._sharedServices.globalURL + this.endPoint  + 'cliente_login'
       }
     }
     return false
   }
 
   registrarToken(token: string, remember: boolean){
-    this._tokenService.registerToken(token, remember);
+    this._tokenService.registerToken(token, remember, 'mabc-client-token');
   }
 
   isLoggedIn(){
@@ -50,9 +50,9 @@ export class LoginService {
 
   logOut(){
     let header = this._const.header();
-    this.borrarCredencialesUsuario();
+    this.borrarCredencialesCliente();
     return this.httpClient.post(
-            `${this._sharedServices.globalURL}${this.endPoint}logout`,
+            `${this._sharedServices.globalURL}${this.endPoint}cliente_login`,
             {},
             {headers: header}
           );
@@ -66,30 +66,23 @@ export class LoginService {
       );
   }
 
-  setCredencialesUsuario(user: User, roles: Rol[])
+  setCredencialesCliente(cliente: Cliente)
   {
-    this.activeUserChange$.emit(user)
-    this.rolesUserChange$.emit(roles)
-    sessionStorage.setItem('user', JSON.stringify(user))
-    sessionStorage.setItem('roles', JSON.stringify(roles))
+    this.activeUserChange$.emit(cliente)
+    sessionStorage.setItem('client', JSON.stringify(cliente))
   }
 
-  getUsuarioLogueado():User|null
+  getClienteLogueado():Cliente|null
   {
-    let usuario = sessionStorage.getItem('user')
+    let usuario = sessionStorage.getItem('client')
     return usuario ? JSON.parse(usuario) : null
   }
 
-  getRolesUsuarioLogueado()
-  {
-    let roles = sessionStorage.getItem('roles');
-    return roles ? JSON.parse(roles) : null
-  }
 
-  private borrarCredencialesUsuario(){
-    sessionStorage.removeItem('user');
-    sessionStorage.removeItem('mabc-admin-token');
-    sessionStorage.removeItem('roles');
+  private borrarCredencialesCliente(){
+    sessionStorage.removeItem('client');
+    this._tokenService.deteToken()
+    //sessionStorage.removeItem('mabc-client-token');
   }
 
   public getSeesionInfo(){

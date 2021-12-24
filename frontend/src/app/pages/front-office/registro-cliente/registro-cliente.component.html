@@ -1,0 +1,159 @@
+<app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+<app-modal-dialog
+    (aceptar)="aceptarModal()"
+    (cerrar)="cancelarModal()"
+  >
+  </app-modal-dialog>
+
+<!-- ##### Breadcumb Area Start ##### -->
+<div class="breadcumb_area bg-img" style="background-image: url(assets/front-office/img/bg-img/breadcumb.jpg);">
+  <div class="container h-100">
+      <div class="row h-100 align-items-center">
+          <div class="col-12">
+              <div class="page-title text-center">
+                  <h2>{{ titulo }}</h2>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- ##### Breadcumb Area End ##### -->
+
+<div class="checkout_area section-padding-80">
+  <div class="container">
+      <div class="row">
+
+          <div class="col-12 col-md-6 offset-3">
+              <div class="checkout_details_area mt-50 clearfix">
+
+                  <div class="cart-page-heading mb-30">
+                      <h5>Datos del cliente</h5>
+                      <p>Los campos marcados con asterísco (*) son obligatorios</p>
+                  </div>
+                  <form [formGroup]="form">
+                      <div class="row">
+                          <div class="col-md-6 mb-3">
+                              <label for="rut">Rut <span>*</span></label>
+                              <input #txtCliente type="text" formControlName="rut" class="form-control" id="rut" value="" required (change)="buscarClientePorRut(txtCliente.value)">
+                          </div>
+                          <div class="col-md-6 mb-3">
+                              <label for="nombres">Nombre(s) <span>*</span></label>
+                              <input type="text" formControlName="nombres" class="form-control" id="nombres" value="" required>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="apellido1">Apellido 1 <span>*</span></label>
+                            <input type="text" formControlName="apellido1" class="form-control" id="apellido1" value="" required>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                              <label for="apellido2">Apellido 2 </label>
+                              <input type="text" formControlName="apellido2" class="form-control" id="apellido2" value="">
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="fono">Fono <span>*</span></label>
+                            <input type="text" formControlName="fono" class="form-control" id="fono" value="" required>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                              <label for="email">Email <span>*</span></label>
+                              <input type="email" formControlName="email" class="form-control" id="email" value="" required>
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label for="first_name">Contraseña <span>*</span></label>
+                            <input type="password" formControlName="password" class="form-control" placeholder="Ingresa una contraseña." max="150"/>
+                            <!-- Mensajes de error -->
+                            <div *ngIf="form.get('password')?.hasError('minlength') && form.get('password')?.dirty" class="error-input">La contraseña ingresada debe terener almenos 6 carácteres. Ingresa una contraseña mas larga.</div>
+                            <div *ngIf="form.get('password')?.hasError('maxlength') && form.get('password')?.dirty" class="error-input">La contraseña ingresada debe tener un máximo de 20 carácteres. Ingresa una contraseña más corta.</div>
+                            <div *ngIf="
+                              form.get('password')?.hasError('confirmPassword') &&
+                              form.get('confirm_password')?.hasError('confirmPassword') &&
+                              form.get('password')?.dirty" class="error-input">
+                              La contraseña ingresada no coincide con la confirmación de contraseña.
+                            </div>
+                            <!-- /Mensajes de error -->
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label for="confirm_password">Confirmar contraseña <span>*</span></label>
+                            <input type="password" formControlName="confirm_password" class="form-control" placeholder="Vuelve a ingresar la contraseña." max="20"/>
+                            <!-- Mensajes de error -->
+                            <div *ngIf="form.get('confirm_password')?.hasError('minlength') && form.get('confirm_password')?.dirty" class="error-input">La contraseña ingresada debe terener almenos 6 carácteres. Ingresa una contraseña mas larga.</div>
+                            <div *ngIf="form.get('confirm_password')?.hasError('maxlength') && form.get('confirm_password')?.dirty" class="error-input">La contraseña ingresada debe tener un máximo de 20 carácteres. Ingresa una contraseña más corta.</div>
+                            <div *ngIf="
+                              form.get('confirm_password')?.hasError('confirmPassword') &&
+                              form.get('password')?.hasError('confirmPassword') &&
+                              form.get('confirm_password')?.dirty" class="error-input">
+                              La contraseña ingresada no coincide con la confirmación de contraseña.
+                            </div>
+                            <!-- /Mensajes de error -->
+                          </div>
+
+                          <div class="col-md-12 mb-6">
+                            <label for="direccion">Dirección <span>*</span></label>
+                            <input type="text" formControlName="direccion" class="form-control" id="direccion" value="" required>
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label for="region">Región <span>*</span></label>
+                            <select #cboRegion formControlName="cod_region" class="form-control w-100" id="region" required (change)="cargarProvincias(cboRegion.value)">
+                              <option *ngIf="regiones.length > 0" value="">-- Seleccione --</option>
+                              <option *ngIf="regiones.length === 0" value="">Error al cargar las regiones</option>
+                              <option *ngFor="let item of regiones" [value]="item.codigo">{{ item.nombre }}</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label for="provincia">Provincia <span>*</span></label>
+                            <select #cboProvincia formControlName="cod_provincia" class="form-control w-100" id="region" required (change)="cargarComunas(cboProvincia.value)">
+                              <option *ngIf="provincias.length > 0" value="">-- Seleccione --</option>
+                              <option *ngIf="provincias.length === 0" value="">No se han encontrado provincias</option>
+                              <option *ngFor="let item of provincias" [value]="item.codigo">{{ item.nombre }}</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label for="comuna">Comuna <span>*</span></label>
+                            <select formControlName="cod_comuna" class="form-control" id="comuna" required>
+                              <option *ngIf="comunas.length > 0" value="">-- Seleccione --</option>
+                              <option *ngIf="comunas.length === 0" value="">No se han encontrado comunas</option>
+                              <option *ngFor="let item of comunas" [value]="item.codigo">{{ item.nombre }}</option>
+                            </select>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                              <label for="ciudad">Ciudad <span>*</span></label>
+                              <input type="text" formControlName="ciudad" class="form-control" id="ciudad" value="" required>
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label for="casa_num">Casa N° <span>*</span></label>
+                            <input type="text" formControlName="casa_num" class="form-control" id="casa_num" value="" required>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                              <label for="block_num">Block N°</label>
+                              <input type="text" formControlName="block_num" class="form-control" id="block_num" value="">
+                          </div>
+
+
+                          <div class="col-md-12 mb-6">
+                            <label for="referencia">Referencia </label>
+                            <input type="text" formControlName="referencia" class="form-control" id="referencia" value="">
+                          </div>
+
+                          <div class="row button-content">
+                            <div class="col-md-6">
+                              <button class="btn essence-btn" (click)="registrarCliente()" [disabled]="!form.valid">Registrarme</button>
+                            </div>
+                            <div class="col-md-6">
+                              <button routerLink="/login_cliente" class="btn essence-btn">Regresar al login</button>
+                            </div>
+                          </div>
+
+                      </div>
+                  </form>
+              </div>
+          </div>
+
+      </div>
+  </div>
+</div>
+<!-- ##### Checkout Area End ##### -->

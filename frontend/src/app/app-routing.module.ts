@@ -39,6 +39,9 @@ import { CatalogoComponent } from './pages/front-office/catalogo/catalogo.compon
 import { DetalleProductoComponent } from './pages/front-office/detalle-producto/detalle-producto.component';
 import { TallasGridComponent } from './pages/back-office/tallas/tallas-grid/tallas-grid.component';
 import { TallasFormComponent } from './pages/back-office/tallas/tallas-form/tallas-form.component';
+import { LoginClienteComponent } from './pages/front-office/login-cliente/login-cliente.component';
+import { RegistroClienteComponent } from './pages/front-office/registro-cliente/registro-cliente.component';
+import { LogoutComponent } from './pages/front-office/logout/logout.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -115,6 +118,9 @@ const routes: Routes = [
       { path: '', component: HomeTiendaComponent },
       { path: 'catalogo', component: CatalogoComponent },
       { path: 'detalle_producto/:id', component: DetalleProductoComponent },
+      { path: 'login_cliente', component: LoginClienteComponent },
+      { path: 'registro_cliente', component: RegistroClienteComponent },
+      { path: 'logout', component: LogoutComponent },
     ]
   },
   { path: '**', pathMatch: 'full', redirectTo: '/' },

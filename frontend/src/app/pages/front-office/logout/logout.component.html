@@ -1,0 +1,43 @@
+<app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+<app-toasts></app-toasts>
+
+<!-- ##### Breadcumb Area Start ##### -->
+<div class="breadcumb_area bg-img" style="background-image: url(assets/front-office/img/bg-img/breadcumb.jpg);">
+  <div class="container h-100">
+      <div class="row h-100 align-items-center">
+          <div class="col-12">
+              <div class="page-title text-center">
+                  <h2>{{ titulo }}</h2>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- ##### Breadcumb Area End ##### -->
+
+<div class="checkout_area section-padding-80">
+  <div class="container">
+      <div class="row">
+
+          <div class="col-12 col-md-7 col-lg-7 offset-3">
+              <div class="order-details-confirmation">
+
+                  <div class="cart-page-heading">
+                      <h5>Cierre de sessión</h5>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <button class="btn essence-btn" (click)="logout()">Cerrar sessión</button>
+                    </div>
+                    <div class="col-md-6">
+                      <a class="btn essence-btn" routerLink="/registro_cliente">Actualizar mis datos</a>
+                    </div>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- ##### Checkout Area End ##### -->

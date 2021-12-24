@@ -23,7 +23,7 @@ export class ProvinciasService {
 
   //Listado de las Provincias pertenecientes a una Región
   listarProvinciasRegion(codRegion: string){
-    console.log('listarProvinciasRegion',`${this._const.apiDigitalGob}regiones/${codRegion}/provincias`)
+    //console.log('listarProvinciasRegion',`${this._const.apiDigitalGob}regiones/${codRegion}/provincias`)
     return this.http.get(`${this._const.apiDigitalGob}regiones/${codRegion}/provincias`)
   }
 

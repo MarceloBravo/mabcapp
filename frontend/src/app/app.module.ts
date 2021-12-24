@@ -70,6 +70,9 @@ import { CardProductoComponent } from './components/card-producto/card-producto.
 import { DetalleProductoComponent } from './pages/front-office/detalle-producto/detalle-producto.component';
 import { TallasGridComponent } from './pages/back-office/tallas/tallas-grid/tallas-grid.component';
 import { TallasFormComponent } from './pages/back-office/tallas/tallas-form/tallas-form.component';
+import { LoginClienteComponent } from './pages/front-office/login-cliente/login-cliente.component';
+import { RegistroClienteComponent } from './pages/front-office/registro-cliente/registro-cliente.component';
+import { LogoutComponent } from './pages/front-office/logout/logout.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -135,6 +138,9 @@ import { TallasFormComponent } from './pages/back-office/tallas/tallas-form/tall
     DetalleProductoComponent,
     TallasGridComponent,
     TallasFormComponent,
+    LoginClienteComponent,
+    RegistroClienteComponent,
+    LogoutComponent,
   ],
   imports: [
     BrowserModule,

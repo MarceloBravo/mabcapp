@@ -18,7 +18,7 @@
               <!-- Nav Start -->
               <div class="classynav">
                   <ul>
-                      <li><a href="#">Shop</a>
+                      <li><a href="#">Tienda</a>
                           <div class="megamenu">
                               <ul class="single-mega cn-col-4">
                                   <li class="title">Women's Collection</li>
@@ -49,7 +49,7 @@
                               </div>
                           </div>
                       </li>
-                      <li><a href="#">Pages</a>
+                      <li><a href="#">Páginas</a>
                           <ul class="dropdown">
                               <li><a href="index.html">Home</a></li>
                               <li><a routerLink="catalogo">Catálogo</a></li>
@@ -62,7 +62,7 @@
                           </ul>
                       </li>
                       <li><a href="blog.html">Blog</a></li>
-                      <li><a href="contact.html">Contact</a></li>
+                      <li><a href="contact.html">Contacto</a></li>
                   </ul>
               </div>
               <!-- Nav End -->
@@ -74,7 +74,15 @@
           <!-- Search Area -->
           <div class="search-area">
               <form action="#" method="post">
-                  <input #txtFiltro type="search" name="search" id="headerSearch" placeholder="Escribe para búscar" (change)="changeTextoFiltro(txtFiltro.value)">
+                  <input #txtFiltro
+                    type="search"
+                    name="search"
+                    id="headerSearch"
+                    placeholder="Escribe para búscar"
+                    (change)="changeTextoFiltro(txtFiltro.value)"
+                    (focus)="ocultaNombre()"
+                    (blur)="muestraNombre()"
+                  >
                   <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
               </form>
           </div>
@@ -84,7 +92,8 @@
           </div>
           <!-- User Login Info -->
           <div class="user-login-info">
-              <a href="#"><img src="{{ sourceImage }}core-img/user.svg" alt=""></a>
+              <a [routerLink]="nombre_cliente === '' ? '/login_client' :'/logout'" class="{{ nombre_cliente ? 'cliente-logueado' : '' }}"><img src="{{ sourceImage }}core-img/user.svg" alt="" ></a>
+              <span #nombreCliente class="{{ nombre_cliente && !ocultarNombre ? 'cliente-logueado' : 'cliente-desconoicido' }}">{{ nombre_cliente }}</span>
           </div>
           <!-- Cart Area -->
           <div class="cart-area">

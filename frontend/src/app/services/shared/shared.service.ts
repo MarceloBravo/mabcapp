@@ -12,6 +12,7 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class SharedService {
   public globalRememberUser: boolean = false;
+  public globalRememberClient: boolean = false;
   public globalURL: string = 'http://127.0.0.1:8000/api/';
   public user: User = new User();
   public roles!: Rol[];

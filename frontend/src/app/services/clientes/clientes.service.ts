@@ -30,6 +30,10 @@ export class ClientesService {
     return this.http.get(`${this._const.endPoint}${this.url}/${id}`, {headers: this._const.header()});
   }
 
+  findByRut(rut: string){
+    return this.http.get(`${this._const.endPoint}${this.url}/rut/${rut}`, {headers: this._const.header()});
+  }
+
   insert(cliente: Cliente){
     return this.http.post(`${this._const.endPoint}${this.url}`, cliente, {headers: this._const.header()});
   }
