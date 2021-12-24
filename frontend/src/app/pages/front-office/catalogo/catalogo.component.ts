@@ -27,7 +27,7 @@ export class CatalogoComponent implements OnInit {
   marcas: Marca[] = []
   precioMinMax: {precio_min: number, precio_max: number, value_min: number, value_max: number} = {precio_min:0, precio_max: 10000000, value_min: 0, value_max: 10000000}
   imageFolder: string = ''
-  titulo: string | null = null
+  titulo: string = ''
   ordernarPor: typeof OrdenarPor = OrdenarPor
   favoritos: number[] = []
 

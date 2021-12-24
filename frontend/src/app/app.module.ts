@@ -73,6 +73,8 @@ import { TallasFormComponent } from './pages/back-office/tallas/tallas-form/tall
 import { LoginClienteComponent } from './pages/front-office/login-cliente/login-cliente.component';
 import { RegistroClienteComponent } from './pages/front-office/registro-cliente/registro-cliente.component';
 import { LogoutComponent } from './pages/front-office/logout/logout.component';
+import { IdentificacionClienteComponent } from './pages/front-office/identificacion-cliente/identificacion-cliente.component';
+import { TituloComponent } from './components/titulo/titulo.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -141,6 +143,8 @@ import { LogoutComponent } from './pages/front-office/logout/logout.component';
     LoginClienteComponent,
     RegistroClienteComponent,
     LogoutComponent,
+    IdentificacionClienteComponent,
+    TituloComponent,
   ],
   imports: [
     BrowserModule,
