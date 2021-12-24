@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CarritoService } from '../../services/carrito/carrito.service';
 import { ItemCarrito } from '../../class/itemCarrito/item-carrito';
 import { ConstantesService } from 'src/app/services/constantes/constantes.service';
+import { Cliente } from 'src/app/class/cliente/cliente';
+import { LoginClientesService } from 'src/app/services/loginClientes/login-clientes.service';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -18,9 +20,11 @@ export class ShoppingCartComponent implements OnInit {
   impuestos: number = 0
   total: number = 0
   cantProductos: number = 0
+  cliente: Cliente | null = null
 
   constructor(
     private _carritoService: CarritoService,
+    private _loginClienteService: LoginClientesService,
     private _const: ConstantesService,
   ) {
     this.obtenerDatosCarrito()
@@ -34,6 +38,10 @@ export class ShoppingCartComponent implements OnInit {
         this.obtenerDatosCarrito()
         this.cantProductos = this._carritoService.getContarProductos()
       })
+  }
+
+  private obtenerDatosCliente(){
+    this.cliente = this._loginClienteService.getClienteLogueado()
   }
 
   private obtenerDatosCarrito(){

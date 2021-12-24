@@ -22,9 +22,6 @@ export class LoginClientesService {
   ) { }
 
   login(loginForm: FormGroup){
-    console.log(this._sharedServices.globalURL + this.endPoint + '/clientes_login', loginForm.value)
-    debugger
-
     let remember: boolean = <boolean><unknown>loginForm.value['remember'];
     this._sharedServices.globalRememberClient = remember;
 

@@ -42,6 +42,7 @@ import { TallasFormComponent } from './pages/back-office/tallas/tallas-form/tall
 import { LoginClienteComponent } from './pages/front-office/login-cliente/login-cliente.component';
 import { RegistroClienteComponent } from './pages/front-office/registro-cliente/registro-cliente.component';
 import { LogoutComponent } from './pages/front-office/logout/logout.component';
+import { IdentificacionClienteComponent } from './pages/front-office/identificacion-cliente/identificacion-cliente.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -121,6 +122,8 @@ const routes: Routes = [
       { path: 'login_cliente', component: LoginClienteComponent },
       { path: 'registro_cliente', component: RegistroClienteComponent },
       { path: 'logout', component: LogoutComponent },
+      { path: 'identificacion_cliente', component: IdentificacionClienteComponent },
+
     ]
   },
   { path: '**', pathMatch: 'full', redirectTo: '/' },

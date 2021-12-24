@@ -92,7 +92,7 @@
           </div>
           <!-- User Login Info -->
           <div class="user-login-info">
-              <a [routerLink]="nombre_cliente === '' ? '/login_client' :'/logout'" class="{{ nombre_cliente ? 'cliente-logueado' : '' }}"><img src="{{ sourceImage }}core-img/user.svg" alt="" ></a>
+              <a [routerLink]="nombre_cliente === '' ? '/login_cliente' :'/logout'" class="{{ nombre_cliente ? 'cliente-logueado' : '' }}"><img src="{{ sourceImage }}core-img/user.svg" alt="" ></a>
               <span #nombreCliente class="{{ nombre_cliente && !ocultarNombre ? 'cliente-logueado' : 'cliente-desconoicido' }}">{{ nombre_cliente }}</span>
           </div>
           <!-- Cart Area -->

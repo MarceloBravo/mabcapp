@@ -40,8 +40,8 @@
                 <li><span>Impuestos:</span> <span>$ {{ impuestos.toLocaleString('de-DE') }}</span></li>
                 <li><span>Total:</span> <span>$ {{ total.toLocaleString('de-DE') }}</span></li>
             </ul>
-            <div class="checkout-btn mt-100">
-                <a href="checkout.html" class="btn essence-btn">Pagar los productos</a>
+            <div *ngIf="carrito.length > 0" class="checkout-btn mt-100">
+                <a [routerLink]="cliente ? '' : '/identificacion_cliente'" class="btn essence-btn">Pagar los productos</a>
             </div>
         </div>
     </div>
