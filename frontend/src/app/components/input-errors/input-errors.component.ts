@@ -17,6 +17,7 @@ export class InputErrorsComponent implements OnInit {
   }
 
   errorMesage(keyError: string){
+    console.log('keyError',keyError)
     let mensaje = keyError === 'required' ? 'El campo es obligatorio' :
                    (keyError === 'minlength' ? 'El texto ingresado es muy corto' :
                     (keyError === 'maxlength' ? 'El texto ingresado es muy largo' : 'El valor ingresado no es válido'))

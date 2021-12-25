@@ -28,16 +28,19 @@ export class ShoppingCartComponent implements OnInit {
     private _const: ConstantesService,
   ) {
     this.obtenerDatosCarrito()
+    this.obtenerDatosCliente()
     this.sourceImage = this._const.storageImages
     this.cantProductos = this._carritoService.getContarProductos()
   }
 
   ngOnInit(): void {
-
-      this._carritoService.changeCart$.subscribe((res: any) => {
-        this.obtenerDatosCarrito()
-        this.cantProductos = this._carritoService.getContarProductos()
-      })
+    this._loginClienteService.activeUserChange$.subscribe((res: any) => {
+      this.obtenerDatosCliente()
+    } )
+    this._carritoService.changeCart$.subscribe((res: any) => {
+      this.obtenerDatosCarrito()
+      this.cantProductos = this._carritoService.getContarProductos()
+    })
   }
 
   private obtenerDatosCliente(){

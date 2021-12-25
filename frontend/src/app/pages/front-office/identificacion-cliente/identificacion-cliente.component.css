@@ -8,3 +8,7 @@
   color: blue;
   font-size: unset;
 }
+
+.essence-btn{
+  position: inherit;
+}

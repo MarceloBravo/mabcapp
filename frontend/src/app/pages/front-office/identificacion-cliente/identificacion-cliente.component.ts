@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Cliente } from 'src/app/class/cliente/cliente';
 import { LoginClientesService } from 'src/app/services/loginClientes/login-clientes.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
@@ -49,7 +50,7 @@ export class IdentificacionClienteComponent implements OnInit {
         if(this._loginClienteService.validaToken(res['access_token'])){
           this._loginClienteService.registrarToken(res['access_token'], this.formLogin.value['remember']);
           this._loginClienteService.setCredencialesCliente(res['user'])
-          this.formCliente.patchValue(res.user)
+          this.router.navigate(['/datos_despacho'])
         }
         this._toastService.clearToast();
       } else{
@@ -60,5 +61,10 @@ export class IdentificacionClienteComponent implements OnInit {
       this.showSpinner = false
       this._sharedServices.handlerError(error)
     })
+  }
+
+  continuarCompra(){
+    this._loginClienteService.setCredencialesCliente(this.formCliente.value)
+    this.router.navigate(["/datos_despacho"])
   }
 }

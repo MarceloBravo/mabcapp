@@ -29,4 +29,13 @@ export class PreciosService {
     return this.http.delete(`${this._const.endPoint}${this.url}/${id}`,{headers: this._const.header()})
   }
 
+  precioConImpuestos(precio: number, impuestos: number[]): number{
+    let promedio = impuestos.length > 0 ? impuestos.reduce((tot, i) => tot +=i) / impuestos.length : 0
+    return precio * promedio / 100
+  }
+
+  strFormatearPrecio(precio: number, signo: string = '$'): string{
+    return `${signo} ${precio.toLocaleString('de-DE')}`
+  }
+
 }

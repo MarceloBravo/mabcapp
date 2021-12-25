@@ -66,7 +66,7 @@ export class FoHeaderNavbarComponent implements OnInit {
 
   private obtenerDatosCliente(){
     let cliente = this._loginClienteService.getClienteLogueado()
-    if(cliente){
+    if(cliente && cliente.id){
       this.nombre_cliente = cliente.nombres + ' ' + cliente.apellido1
     }
   }

@@ -67,8 +67,8 @@ export class LoginClientesService {
 
   setCredencialesCliente(cliente: Cliente)
   {
-    this.activeUserChange$.emit(cliente)
     sessionStorage.setItem('client', JSON.stringify(cliente))
+    this.activeUserChange$.emit(cliente)
   }
 
   getClienteLogueado():Cliente|null

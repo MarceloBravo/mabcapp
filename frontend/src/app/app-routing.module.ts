@@ -43,6 +43,7 @@ import { LoginClienteComponent } from './pages/front-office/login-cliente/login-
 import { RegistroClienteComponent } from './pages/front-office/registro-cliente/registro-cliente.component';
 import { LogoutComponent } from './pages/front-office/logout/logout.component';
 import { IdentificacionClienteComponent } from './pages/front-office/identificacion-cliente/identificacion-cliente.component';
+import { DatosDespachoComponent } from './pages/front-office/datos-despacho/datos-despacho.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -123,7 +124,7 @@ const routes: Routes = [
       { path: 'registro_cliente', component: RegistroClienteComponent },
       { path: 'logout', component: LogoutComponent },
       { path: 'identificacion_cliente', component: IdentificacionClienteComponent },
-
+      { path: 'datos_despacho', component: DatosDespachoComponent },
     ]
   },
   { path: '**', pathMatch: 'full', redirectTo: '/' },

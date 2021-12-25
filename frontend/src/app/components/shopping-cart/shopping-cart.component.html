@@ -41,7 +41,7 @@
                 <li><span>Total:</span> <span>$ {{ total.toLocaleString('de-DE') }}</span></li>
             </ul>
             <div *ngIf="carrito.length > 0" class="checkout-btn mt-100">
-                <a [routerLink]="cliente ? '' : '/identificacion_cliente'" class="btn essence-btn">Pagar los productos</a>
+                <a [routerLink]="cliente ? '/datos_despacho' : '/identificacion_cliente'" class="btn essence-btn">Pagar los productos</a>
             </div>
         </div>
     </div>

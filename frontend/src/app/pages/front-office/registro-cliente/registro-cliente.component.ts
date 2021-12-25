@@ -108,7 +108,6 @@ export class RegistroClienteComponent implements OnInit {
     if(this.idCli){
       this.showSpinner = true
       this._clientesService.find(this.idCli).subscribe((res: any) => {
-        debugger
         if(Object.keys(res).length > 0){
           this.cargarProvincias(res['cod_region'])
           this.cargarComunas(res['cod_provincia'])
