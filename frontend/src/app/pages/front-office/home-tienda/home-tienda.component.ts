@@ -13,6 +13,7 @@ import { OfertaPrincipal } from '../../../class/ofertaPrincipal/oferta-principal
 import { SeccionesHomeService } from '../../../services/seccionesHome/secciones-home.service';
 import { Router } from '@angular/router';
 import { CarritoService } from '../../../services/carrito/carrito.service';
+import { PreciosService } from '../../../services/precios/precios.service';
 
 @Component({
   selector: 'app-home-tienda',
@@ -39,6 +40,7 @@ export class HomeTiendaComponent implements OnInit {
     private _marcasService: MarcasService,
     private _configOfertaService: ConfigOfertaService,
     private _seccionesService: SeccionesHomeService,
+    private _preciosService: PreciosService,
     private _carritoServices: CarritoService,
     private router: Router
   ) {
@@ -105,7 +107,7 @@ export class HomeTiendaComponent implements OnInit {
             srcImg2: p.source_image,
             texto1: p.texto1 ? p.texto1 : p.marca,
             texto2: p.texto2 ? p.texto2 : p.nombre,
-            precio: p.precio_venta_normal,
+            precio: this._preciosService.precioConImpuestos(p.precio_venta_normal, [p.promedio_impuestos]),
             textoBoton: 'Comprar'
           }))
         })

@@ -22,6 +22,7 @@ import { Precio } from 'src/app/class/precio/precio';
 import { Talla } from '../../../../class/talla/talla';
 import { TallasService } from '../../../../services/tallas/tallas.service';
 import { TallaProducto } from '../../../../class/tallaProducto/talla-producto';
+import { PreciosService } from '../../../../services/precios/precios.service';
 
 @Component({
   selector: 'app-productos-form',
@@ -64,6 +65,7 @@ export class ProductosFormComponent implements OnInit {
   public principalImage: string = ''
   public arrURLImagenes: {source: string, name:string, imagen_principal: boolean}[] = []
   tallas: Talla[] = []
+  private arrImpuestos: number[] = [] //Almecena el porcentaje de cada impuesto aplicado al producto
 
 
   constructor(
@@ -78,6 +80,7 @@ export class ProductosFormComponent implements OnInit {
     private _tallasService: TallasService,
     public _const: ConstantesService,
     private _file: FilesService,
+    private _preciosService: PreciosService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
@@ -218,6 +221,7 @@ export class ProductosFormComponent implements OnInit {
       this._productosService.find(this.id).subscribe((res: any)=> {
         this.producto = res
         //console.log(this.obtenerPrecioActual(this.producto))
+        this.arrImpuestos = this.producto.impuestos.map((i: any) => i.porcentaje)
         this.cargarSubCategorias(res['categoria_id'])
         this.cargarTallas(res['sub_categoria_id'])
         this.iniciarForm()
@@ -409,5 +413,25 @@ export class ProductosFormComponent implements OnInit {
 
   formatearFecha(fecha?: string){
     return fecha ? fecha.split('T')[0].split('-').reverse().join('-') : 'Indefeinido'
+  }
+
+  totalImpuestos(precio: number): number{
+    return this._preciosService.precioConImpuestos(precio, this.arrImpuestos)
+  }
+
+  formatearPrecio(precio: number){
+    return this._preciosService.strFormatearPrecio(precio)
+  }
+
+  actualizarPrecioFinal(cbo: HTMLSelectElement){
+    this.arrImpuestos = []
+    for(let i = 0; i < cbo.selectedOptions.length; i++){
+      let indice = parseInt(cbo.selectedOptions[i].value.split(':')[0])
+      if(this.impuestos.filter(e => e.id === indice)){
+        //console.log(this.impuestos[indice].porcentaje, this.impuestos[indice].nombre)
+        this.arrImpuestos.push(this.impuestos[indice].porcentaje)
+      }
+    }
+    //console.log(this.arrImpuestos)
   }
 }

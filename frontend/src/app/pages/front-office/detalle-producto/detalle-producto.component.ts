@@ -6,6 +6,7 @@ import { SharedService } from '../../../services/shared/shared.service';
 import { Producto } from '../../../class/producto/producto';
 import { ConstantesService } from '../../../services/constantes/constantes.service';
 import { CarritoService } from '../../../services/carrito/carrito.service';
+import { PreciosService } from '../../../services/precios/precios.service';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -27,12 +28,12 @@ export class DetalleProductoComponent implements OnInit {
   favoritos: number[] = []
 
   constructor(
-    private _scriptService: ScriptServicesService,
     private activatedRoute: ActivatedRoute,
     private _productosService: ProductosService,
     private _sharedService: SharedService,
     private _const: ConstantesService,
     private _carritoService: CarritoService,
+    private _preciosService: PreciosService,
     private router: Router
   ) {}
 
@@ -55,7 +56,13 @@ export class DetalleProductoComponent implements OnInit {
       this.showSpinner = false
       if(res){
         this.producto = res;
-        this.precios = {precio_venta: this.producto.precios.length > 0 ? this.producto.precios[0].precio: this.producto.precio_venta_normal, precio_normal: this.producto.precio_venta_normal}
+        let impuestos: number[] = []
+        this.producto.impuestos.forEach(i =>
+          impuestos.push(i.porcentaje)
+        )
+        this.precios = {
+          precio_venta:  this._preciosService.precioConImpuestos(this.producto.precios.length > 0 ? this.producto.precios[0].precio: this.producto.precio_venta_normal, impuestos),
+          precio_normal: this._preciosService.precioConImpuestos(this.producto.precio_venta_normal, impuestos)}
 
         this.producto.imagenes.forEach((p, index) => {
           if(p.imagen_principal){
@@ -86,5 +93,9 @@ export class DetalleProductoComponent implements OnInit {
 
   agregarCarrito(){
     this._carritoService.addToCart(this.producto)
+  }
+
+  formatearPrecio(precio: number){
+    return this._preciosService.strFormatearPrecio(precio)
   }
 }

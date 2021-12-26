@@ -30,12 +30,12 @@ export class PreciosService {
   }
 
   precioConImpuestos(precio: number, impuestos: number[]): number{
-    let promedio = impuestos.length > 0 ? impuestos.reduce((tot, i) => tot +=i) / impuestos.length : 0
-    return precio * promedio / 100
+    let promedio = (impuestos && impuestos.length > 0) ? impuestos.reduce((tot, i) => tot +=i) : 0
+    return Math.round(precio + (precio * promedio / 100))
   }
 
   strFormatearPrecio(precio: number, signo: string = '$'): string{
-    return `${signo} ${precio.toLocaleString('de-DE')}`
+    return precio ? `${signo} ${precio.toLocaleString('de-DE')}` : '$ 0'
   }
 
 }

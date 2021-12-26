@@ -122,7 +122,7 @@
 
 
                 <div class="form-group row">
-                  <label class="col-sm-4 col-form-label">Precio venta normal</label>
+                  <label class="col-sm-4 col-form-label">Precio normal</label>
                   <div class="col-sm-8">
                     <input
                       type="number"
@@ -168,9 +168,9 @@
                 </div>
 
                 <div class="form-group row">
-                  <label class="col-sm-4 col-form-label">Precio venta actual</label>
+                  <label class="col-sm-4 col-form-label">Precio actual</label>
                   <div class="col-sm-8">
-                    <label class="col-sm-4 col-form-label">$ {{ form.value.precios.length > 0 ? form.value.precios[0].precio : form.value.precio_venta_normal }}</label>
+                    <label class="col-sm-12 col-form-label">{{ formatearPrecio(form.value.precios.length > 0 ? form.value.precios[0].precio : form.value.precio_venta_normal) }} (Sin impuestos)</label>
                   </div>
                 </div>
 
@@ -327,9 +327,11 @@
                   <label class="col-sm-4 col-form-label">Impuestos</label>
                   <div class="col-sm-8">
                     <select
+                      #cboImpuestos
                       multiple
                       class="custom-select col-md-12"
                       formControlName="impuestos"
+                      (change)="actualizarPrecioFinal(cboImpuestos)"
                     >
                       <option *ngFor="let item of impuestos" [value]="item.id">
                         {{ item.nombre }}
@@ -350,7 +352,15 @@
                   </div>
                 </div>
 
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Precio Venta a público</label>
+                  <div class="col-sm-8">
+                    <label class="col-sm-12 col-form-label">{{ formatearPrecio(totalImpuestos(form.value.precios.length > 0 ? form.value.precios[0].precio : form.value.precio_venta_normal)) }} (Incluye impuestos)</label>
+                  </div>
+                </div>
+
               </div>
+
               <div class="col-sm-6">
 
 

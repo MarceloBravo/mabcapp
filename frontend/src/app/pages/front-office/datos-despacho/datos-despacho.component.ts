@@ -63,7 +63,7 @@ export class DatosDespachoComponent implements OnInit {
   private cargarDatrosCarrito(){
     this.carrito = this._carritoService.getCarrito()
     this.carrito.forEach( i => {
-      this.subTotal += i.precio_venta
+      this.subTotal += i.precio_venta //Precio incluye impuestos
     } )
     this.total = this.subTotal + this.gastosEnvio
   }

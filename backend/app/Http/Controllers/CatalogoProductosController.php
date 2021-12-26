@@ -51,8 +51,19 @@ class CatalogoProductosController extends Controller
                             {
                                 $join->on('productos.id', '=', 'imagen_producto.producto_id');
                             })
+                            ->join(DB::raw('(SELECT producto_id, SUM(porcentaje) as impuesto FROM `impuestos`
+                                        INNER JOIN producto_impuesto
+                                        ON impuestos.id = producto_impuesto.impuesto_id
+                                        GROUP BY producto_id
+                                        )
+                                porcentaje_impuestos'),
+                            function($join)
+                            {
+                                $join->on('productos.id', '=', 'porcentaje_impuestos.producto_id');
+                            })
                         ->select(
                             'productos.*',
+                            'porcentaje_impuestos.impuesto',
                             'marcas.nombre as marca',
                             DB::raw('(CASE WHEN NOT p.precio IS NULL THEN p.precio ELSE precio_venta_normal END) AS precio_venta'),
                             'p.descuento',

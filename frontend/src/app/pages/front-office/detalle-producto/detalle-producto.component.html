@@ -34,12 +34,13 @@
       <a href="cart.html">
           <h2>{{ producto.nombre }}</h2>
       </a>
-      <p class="product-price"><span *ngIf="precios.precio_venta !== precios.precio_normal" class="old-price">${{ precios.precio_normal.toLocaleString('de-DE') }}</span> ${{ precios.precio_venta.toLocaleString('de-DE') }}</p>
+      <p class="product-price"><span *ngIf="precios.precio_venta !== precios.precio_normal" class="old-price">{{ formatearPrecio(precios.precio_normal) }}</span> {{ formatearPrecio(precios.precio_venta) }}</p>
       <p class="product-desc">{{ producto.descripcion }}</p>
 
       <!-- Form -->
       <form class="cart-form clearfix" method="post">
           <!-- Select Box -->
+          <!--
           <div class="select-box d-flex mt-50 mb-30">
               <select name="select" id="productSize" class="mr-5">
                   <option value="value">Size: XL</option>
@@ -54,6 +55,7 @@
                   <option value="value">Color: Purple</option>
               </select>
           </div>
+          -->
           <!-- Cart & Favourite Box -->
           <div class="cart-fav-box d-flex align-items-center">
               <!-- Cart -->

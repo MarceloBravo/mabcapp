@@ -12,6 +12,7 @@ import { MarcasService } from '../../../services/marcas/marcas.service';
 import { Marca } from '../../../class/marca/marca';
 import { OrdenarPor } from '../../../enum/catalogoParams/ordenarPor';
 import { CarritoService } from 'src/app/services/carrito/carrito.service';
+import { PreciosService } from '../../../services/precios/precios.service';
 
 @Component({
   selector: 'app-catalogo',
@@ -37,6 +38,7 @@ export class CatalogoComponent implements OnInit {
     private _sharedService: SharedService,
     public _categoriasService: CategoriasService,
     private _marcasService: MarcasService,
+    private _preciosService: PreciosService,
     public _const: ConstantesService,
     public activatedRoute: ActivatedRoute,
     private _carritoServices: CarritoService,
@@ -84,9 +86,9 @@ export class CatalogoComponent implements OnInit {
   }
 
   private obtenerDatos(){
-    this._catalogoService.get(this.paginacion.pagina, this.params).subscribe((res: any) =>
-        this.cargarDatos(res)
-    , error =>
+    this._catalogoService.get(this.paginacion.pagina, this.params).subscribe((res: any) => {
+      this.cargarDatos(res)
+  }, error =>
       this._sharedService.handlerError(error)
     )
   }
@@ -114,7 +116,7 @@ export class CatalogoComponent implements OnInit {
         srcImg2: i.imagen_principal,
         texto1: i.marca,
         texto2: i.nombre,
-        precio: i.precio_venta,
+        precio: this._preciosService.precioConImpuestos(i.precio_venta,[i.impuesto]),
         textoBoton: 'Comprar'
       })
     })

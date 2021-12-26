@@ -17,7 +17,6 @@ export class CatalogoService {
   ) { }
 
   get(pag: number, params: FoCatalogoParams){
-    console.log('catalogo',params)
     return this.http.post(`${this._const.endPoint + this.url}/pag/${pag}`, params, {headers: this._const.header()});
   }
 

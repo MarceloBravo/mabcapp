@@ -45,11 +45,22 @@ class SeccionesHome extends Model
                             {
                                 $join->on('productos.id', '=', 'imagen_producto.producto_id');
                             })
+                            ->join(DB::raw('(SELECT producto_id, SUM(porcentaje) as promedio_impuestos FROM `impuestos`
+                                        INNER JOIN producto_impuesto
+                                        ON impuestos.id = producto_impuesto.impuesto_id
+                                        GROUP BY producto_id
+                                        )
+                                porcentaje_impuestos'),
+                            function($join)
+                            {
+                                $join->on('productos.id', '=', 'porcentaje_impuestos.producto_id');
+                            })
                 ->where('secciones_home.id','=',$this->id)
                 ->whereNull('productos_secciones_home.deleted_at')
                 ->select(
                     'imagen_producto.source_image',
                     'productos.*',
+                    'porcentaje_impuestos.promedio_impuestos',
                     'productos_secciones_home.texto1',
                     'productos_secciones_home.texto2',
                     'marcas.nombre as marca'
