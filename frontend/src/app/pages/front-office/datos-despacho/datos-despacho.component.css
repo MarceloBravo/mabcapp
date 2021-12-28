@@ -23,3 +23,7 @@ select{
 .nombre-producto{
   width: 285px;
 }
+
+.essence-btn{
+  position: relative !important;
+}

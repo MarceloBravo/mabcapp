@@ -173,3 +173,6 @@ Route::get('clientes/{id}', 'ClientesController@show');
 Route::get('clientes/rut/{rut}', 'ClientesController@findByRut');
 Route::post('clientes', 'ClientesController@store');
 Route::put('clientes/{id}', 'ClientesController@update');
+
+Route::post('/wp/iniciar_transaccion', 'WebpayController@startTransaction');
+Route::get('/wp/confirmar_transaccion', 'WebpayController@confirmPay')->name('wp/confirmar_transaccion');

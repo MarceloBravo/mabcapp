@@ -76,6 +76,7 @@ import { LogoutComponent } from './pages/front-office/logout/logout.component';
 import { IdentificacionClienteComponent } from './pages/front-office/identificacion-cliente/identificacion-cliente.component';
 import { TituloComponent } from './components/titulo/titulo.component';
 import { DatosDespachoComponent } from './pages/front-office/datos-despacho/datos-despacho.component';
+import { ResultadoTransaccionComponent } from './pages/front-office/resultado-transaccion/resultado-transaccion.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -147,6 +148,7 @@ import { DatosDespachoComponent } from './pages/front-office/datos-despacho/dato
     IdentificacionClienteComponent,
     TituloComponent,
     DatosDespachoComponent,
+    ResultadoTransaccionComponent,
   ],
   imports: [
     BrowserModule,

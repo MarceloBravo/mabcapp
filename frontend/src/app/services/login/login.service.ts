@@ -26,7 +26,7 @@ export class LoginService {
   login(loginForm: FormGroup){
     let remember: boolean = <boolean><unknown>loginForm.value['remember'];
     this._sharedServices.globalRememberUser = remember;
-    return this.httpClient.post(this._sharedServices.globalURL + this.endPoint + 'login', loginForm.value, {headers: this.header});
+    return this.httpClient.post(this._const.endPoint + this.endPoint + 'login', loginForm.value, {headers: this.header});
   }
 
   validaToken(token: string){
@@ -34,7 +34,7 @@ export class LoginService {
       let tokenArr = token.split('.');
       if(tokenArr.length > 1){
         const decodeToken = JSON.parse(atob(tokenArr[1]));
-        return decodeToken.iss === this._sharedServices.globalURL + this.endPoint  + 'login'
+        return decodeToken.iss === this._const.endPoint + this.endPoint  + 'login'
       }
     }
     return false
@@ -52,7 +52,7 @@ export class LoginService {
     let header = this._const.header();
     this.borrarCredencialesUsuario();
     return this.httpClient.post(
-            `${this._sharedServices.globalURL}${this.endPoint}logout`,
+            `${this._const.endPoint}${this.endPoint}logout`,
             {},
             {headers: header}
           );
@@ -60,7 +60,7 @@ export class LoginService {
 
   refreshToken(){
     return this.httpClient.post(
-      `${this._sharedServices.globalURL}${this.endPoint}/refresh`,
+      `${this._const.endPoint}${this.endPoint}/refresh`,
       {},
       {headers: this._const.header()}
       );

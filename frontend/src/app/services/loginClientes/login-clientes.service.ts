@@ -25,7 +25,7 @@ export class LoginClientesService {
     let remember: boolean = <boolean><unknown>loginForm.value['remember'];
     this._sharedServices.globalRememberClient = remember;
 
-    return this.httpClient.post(this._sharedServices.globalURL + this.endPoint + '/clientes_login', loginForm.value, {headers: this.header});
+    return this.httpClient.post(this._const.endPoint + this.endPoint + '/clientes_login', loginForm.value, {headers: this.header});
   }
 
   validaToken(token: string){
@@ -33,7 +33,7 @@ export class LoginClientesService {
       let tokenArr = token.split('.');
       if(tokenArr.length > 1){
         const decodeToken = JSON.parse(atob(tokenArr[1]));
-        return decodeToken.iss === this._sharedServices.globalURL + this.endPoint  + '/clientes_login'
+        return decodeToken.iss === this._const.endPoint + this.endPoint  + '/clientes_login'
       }
     }
     return false
@@ -51,7 +51,7 @@ export class LoginClientesService {
     let header = this._const.header();
     this.borrarCredencialesCliente();
     return this.httpClient.post(
-            `${this._sharedServices.globalURL}${this.endPoint}/clientes_login`,
+            `${this._const.endPoint}${this.endPoint}/clientes_login`,
             {},
             {headers: header}
           );
@@ -59,7 +59,7 @@ export class LoginClientesService {
 
   refreshToken(){
     return this.httpClient.post(
-      `${this._sharedServices.globalURL}${this.endPoint}/refresh`,
+      `${this._const.endPoint}${this.endPoint}/refresh`,
       {},
       {headers: this._const.header()}
       );

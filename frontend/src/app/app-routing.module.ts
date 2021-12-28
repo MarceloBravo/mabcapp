@@ -44,6 +44,7 @@ import { RegistroClienteComponent } from './pages/front-office/registro-cliente/
 import { LogoutComponent } from './pages/front-office/logout/logout.component';
 import { IdentificacionClienteComponent } from './pages/front-office/identificacion-cliente/identificacion-cliente.component';
 import { DatosDespachoComponent } from './pages/front-office/datos-despacho/datos-despacho.component';
+import { ResultadoTransaccionComponent } from './pages/front-office/resultado-transaccion/resultado-transaccion.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -125,6 +126,8 @@ const routes: Routes = [
       { path: 'logout', component: LogoutComponent },
       { path: 'identificacion_cliente', component: IdentificacionClienteComponent },
       { path: 'datos_despacho', component: DatosDespachoComponent },
+      { path: 'resultado_transaccion/:venta_id/:estado', component: ResultadoTransaccionComponent },
+
     ]
   },
   { path: '**', pathMatch: 'full', redirectTo: '/' },

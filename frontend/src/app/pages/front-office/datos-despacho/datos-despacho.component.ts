@@ -12,6 +12,8 @@ import { ComunasService } from 'src/app/services/comunas/comunas.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
 import { CarritoService } from '../../../services/carrito/carrito.service';
 import { PreciosService } from '../../../services/precios/precios.service';
+import { TransbankService } from '../../../services/transbank/transbank.service';
+import { Transbank } from '../../../class/transbank/transbank';
 
 @Component({
   selector: 'app-datos-despacho',
@@ -51,6 +53,7 @@ export class DatosDespachoComponent implements OnInit {
     private _carritoService: CarritoService,
     private _sharedService: SharedService,
     private _preciosService: PreciosService,
+    private _transbankService: TransbankService,
     private router: Router,
   ) { }
 
@@ -106,7 +109,13 @@ export class DatosDespachoComponent implements OnInit {
     })
   }
 
-  registrarCliente(){
+  pagar(){
+    this.registrarCliente()
+    this.iniciarTransaccion()
+  }
+
+
+  private registrarCliente(){
 
     let cliente = this._loginClienteService.getClienteLogueado()
     if(cliente){
@@ -121,6 +130,36 @@ export class DatosDespachoComponent implements OnInit {
       this._loginClienteService.setCredencialesCliente(cliente)
     }
   }
+
+  private createTranssbankObject(): Transbank{
+    let tb = new Transbank()
+    tb.ammount = this.total
+    tb.session_id = `${Math.random() * (10000 - 1000) + 1000}`
+    return tb
+  }
+
+  //Inicia una transacción en Webpay y recibe un token por parte de éste
+  private iniciarTransaccion(){
+    this._transbankService.startTransaction(this.createTranssbankObject()).subscribe((res: any) => {
+      //console.log('OK',res, res.split('=')[1])
+      window.location.href = res
+      //this.confirmarTransaccion({token_ws: res.split('=')[1]})
+    }, error =>
+        console.log('ERROR',error)
+    )
+  }
+
+    /*
+  //Redirecciona a la página de Webpay, enviando el token recibido desde esa web
+  private confirmarTransaccion(data: any){
+    this._transbankService.confirmTransaction(data).subscribe((res: any) =>
+      console.log('Transacción OK', res)
+    ,error =>
+      console.log(error)
+    )
+  }
+  */
+
 
   formatearPrecio(precio: number){
     return this._preciosService.strFormatearPrecio(precio)

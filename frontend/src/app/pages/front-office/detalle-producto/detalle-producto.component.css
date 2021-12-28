@@ -60,3 +60,7 @@
   object-fit: contain;
   left: 20%;
 }
+
+.essence-btn{
+  position: relative;
+}

@@ -6,6 +6,7 @@ import { ToastService } from '../toast/toast.service';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { ConstantesService } from '../constantes/constantes.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,15 +14,18 @@ import { catchError, map } from 'rxjs/operators';
 export class SharedService {
   public globalRememberUser: boolean = false;
   public globalRememberClient: boolean = false;
-  public globalURL: string = 'http://127.0.0.1:8000/api/';
+  //public globalURL: string = '' //'http://127.0.0.1:8000/api/';
   public user: User = new User();
   public roles!: Rol[];
 
   constructor(
     private _toastService: ToastService,
+    //private _const: ConstantesService,
     private router: Router,
     private httpClient: HttpClient
-  ) { }
+  ) {
+    //this.globalURL = this._const.endPoint
+  }
 
   header(token: string){
     return new HttpHeaders({
