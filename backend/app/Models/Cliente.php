@@ -64,4 +64,8 @@ class Cliente extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function ventas(){
+        return $this->hasMany(Ventas::class,'cliente_id')->get();
+    }
 }

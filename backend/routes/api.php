@@ -140,12 +140,12 @@ Route::group([
     Route::get('tallas/pag/{pag}', 'TallasController@index');
     Route::get('tallas/get/all', 'TallasController@getAll');
     Route::get('tallas/filter/{texto}/{pag}', 'TallasController@filter');
-    /*
-    Route::resource('tipo_productos', 'TipoProductosController');
-    Route::get('tipo_productos/pag/{pag}', 'TipoProductosController@index');
-    Route::get('tipo_productos/get/all', 'TipoProductosController@getAll');
-    Route::get('tipo_productos/filter/{texto}/{pag}', 'TipoProductosController@filter');
-    */
+
+    Route::delete('ventas/{id}','VentaController@destroy');
+
+    Route::delete('ventas_cliente_tienda/{id}','VentasClienteTiendaController@destroy');
+
+    Route::delete('ventas_cliente_invitado/{id}','VentasClienteInvitadoController@destroy');
 });
 Route::get('imagenes_marquesina/imagenes', 'ImagenesMarquesinaController@getImages');
 
@@ -176,3 +176,12 @@ Route::put('clientes/{id}', 'ClientesController@update');
 
 Route::post('/wp/iniciar_transaccion', 'WebpayController@startTransaction');
 Route::get('/wp/confirmar_transaccion', 'WebpayController@confirmPay')->name('wp/confirmar_transaccion');
+
+Route::post('ventas','VentaController@store');
+Route::post('ventas/{id}','VentaController@update');
+
+Route::post('ventas_cliente_tienda','VentasClienteTiendaController@store');
+Route::post('ventas_cliente_tienda/{id}','VentasClienteTiendaController@update');
+
+Route::post('ventas_cliente_invitado','VentasClienteInvitadoController@store');
+Route::post('ventas_cliente_invitado/{id}','VentasClienteInvitadoController@update');
