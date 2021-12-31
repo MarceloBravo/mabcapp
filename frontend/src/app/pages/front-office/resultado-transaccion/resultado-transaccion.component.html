@@ -1,2 +1,78 @@
 <app-titulo [titulo]="titulo"></app-titulo>
-<p>resultado-transaccion works!</p>
+
+<div class="row content">
+  <div class="col-12 col-md-7 col-lg-7">
+    <div class="order-details-confirmation">
+
+      <div class="cart-page-heading">
+          <h5>Resumen de la compra</h5>
+      </div>
+      <div class="row">
+        <label class="col-md-5">Cliente</label>
+        <label class="col-md-7">{{ cliente.nombres }} {{ cliente.apellido1 }} {{ cliente.apellido2 }}</label>
+      </div>
+
+      <div class="row">
+        <label class="col-md-5">Dirección de despacho</label>
+        <label class="col-md-7">{{ cliente.direccion }}, {{ cliente.casa_num }}</label>
+      </div>
+
+      <div class="row">
+        <label class="col-md-5">Ciudad</label>
+        <label class="col-md-7">{{ cliente.ciudad }}</label>
+      </div>
+
+      <div class="row">
+        <label class="col-md-5">Referencia</label>
+        <label class="col-md-7">{{ cliente.referencia }}</label>
+      </div>
+
+      <div class="row">
+        <label class="col-md-5">email</label>
+        <label class="col-md-7">{{ cliente.email }}</label>
+      </div>
+
+      <div class="row">
+        <label class="col-md-5">Estado de la compra</label>
+        <label class="col-md-7 {{ estadoCompra }} {{ estadoCompra === 'AUTHORIZED' ? 'fa fa-check' : 'fa fa-exclamation-triangle'}}">{{ estadoCompra }}</label>
+      </div>
+
+    </div>
+  </div>
+  <div class="col-12 col-md-5 col-lg-5">
+    <div *ngIf="estadoCompra === 'AUTHORIZED'" class="folio-documento">
+      <p>Boleta N°</p>
+      <p>{{ folio }}</p>
+    </div>
+
+  </div>
+  <div class="row error-compra">
+    {{ msgErrorCompra }}
+  </div>
+</div>
+
+<div class="row">
+  <app-grid
+    [registros]="carrito"
+    [cabeceras]="['imagen', 'Producto', 'Cantidad', 'Total']"
+    [columnasVisibles]="['imagen','nombre','cantidad','precio_venta']"
+    [columnasConImagenes]="['imagen']"
+    [ocultarFiltro]="true"
+    [columnasMonetarias]="['precio_venta']"
+  ></app-grid>
+  <div class="row div-total">
+    <div class="col-md-2 offset-8 lbl-total">Total</div>
+    <div class="col-md-2">{{ formatearPrecio(total) }}</div>
+  </div>
+</div>
+<div *ngIf="estadoCompra === 'AUTHORIZED'" class="row btn-container">
+  <div class="col-md-4">
+    <button class="btn essence-btn" (click)="generatePDF()">Descargar tu boleta</button>
+  </div>
+  <div class="col-md-4">
+    <a routerLink="/" class="btn essence-btn">Volver a home</a>
+  </div>
+  <div class="col-md-4">
+    <button class="btn essence-btn" (click)="sendMail()">Enviar boleta por email</button>
+  </div>
+</div>

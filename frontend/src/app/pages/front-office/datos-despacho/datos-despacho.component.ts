@@ -134,7 +134,8 @@ export class DatosDespachoComponent implements OnInit {
   private createTranssbankObject(): Transbank{
     let tb = new Transbank()
     tb.ammount = this.total
-    tb.session_id = `${Math.random() * (10000 - 1000) + 1000}`
+    tb.session_id = `${Math.round(Math.random() * (10000 - 1000) + 1000)}`
+    tb.buy_order = `${Math.round(Math.random() * (10000 - 1000) + 1000)}` //N° de documento boleta o factura
     return tb
   }
 
@@ -144,9 +145,10 @@ export class DatosDespachoComponent implements OnInit {
       //console.log('OK',res, res.split('=')[1])
       window.location.href = res
       //this.confirmarTransaccion({token_ws: res.split('=')[1]})
-    }, error =>
+    }, error => {
         console.log('ERROR',error)
-    )
+        this._sharedService.handlerError(error)
+    })
   }
 
     /*

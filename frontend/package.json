@@ -26,7 +26,8 @@
     "bootstrap": "^4.5.3",
     "file-exists": "^5.0.1",
     "jquery": "^3.5.1",
-    "ngx-bootstrap": "^7.1.0",
+    "ngx-bootstrap": "^7.1.2",
+    "pdfmake": "^0.2.4",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
@@ -35,6 +36,7 @@
     "@angular/compiler-cli": "~11.0.1",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
+    "@types/pdfmake": "^0.1.19",
     "codelyzer": "^6.0.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",

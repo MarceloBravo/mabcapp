@@ -16,6 +16,10 @@ export class TransbankService {
   startTransaction(datos: any){
     return this.http.post(`${this._const.endPoint + this.url}iniciar_transaccion`, datos, {responseType: 'text'})
   }
+
+  find(id: number){
+    return this.http.get(`${this._const.endPoint + this.url}transaccion/${id}`,{headers: this._const.header()})
+  }
 /*
   confirmTransaction(datos: any){
     return this.http.post(`${this._const.endPoint + this.url}confirmar_transaccion`, datos, {headers: this._const.header()})

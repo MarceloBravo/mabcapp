@@ -53,11 +53,14 @@ export class GridComponent implements OnInit {
       let idsRoles = roles.map(r => r.id)
       let url = this.router.url.split('/')[2]
       this.obtenerPermisos(idsRoles, url)
-    }else{
+    }
+    /*else{
       this._toast.showErrorMessage('El usuario no posee datos de ingreso y debe loguearse nuevamente.')
       this.router.navigate(['/'])
     }
+    */
   }
+
 
   ngOnInit(): void {
   }

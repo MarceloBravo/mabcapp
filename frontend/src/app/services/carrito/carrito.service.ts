@@ -85,6 +85,7 @@ export class CarritoService {
 
 
   vaciarCarrito(){
+    localStorage.removeItem('shopping-cart')
     this.changeCart$.emit(true)
   }
 

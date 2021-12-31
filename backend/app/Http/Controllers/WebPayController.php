@@ -57,15 +57,40 @@ class WebPayController extends Controller
 
         $venta = Webpay::where('id',$confirmacion->buyOrder)->first();
 
+        $venta = self::actualizaDatosTransaccion($venta, $confirmacion);
+        $venta->update();
+
         if($confirmacion->isApproved()){
-            $venta->status = 'Aprovada';
-            $venta->update();
-            return redirect(env('URL_FRONTEND_AFTER_PAYMENT')."/{$venta->id}/aprovada");
+            return redirect(env('URL_FRONTEND_AFTER_PAYMENT')."/{$venta->id}/{$venta->status}");
         }else{
-            return redirect(env('URL_FRONTEND_AFTER_PAYMENT')."/{$venta->id}/rechazada");
+            return redirect(env('URL_FRONTEND_AFTER_PAYMENT')."/{$venta->id}/{$confirmacion->status}");
         }
     }
 
+
+    private function actualizaDatosTransaccion($venta, $confirmacion){
+        $venta->vci = $confirmacion->vci;
+        $venta->status = $confirmacion->status;
+        $venta->response_code = $confirmacion->responseCode;
+        $venta->authorization_code = $confirmacion->authorizationCode;
+        $venta->account_date = $confirmacion->accountingDate;
+        $venta->vci = $confirmacion->vci;
+        $venta->installments_numbers = $confirmacion->installmentsNumber;
+        $venta->buy_order = $confirmacion->buyOrder;
+        $venta->card_number = $confirmacion->cardNumber;
+        $venta->transaccion_date = $confirmacion->transactionDate;
+        $venta->payment_type_code = $confirmacion->paymentTypeCode;
+        $venta->card_detail = json_encode($confirmacion->cardDetail);
+
+        return $venta;
+    }
+
+
+    public function show($id){
+        $venta = Webpay::find($id);
+
+        return response()->json($venta);
+    }
 }
 
 /*

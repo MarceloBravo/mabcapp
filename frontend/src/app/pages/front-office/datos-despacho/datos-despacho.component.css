@@ -24,6 +24,6 @@ select{
   width: 285px;
 }
 
-.essence-btn{
+.essence-btn, .btn-pagar{
   position: relative !important;
 }

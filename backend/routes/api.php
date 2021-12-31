@@ -26,6 +26,9 @@ Route::middleware('auth:clientes')->get('/cliente', function (Request $request) 
 
 Route::get('configuracion', 'ConfiguracionController@index');
 
+//Route::group(['prefix' => 'api'], function () { Route::get('sendmail', 'MailController@sendmail'); });
+//Read more: https://rabineupane.com.np/how-to-send-mail-in-laravel-6-api-with-gmail/#ixzz7GdgabxNX
+
 //Route::get('clientes/login', 'AuthClientController@login');
 
 Route::group([
@@ -176,6 +179,7 @@ Route::put('clientes/{id}', 'ClientesController@update');
 
 Route::post('/wp/iniciar_transaccion', 'WebpayController@startTransaction');
 Route::get('/wp/confirmar_transaccion', 'WebpayController@confirmPay')->name('wp/confirmar_transaccion');
+Route::get('/wp/transaccion/{id}','WebPayController@show');
 
 Route::post('ventas','VentaController@store');
 Route::post('ventas/{id}','VentaController@update');
@@ -185,3 +189,6 @@ Route::post('ventas_cliente_tienda/{id}','VentasClienteTiendaController@update')
 
 Route::post('ventas_cliente_invitado','VentasClienteInvitadoController@store');
 Route::post('ventas_cliente_invitado/{id}','VentasClienteInvitadoController@update');
+
+//Read more: https://rabineupane.com.np/how-to-send-mail-in-laravel-6-api-with-gmail/#ixzz7GdgabxNX
+Route::post('sendmail', 'MailController@sendEmail');
