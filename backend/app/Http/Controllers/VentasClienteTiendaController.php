@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\VentasClienteTienda;
 use Illuminate\Http\Request;
+use Validator;
 
 class VentasClienteTiendaController extends Controller
 {
@@ -46,7 +47,7 @@ class VentasClienteTiendaController extends Controller
             $tipoMensaje = $res ? 'success' : 'danger';
             $id = $res ? $venta->id : -1;
 
-            return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipomensaje, 'id' => $id]);
+            return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
         }catch(\PDOException $e){
             $mensaje = 'Ocurrió un error al intentar registrar los datos de la venta: '.$e->getMessage();
             return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => 'danger', 'id' => -1]);
@@ -94,7 +95,7 @@ class VentasClienteTiendaController extends Controller
             $mensaje = $res ? 'La venta ha sido actualizada existosamente.' : 'La venta no se pudo actualizar.';
             $tipoMensaje = $res ? 'success' : 'danger';
 
-            return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipomensaje, 'id' => $id]);
+            return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
         }catch(\PDOException $e){
             $mensaje = 'Ocurrió un error al intentar actualizar los datos de la venta: '.$e->getMessage();
             return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => 'danger', 'id' => -1]);
@@ -115,27 +116,27 @@ class VentasClienteTiendaController extends Controller
             $mensaje = $res ? 'La venta ha sido eliminada existosamente.' : 'La venta no se pudo eliminar.';
             $tipoMensaje = $res ? 'success' : 'danger';
 
-            return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipomensaje, 'id' => $id]);
+            return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
         }catch(\PDOException $e){
             $mensaje = 'Ocurrió un error al intentar eliminar los datos de la venta: '.$e->getMessage();
             return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => 'danger', 'id' => -1]);
         }
     }
 
-    private function validaDatos(Rquest $request, $id = null){
+    private function validaDatos(Request $request, $id = null){
         $rules = [
-            'cliente_id' => 'require|exists:clientes,id',
-            'venta_id' => 'require|exists:ventas,id'
+            'cliente_id' => 'required|exists:clientes,id',
+            'venta_id' => 'required|exists:ventas,id'
         ];
 
         $messages = [
-            'cliente_id.require' => 'Debe especificar el cliente de la venta.',
+            'cliente_id.required' => 'Debe especificar el cliente de la venta.',
             'cliente_id.exists' => 'El cliente especificado no existe en la base ed datos.',
 
-            'venta_id.require' => 'Debe especificar el código de la venta.',
+            'venta_id.required' => 'Debe especificar el código de la venta.',
             'venta_id.exists' => 'La venta registrada no existe.'
         ];
 
-        return Validate::make($rules, $messages, $request->all());
+        return Validator::make($request->all(), $rules, $messages);
     }
 }

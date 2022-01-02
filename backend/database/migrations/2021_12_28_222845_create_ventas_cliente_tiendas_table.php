@@ -13,10 +13,12 @@ class CreateVentasClienteTiendasTable extends Migration
      */
     public function up()
     {
-        Schema::create('ventas_cliente_tiendas', function (Blueprint $table) {
+        Schema::create('ventas_cliente_tienda', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('venta_id')->unsigned()->references('ventas')->on('id');
-            $table->bigInteger('cliente_id')->unsigned()->references('clientes')->ob('id');
+            $table->bigInteger('venta_id')->unsigned();
+            $table->foreign('venta_id')->references('id')->on('ventas');
+            $table->bigInteger('cliente_id')->unsigned();
+            $table->foreign('cliente_id')->references('id')->on('clientes');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +31,6 @@ class CreateVentasClienteTiendasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ventas_cliente_tiendas');
+        Schema::dropIfExists('ventas_cliente_tienda');
     }
 }

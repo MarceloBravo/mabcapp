@@ -14,6 +14,9 @@ import { CarritoService } from '../../../services/carrito/carrito.service';
 import { PreciosService } from '../../../services/precios/precios.service';
 import { TransbankService } from '../../../services/transbank/transbank.service';
 import { Transbank } from '../../../class/transbank/transbank';
+import { DespachosService } from 'src/app/services/despachos/despachos.service';
+import { Despacho } from 'src/app/class/despachos/despacho';
+import { ToastService } from 'src/app/services/toast/toast.service';
 
 @Component({
   selector: 'app-datos-despacho',

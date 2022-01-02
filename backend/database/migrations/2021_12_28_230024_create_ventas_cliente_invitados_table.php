@@ -15,7 +15,8 @@ class CreateVentasClienteInvitadosTable extends Migration
     {
         Schema::create('ventas_cliente_invitado', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('venta_id')->unsigned()->references('ventas')->on('id');
+            $table->bigInteger('venta_id')->unsigned();
+            $table->foreign('venta_id')->references('id')->on('ventas');
             $table->string('rut',13);
             $table->string('nombres',50);
             $table->string('apellido1',50);

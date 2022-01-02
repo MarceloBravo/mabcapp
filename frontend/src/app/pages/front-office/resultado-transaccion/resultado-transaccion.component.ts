@@ -14,6 +14,11 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { ConfigTiendaService } from '../../../services/configTienda/config-tienda.service';
 import { Tienda } from '../../../class/tienda/tienda';
 import { MailService } from '../../../services/mail/mail.service';
+import { VentasClienteInvitadoService } from '../../../services/ventasClienteInvitado/ventas-cliente-invitado.service';
+import { DespachosService } from '../../../services/despachos/despachos.service';
+import { Despacho } from '../../../class/despachos/despacho';
+import { VentasService } from '../../../services/ventas/ventas.service';
+import { VentasClienteTiendaService } from 'src/app/services/ventasClienteTienda/ventas-cliente-tienda.service';
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -47,6 +52,10 @@ export class ResultadoTransaccionComponent implements OnInit {
     private router: Router,
     private _const: ConstantesService,
     private _mailService: MailService,
+    private _ventasClienteTiendaService: VentasClienteTiendaService,
+    private _ventasClienteInvitadoService: VentasClienteInvitadoService,
+    private _despachosService: DespachosService,
+    private _ventasService: VentasService,
   ) { }
 
   ngOnInit(): void {
@@ -59,31 +68,39 @@ export class ResultadoTransaccionComponent implements OnInit {
 
   private obtenerDatosTienda(){
     this._configService.get().subscribe((res: any) => {
-      //this.nombreTienda = res.nombre_tienda
       this.tienda = res
-      console.log('Datos tienda',res)
     },error =>
       console.log('Error datos tienda', error)
      )
   }
 
+
   private obtenerDatosTransaccion(){
     let estado = this.activatedRoute.snapshot.paramMap.get('estado')
+    let webpayId = this.activatedRoute.snapshot.paramMap.get('webpay_id')
     let ventaId = this.activatedRoute.snapshot.paramMap.get('venta_id')
 
-    if(ventaId){
-      this._transbankService.find(parseInt(ventaId)).subscribe((res: any) => {
+    if(webpayId && ventaId){
+      let wpId: number = parseInt(webpayId)
+      let idVenta: number = parseInt(ventaId)
+      this._transbankService.find(wpId).subscribe((res: any) => {
 
         this.folio = '0'.repeat(10 - res.buy_order.length) + res.buy_order
           this.estadoCompra = estado ? estado : 'ERROR: No se ha recibido información.'
           this.fechaTransaccion = res.transaccion_date
+
           if(estado !== 'AUTHORIZED'){
             this.msgErrorCompra = 'Lo sentimos, no fue posible llevar a cabo tu compra. No se ha realizado ningun cargo a tu tarjeta. Puedes reintenar el pago de tu compra.';
             this._toastService.showErrorMessage(this.msgErrorCompra)
           }else{
+
+            if(this.cliente.id){
+              this.registrarClienteTienda(idVenta)
+            }else{
+              this.registrarClienteInvitado(idVenta)
+            }
             this._carritoService.vaciarCarrito()
           }
-
 
       }, error => {
         this._sharedService.handlerError(error)
@@ -93,6 +110,28 @@ export class ResultadoTransaccionComponent implements OnInit {
       this.router.navigate(['/'])
     }
   }
+
+
+  private registrarClienteTienda(ventaId: number){
+    this._ventasClienteTiendaService.insert(this.cliente.id, ventaId).subscribe((res: any) => {
+      this.registrarDatosDespacho(ventaId)
+    }, error =>
+      this._sharedService.handlerError(error)
+    )
+  }
+
+
+  private registrarClienteInvitado(ventaId: number){
+    let cliente: any = this.cliente
+    cliente.venta_id = ventaId
+    this._ventasClienteInvitadoService.insert(cliente).subscribe((res: any) => {
+      this.registrarDatosDespacho(ventaId)
+    }, error =>
+      this._sharedService.handlerError(error)
+    )
+  }
+
+
 
   private obtenerDatosCliente(){
     let cliente = this._loginClientesService.getClienteLogueado()
@@ -116,9 +155,40 @@ export class ResultadoTransaccionComponent implements OnInit {
     }
   }
 
+
   formatearPrecio(monto: number){
     return this._precioService.strFormatearPrecio(monto)
   }
+
+
+
+  private registrarDatosDespacho(venta_id: number){
+    if(this.cliente){
+      let despacho: Despacho = new Despacho()
+
+      despacho.venta_id = venta_id,
+      despacho.direccion = this.cliente.direccion,
+      despacho.region = this.cliente.cod_region,
+      despacho.provincia = this.cliente.cod_provincia,
+      despacho.comuna = this.cliente.cod_comuna,
+      despacho.ciudad = this.cliente.ciudad,
+      despacho.casa_num = this.cliente.casa_num,
+      despacho.block_num = this.cliente.block_num ? this.cliente.block_num : '',
+      despacho.referencia = this.cliente.referencia
+
+      this._despachosService.insert(despacho).subscribe((res: any) => {
+        if(res['tipoMensaje'] === 'success'){
+          this._toastService.showSuccessMessage(res['mensaje'])
+        }else{
+          this._toastService.showErrorMessage(res['mensaje'])
+        }
+      }, error => {
+        this._sharedService.handlerError(error);
+      } )
+    }
+  }
+
+
 
   /* GENERANDO LA BOLETA END PDF */
 
@@ -130,11 +200,11 @@ export class ResultadoTransaccionComponent implements OnInit {
     let docDefinition = this.getDocumentDefinition(detalleBoleta)
 
     if(action==='download'){
-      pdfMake.createPdf(docDefinition).download();
+      pdfMake.createPdf(<any>docDefinition).download();
     }else if(action === 'print'){
-      pdfMake.createPdf(docDefinition).print();
+      pdfMake.createPdf(<any>docDefinition).print();
     }else{
-      pdfMake.createPdf(docDefinition).open();
+      pdfMake.createPdf(<any>docDefinition).open();
     }
 
   }

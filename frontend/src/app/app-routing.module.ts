@@ -126,7 +126,7 @@ const routes: Routes = [
       { path: 'logout', component: LogoutComponent },
       { path: 'identificacion_cliente', component: IdentificacionClienteComponent },
       { path: 'datos_despacho', component: DatosDespachoComponent },
-      { path: 'resultado_transaccion/:venta_id/:estado', component: ResultadoTransaccionComponent },
+      { path: 'resultado_transaccion/:webpay_id/:estado/:venta_id', component: ResultadoTransaccionComponent },
 
     ]
   },

@@ -149,6 +149,13 @@ Route::group([
     Route::delete('ventas_cliente_tienda/{id}','VentasClienteTiendaController@destroy');
 
     Route::delete('ventas_cliente_invitado/{id}','VentasClienteInvitadoController@destroy');
+
+    Route::get('despachos/{id}', 'DespachosVentasController@show');
+    Route::put('despachos/{id}','DespachosVentasController@update');
+    Route::delete('despachos/{id}','DespachosVentasController@destroy');
+    Route::get('despachos/pag/{pag}', 'DespachosVentasController@index');
+    Route::get('despachos/get/all', 'DespachosVentasController@getAll');
+    Route::get('despachos/filter/{texto}/{pag}', 'DespachosVentasController@filter');
 });
 Route::get('imagenes_marquesina/imagenes', 'ImagenesMarquesinaController@getImages');
 
@@ -192,3 +199,5 @@ Route::post('ventas_cliente_invitado/{id}','VentasClienteInvitadoController@upda
 
 //Read more: https://rabineupane.com.np/how-to-send-mail-in-laravel-6-api-with-gmail/#ixzz7GdgabxNX
 Route::post('sendmail', 'MailController@sendEmail');
+
+Route::post('despachos', 'DespachosVentasController@store');

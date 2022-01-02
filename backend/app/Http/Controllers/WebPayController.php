@@ -10,6 +10,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\WebPay;
+use App\Models\Venta;
 use Illuminate\Http\Request;
 
 //instalar dependecias de Transbak: composer require transbank/transbank-sdk:~2.0
@@ -55,15 +56,16 @@ class WebPayController extends Controller
     public function confirmPay(Request $request){
         $confirmacion = (new Transaction)->commit($request->token_ws);
 
-        $venta = Webpay::where('id',$confirmacion->buyOrder)->first();
+        $wp = Webpay::where('id',$confirmacion->buyOrder)->first();
+        $wp->venta_id = self::registrarVenta($wp->ammount);
+        $wp = self::actualizaDatosTransaccion($wp, $confirmacion);
+        $wp->update();
 
-        $venta = self::actualizaDatosTransaccion($venta, $confirmacion);
-        $venta->update();
 
         if($confirmacion->isApproved()){
-            return redirect(env('URL_FRONTEND_AFTER_PAYMENT')."/{$venta->id}/{$venta->status}");
+            return redirect(env('URL_FRONTEND_AFTER_PAYMENT')."/{$wp->id}/{$wp->status}/{$wp->venta_id}");
         }else{
-            return redirect(env('URL_FRONTEND_AFTER_PAYMENT')."/{$venta->id}/{$confirmacion->status}");
+            return redirect(env('URL_FRONTEND_AFTER_PAYMENT')."/{$wp->id}/{$confirmacion->status}/{$wp->venta_id}");
         }
     }
 
@@ -90,6 +92,14 @@ class WebPayController extends Controller
         $venta = Webpay::find($id);
 
         return response()->json($venta);
+    }
+
+    private function registrarVenta($monto){
+        $venta = new Venta();
+        $venta->fecha_venta_tienda = Date('Y-m-d');
+        $venta->total = $monto;
+        $res = $venta->save();
+        return $res ? $venta->id : -1;
     }
 }
 
