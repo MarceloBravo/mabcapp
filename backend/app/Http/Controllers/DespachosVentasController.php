@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\DespachosVentas;
+use App\Models\DetalleVenta;
 use Illuminate\Http\Request;
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class DespachosVentasController extends Controller
 {
@@ -14,16 +16,32 @@ class DespachosVentasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($pag)
+    public function index($idVenta, $pag)
     {
-        $data = DespachosVentas::join('cliente','despachos_ventas.cliente_id','=','cliente_id')
+        $data = DespachosVentas::leftJoin(
+                        DB::raw(
+                                    "(
+                                    SELECT venta_id, rut, nombres, apellido1, apellido2 FROM `ventas_cliente_tienda`
+                                    INNER JOIN clientes ON ventas_cliente_tienda.cliente_id = clientes.id
+                                    UNION
+                                    SELECT venta_id, rut, nombres, apellido1, apellido2 FROM ventas_cliente_invitado
+                                    ) as ventas_cliente"
+                                ),'ventas_cliente.venta_id','=','despachos_ventas.venta_id')
+                            ->join('web_pay','despachos_ventas.venta_id','=','web_pay.venta_id')
+                            ->where('despachos_ventas.venta_id','=',$idVenta)
+                            ->select(
+                                'despachos_ventas.*',
+                                'web_pay.buy_order as orden_compra',
+                                'ventas_cliente.rut',
+                                DB::raw("CONCAT(ventas_cliente.nombres,' ',ventas_cliente.apellido1,' ',ventas_cliente.apellido2) as cliente")
+                                )
                             ->orderBy('created_at','asc');
-
-
+        dd($data->toSql());
         $totRows = count($data->get());
 
         $datos = $data->skip($this->rowsPerPage * $pag)
-                    ->take($this->rowsPerPage);
+                    ->take($this->rowsPerPage)
+                    ->get();
 
         return response()->json(['data' => $datos, 'rowsPerPage' => $this->rowsPerPage, 'rows' => $totRows, 'page'=>$pag, ]);
     }
@@ -51,16 +69,101 @@ class DespachosVentasController extends Controller
             if($validacion->fails()){
                 return response()->json(['mensaje' => 'Datos incopmpletos o no válidos.', 'tipoMensaje' => 'danger', 'errores' => $valicaion->errors()]);
             }
-            $despacho = new DespachosVentas();
-            $res = $despacho->fill($request->all())->save();
-            $mensaje = $res ? 'El despacho ha sido ingresado exitosamente.' : 'Ocurrió un error al intentar registrar el despacho.';
-            $tipoMensaje = $res ? 'success' : 'danger';
-            $id = $res ? $despacho->id : -1;
+            DB::beginTransaction();
+                $despacho = new DespachosVentas();
+                $res = $despacho->fill($request->all()['despacho'])->save();
+                $mensaje = $res ? 'El despacho ha sido ingresado exitosamente.' : 'Ocurrió un error al intentar registrar el despacho.';
+                $tipoMensaje = $res ? 'success' : 'danger';
+                $id = $res ? $despacho->id : -1;
+                if($res){
+                    $res = $this->grabarDetalle($despacho->venta_id, $request->all()['detalle']);
+                    if(!$res){
+                        $mensaje = 'Ocurrio un error al registrar el detalle de la compra';
+                        $tipoMensaje = 'danger';
+                    }
+                }
+                if($res){
+                    DB::commit();
+                }else{
+                    DB::rollBack();
+                }
 
-            return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
-        }catch(\DBOException $e){
+                return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
+        }catch(\PDOException $e){
+            DB::rollBack();
             return response()->json(['mensaje' => 'Ocurrió un ertor al intentar registrar los datos del despacho: '.$e->getMessage(), 'tipoMensaje' => 'danger', 'id' => -1]);
         }
+    }
+
+
+    private function grabarDetalle($id, $detalle){
+        $arrIds = [];
+        foreach($detalle as $item){
+            array_push($arrIds, $item['id']);
+            $item['venta_id'] = $id;
+            if($item['id']){
+                $res = $this->actualizarDetalle($item);
+            }else{
+                $res = $this->ingresarDetalle($item);
+            }
+            if(!$res){
+                return false;
+            }
+        }
+        return $this->eliminarDetalle($id, $arrIds);
+    }
+
+
+    private function ingresarDetalle($item){
+        $detalle = new DetalleVenta();
+        $detalle->fill($item);
+        $detalle->total_producto = $this->calcularTotalProducto($item['precio_venta'], $item['impuestos'], $item['cantidad']);
+        $res = $detalle->save();
+
+        return $res;
+    }
+
+
+    private function calcularTotalProducto($precioVenta, $impuestos, $cantidad)
+    {
+        $total_impuestos = $precioVenta * $impuestos / 100;         //Monto en impuestos por unidad de producto
+        return ($precioVenta + $total_impuestos) * $cantidad;       //Precio con impuestos por producto multiplicadonpor la cantidad de unidades
+    }
+
+    /*
+    private function camposAdicionales($detalle, $item){
+        dd($detalle, $item);
+        //$detalle->impuesto = $item['impuestos'];                                    //Promedio del porcentaje de impuestos
+        ////$detalle->precio_neto = $item['precio_venta_normal'];                       //Precio sin impuestos
+        //$detalle->precio_venta = $item['precio_venta'];                             //Precio venta con impuestos
+        $detalle_total_impuestos = $item['precio_venta'] * $item['impuestos'] / 100;//Monto en impuestos
+        $detalle->total_producto = $item['precio_venta'] * $item['cantidad'];       //Precio con impuestos * cantidad
+    }
+    */
+
+    private function actualizarDetalle($item){
+        $detalle = DetalleVenta::find($item['id']); //Busca entre los eliminado y los no eliminados
+        if($detalle){
+            $detalle->fill($item);
+            $detalle->total_producto = $this->calcularTotalProducto($item['precio_venta'], $item['impuestos'], $item['cantidad']);
+            $res = $detalle->save();
+            return $res;
+        }
+
+        return true;
+    }
+
+
+
+    private function eliminarDetalle($id, $arrIds = []){
+        //dd($id, $arrIds);
+        $detalle = DetalleVenta::where('venta_id','=',$id)
+                                ->whereNotIn('id',$arrIds);
+
+        if(count($detalle->get()) > 0){
+            return $detalle->delete();
+        }
+        return true;
     }
 
     /**
@@ -74,11 +177,20 @@ class DespachosVentasController extends Controller
         try{
             $despacho = DespachosVentas::find($id);
             return response()->json($despacho);
-        }catch(\DBOException $e){
+        }catch(\PDOException $e){
             return response()->json(['mensaje' => 'Ocurrió un ertor al buscar los datos del despacho: '.$e->getMessage(), 'tipoMensaje' => 'danger', 'id' => $id]);
         }
     }
 
+    public function showBySale($idVenta)
+    {
+        try{
+            $despacho = DespachosVentas::where('venta_id','=',$idVenta)->first();
+            return response()->json($despacho);
+        }catch(\PDOException $e){
+            return response()->json(['mensaje' => 'Ocurrió un error al buscar los datos del despacho de la venta: '.$e->getMessage(), 'tipoMensaje' => 'danger', 'id' => $id]);
+        }
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -90,6 +202,16 @@ class DespachosVentasController extends Controller
         //
     }
 
+    public function actualizarEstadoDespacho($idVenta)
+    {
+        $despacho = DespachosVentas::where('venta_id','=',$idVenta);
+        $res = $despacho->update(['fecha_despacho' => Date('Y-m-d')]);
+        $mensaje = $res ? 'El estado del despacho ha sido actualizado.' : 'Ha ocurrido un error al intentar actualizar el estado del despacho.';
+        $tipoMensaje = $res ? 'success' : 'danger';
+
+        return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $idVenta]);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -99,19 +221,35 @@ class DespachosVentasController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //dd($id, $request->all());
         try{
-            $validacion = $this->validaDatos($request);
+            $validacion = $this->validaDatos($request, $id);
             if($validacion->fails()){
-                return response()->json(['mensaje' => 'Datos incopmpletos o no válidos.', 'tipoMensaje' => 'danger', 'errores' => $valicaion->errors()]);
+                return response()->json(['mensaje' => 'Datos incompletos o no válidos.', 'tipoMensaje' => 'danger', 'errores' => $valicaion->errors()]);
             }
-            $despacho = DespachosVentas::find($id);
-            $res = $despacho->fill($request->all())->save();
-            $mensaje = $res ? 'El despacho ha sido actualizado exitosamente.' : 'Ocurrió un error al intentar actualizar el despacho.';
-            $tipoMensaje = $res ? 'success' : 'danger';
+            DB::beginTransaction();
+                $despacho = DespachosVentas::find($id);
+                $res = $despacho->fill($request->all()['despacho'])->save();
+                $mensaje = $res ? 'El despacho ha sido actualizado exitosamente.' : 'Ocurrió un error al intentar actualizar el despacho.';
+                $tipoMensaje = $res ? 'success' : 'danger';
+                $id = $res ? $despacho->id : -1;
+                if($res){
+                    $res = $this->grabarDetalle($despacho->venta_id, $request->all()['detalle']);
+                    if(!$res){
+                        $mensaje = 'Ocurrio un error al actualizar el detalle de la compra';
+                        $tipoMensaje = 'danger';
+                    }
+                }
+                if($res){
+                    DB::commit();
+                }else{
+                    DB::rollback();
+                }
 
-            return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
-        }catch(\DBOException $e){
-            return response()->json(['mensaje' => 'Ocurrió un ertor al intentar actualizar los datos del despacho: '.$e->getMessage(), 'tipoMensaje' => 'danger', 'id' => $id]);
+                return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
+        }catch(\PDOException $e){
+            DB::rollback();
+            return response()->json(['mensaje' => 'Ocurrió un ertor al intentar actualizar los datos del despacho: '.$e->getMessage(), 'tipoMensaje' => 'danger', 'id' => -1]);
         }
     }
 
@@ -130,7 +268,7 @@ class DespachosVentasController extends Controller
             $tipoMensaje = $res ? 'success' : 'danger';
 
             return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
-        }catch(\DBOException $e){
+        }catch(\PDOException $e){
             return response()->json(['mensaje' => 'Ocurrió un ertor al intentar eliminar los datos del despacho: '.$e->getMessage(), 'tipoMensaje' => 'danger', 'id' => -1]);
         }
     }
@@ -138,19 +276,41 @@ class DespachosVentasController extends Controller
 
     public function filter($texto, $pag)
     {
-        $data = DespachosVentas::orderBy('created_at','asc')
-                            ->where('venta_id','like','%'.$texto.'%')
+        $data = DespachosVentas::leftJoin(
+            DB::raw(
+                        "(
+                        SELECT venta_id, rut, nombres, apellido1, apellido2 FROM `ventas_cliente_tienda`
+                        INNER JOIN clientes ON ventas_cliente_tienda.cliente_id = clientes.id
+                        UNION
+                        SELECT venta_id, rut, nombres, apellido1, apellido2 FROM ventas_cliente_invitado
+                        ) as ventas_cliente"
+                    ),'ventas_cliente.venta_id','=','despachos_ventas.venta_id')
+                ->join('web_pay','despachos_ventas.venta_id','=','web_pay.venta_id')
+
+                            ->where('despachos_ventas.venta_id','like','%'.$texto.'%')
                             ->orWhere('direccion','like','%'.$texto.'%')
+                            ->orWhere('rut','like','%'.$texto.'%')
+                            ->orWhere('nombres','like','%'.$texto.'%')
+                            ->orWhere('apellido1','like','%'.$texto.'%')
+                            ->orWhere('apellido2','like','%'.$texto.'%')
                             ->orWhere('ciudad','like','%'.$texto.'%')
                             ->orWhere('casa_num','like','%'.$texto.'%')
                             ->orWhere('block_num','like','%'.$texto.'%')
                             ->orWhere('referencia','like','%'.$texto.'%')
-                            ->orWhere('ciudad','like','%'.$texto.'%');
+                            ->orWhere('ciudad','like','%'.$texto.'%')
+                            ->select(
+                                'despachos_ventas.*',
+                                'web_pay.buy_order as orden_compra',
+                                'ventas_cliente.rut',
+                                DB::raw("CONCAT(ventas_cliente.nombres,' ',ventas_cliente.apellido1,' ',ventas_cliente.apellido2) as cliente")
+                                )
+                            ->orderBy('created_at','asc');
 
         $totRows = count($data->get());
 
         $datos = $data->skip($this->rowsPerPage * $pag)
-                    ->take($this->rowsPerPage);
+                    ->take($this->rowsPerPage)
+                    ->get();
 
         return response()->json(['data' => $datos, 'rowsPerPage' => $this->rowsPerPage, 'rows' => $totRows, 'page'=>$pag, ]);
     }

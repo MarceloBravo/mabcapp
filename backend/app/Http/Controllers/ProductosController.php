@@ -282,6 +282,7 @@ class ProductosController extends Controller
         return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje, 'id' => $id]);
     }
 
+
     /**
      * Remove the specified resource from storage.
      *

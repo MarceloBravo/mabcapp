@@ -77,6 +77,8 @@ import { IdentificacionClienteComponent } from './pages/front-office/identificac
 import { TituloComponent } from './components/titulo/titulo.component';
 import { DatosDespachoComponent } from './pages/front-office/datos-despacho/datos-despacho.component';
 import { ResultadoTransaccionComponent } from './pages/front-office/resultado-transaccion/resultado-transaccion.component';
+import { DespachosGridComponent } from './pages/back-office/despachos/despachos-grid/despachos-grid.component';
+import { DespachosFormComponent } from './pages/back-office/despachos/despachos-form/despachos-form.component';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
@@ -149,6 +151,8 @@ import { ResultadoTransaccionComponent } from './pages/front-office/resultado-tr
     TituloComponent,
     DatosDespachoComponent,
     ResultadoTransaccionComponent,
+    DespachosGridComponent,
+    DespachosFormComponent,
   ],
   imports: [
     BrowserModule,

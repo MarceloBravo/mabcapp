@@ -45,6 +45,8 @@ import { LogoutComponent } from './pages/front-office/logout/logout.component';
 import { IdentificacionClienteComponent } from './pages/front-office/identificacion-cliente/identificacion-cliente.component';
 import { DatosDespachoComponent } from './pages/front-office/datos-despacho/datos-despacho.component';
 import { ResultadoTransaccionComponent } from './pages/front-office/resultado-transaccion/resultado-transaccion.component';
+import { DespachosGridComponent } from './pages/back-office/despachos/despachos-grid/despachos-grid.component';
+import { DespachosFormComponent } from './pages/back-office/despachos/despachos-form/despachos-form.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -112,6 +114,10 @@ const routes: Routes = [
       { path: 'tallas', component: TallasGridComponent },
       { path: 'tallas/nuevo', component: TallasFormComponent },
       { path: 'tallas/edit/:id', component: TallasFormComponent },
+
+      { path: 'despachos', component: DespachosGridComponent },
+      { path: 'despachos/nuevo', component: DespachosFormComponent },
+      { path: 'despachos/edit/:id', component: DespachosFormComponent },
 
     ]
 },

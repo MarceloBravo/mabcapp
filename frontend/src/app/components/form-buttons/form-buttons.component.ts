@@ -17,6 +17,9 @@ export class FormButtonsComponent implements OnInit {
   @Input() forzarMostrarBtnModificar: boolean = false
   @Input() forzarMostrarBtnEliminar: boolean = false
   @Input() ocultarBtnCerrar: boolean = false
+  @Input() textoBotonGrabar: string = 'Grabar'
+  @Input() textoBotonCancelar: string = 'Cancelar'
+  @Input() textoBotonEliminar: string = 'Eliminar'
   @Output() eventCancelar: EventEmitter<boolean> = new EventEmitter()
   @Output() eventGrabar: EventEmitter<boolean> = new EventEmitter()
   @Output() eventEliminar: EventEmitter<boolean> = new EventEmitter()

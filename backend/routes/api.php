@@ -150,12 +150,19 @@ Route::group([
 
     Route::delete('ventas_cliente_invitado/{id}','VentasClienteInvitadoController@destroy');
 
+    Route::get('detalle_ventas/{ventaId}/{pag}','DetalleVentaController@index');
+    Route::get('detalle_ventas/{id}','DetalleVentaController@show');
+
     Route::get('despachos/{id}', 'DespachosVentasController@show');
+    Route::get('despachos/venta/{id}', 'DespachosVentasController@showBySale');
     Route::put('despachos/{id}','DespachosVentasController@update');
     Route::delete('despachos/{id}','DespachosVentasController@destroy');
     Route::get('despachos/pag/{pag}', 'DespachosVentasController@index');
     Route::get('despachos/get/all', 'DespachosVentasController@getAll');
     Route::get('despachos/filter/{texto}/{pag}', 'DespachosVentasController@filter');
+    Route::put('despachos/enviar/{idVenta}','DespachosVentasController@actualizarEstadoDespacho');
+
+    Route::get('ventas/pag/{pag}','VentaController@index');
 });
 Route::get('imagenes_marquesina/imagenes', 'ImagenesMarquesinaController@getImages');
 
@@ -190,6 +197,7 @@ Route::get('/wp/transaccion/{id}','WebPayController@show');
 
 Route::post('ventas','VentaController@store');
 Route::post('ventas/{id}','VentaController@update');
+Route::get('ventas/cliente/{id}','VentaController@getCliente');
 
 Route::post('ventas_cliente_tienda','VentasClienteTiendaController@store');
 Route::post('ventas_cliente_tienda/{id}','VentasClienteTiendaController@update');
@@ -201,3 +209,5 @@ Route::post('ventas_cliente_invitado/{id}','VentasClienteInvitadoController@upda
 Route::post('sendmail', 'MailController@sendEmail');
 
 Route::post('despachos', 'DespachosVentasController@store');
+
+Route::post('detalle_ventas/update_stock','DetalleVentaController@updateStockSold');

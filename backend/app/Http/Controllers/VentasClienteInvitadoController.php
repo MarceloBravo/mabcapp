@@ -68,6 +68,11 @@ class VentasClienteInvitadoController extends Controller
         //
     }
 
+    public function getCliente($id)
+    {
+
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

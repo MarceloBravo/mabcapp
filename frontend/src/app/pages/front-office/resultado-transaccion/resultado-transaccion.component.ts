@@ -19,6 +19,7 @@ import { DespachosService } from '../../../services/despachos/despachos.service'
 import { Despacho } from '../../../class/despachos/despacho';
 import { VentasService } from '../../../services/ventas/ventas.service';
 import { VentasClienteTiendaService } from 'src/app/services/ventasClienteTienda/ventas-cliente-tienda.service';
+import { DetalleVentaService } from '../../../services/detalleVenta/detalle-venta.service';
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -55,6 +56,7 @@ export class ResultadoTransaccionComponent implements OnInit {
     private _ventasClienteTiendaService: VentasClienteTiendaService,
     private _ventasClienteInvitadoService: VentasClienteInvitadoService,
     private _despachosService: DespachosService,
+    private _detalleVentasService: DetalleVentaService,
     private _ventasService: VentasService,
   ) { }
 
@@ -145,14 +147,25 @@ export class ResultadoTransaccionComponent implements OnInit {
     if(carrito){
       carrito.forEach((i: ItemCarrito) => {
         i.imagen = this._const.storageImages + '/productos/' + i.imagen
-      this.total += i.precio_venta
-    })
+        this.total += i.precio_venta
+      })
+      this.actualizarStock(carrito)
       this.carrito = carrito
     }
 
     if(carrito.length === 0){
       this.router.navigate(['/'])
     }
+  }
+
+  private actualizarStock(carrito: ItemCarrito[]){
+    this._detalleVentasService.actualizarStockVendidos(carrito).subscribe((res: any) => {
+      if(res.tipoMensaje === 'danger'){
+        this._toastService.showErrorMessage(res.mensaje)
+      }
+    }, error => {
+      this._sharedService.handlerError(error)
+    })
   }
 
 
@@ -176,7 +189,7 @@ export class ResultadoTransaccionComponent implements OnInit {
       despacho.block_num = this.cliente.block_num ? this.cliente.block_num : '',
       despacho.referencia = this.cliente.referencia
 
-      this._despachosService.insert(despacho).subscribe((res: any) => {
+      this._despachosService.insert(despacho, this.carrito).subscribe((res: any) => {
         if(res['tipoMensaje'] === 'success'){
           this._toastService.showSuccessMessage(res['mensaje'])
         }else{

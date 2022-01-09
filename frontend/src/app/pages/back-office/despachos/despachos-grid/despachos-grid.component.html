@@ -1,0 +1,40 @@
+<div class="container-fluid p-0">
+
+    <app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+    <app-toasts></app-toasts>
+
+    <app-modal-dialog
+      (aceptar)="aceptarEliminar()"
+      >
+    </app-modal-dialog>
+
+    <h1 class="h3 mb-3">Despachos</h1>
+
+    <div class="row">
+
+      <div class="col-12 col-xl-12">
+
+        <app-grid
+          [titulo]="'Listado de despachos pendientes'"
+          [cabeceras]="['Orden N°','Cliente','Dirección','Ciudad','Casa N°','Fecha despacho','Fecha venta']"
+          [registros]="data"
+          [columnasVisibles]="['orden_compra','cliente','direccion','ciudad','casa_num','fecha_despacho','fecha_venta_tienda']"
+          (idEliminar)="eliminar($event)"
+          (textoFiltro)="filtrar($event)"
+        >
+        </app-grid>
+
+        <app-paginacion
+          [paginacion]="paginacion"
+          [rutaGet]="'/api/despachos/pag/'"
+          (paginaAnterior)="mostrarPagina($event)"
+          (paginaSiguiente)="mostrarPagina($event)"
+          (mostrarPagina)="mostrarPagina($event)"
+        ></app-paginacion>
+
+      </div>
+    </div>
+
+
+  </div>

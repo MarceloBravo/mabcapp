@@ -15,7 +15,7 @@ class VentasClienteTienda extends Model
     protected $fillable = ['venta_id','cliente_id'];
 
     public function cliente(){
-        return $this->hasOne(Cliente::class, 'id')->get();
+        return $this->hasOne(Cliente::class, 'id','cliente_id')->get();
     }
 
     public function venta(){
