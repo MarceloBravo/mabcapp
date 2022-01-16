@@ -1,0 +1,67 @@
+<div class="row">
+
+    <app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+    <app-toasts></app-toasts>
+
+    <app-modal-dialog
+      (aceptar)="aceptarModal($event)"
+      (cerrar)="cancelarModal()"
+      >
+    </app-modal-dialog>
+
+    <h1 class="h3 mb-3">{{ titulo }}</h1>
+
+    <div class="row">
+
+      <div class="col-12 col-xl-12">
+        <div class="card">
+          <div class="card-header">
+            <!-- <h6 class="card-subtitle text-muted">{{ url }}</h6> -->
+            <h5 class="card-title">Mantenedor de {{ titulo }}</h5>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="form">
+
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Talla</label>
+                <div class="col-sm-10">
+                  <input type="text" formControlName="talla" class="form-control col-md-2" placeholder="Ingresa la talla" max="10"/>
+                  <!-- Mensajes de error -->
+                  <div *ngIf="form.get('talla')?.hasError('required') && form.get('name')?.dirty" class="error-input">Debe ingresar la talla.</div>
+                  <div *ngIf="form.get('talla')?.hasError('minlength') && form.get('name')?.dirty" class="error-input">La talla debe tener almenos un carácter.</div>
+                  <div *ngIf="form.get('talla')?.hasError('maxlength') && form.get('name')?.dirty" class="error-input">La talla tener un máximo de 10 carácteres. Ingresa una descripción más corta.</div>
+                  <!-- /Mensajes de error -->
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Sub-categoría</label>
+                <div class="col-sm-5">
+                  <select formControlName="sub_categoria_id" class="form-control">
+                      <option *ngIf="subCategorias.length === 0" value[]]="null">-- No se han encontrado sub-categorias --</option>
+                      <option *ngIf="subCategorias.length > 0" [value]="null">-- Seleccione --</option>
+                      <option *ngFor="let item of subCategorias" [value]="item.id">{{ item.nombre }}</option>
+                </select>
+                  <!-- Mensajes de error -->
+                  <div *ngIf="form.get('sub_categoria_id')?.hasError('required') && form.get('description')?.dirty" class="error-input">Debes seleccionar una subcategoría.</div>
+                  <!-- /Mensajes de error -->
+                </div>
+              </div>
+
+              <app-form-buttons
+                (eventCancelar)="cancelar()"
+                (eventEliminar)="modalEliminar()"
+                (eventGrabar)="modalGrabar()"
+                [id]="id"
+                [formValid]="form.invalid"
+              ></app-form-buttons>
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>

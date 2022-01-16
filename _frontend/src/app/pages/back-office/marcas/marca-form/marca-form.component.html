@@ -1,0 +1,97 @@
+<div class="row">
+  <app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+  <app-toasts></app-toasts>
+
+  <app-modal-dialog
+    (aceptar)="aceptarModal($event)"
+    (cerrar)="cancelarModal()"
+  >
+  </app-modal-dialog>
+
+  <h1 class="h3 mb-3">Marcas</h1>
+
+  <div class="row">
+    <div class="col-12 col-xl-12">
+      <div class="card">
+        <div class="card-header">
+          <!-- <h6 class="card-subtitle text-muted">{{ url }}</h6> -->
+          <h5 class="card-title">Mantenedor de Marcas</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="form">
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Nombre</label>
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  formControlName="nombre"
+                  class="form-control col-md-5"
+                  placeholder="Ingresa el nombre del menú"
+                  max="50"
+                />
+                <!-- Mensajes de error -->
+                <app-input-errors
+                  [control]="form.get('nombre')"
+                  [mensajes]="{
+                    required:'El nombre de la marca es obligatoria.',
+                    minlength: 'El nombre debe tener almenos 2 carácteres. Ingresa un nombre más largo.',
+                    maxlength: 'El nombre debe ser de hasta 50 carácteres. Ingresa un nombre más corto.'
+                  }"
+                ></app-input-errors>
+                <!-- /Mensajes de error -->
+
+              </div>
+
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Imagen de la marca</label>
+              <div class="col-sm-10">
+                <input type="file"
+                       id="btn-file"
+                       accept=".png, .jpg"
+                       (change)="cargarImagen($event.target)">
+
+
+                <img id="img-foto" [src]="_const.noImage" alt="Imagen marca" class="foto-marca col-md-6"/>
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-load-photo col-md-3 offset-2"
+                  (click)="handlerCargarImagen()"
+                >Cargar imagen
+              </button>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Mostrar en home</label>
+              <div class="col-sm-10">
+                <select
+                  formControlName="mostrar_en_home"
+                  class="form-control col-md-3"
+                  title="Selecciona si la marca se mostrará en la página home"
+                  [attr.disabled]="!imagenCargada ? '' : null"
+                >
+                  <option [value]="1">Si</option>
+                  <option [value]="0">No</option>
+                </select>
+
+              </div>
+
+            </div>
+
+            <app-form-buttons
+              (eventCancelar)="cancelar()"
+              (eventEliminar)="modalEliminar()"
+              (eventGrabar)="modalGrabar()"
+              [id]="id"
+              [formValid]="form.invalid"
+            ></app-form-buttons>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

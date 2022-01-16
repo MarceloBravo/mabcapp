@@ -1,0 +1,222 @@
+<app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+<app-titulo [titulo]="titulo"></app-titulo>
+
+<!-- ##### Checkout Area Start ##### -->
+<div class="checkout_area section-padding-80">
+  <div class="container">
+      <div class="row">
+
+          <div class="col-12 col-md-6">
+              <div class="checkout_details_area mt-50 clearfix">
+
+                  <div class="cart-page-heading mb-30">
+                      <h5>Información de despacho</h5>
+                  </div>
+
+                  <form [formGroup]="form">
+                    <div class="row">
+
+                        <div class="col-md-12 mb-6">
+                          <label for="direccion">Dirección <span>*</span></label>
+                          <input type="text" formControlName="direccion" class="form-control" id="direccion" required>
+                          <!-- Mensajes de error -->
+                          <app-input-errors
+                            [control]="form.get('direccion')"
+                            [mensajes]="{
+                              required: 'Debes ingresar la dirección de despacho',
+                              minlength: 'La dirección de despacho debe tener almenos 5 carácteres. Ingresa una dirección más larga.',
+                              maxlength: 'La dirección debe tener hasta 255 carácteres. Ingresa una dirección más corta'
+                          }"></app-input-errors>
+                          <!-- /Mensajes de error -->
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <label for="region">Región <span>*</span></label>
+                          <select #cboRegion formControlName="cod_region" class="form-control w-100" id="region" required (change)="cargarProvincias(cboRegion.value)">
+                            <option *ngIf="regiones.length > 0" value="">-- Seleccione --</option>
+                            <option *ngIf="regiones.length === 0" value="">Error al cargar las regiones</option>
+                            <option *ngFor="let item of regiones" [value]="item.codigo">{{ item.nombre }}</option>
+                          </select>
+                          <!-- Mensajes de error -->
+                          <app-input-errors
+                            [control]="form.get('cod_region')"
+                            [mensajes]="{
+                              required: 'Debes seleccionar una región'
+                          }"></app-input-errors>
+                          <!-- /Mensajes de error -->
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <label for="provincia">Provincia <span>*</span></label>
+                          <select #cboProvincia formControlName="cod_provincia" class="form-control w-100" id="region" required (change)="cargarComunas(cboProvincia.value)">
+                            <option *ngIf="provincias.length > 0" value="">-- Seleccione --</option>
+                            <option *ngIf="provincias.length === 0" value="">No se han encontrado provincias</option>
+                            <option *ngFor="let item of provincias" [value]="item.codigo">{{ item.nombre }}</option>
+                          </select>
+                          <!-- Mensajes de error -->
+                          <app-input-errors
+                            [control]="form.get('cod_provincia')"
+                            [mensajes]="{
+                              required: 'Debes seleccionar una provincia.'
+                          }"></app-input-errors>
+                          <!-- /Mensajes de error -->
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <label for="comuna">Comuna <span>*</span></label>
+                          <select formControlName="cod_comuna" class="form-control" id="comuna" required>
+                            <option *ngIf="comunas.length > 0" value="">-- Seleccione --</option>
+                            <option *ngIf="comunas.length === 0" value="">No se han encontrado comunas</option>
+                            <option *ngFor="let item of comunas" [value]="item.codigo">{{ item.nombre }}</option>
+                          </select>
+                          <!-- Mensajes de error -->
+                          <app-input-errors
+                            [control]="form.get('cod_comuna')"
+                            [mensajes]="{
+                              required: 'Debes seleccionar una comuna'
+                          }"></app-input-errors>
+                          <!-- /Mensajes de error -->
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="ciudad">Ciudad <span>*</span></label>
+                            <input type="text" formControlName="ciudad" class="form-control" id="ciudad" required>
+                            <!-- Mensajes de error -->
+                          <app-input-errors
+                            [control]="form.get('ciudad')"
+                            [mensajes]="{
+                              required: 'Debes ingresar el nombre de la ciudad de destino del despacho',
+                              minlength: 'La ciudad debe tener almenos 3 carácteres. Ingresa una ciudad más larga.',
+                              maxlength: 'La ciudad debe tener hasta 20 carácteres. Ingresa una ciudad más corta'
+                          }"></app-input-errors>
+                          <!-- /Mensajes de error -->
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                          <label for="casa_num">Casa N° <span>*</span></label>
+                          <input type="text" formControlName="casa_num" class="form-control" id="casa_num" required>
+                          <!-- Mensajes de error -->
+                          <app-input-errors
+                            [control]="form.get('casa_num')"
+                            [mensajes]="{
+                              required: 'Debes ingresar el número de casa. o en su defecto puedes ingresar el texto ``Sin número``',
+                              maxlength: 'El número de casa debe tener hasta 10 carácteres. Ingresa un texto más corto'
+                          }"></app-input-errors>
+                          <!-- /Mensajes de error -->
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="block_num">Block N°</label>
+                            <input type="text" formControlName="block_num" class="form-control" id="block_num" placeholder="Campo opcional">
+                            <!-- Mensajes de error -->
+                          <app-input-errors
+                          [control]="form.get('block_num')"
+                          [mensajes]="{
+                            maxlength: 'El número de block debe tener hasta 10 carácteres. Ingresa un texto más corto'
+                        }"></app-input-errors>
+                        <!-- /Mensajes de error -->
+                        </div>
+
+
+                        <div class="col-md-12 mb-6">
+                          <label for="referencia">Referencia </label>
+                          <input type="text" formControlName="referencia" class="form-control" id="referencia" placeholder="Campo opcional">
+                          <!-- Mensajes de error -->
+                          <app-input-errors
+                            [control]="form.get('referencia')"
+                            [mensajes]="{
+                              maxlength: 'La referencia debe tener hasta 255 carácteres. Ingresa una referencia más corta'
+                          }"></app-input-errors>
+                          <!-- /Mensajes de error -->
+                        </div>
+
+                        <div class="row button-content">
+                          <div class="col-md-6">
+                            <button routerLink="/catalogo" class="btn essence-btn">Regresar al catálogo</button>
+                          </div>
+                        </div>
+
+                    </div>
+                </form>
+              </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-6 ml-lg-auto">
+              <div class="order-details-confirmation">
+
+                  <div class="cart-page-heading">
+                      <h5>Resumen de tu pedido</h5>
+                      <p>Detalles</p>
+                  </div>
+
+                  <ul class="order-details-form mb-4">
+                      <li><span class="nombre-producto">Producto</span> <span>Cantidad</span> <span>Total</span></li>
+                      <li *ngFor="let item of carrito" ><span class="nombre-producto">{{ item.nombre.substr(0, 50) }}</span> <span>{{ item.cantidad }}</span> <span>{{ formatearPrecio(item.precio_venta) }}</span></li>
+                      <li><span>Subtotal</span> <span class="nombre-producto"></span> <span>{{ formatearPrecio(subTotal) }}</span></li>
+                      <li><span>Gastos de Envío</span> <span class="nombre-producto"></span> <span>{{ formatearPrecio(gastosEnvio) }}</span></li>
+                      <li><span>Total</span> <span class="nombre-producto"></span> <span>{{ formatearPrecio(total) }}</span></li>
+                  </ul>
+
+                  <!--
+                  <div id="accordion" role="tablist" class="mb-4">
+                      <div class="card">
+                          <div class="card-header" role="tab" id="headingOne">
+                              <h6 class="mb-0">
+                                  <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa fa-circle-o mr-3"></i>Paypal</a>
+                              </h6>
+                          </div>
+
+                          <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                              <div class="card-body">
+                                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integ er bibendum sodales arcu id te mpus. Ut consectetur lacus.</p>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="card">
+                          <div class="card-header" role="tab" id="headingTwo">
+                              <h6 class="mb-0">
+                                  <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-circle-o mr-3"></i>cash on delievery</a>
+                              </h6>
+                          </div>
+                          <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+                              <div class="card-body">
+                                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo quis in veritatis officia inventore, tempore provident dignissimos.</p>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="card">
+                          <div class="card-header" role="tab" id="headingThree">
+                              <h6 class="mb-0">
+                                  <a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa fa-circle-o mr-3"></i>credit card</a>
+                              </h6>
+                          </div>
+                          <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+                              <div class="card-body">
+                                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse quo sint repudiandae suscipit ab soluta delectus voluptate, vero vitae</p>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="card">
+                          <div class="card-header" role="tab" id="headingFour">
+                              <h6 class="mb-0">
+                                  <a class="collapsed" data-toggle="collapse" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour"><i class="fa fa-circle-o mr-3"></i>direct bank transfer</a>
+                              </h6>
+                          </div>
+                          <div id="collapseFour" class="collapse show" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+                              <div class="card-body">
+                                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est cum autem eveniet saepe fugit, impedit magni.</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  -->
+
+                  <button class="btn essence-btn btn-pagar" (click)="pagar()" [disabled]="!form.valid">Pagar con Paypal</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- ##### Checkout Area End ##### -->
+<!-- ##### Checkout Area End ##### -->
+

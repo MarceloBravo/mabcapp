@@ -1,0 +1,428 @@
+<div class="row">
+  <app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+  <app-toasts></app-toasts>
+
+  <app-modal-dialog
+    (aceptar)="aceptarModal($event)"
+    (cerrar)="cancelarModal()"
+  >
+  </app-modal-dialog>
+
+  <h1 class="h3 mb-3">{{ titulo }}</h1>
+
+  <div class="row">
+    <div class="col-12 col-xl-12">
+      <div class="card">
+        <div class="card-header">
+          <!-- <h6 class="card-subtitle text-muted">{{ url }}</h6> -->
+          <h5 class="card-title">Mantenedor de {{ titulo }}</h5>
+        </div>
+        <div class="card-body">
+          <div [formGroup]="form">
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Nombre</label>
+                  <div class="col-sm-8">
+                    <input
+                      type="text"
+                      formControlName="nombre"
+                      class="form-control col-md-12"
+                      placeholder="Ingresa el nombre del producto"
+                      max="50"
+                    />
+                    <!-- Mensajes de error -->
+                    <app-input-errors
+                      [control]="form.get('nombre')"
+                      [mensajes]="{
+                        required: 'El nombre de es obligatorio.',
+                        minlength: 'El nombre debe tener almenos 3 carácteres. Ingresa un nombre más largo.',
+                        maxlength: 'El nombre de la pantalla debe tener un máximo de 255 carácteres. Ingresa un nombre más corto.'
+                      }"
+                    ></app-input-errors>
+                    <!-- /Mensajes de error -->
+
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Descripción</label>
+                  <div class="col-sm-8">
+                    <input
+                      type="text"
+                      formControlName="descripcion"
+                      class="form-control col-md-12"
+                      placeholder="Ingresa una descripción para el producto"
+                      max="50"
+                    />
+                    <!-- Mensajes de error -->
+                    <app-input-errors
+                      [control]="form.get('descripcion')"
+                      [mensajes]="{
+                        required: 'La descripción es obligatoria.',
+                        minlength: 'La descripción debe tener almenos 3 carácteres. Ingresa una descripción más larga.',
+                        maxlength: 'La descripción debe tener un máximo de 255 carácteres. Ingresa una descripción más corta.'
+                      }"
+                    ></app-input-errors>
+                    <!-- /Mensajes de error -->
+
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Tipo unidad</label>
+                  <div class="col-sm-8">
+                    <select
+                      #cboCategorias
+                      class="custom-select col-md-12"
+                      formControlName="unidad_id"
+                    >
+                      <option *ngFor="let item of unidades" [value]="item.id">
+                        {{ item.nombre }}
+                      </option>
+                    </select>
+
+                    <!-- Mensajes de error -->
+                    <div
+                      *ngIf="
+                        form.get('unidad_id')?.hasError('required') &&
+                        form.get('unidad_id')?.dirty
+                      "
+                      class="error-input"
+                    >
+                      Debe seleccionar una unidad.
+                    </div>
+                    <!-- /Mensajes de error -->
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Precio costo</label>
+                  <div class="col-sm-8">
+                    <input
+                      type="number"
+                      formControlName="precio_costo"
+                      class="form-control col-md-12"
+                      placeholder="Ingresa el costo del producto"
+                      max="50"
+                    />
+                    <!-- Mensajes de error -->
+                    <app-input-errors
+                      [control]="form.get('precio_costo')"
+                      [mensajes]="{
+                        required: 'El precio costo es obligatorio.',
+                        min: 'El precio costo debe ser un número positivo'
+                      }"
+                    ></app-input-errors>
+                    <!-- /Mensajes de error -->
+                  </div>
+                </div>
+
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Precio normal</label>
+                  <div class="col-sm-8">
+                    <input
+                      type="number"
+                      formControlName="precio_venta_normal"
+                      class="form-control col-md-12"
+                      placeholder="Ingresa una descripción para el producto"
+                      max="50"
+                    />
+                    <!-- Mensajes de error -->
+                    <app-input-errors
+                      [control]="form.get('precio_venta_normal')"
+                      [mensajes]="{
+                        required: 'El precio venta es obligatorio.',
+                        min: 'El precio debe ser un número positivo'
+                      }"
+                    ></app-input-errors>
+                    <!-- /Mensajes de error -->
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Dcto. máximo (%)</label>
+                  <div class="col-sm-8">
+                    <input
+                      type="number"
+                      formControlName="descuento_maximo"
+                      class="form-control col-md-8"
+                      placeholder="Ingresa el porcentaje de dcto. máximo"
+                      max="100"
+                      min="0"
+                    />
+                    <!-- Mensajes de error -->
+                    <app-input-errors
+                      [control]="form.get('descuento_maximo')"
+                      [mensajes]="{
+                        required: 'El porcentaje de venta venta es obligatorio.',
+                        min: 'El porcentaje de venta debe ser un número positivo',
+                        max: 'El porcentaje de venta debe ser igual o menor a 100'
+                      }"
+                    ></app-input-errors>
+                    <!-- /Mensajes de error -->
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Precio actual</label>
+                  <div class="col-sm-8">
+                    <label class="col-sm-12 col-form-label">{{ formatearPrecio(form.value.precios.length > 0 ? form.value.precios[0].precio : form.value.precio_venta_normal) }} (Sin impuestos)</label>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Precio válido desde</label>
+                  <div class="col-sm-8">
+                    <label class="col-sm-8 col-form-label">{{ formatearFecha(obtenerPrecioActual(form.value)?.fecha_desde) }}</label>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Precio válido hasta</label>
+                  <div class="col-sm-8">
+                    <label class="col-sm-8 col-form-label">{{ formatearFecha(obtenerPrecioActual(form.value)?.fecha_hasta) }}</label>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Stock</label>
+                  <div class="col-sm-8">
+                    <input
+                      type="number"
+                      formControlName="stock"
+                      class="form-control col-md-8"
+                      placeholder="Ingresa la cantidad de producto existente"
+                      max="50"
+                    />
+                    <!-- Mensajes de error -->
+                    <app-input-errors
+                      [control]="form.get('stock')"
+                      [mensajes]="{
+                        required: 'El stock venta es obligatorio.',
+                        min: 'El stock debe ser un número positivo'
+                      }"
+                    ></app-input-errors>
+                    <!-- /Mensajes de error -->
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Marca</label>
+                  <div class="col-sm-8">
+                    <select
+                      class="custom-select col-md-12"
+                      formControlName="marca_id"
+                    >
+                      <option *ngFor="let item of marcas" [value]="item.id">
+                        {{ item.nombre }}
+                      </option>
+                    </select>
+
+                    <!-- Mensajes de error -->
+                    <div
+                      *ngIf="
+                        form.get('marca_id')?.hasError('required') &&
+                        form.get('marca_id')?.dirty
+                      "
+                      class="error-input"
+                    >
+                      Debe seleccionar la marca del producto.
+                    </div>
+                    <!-- /Mensajes de error -->
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Categoría</label>
+                  <div class="col-sm-8">
+                    <select
+                      #cboCategorias
+                      class="custom-select col-md-12"
+                      formControlName="categoria_id"
+                      (change)="categoriaChange($event.target)"
+                    >
+                      <option *ngFor="let item of categorias" [value]="item.id">
+                        {{ item.nombre }}
+                      </option>
+                    </select>
+
+                    <!-- Mensajes de error -->
+                    <div
+                      *ngIf="
+                        form.get('categoria_id')?.hasError('required') &&
+                        form.get('categoria_id')?.dirty
+                      "
+                      class="error-input"
+                    >
+                      Debe seleccionar una categoría.
+                    </div>
+                    <!-- /Mensajes de error -->
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Subcategoría</label>
+                  <div class="col-sm-8">
+                    <select
+                      #cboSubCategorias
+                      class="custom-select col-md-12"
+                      formControlName="sub_categoria_id"
+                    >
+                      <option *ngFor="let item of subCategorias" [value]="item.id" (change)="subCategoriaChange(cboSubCategorias.value)">
+                        {{ item.nombre }}
+                      </option>
+                    </select>
+
+                    <!-- Mensajes de error -->
+                    <div
+                      *ngIf="
+                        form.get('sub_categoria_id')?.hasError('required') &&
+                        form.get('sub_categoria_id')?.dirty
+                      "
+                      class="error-input"
+                    >
+                      Debe seleccionar una subcategoría.
+                    </div>
+                    <!-- /Mensajes de error -->
+                  </div>
+                </div>
+
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Tallas</label>
+                  <div class="col-sm-8">
+                    <select
+                      #cboTallas
+                      multiple
+                      class="custom-select col-md-12"
+                      formControlName="tallas"
+                    >
+                      <option  *ngIf="tallas.length === 0" [value]="null">-- No se encontraron tallas --</option>
+                      <option *ngFor="let item of tallas" [value]="item.id">
+                        {{ item.talla }}
+                      </option>
+                    </select>
+
+                    <!-- Mensajes de error -->
+                    <div
+                      *ngIf="
+                        form.get('talla_id')?.hasError('required') &&
+                        form.get('talla_id')?.dirty
+                      "
+                      class="error-input"
+                    >
+                      Debe seleccionar almenos una talla.
+                    </div>
+                    <!-- /Mensajes de error -->
+                  </div>
+                </div>
+
+
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Impuestos</label>
+                  <div class="col-sm-8">
+                    <select
+                      #cboImpuestos
+                      multiple
+                      class="custom-select col-md-12"
+                      formControlName="impuestos"
+                      (change)="actualizarPrecioFinal(cboImpuestos)"
+                    >
+                      <option *ngFor="let item of impuestos" [value]="item.id">
+                        {{ item.nombre }}
+                      </option>
+                    </select>
+
+                    <!-- Mensajes de error -->
+                    <div
+                      *ngIf="
+                        form.get('impuesto_id')?.hasError('required') &&
+                        form.get('impuesto_id')?.dirty
+                      "
+                      class="error-input"
+                    >
+                      Debe seleccionar almenos un impuesto.
+                    </div>
+                    <!-- /Mensajes de error -->
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Precio Venta a público</label>
+                  <div class="col-sm-8">
+                    <label class="col-sm-12 col-form-label">{{ formatearPrecio(totalImpuestos(form.value.precios.length > 0 ? form.value.precios[0].precio : form.value.precio_venta_normal)) }} (Incluye impuestos)</label>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-sm-6">
+
+
+
+                  <div class="form-group div-imagen">
+                    <label for="file">Choose File</label>
+                    <input type="file"
+                           id="btn-file"
+                           accept=".png, .jpg"
+                          multiple
+                          (change)="cargarFoto($event.target)">
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-load-photo" (click)="handlerCargarFoto()">Cargar foto</button>
+
+                  <div class="image-container row" style="position:absolute">
+
+                    <ng-container *ngFor="let img of arrURLImagenes">
+                      <div class="imagen-element col">
+                        <img
+                          height="150"
+                          width="200px"
+                          style="padding: 5px;"
+                          [src]="img.source"
+                          alt="Foto"
+                          class="foto-usuario"
+                        />
+                        <a (click)="eliminarImagen(img.name)" class="delete-image-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                          </svg>
+                        </a>
+
+                        <a (click)="imagenPorDefecto(img.name)" class="default-image-icon">
+                          <svg *ngIf="img.name !== principalImage" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                          </svg>
+
+                          <svg *ngIf="img.name === principalImage" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                          </svg>
+
+                        </a>
+                      </div>
+                    </ng-container>
+
+                  </div>
+
+              </div>
+            </div>
+
+
+            <app-form-buttons
+              (eventCancelar)="cancelarForm()"
+              (eventEliminar)="modalEliminar()"
+              (eventGrabar)="modalGrabar()"
+              [id]="id"
+              [formValid]="form.invalid"
+            ></app-form-buttons>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

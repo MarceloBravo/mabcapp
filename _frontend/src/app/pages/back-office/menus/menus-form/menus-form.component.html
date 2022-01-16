@@ -1,0 +1,131 @@
+<div class="row">
+  <app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+  <app-toasts></app-toasts>
+
+  <app-modal-dialog
+    (aceptar)="aceptarModal($event)"
+    (cerrar)="cancelarModal()"
+  >
+  </app-modal-dialog>
+
+  <h1 class="h3 mb-3">Menús</h1>
+
+  <div class="row">
+    <div class="col-12 col-xl-12">
+      <div class="card">
+        <div class="card-header">
+          <!-- <h6 class="card-subtitle text-muted">{{ url }}</h6> -->
+          <h5 class="card-title">Mantenedor de Menús</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="form">
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Nombre</label>
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  formControlName="nombre"
+                  class="form-control col-md-5"
+                  placeholder="Ingresa el nombre del menú"
+                  max="50"
+                />
+                <!-- Mensajes de error -->
+                <app-input-errors
+                  [control]="form.get('nombre')"
+                  [mensajes]="{
+                    required: 'El nombre del menú es obligatorio.',
+                    minlength: 'El nombre del menú debe tener almenos 5 carácteres. Ingresa un nombre más largo.',
+                    maxlength: 'El nombre del menú debe tener un máximo de 50 carácteres. Ingresa un nombre más corto.'
+                  }"
+                ></app-input-errors>
+                <!-- /Mensajes de error -->
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">URL</label>
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  formControlName="url"
+                  class="form-control col-md-10"
+                  placeholder="Ingresa la url asociada al menú"
+                  max="200"
+                />
+                <!-- Mensajes de error -->
+                <app-input-errors
+                  [control]="form.get('url')"
+                  [mensajes]="{
+                    required: 'La url del menú es obligatoria.',
+                    minlenth: 'La url del menú debe tener almenos 3 carácteres. Ingresa una url más larga.',
+                    maxlength: 'La url del menú debe tener un máximo de 200 carácteres. Ingresa una url más corta.'
+                  }"
+                ></app-input-errors>
+                <!-- /Mensajes de error -->
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Menú padre</label>
+              <div class="col-sm-10">
+                <select
+                  formControlName="menu_padre_id"
+                  class="custom-select col-md-10"
+                >
+                  <option value="0">Sin menú padre</option>
+                  <option *ngFor="let item of menusPadre" [value]="item.id">
+                    {{ item.nombre }}
+                  </option>
+                </select>
+                <!-- Mensajes de error -->
+                <app-input-errors
+                  [control]="form.get('menuPadreError')"
+                  [mensajes]="{
+                    menuPadreError: 'El menú padre debe ser diferente al menú actual.',
+                    required: 'Debe ingresar la posición del menú.',
+                    min: 'La posición del menú debe ser un número positivo.',
+                    max: 'La url del menú debe tener un máximo de 200 carácteres. Ingresa una url más corta.'
+                  }"
+                ></app-input-errors>
+                <!-- /Mensajes de error -->
+
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Posición</label>
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  formControlName="posicion"
+                  class="form-control col-md-5"
+                  placeholder="Ingresa la posición del menú"
+                  max="50"
+                />
+                <!-- Mensajes de error -->
+                <app-input-errors
+                  [control]="form.get('posicion')"
+                  [mensajes]="{
+                    required: 'La posición del menú es obligatoria.',
+                    min: 'La posición debe ser un número positivo.'
+                  }"
+                ></app-input-errors>
+                <!-- /Mensajes de error -->
+              </div>
+            </div>
+
+            <app-form-buttons
+              (eventCancelar)="cancelar()"
+              (eventEliminar)="modalEliminar()"
+              (eventGrabar)="modalGrabar()"
+              [id]="id"
+              [formValid]="form.invalid"
+            ></app-form-buttons>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

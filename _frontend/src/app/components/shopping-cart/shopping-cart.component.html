@@ -1,0 +1,48 @@
+<div class="cart-bg-overlay"></div>
+
+<div class="right-side-cart-area">
+
+    <!-- Cart Button -->
+    <div class="cart-button">
+        <a href="#" id="rightSideCart"><img src="../../../assets/front-office/img/core-img/bag.svg" alt=""> <span>{{ cantProductos }}</span></a>
+    </div>
+
+    <div class="cart-content d-flex">
+
+        <!-- Cart List Area -->
+        <div class="cart-list">
+            <!-- Single Cart Item -->
+            <div *ngFor="let item of carrito" class="single-cart-item">
+                <a class="product-image">
+                    <img src="{{ sourceImage + 'productos/' + item.imagen }}" class="cart-thumb" alt="">
+                    <!-- Cart Item Desc -->
+                    <div class="cart-item-desc">
+                      <span class="product-remove"><i class="fa fa-close" aria-hidden="true" (click)="quitarProducto(item)" title="Quitar producto del carrito"></i></span>
+                        <span class="badge">{{ item.marca }}</span>
+                        <h6>{{ item.nombre }}</h6>
+                        <p class="size">Size: S</p>
+                        <p class="color">Color: Red</p>
+                        <p class="price">$ {{ item.precio_venta.toLocaleString('de-DE') }} <span class="item-cantidad">x {{ item.cantidad }}</span></p>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Cart Summary -->
+        <div class="cart-amount-summary">
+
+            <h2>Resumen</h2>
+            <ul class="summary-table">
+                <li><span>Subtotal:</span> <span>$ {{ subTotal.toLocaleString('de-DE') }}</span></li>
+                <li><span>Despacho:</span> <span>$ {{ despacho.toLocaleString('de-DE') }}</span></li>
+                <li><span>Descuento:</span> <span>$ {{ descuento.toLocaleString('de-DE') }}</span></li>
+                <li><span>Impuestos:</span> <span>$ {{ impuestos.toLocaleString('de-DE') }}</span></li>
+                <li><span>Total:</span> <span>$ {{ total.toLocaleString('de-DE') }}</span></li>
+            </ul>
+            <div *ngIf="carrito.length > 0" class="checkout-btn mt-100">
+                <a [routerLink]="cliente ? '/datos_despacho' : '/identificacion_cliente'" class="btn essence-btn">Pagar los productos</a>
+            </div>
+        </div>
+    </div>
+</div>

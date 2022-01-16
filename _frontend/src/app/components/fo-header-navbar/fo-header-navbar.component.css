@@ -1,0 +1,22 @@
+.nav-brand span{
+  font-family: fantasy;
+  font-variant-caps: all-small-caps;
+  font-size: 43px;
+}
+
+.cliente-logueado{
+  display: inline-block !important;
+}
+
+.cliente-desconoicido{
+  display: none !important;
+}
+
+span.cliente-logueado{
+  margin: 0 10px;
+}
+
+
+.header-area{
+  z-index: 10500;
+}

@@ -1,0 +1,265 @@
+<app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+<app-modal-dialog
+    (aceptar)="aceptarModal()"
+    (cerrar)="cancelarModal()"
+  >
+  </app-modal-dialog>
+
+  <app-titulo [titulo]="titulo"></app-titulo>
+
+<div class="checkout_area section-padding-80">
+  <div class="container">
+      <div class="row">
+
+          <div class="col-12 col-md-6 offset-3">
+              <div class="checkout_details_area mt-50 clearfix">
+
+                  <div class="cart-page-heading mb-30">
+                      <h5>Datos del cliente</h5>
+                      <p>Los campos marcados con asterísco (*) son obligatorios</p>
+                  </div>
+                  <form [formGroup]="form">
+                      <div class="row">
+                          <div class="col-md-6 mb-3">
+                              <label for="rut">Rut <span>*</span></label>
+                              <input #txtCliente type="text" formControlName="rut" class="form-control" id="rut" value="" required (change)="buscarClientePorRut(txtCliente.value)">
+                              <!-- Mensajes de error -->
+                              <app-input-errors
+                                [control]="form.get('rut')"
+                                [mensajes]="{
+                                  required: 'Debes ingresar el rut',
+                                  minlength: 'El rut debe tener almenos 9 carácteres. Ingresa un rut más largo.',
+                                  maxlength: 'El rut debe tener hasta 13 carácteres. Ingresa un rut más corto'
+                              }"></app-input-errors>
+                              <!-- /Mensajes de error -->
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                              <label for="nombres">Nombre(s) <span>*</span></label>
+                              <input type="text" formControlName="nombres" class="form-control" id="nombres" value="" required>
+                              <!-- Mensajes de error -->
+                              <app-input-errors
+                                [control]="form.get('nombres')"
+                                [mensajes]="{
+                                  required: 'Debes ingresar el nombre',
+                                  minlength: 'El nombre debe tener almenos 2 carácteres. Ingresa un nombre más largo.',
+                                  maxlength: 'El nombre debe tener hasta 50 carácteres. Ingresa un nombre más corto'
+                              }"></app-input-errors>
+                              <!-- /Mensajes de error -->
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label for="apellido1">Apellido 1 <span>*</span></label>
+                            <input type="text" formControlName="apellido1" class="form-control" id="apellido1" value="" required>
+                            <!-- Mensajes de error -->
+                            <app-input-errors
+                              [control]="form.get('apellido1')"
+                              [mensajes]="{
+                                required: 'Debes ingresar el primer apellido',
+                                minlength: 'El primer apellido debe tener almenos 2 carácteres. Ingresa un apellido más largo.',
+                                maxlength: 'El primer apellido debe tener hasta 50 carácteres. Ingresa un apellido más corto'
+                            }"></app-input-errors>
+                            <!-- /Mensajes de error -->
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                              <label for="apellido2">Apellido 2 </label>
+                              <input type="text" formControlName="apellido2" class="form-control" id="apellido2" value="">
+                              <!-- Mensajes de error -->
+                            <app-input-errors
+                              [control]="form.get('apellido2')"
+                              [mensajes]="{
+                                minlength: 'El segundo apellido debe tener almenos 2 carácteres. Ingresa un apellido más largo.',
+                                maxlength: 'El segundo apellido debe tener hasta 50 carácteres. Ingresa un apellido más corto'
+                            }"></app-input-errors>
+                            <!-- /Mensajes de error -->
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="fono">Fono <span>*</span></label>
+                            <input type="text" formControlName="fono" class="form-control" id="fono" value="" required>
+                            <!-- Mensajes de error -->
+                            <app-input-errors
+                              [control]="form.get('fono')"
+                              [mensajes]="{
+                                required: 'Debes ingresar un teléfono',
+                                minlength: 'El teléfono debe tener almenos 9 carácteres. Ingresa un teléfono más largo.',
+                                maxlength: 'El teléfono debe tener hasta 20 carácteres. Ingresa un teléfono más corto'
+                            }"></app-input-errors>
+                            <!-- /Mensajes de error -->
+                          </div>
+                          <div class="col-md-6 mb-3">
+                              <label for="email">Email <span>*</span></label>
+                              <input type="email" formControlName="email" class="form-control" id="email" value="" required>
+                              <!-- Mensajes de error -->
+                            <app-input-errors
+                              [control]="form.get('email')"
+                              [mensajes]="{
+                                required: 'Debes ingresar un correo electrónico',
+                                email: 'El email ingresado no es válido.',
+                                maxlength: 'El email debe tener hasta 200 carácteres. Ingresa un email más corto'
+                            }"></app-input-errors>
+                            <!-- /Mensajes de error -->
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label for="first_name">Contraseña <span>*</span></label>
+                            <input type="password" formControlName="password" class="form-control" placeholder="Ingresa una contraseña." max="150"/>
+                            <!-- Mensajes de error -->
+                            <div *ngIf="form.get('password')?.hasError('minlength') && form.get('password')?.dirty" class="error-input">La contraseña ingresada debe terener almenos 6 carácteres. Ingresa una contraseña mas larga.</div>
+                            <div *ngIf="form.get('password')?.hasError('maxlength') && form.get('password')?.dirty" class="error-input">La contraseña ingresada debe tener un máximo de 20 carácteres. Ingresa una contraseña más corta.</div>
+                            <div *ngIf="
+                              form.get('password')?.hasError('confirmPassword') &&
+                              form.get('confirm_password')?.hasError('confirmPassword') &&
+                              form.get('password')?.dirty" class="error-input">
+                              La contraseña ingresada no coincide con la confirmación de contraseña.
+                            </div>
+                            <!-- /Mensajes de error -->
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label for="confirm_password">Confirmar contraseña <span>*</span></label>
+                            <input type="password" formControlName="confirm_password" class="form-control" placeholder="Vuelve a ingresar la contraseña." max="20"/>
+                            <!-- Mensajes de error -->
+                            <div *ngIf="form.get('confirm_password')?.hasError('minlength') && form.get('confirm_password')?.dirty" class="error-input">La contraseña ingresada debe terener almenos 6 carácteres. Ingresa una contraseña mas larga.</div>
+                            <div *ngIf="form.get('confirm_password')?.hasError('maxlength') && form.get('confirm_password')?.dirty" class="error-input">La contraseña ingresada debe tener un máximo de 20 carácteres. Ingresa una contraseña más corta.</div>
+                            <div *ngIf="
+                              form.get('confirm_password')?.hasError('confirmPassword') &&
+                              form.get('password')?.hasError('confirmPassword') &&
+                              form.get('confirm_password')?.dirty" class="error-input">
+                              La contraseña ingresada no coincide con la confirmación de contraseña.
+                            </div>
+                            <!-- /Mensajes de error -->
+                          </div>
+
+                          <div class="col-md-12 mb-6">
+                            <label for="direccion">Dirección <span>*</span></label>
+                            <input type="text" formControlName="direccion" class="form-control" id="direccion" value="" required>
+                            <!-- Mensajes de error -->
+                            <app-input-errors
+                              [control]="form.get('direccion')"
+                              [mensajes]="{
+                                required: 'Debes ingresar la dirección',
+                                minlength: 'La dirección debe tener almenos 6 carácteres. Ingresa una dirección más larga.',
+                                maxlength: 'La dirección debe tener hasta 255 carácteres. Ingresa una dirección más corta'
+                            }"></app-input-errors>
+                            <!-- /Mensajes de error -->
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label for="region">Región <span>*</span></label>
+                            <select #cboRegion formControlName="cod_region" class="form-control w-100" id="region" required (change)="cargarProvincias(cboRegion.value)">
+                              <option *ngIf="regiones.length > 0" value="">-- Seleccione --</option>
+                              <option *ngIf="regiones.length === 0" value="">Error al cargar las regiones</option>
+                              <option *ngFor="let item of regiones" [value]="item.codigo">{{ item.nombre }}</option>
+                            </select>
+                            <!-- Mensajes de error -->
+                            <app-input-errors
+                              [control]="form.get('cod_region')"
+                              [mensajes]="{
+                                required: 'Debes seleccionar una region'
+                            }"></app-input-errors>
+                            <!-- /Mensajes de error -->
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label for="provincia">Provincia <span>*</span></label>
+                            <select #cboProvincia formControlName="cod_provincia" class="form-control w-100" id="region" required (change)="cargarComunas(cboProvincia.value)">
+                              <option *ngIf="provincias.length > 0" value="">-- Seleccione --</option>
+                              <option *ngIf="provincias.length === 0" value="">No se han encontrado provincias</option>
+                              <option *ngFor="let item of provincias" [value]="item.codigo">{{ item.nombre }}</option>
+                            </select>
+                            <!-- Mensajes de error -->
+                            <app-input-errors
+                              [control]="form.get('cod_provincia')"
+                              [mensajes]="{
+                                required: 'Debes seleccionar una provincia'
+                            }"></app-input-errors>
+                            <!-- /Mensajes de error -->
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label for="comuna">Comuna <span>*</span></label>
+                            <select formControlName="cod_comuna" class="form-control" id="comuna" required>
+                              <option *ngIf="comunas.length > 0" value="">-- Seleccione --</option>
+                              <option *ngIf="comunas.length === 0" value="">No se han encontrado comunas</option>
+                              <option *ngFor="let item of comunas" [value]="item.codigo">{{ item.nombre }}</option>
+                            </select>
+                            <!-- Mensajes de error -->
+                            <app-input-errors
+                              [control]="form.get('cod_comuna')"
+                              [mensajes]="{
+                                required: 'Debes seleccionar una comuna'
+                            }"></app-input-errors>
+                            <!-- /Mensajes de error -->
+                          </div>
+                          <div class="col-md-6 mb-3">
+                              <label for="ciudad">Ciudad <span>*</span></label>
+                              <input type="text" formControlName="ciudad" class="form-control" id="ciudad" value="" required>
+                              <!-- Mensajes de error -->
+                            <app-input-errors
+                            [control]="form.get('ciudad')"
+                            [mensajes]="{
+                              required: 'Debes ingresar el nombre de la ciudad',
+                              minlength: 'La ciudad debe tener almenos 3 carácteres. Ingresa una ciudad más larga.',
+                              maxlength: 'La ciudad debe tener hasta 20 carácteres. Ingresa una ciudad más corto'
+                          }"></app-input-errors>
+                          <!-- /Mensajes de error -->
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label for="casa_num">Casa N° <span>*</span></label>
+                            <input type="text" formControlName="casa_num" class="form-control" id="casa_num" value="" required>
+                            <!-- Mensajes de error -->
+                            <app-input-errors
+                              [control]="form.get('casa_num')"
+                              [mensajes]="{
+                                required: 'Debes ingresar el númereo de casa o en su defecto puedes ingresar ``Sin número``',
+                                maxlength: 'El número de casa debe tener hasta 10 carácteres. Ingresa un número más corto'
+                            }"></app-input-errors>
+                            <!-- /Mensajes de error -->
+                          </div>
+                          <div class="col-md-6 mb-3">
+                              <label for="block_num">Block N°</label>
+                              <input type="text" formControlName="block_num" class="form-control" id="block_num" value="">
+                              <!-- Mensajes de error -->
+                            <app-input-errors
+                            [control]="form.get('block_num')"
+                            [mensajes]="{
+                              maxlength: 'El número de block debe tener hasta 10 carácteres. Ingresa unn número más corto'
+                          }"></app-input-errors>
+                          <!-- /Mensajes de error -->
+                          </div>
+
+
+                          <div class="col-md-12 mb-6">
+                            <label for="referencia">Referencia </label>
+                            <input type="text" formControlName="referencia" class="form-control" id="referencia" value="">
+                            <!-- Mensajes de error -->
+                            <app-input-errors
+                              [control]="form.get('referencia')"
+                              [mensajes]="{
+                                minlength: 'La referencia debe tener almenos 5 carácteres. Ingresa una referencia más larga.',
+                                maxlength: 'La referencia debe tener almenos 255 carácteres. Ingresa una referencia más larga.'
+                            }"></app-input-errors>
+                            <!-- /Mensajes de error -->
+                          </div>
+
+                          <div class="row button-content">
+                            <div class="col-md-6">
+                              <button class="btn essence-btn" (click)="registrarCliente()" [disabled]="!form.valid">Registrarme</button>
+                            </div>
+                            <div class="col-md-6">
+                              <button routerLink="/login_cliente" class="btn essence-btn">Regresar al login</button>
+                            </div>
+                          </div>
+
+                      </div>
+                  </form>
+              </div>
+          </div>
+
+      </div>
+  </div>
+</div>
+<!-- ##### Checkout Area End ##### -->

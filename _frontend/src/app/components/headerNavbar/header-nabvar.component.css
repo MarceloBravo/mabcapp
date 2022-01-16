@@ -1,0 +1,13 @@
+.dropdown-menu-right{
+  display: block;
+}
+
+.clickeable{
+  cursor: pointer;
+}
+
+.dropdown{
+  display: flex;
+}
+
+

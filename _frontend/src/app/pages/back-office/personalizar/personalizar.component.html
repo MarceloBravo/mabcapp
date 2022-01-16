@@ -1,0 +1,54 @@
+<div class="row">
+  <app-spinner [mostrarSpinner]="mostrarSpinner"></app-spinner>
+
+  <app-toasts></app-toasts>
+
+  <app-modal-dialog
+    (aceptar)="aceptarModal()"
+    (cerrar)="cancelarModal()"
+  ></app-modal-dialog>
+
+  <h1 class="h3 mb-3">Pantallas</h1>
+
+  <div class="row">
+    <div class="col-12 col-xl-12">
+      <div class="card">
+        <div class="card-header">
+          <!-- <h6 class="card-subtitle text-muted">{{ url }}</h6> -->
+          <h5 class="card-title">Personalizar aplicación</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="form">
+            <div class="form-group row">
+              <label class="form-label col-md-2">Nombre app</label>
+              <div class="col-md-3">
+                <input
+                  type="text"
+                  formControlName="nombre_app"
+                  class="form-control col-md-12"
+                  maxlength="15"
+                />
+              </div>
+              <!-- Mensajes de error -->
+              <app-input-errors
+                [control]="form.get('nombre_app')"
+                [mensajes]="{
+                  required: 'El nombre de la aplicación es obligatorio.',
+                  minlength: 'El nombre de la aplicación debe tener almenos 3 carácteres. Ingresa un nombre más largo.',
+                  maxlength: 'El nombre de la aplicación debe tener un máximo de 15 carácteres. Ingresa un nombre más corto.'
+                }"
+              ></app-input-errors>
+              <!-- /Mensajes de error -->
+            </div>
+
+            <app-form-buttons
+              [formValid]="form.invalid"
+              (eventGrabar)="grabar()"
+              (eventCancelar)="cancelar()"
+            ></app-form-buttons>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

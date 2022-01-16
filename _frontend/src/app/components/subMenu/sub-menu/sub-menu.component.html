@@ -1,0 +1,13 @@
+<li [ngClass]="className" [style]="getInitialStyle(menu)">
+  <a *ngIf="menu?.url && menu?.acceder" class="sidebar-link" routerLink="{{ menu?.url }}" (click)="clearToast()">
+    <i class="align-middle" data-feather="settings"></i>
+    <span class="align-middle">{{ menu?.nombre }}</span>
+  </a>
+  <label *ngIf="!menu?.url" class="label-main-menu" (click)="expandMenu(menu?.id)" (dbClick)="dblClick()">{{ menu?.nombre }}</label>
+  <ul [id]="menu?.id" *ngIf="menu?.sub_menu">
+    <app-sub-menu
+      *ngFor="let mnu of menu?.sub_menu"
+      [menu]="mnu"
+    ></app-sub-menu>
+  </ul>
+</li>

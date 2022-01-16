@@ -1,0 +1,7 @@
+.div-body{
+  margin-top: 85px !important;
+}
+
+::ng-deep .toasts{
+  z-index: 10000 !important;
+}
