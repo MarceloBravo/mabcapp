@@ -45,7 +45,8 @@ export class CatalogoComponent implements OnInit {
     private router: Router
   ) {
     this.params.filtro = this._catalogoService.getTextoFiltro()
-    this.obtenerDatos()
+    //this.obtenerParametrosURL()
+    //this.obtenerDatos()
     this.cargarCategorias()
     this.cargarMarcas()
     this.obtenerPrecioMinMax()
@@ -53,20 +54,40 @@ export class CatalogoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.url.subscribe(res => {
-      this.titulo = res[0].path
-    }, error => {
-      this.titulo = 'Catalogo'
-    } )
-    this._catalogoService.textoFiltro$.subscribe((res: string) => {
-      this.params.filtro = res
-      this.obtenerDatos()
-    })
+    this.monitoreaURL()
 
     this._carritoServices.changeFavorite$.subscribe(res => {
       this.favoritos = this._carritoServices.getFavorites()
     })
 
+    this._catalogoService.textoFiltro$.subscribe((res: string) => {
+      this.params.filtro = res
+      this.obtenerDatos()
+    })
+
+  }
+
+  private monitoreaURL(){
+    //Detecta cuando la URL cambia
+    this.activatedRoute.url.subscribe(res => {
+      this.obtenerParametrosURL()
+      this.obtenerDatos()
+      this.titulo = res[0].path //Actualiza el título de la página
+    }, error => {
+      console.log('Error al actualizar el titulo: ',error)
+      this.titulo = 'Catalogo'
+    } )
+  }
+
+  private obtenerParametrosURL(){
+    let idCat = this.activatedRoute.snapshot.paramMap.get('idCat')
+    let idSubCat = this.activatedRoute.snapshot.paramMap.get('idSubCat')
+    if(idCat){
+      this.params.categoria_id = parseInt(idCat)
+      if(idSubCat){
+        this.params.sub_categoria_id = parseInt(idSubCat)
+      }
+    }
   }
 
   private cargarCategorias(){
