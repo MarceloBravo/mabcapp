@@ -1,0 +1,102 @@
+<div class="single-blog-wrapper">
+
+  <!-- Single Blog Post Thumb -->
+  <div class="single-blog-post-thumb">
+      <img src="{{ sourceImage }}bg-img/bg-8.jpg" alt="">
+  </div>
+
+  <div class="container">
+      <div class="row justify-content-center">
+          <div class="col-12 col-md-8">
+              <div class="regular-page-content-wrapper section-padding-80">
+                  <div class="regular-page-text">
+                      <h2>Desarrollado por Marcelo Bravo C.</h2>
+                      <blockquote>
+                        <h6>
+                          <i class="fa fa-quote-left" aria-hidden="true"></i>
+                          Importante, esta página no pertenece a una tienda real y sólo es una aplicación de ejemplo.
+                        </h6>
+                      </blockquote>
+
+                      <div class="row">
+                        <div class="col-sm-12 col-md-4">
+                          <img src="{{ sourceImage }}about/Angular 11.png" alt="logo angular 11">
+                        </div>
+                        <div class="col-sm-12 col-md-8 v-align">
+                          <p>
+                            El front-end de ésta aplicación fue desarrollado con el framework Angular en su versión 11 y
+                            lenguaje typescript
+                          </p>
+                        </div>
+                      </div>
+                      <p>
+                        Angular es un framework opensource desarrollado por Google para facilitar la creación y programación
+                        de aplicaciones web de una sola página
+                      </p>
+
+                      <div class="row">
+                        <div class="col-sm-12 col-md-8 v-align">
+                          <p>
+                            Además se ha utilizado la tecnología de bootstrap para todo el frontend
+                          </p>
+                        </div>
+
+                        <div class="col-sm-12 col-md-4">
+                          <img src="{{ sourceImage }}about/bootstrap.jpg" alt="logo laravel 8">
+                        </div>
+                      </div>
+                      <p>Es así que el frontend de la aplicación, para su front-office, o tienda, se utilizó el template <a href="https://colorlib.com/wp/template/essence/">Essence</a>
+                        mientras que para el back-office o administración de la tienda se utilizó el template <a href="https://adminkit.io/">Adminkit</a>
+                      </p>
+
+                      <div class="row">
+                        <div class="col-sm-12 col-md-4">
+                          <img src="{{ sourceImage }}about/laravel 8.png" alt="logo laravel 8">
+                        </div>
+                        <div class="col-sm-12 col-md-8 v-align">
+                          <p>Además, para los end-points del backend la aplicación utiliza el framework laravel en su versión 8.</p>
+                        </div>
+                      </div>
+                      <p>El objetivo de Laravel es el de ser un framework que permita el uso de una sintaxis refinada y expresiva para crear código de forma sencilla, evitando el «código espagueti» y permitiendo multitud de funcionalidades</p>
+                      <div>
+                        <h3>Simular pagos con webpay:</h3>
+                      </div>
+                      <div>
+                        <p>
+
+                          Para simular pagos con webpay, al seleccionar el botón <b>Pagar con Paypal</b>, ubicado en la pantalla de <b>Datos de envío</b>, la aplicación redireccionará a WebPay, allí los pasos a seguir son los siguientes:<br><br>
+
+                            1- Primero se debe seleccionar la opción debito.<br>
+                            2- A la derecha de la pantalla seleccionar como banco <b>TEST COMMERCE BANK</b>.<br>
+                            3- Como número de tarjeta se puede utilizar el número <b>4051 8842 3993 7763</b> y seleccionar <b>Pagar $xx.xxx</b> (*).<br>
+                            4- En la pantalla que aparecerá, ingresar como usuario <b>11.111.111-1</b> y como contrase&atilde;a <b>123</b>.<br>
+                            5- En la siguiente pantalla seleccionar <b>Aceptar</b> para simular un pago exitoso o <b>Cancelar</b> para simular un pago no autorizado.<br>
+                            <br>
+                            Finalmente Webpay, redireccionará de regreso a la tienda, donde se mostrará una pantalla con el resumen del Pago.
+                            <br>
+                            <b>*</b> Para probar otras tarjetas y medios de pago con Webpay, los puedes obtener en la página de <a href="https://www.transbankdevelopers.cl/documentacion/como_empezar#tarjetas-de-prueba" target="_blank">Transbank developers</a> en la sección <b>Tarjetas de Prueba</b>
+                        </p>
+
+                      </div>
+
+
+                      <div>
+                        <h3>Administrar tienda:</h3>
+                      </div>
+                      <p>
+                        Si se desea modificar la configuración de la tienda, como cambiar el nombre de la tienda, modificar imágenes de la página home,
+                        agregar o quitar productos y modificar sus precios o Stok, se puede hacer ingresando a la administración de la
+                        tienda.
+                        <br>
+                        Para acceder a la administración de la tienda se debe ingresar al menú
+                          <b>Páginas</b> -> <b> <a routerLink="/login"  target="_blank">Administración</a></b> <br>
+                          Las credenciales para ingresar son: <br>
+                          <b>Usuario</b>: mabc@live.cl <br>
+                          <b>Contrase&ntilde;a</b>: 123456
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

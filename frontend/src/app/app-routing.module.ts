@@ -47,6 +47,7 @@ import { DatosDespachoComponent } from './pages/front-office/datos-despacho/dato
 import { ResultadoTransaccionComponent } from './pages/front-office/resultado-transaccion/resultado-transaccion.component';
 import { DespachosGridComponent } from './pages/back-office/despachos/despachos-grid/despachos-grid.component';
 import { DespachosFormComponent } from './pages/back-office/despachos/despachos-form/despachos-form.component';
+import { AcercaDeComponent } from './pages/front-office/acerca-de/acerca-de.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -134,7 +135,7 @@ const routes: Routes = [
       { path: 'identificacion_cliente', component: IdentificacionClienteComponent },
       { path: 'datos_despacho', component: DatosDespachoComponent },
       { path: 'resultado_transaccion/:webpay_id/:estado/:venta_id', component: ResultadoTransaccionComponent },
-
+      { path: 'acerca_de', component: AcercaDeComponent },
     ]
   },
   { path: '**', pathMatch: 'full', redirectTo: '/' },

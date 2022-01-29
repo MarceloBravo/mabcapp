@@ -79,6 +79,7 @@ import { DatosDespachoComponent } from './pages/front-office/datos-despacho/dato
 import { ResultadoTransaccionComponent } from './pages/front-office/resultado-transaccion/resultado-transaccion.component';
 import { DespachosGridComponent } from './pages/back-office/despachos/despachos-grid/despachos-grid.component';
 import { DespachosFormComponent } from './pages/back-office/despachos/despachos-form/despachos-form.component';
+import { AcercaDeComponent } from './pages/front-office/acerca-de/acerca-de.component';
 //import { NgChartjsModule } from 'ng-chartjs';
 //import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
@@ -154,6 +155,7 @@ import { DespachosFormComponent } from './pages/back-office/despachos/despachos-
     ResultadoTransaccionComponent,
     DespachosGridComponent,
     DespachosFormComponent,
+    AcercaDeComponent,
   ],
   imports: [
     BrowserModule,

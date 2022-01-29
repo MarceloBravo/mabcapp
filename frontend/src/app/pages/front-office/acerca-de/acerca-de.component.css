@@ -1,0 +1,8 @@
+.v-align{
+  display: flex;
+  align-items: center;
+}
+
+.v-align p{
+  margin-bottom: 0 !important;
+}
