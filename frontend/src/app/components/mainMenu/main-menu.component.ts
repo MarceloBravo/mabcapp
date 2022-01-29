@@ -17,7 +17,7 @@ export class MainMenuComponent implements OnInit {
 
   constructor(
     private _scriptService: ScriptServicesService,
-    private _menusService: MenusService
+    private _menusService: MenusService,
   ) {
     this.loadScript()
     this.getMenus();
@@ -51,5 +51,4 @@ export class MainMenuComponent implements OnInit {
       }
     )
   }
-
 }

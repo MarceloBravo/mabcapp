@@ -163,6 +163,21 @@ Route::group([
     Route::put('despachos/enviar/{idVenta}','DespachosVentasController@actualizarEstadoDespacho');
 
     Route::get('ventas/pag/{pag}','VentaController@index');
+
+    Route::get('visitas','VisitasController@index');
+
+    Route::get('cuadro_mando/ventas-ultimo-mes','CuadroMandoController@lastMonthSale');
+    Route::get('cuadro_mando/ventas-ultimo-anio','CuadroMandoController@lastYearSale');
+    Route::get('cuadro_mando/mas-vendidos/{limit}','CuadroMandoController@bestSellers');
+    Route::get('cuadro_mando/detalle-despachos-pendientes/{limit}','CuadroMandoController@detailsPendingShipments');
+    Route::get('cuadro_mando/despachos-pendientes','CuadroMandoController@pendingShipments');
+    Route::get('cuadro_mando/tipo-cliente-venta','CuadroMandoController@TypesCustomersPerSale');
+    Route::get('cuadro_mando/ventas-anuladas-ultimo-mes','CuadroMandoController@refusedSalesLastMonth');
+    Route::get('cuadro_mando/ventas-anuladas-ultimo-anio','CuadroMandoController@refusedSalesLastYear');
+    Route::get('cuadro_mando/ultimo-envio','CuadroMandoController@lastShipment');
+    Route::get('cuadro_mando/unidades-vendidas-mes/{meses}','CuadroMandoController@soldUnitsByMoths');
+
+
 });
 Route::get('imagenes_marquesina/imagenes', 'ImagenesMarquesinaController@getImages');
 
@@ -211,3 +226,5 @@ Route::post('sendmail', 'MailController@sendEmail');
 Route::post('despachos', 'DespachosVentasController@store');
 
 Route::post('detalle_ventas/update_stock','DetalleVentaController@updateStockSold');
+
+Route::put('visitas','VisitasController@update');

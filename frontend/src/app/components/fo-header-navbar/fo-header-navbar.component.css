@@ -20,3 +20,9 @@ span.cliente-logueado{
 .header-area{
   z-index: 10500;
 }
+
+
+.single-mega.cn-col-4{
+  float: inherit !important;
+  vertical-align: text-top;
+}

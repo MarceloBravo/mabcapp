@@ -20,11 +20,9 @@ export class SharedService {
 
   constructor(
     private _toastService: ToastService,
-    //private _const: ConstantesService,
     private router: Router,
     private httpClient: HttpClient
   ) {
-    //this.globalURL = this._const.endPoint
   }
 
   header(token: string){
@@ -41,6 +39,11 @@ export class SharedService {
 
   formatDate(fecha: any){
     return fecha.toLocaleString().toString().substr(0,10).split('-').reverse().join('/');
+  }
+
+  formatDateAndTime(fecha: any){
+        let strFecha = fecha.toLocaleString().toString()
+    return strFecha.substr(0,10).split('-').reverse().join('/') + ' ' +strFecha.substr(10);
   }
 
 

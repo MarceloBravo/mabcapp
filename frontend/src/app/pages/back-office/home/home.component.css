@@ -13,3 +13,11 @@ app-main-menu{
 .page-wrapper{
   padding: 0px !important;
 }
+
+.img-producto{
+  height: 50px;
+}
+
+.span-button{
+  cursor: pointer;
+}

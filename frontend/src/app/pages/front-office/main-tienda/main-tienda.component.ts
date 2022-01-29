@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ScriptServicesService } from 'src/app/services/scriptServices/script-services.service';
+import { VisitasService } from '../../../services/visitas/visitas.service';
 
 @Component({
   selector: 'app-main-tienda',
@@ -11,10 +12,12 @@ export class MainTiendaComponent implements OnInit {
 
   constructor(
     private _scriptService: ScriptServicesService,
+    private _visitasService: VisitasService,
   ) { }
 
   ngOnInit(): void {
     this.loadScript()
+    this.registrarVisita()
   }
 
   private loadScript(){
@@ -26,5 +29,19 @@ export class MainTiendaComponent implements OnInit {
       `${this.sourceScript}classy-nav.min.js`,
       `${this.sourceScript}active.js`,
     ])
+  }
+
+  private registrarVisita(){
+    if(!this._visitasService.checkearVisitaEnStorage()){
+      this._visitasService.registrarVisita().subscribe((res: any) => {
+        if(res.tipoMensaje === 'danger'){
+          console.log(res.mensaje)
+        }else{
+          this._visitasService.registrarVisitaEnStorage()
+        }
+      }, error => {
+        console.log('Error al registrar la visita:', error)
+      })
+    }
   }
 }
