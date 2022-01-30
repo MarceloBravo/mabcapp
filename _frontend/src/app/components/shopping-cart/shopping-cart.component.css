@@ -1,0 +1,11 @@
+.item-cantidad{
+  color: #07ffe8;
+}
+
+.product-remove{
+  cursor: pointer;
+}
+
+.product-image{
+  min-height: 230px;
+}

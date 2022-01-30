@@ -1,0 +1,16 @@
+.text-find-prod{
+  border-style: none;
+  z-index: 10;
+}
+
+.cbo-find-prod{
+  position: absolute;
+  top: -1px;
+  left: 10px;
+}
+
+.btn-add-prod{
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}

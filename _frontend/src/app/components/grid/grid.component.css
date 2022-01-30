@@ -1,0 +1,50 @@
+.card{
+  overflow: auto;
+  min-height: 140%;
+}
+
+.action-col0{
+  cursor: pointer;
+}
+
+.col-fecha{
+  width: 140px;
+}
+
+.col-acciones{
+  width: 90px;
+}
+
+a{
+  color: dimgrey !important;
+  padding-right: 10px;
+}
+
+.btn{
+  color: white !important;
+}
+
+.btn-nuevo{
+  float: right;
+}
+
+.data-table-container{
+  overflow: auto;
+  padding: 0px 5px;
+}
+
+.editable-cell{
+  width: 100%;
+  border: none;
+  background: transparent;
+}
+
+.editable-cell:focus{
+  border: #ced4da solid thin;
+  background: white;
+}
+
+.rowError td{
+  background: #fbcbcb  !important;
+}
+

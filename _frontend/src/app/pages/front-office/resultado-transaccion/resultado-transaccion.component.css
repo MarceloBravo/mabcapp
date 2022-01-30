@@ -1,0 +1,68 @@
+.content{
+  margin: 5% 5% 0 5%;
+  width: 90%;
+  margin-left: 5% !important;
+}
+
+::ng-deep .editable-cell{
+  height: 50px !important;
+  width: 60px !important;
+}
+
+app-grid{
+  width: 90%;
+  margin: 0 5%;
+}
+
+.div-total{
+  margin: 0 0 5% 0;
+  width: 90%;
+  margin-left: 5% !important;
+}
+
+.div-total{
+  width: 90% !important;
+  left: 5%;
+}
+
+.lbl-total{
+  font-weight: bold;
+}
+
+.folio-documento{
+  text-align: center;
+}
+
+.folio-documento p{
+  font-size: xx-large;
+}
+
+.content ~.row{
+  margin: 0 !important;
+}
+
+.AUTHORIZED{
+  color: green;
+}
+
+.FAILED, .error-compra{
+  color: red;
+}
+
+.error-compra{
+  padding: 5px 6% !important;
+}
+
+.btn-container{
+  width: 100%;
+  padding: 5%;
+}
+
+.btn-container div:nth-child(2){
+  text-align: center;
+}
+
+.btn-container div:nth-child(3) button{
+  right: 0px;
+  position: absolute;
+}

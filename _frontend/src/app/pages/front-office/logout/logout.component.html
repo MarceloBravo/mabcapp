@@ -1,0 +1,31 @@
+<app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+<app-toasts></app-toasts>
+
+<app-titulo [titulo]="titulo"></app-titulo>
+
+<div class="checkout_area section-padding-80">
+  <div class="container">
+      <div class="row">
+
+          <div class="col-12 col-md-7 col-lg-7 offset-3">
+              <div class="order-details-confirmation">
+
+                  <div class="cart-page-heading">
+                      <h5>Cierre de sessión</h5>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <button class="btn essence-btn" (click)="logout()">Cerrar sessión</button>
+                    </div>
+                    <div class="col-md-6">
+                      <a class="btn essence-btn" routerLink="/registro_cliente">Actualizar mis datos</a>
+                    </div>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- ##### Checkout Area End ##### -->

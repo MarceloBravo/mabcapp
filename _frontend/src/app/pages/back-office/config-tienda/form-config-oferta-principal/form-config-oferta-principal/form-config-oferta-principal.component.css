@@ -1,0 +1,15 @@
+.input-image-file{
+  display: none;
+}
+
+#img-foto{
+  width: 100%;
+  height: auto;
+}
+
+.btn-load-image-conteiner{
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+  text-align: center;
+}

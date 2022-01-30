@@ -1,0 +1,210 @@
+<app-titulo [titulo]="titulo"></app-titulo>
+
+<!-- ##### Shop Grid Area Start ##### -->
+<section class="shop_grid_area section-padding-80">
+  <div class="container">
+      <div class="row">
+          <div class="col-12 col-md-4 col-lg-3">
+              <div class="shop_sidebar_area">
+
+                  <!-- ##### Single Widget ##### -->
+                  <div class="widget catagory mb-50">
+                      <!-- Widget Title -->
+                      <h6 class="widget-title mb-30">Categorías</h6>
+
+                      <!--  Catagories  -->
+                      <div class="catagories-menu">
+                          <ul id="menu-content2" class="menu-content collapse show">
+                              <!-- Single Item -->
+                              <label (click)="filtrarPorCategoria(null)"
+                                class="lbl-categorias"
+                                [class]="params.categoria_id === null ? 'selected-option' : ''"
+                                >Todas
+                              </label>
+                              <ng-container *ngFor="let cat of categorias">
+                                <li *ngIf="cat.subcategorias.length > 0" data-toggle="collapse" >
+                                    <label
+                                      (click)="collapseStatus(cat.nombre)"
+                                      class="lbl-categorias {{ params.categoria_id === cat.id ? 'selected-option' : '' }}"
+                                    >{{ cat.nombre }}
+                                    </label>
+                                    <ul class="sub-menu collapse" [id]="cat.nombre">
+                                        <li>
+                                          <label
+                                            (click)="filtrarPorCategoria(cat.id, true)"
+                                            [class]="params.sub_categoria_id === null && params.categoria_id === cat.id ? 'selected-option' : ''">Todo {{ cat.nombre }}
+                                          </label>
+                                        </li>
+                                        <li *ngFor="let scat of cat.subcategorias">
+                                          <label
+                                            (click)="filtrarPorSubCategoria(cat.id, scat.id)"
+                                            [class]="params.sub_categoria_id === scat.id ? 'selected-option' : ''">
+                                              {{ scat.nombre }}
+                                          </label>
+                                      </li>
+                                    </ul>
+                                </li>
+                            </ng-container>
+
+                          </ul>
+                      </div>
+                  </div>
+
+                  <!-- ##### Single Widget ##### -->
+                  <div class="widget price mb-50">
+                      <!-- Widget Title -->
+                      <h6 class="widget-title mb-30">Filtrar por</h6>
+                      <!-- Widget Title 2 -->
+                      <p class="widget-title2 mb-30">Rango de precio</p>
+
+                      <div class="widget-desc">
+
+                          <div class="slider-range">
+                              <input
+                                #rangePrice
+                                type="range"
+                                class="form-range"
+                                [min]="precioMinMax.precio_min"
+                                [max]="precioMinMax.precio_max"
+                                step="1000"
+                                id="customRange3"
+                                (change)="filtrarPorPrecio(rangePrice.value)"
+                                [title]="'Mostrando precios hasta $' + precioMinMax.value_max.toLocaleString('de-DE')"
+                                [value]="precioMinMax.value_max"
+                              >
+                              <div class="range-price">Rango: ${{ precioMinMax.value_min.toLocaleString('de-DE') }} - ${{ precioMinMax.value_max.toLocaleString('de-DE') }}</div>
+
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- ##### Single Widget ##### -->
+                  <!--
+                  <div class="widget color mb-50">
+                      <!-- Widget Title 2 -->
+                      <!--<p class="widget-title2 mb-30">Color</p>
+                      <div class="widget-desc">
+                          <ul class="d-flex">
+                              <li><a href="#" class="color1"></a></li>
+                              <li><a href="#" class="color2"></a></li>
+                              <li><a href="#" class="color3"></a></li>
+                              <li><a href="#" class="color4"></a></li>
+                              <li><a href="#" class="color5"></a></li>
+                              <li><a href="#" class="color6"></a></li>
+                              <li><a href="#" class="color7"></a></li>
+                              <li><a href="#" class="color8"></a></li>
+                              <li><a href="#" class="color9"></a></li>
+                              <li><a href="#" class="color10"></a></li>
+                          </ul>
+                      </div>
+                  </div>
+                -->
+
+                  <!-- ##### Single Widget ##### -->
+                  <p *ngIf="marcas.length > 0" class="title-marcas">Marcas</p>
+                  <div *ngIf="marcas.length > 0" class="widget brands mb-50 div-marcas">
+                      <!-- Widget Title 2 -->
+                      <div class="widget-desc">
+                          <ul>
+                              <li>
+                                <label
+                                  (click)="filtrarPorMarca(null)"
+                                  [class]="params.marca_id === null ? 'selected-option' : ''"
+                                >Todas</label>
+                              </li>
+                              <li *ngFor="let marca of marcas">
+                                <label
+                                  (click)="filtrarPorMarca(marca.id)"
+                                  [class]="params.marca_id === marca.id ? 'selected-option' : ''"
+                                >
+                                  {{ marca.nombre }}
+                                </label>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-12 col-md-8 col-lg-9">
+              <div class="shop_grid_product_area">
+                  <div class="row">
+                      <div class="col-12">
+                          <div class="product-topbar d-flex align-items-center justify-content-between">
+                              <!-- Total Products -->
+                              <div class="total-products">
+                                  <p><span>{{ paginacion.totRegistros }}</span> productos encontrados</p>
+                              </div>
+                              <div class="col-md-3">
+                                <div class="row">
+                                  <label class="lbl-mostrar col-md-6">Mostrar:</label>
+                                  <select #selectItemsToShow class="form-control col-md-6" name="selectItemsToShow" id="selectItemsToShow" (change)="itemsAMostrar(selectItemsToShow.value)">
+                                    <option value="9">9</option>
+                                    <option value="12">12</option>
+                                    <option value="15">15</option>
+                                    <option value="18">18</option>
+                                    <option value="21">21</option>
+                                    <option value="24">24</option>
+                                    <option value="27">27</option>
+                                    <option value="30">30</option>
+                                    <option value="33">33</option>
+                                    <option value="36">36</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <!-- Sorting -->
+                              <div class="product-sorting d-flex col-md-5">
+
+                                  <p class="lbl-ordenar-por col-md-5">Ordenar por:</p>
+                                  <!-- <form action="#" method="get"> -->
+                                      <select #cboSortByselect class="form-control" name="selectOrderBy" id="cboSortByselect" (change)="ordenarItemsPor(cboSortByselect.value)">
+                                          <option value="{{ ordernarPor.por_nombre }}">Por nombre</option>
+                                          <option value="{{ ordernarPor.precio_menor }}">Precio menor a mayor</option>
+                                          <option value="{{ ordernarPor.precio_mayor }}">Precio mayor a menor</option>
+                                          <option value="{{ ordernarPor.nuevos_primero }}">Nuevos primero</option>
+                                          <option value="{{ ordernarPor.mas_vendidos }}">Más vendidos primero</option>
+                                      </select>
+                                      <!-- <input type="submit" class="d-none" value="">
+                                  </form> -->
+                                </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="row">
+
+                      <!-- Single Product -->
+                      <div class="col-12 col-sm-6 col-lg-4 row-product" *ngFor="let item of productos" >
+                          <div class="single-product-wrapper">
+
+                              <!-- Product Image -->
+                              <div app-card-producto
+                                [sourceImage]="imageFolder + 'productos/'"
+                                [imagen]="item"
+                                (itemClick)="itemClick($event)"
+                                (clickFavorito)="clickFavorito($event)"
+                                [esFavorito]="esFavorito(item)"
+
+                              ></div>
+
+                          </div>
+                      </div>
+                      <app-paginacion
+                        class="paginacion"
+                        [paginacion]="paginacion"
+                        [rutaGet]="'/api/clientes/pag/'"
+                        (paginaAnterior)="mostrarPagina($event)"
+                        (paginaSiguiente)="mostrarPagina($event)"
+                        (mostrarPagina)="mostrarPagina($event)"
+                      ></app-paginacion>
+
+
+
+                  </div>
+              </div>
+
+          </div>
+      </div>
+  </div>
+</section>
+<!-- ##### Shop Grid Area End ##### -->

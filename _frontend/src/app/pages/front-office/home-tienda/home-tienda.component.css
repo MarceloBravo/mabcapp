@@ -1,0 +1,57 @@
+::ng-deep .link-categorias-class{
+  position: absolute;
+  width: 100%;
+  left: 0px;
+  text-align: center;
+  top: 45%;
+  font-size: 30px;
+  font-weight: 700;
+  color: #000000;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none !important;
+}
+
+::ng-deep .link-categorias-class:hover{
+  color: #0f1896 !important;
+}
+
+
+::ng-deep .images-categorias{
+  opacity: .5;
+}
+
+::ng-deep .single-brands-logo,
+.carousel-marcas{
+  height: 50px !important;
+}
+
+.cta--text{
+  position: absolute;
+}
+
+.izquierda{
+  left: 0px;
+}
+
+.centrado{
+  left: 20%;
+  padding-right: 150px !important;
+}
+
+.derecha{
+  right: 0px;
+  padding-right: 0px !important;
+}
+
+.arriba{
+  top: 0px;
+}
+
+.medio{
+  top: 25%;
+}
+
+.abajo{
+  bottom: 0px;
+}

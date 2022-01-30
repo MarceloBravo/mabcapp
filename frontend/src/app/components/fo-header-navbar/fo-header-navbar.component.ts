@@ -6,8 +6,7 @@ import { ItemCarrito } from '../../class/itemCarrito/item-carrito';
 import { ConfigTiendaService } from '../../services/configTienda/config-tienda.service';
 import { Tienda } from '../../class/tienda/tienda';
 import { LoginClientesService } from '../../services/loginClientes/login-clientes.service';
-import { CategoriasService } from '../../services/categorias/categorias.service';
-import { Categoria } from '../../class/Categoria/categoria';
+import { Cliente } from '../../class/cliente/cliente';
 
 @Component({
   selector: 'app-fo-header-navbar',
@@ -25,7 +24,6 @@ export class FoHeaderNavbarComponent implements OnInit {
   className: string = ''
   nombre_cliente: string = ''
   ocultarNombre: boolean = false
-  categorias: Categoria[] = []
 
   constructor(
     private _catalogoService: CatalogoService,
@@ -33,7 +31,6 @@ export class FoHeaderNavbarComponent implements OnInit {
     private _carritoService: CarritoService,
     private _configTiendaService: ConfigTiendaService,
     private _loginClienteService: LoginClientesService,
-    private _categoriasService: CategoriasService,
     private router: Router
 
   ) {
@@ -43,48 +40,23 @@ export class FoHeaderNavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.obtenerDatosCarrito()
-
-    this.obtenerRutaActual()
-
-    this.obtenerDatosTienda()
-
-    this.obtenerDatosCliente()
-
-    this.obtenerCategorias()
-
-  }
-
-
-  private obtenerDatosCarrito(){
     this._carritoService.changeCart$.subscribe((res: any) => {
-      this.carrito = this._carritoService.getCarrito()
-      this.cantProductos = this._carritoService.getContarProductos()
-     })
-  }
+     this.carrito = this._carritoService.getCarrito()
+     this.cantProductos = this._carritoService.getContarProductos()
+    })
 
-
-  private obtenerRutaActual(){
     this.activatedRoute.url.subscribe(res => {
-      console.log('isRedirectToHome', res)
       if(res[0]){
         this.ruta = res[0].path
       }
     })
-  }
 
-
-  private obtenerDatosTienda(){
     this._configTiendaService.get().subscribe((res: any) => {
       this.tienda = res
     }, error => {
       console.log('error', error)
     })
-  }
 
-
-  private obtenerDatosCliente(){
     this._loginClienteService.activeUserChange$.subscribe((res: any) => {
       console.log('CAMBIO CLIENTE ******************')
       let cliente = this._loginClienteService.getClienteLogueado()
@@ -96,13 +68,11 @@ export class FoHeaderNavbarComponent implements OnInit {
     })
   }
 
-
-  private obtenerCategorias(){
-    this._categoriasService.getAll().subscribe((res: any) => {
-      this.categorias = res
-    }, error => {
-      console.log(error)
-    })
+  private obtenerDatosCliente(){
+    let cliente = this._loginClienteService.getClienteLogueado()
+    if(cliente && cliente.id){
+      this.nombre_cliente = cliente.nombres + ' ' + cliente.apellido1
+    }
   }
 
   changeTextoFiltro(texto: string){
@@ -121,9 +91,4 @@ export class FoHeaderNavbarComponent implements OnInit {
     this.ocultarNombre = false
     console.log('mostrar')
   }
-
-  tieneCategorias(cat: Categoria):boolean{
-    return cat?.subcategorias.length > 0
-  }
-
 }

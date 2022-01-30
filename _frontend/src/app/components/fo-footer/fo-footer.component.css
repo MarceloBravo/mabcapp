@@ -1,0 +1,21 @@
+.lbl-nombre-tienda{
+  color: white;
+  font-size: x-large;
+  font-family: 'Ubuntu';
+  text-transform: capitalize;
+  -webkit-text-stroke: thin;
+}
+
+.lbl-contacto{
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  display: block;
+  font-weight: 400;
+  font-family: "Ubuntu", sans-serif;
+  text-transform: capitalize;
+}
+
+
+.footer_area{
+  z-index: 100 !important;
+}

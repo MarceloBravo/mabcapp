@@ -1,0 +1,12 @@
+export class Menu {
+  id!: number;
+  nombre!: string;
+  url!: string;
+  menu_padre_id?: number;
+  posicion!: number;
+  sub_menu?: Menu[];
+  acceder?: boolean;
+  created_at!: Date;
+  updated_at!: Date;
+  deleted_at?: Date;
+}

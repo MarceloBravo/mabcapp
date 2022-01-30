@@ -1,0 +1,22 @@
+<ng-container *ngFor="let img of imagenes; let i = index">
+  <section
+    [class]="'welcome_area bg-img background-overlay image-marquesina ' + (i === imagenActual ? 'visible' : 'hidden')"
+    style="background-image: url({{img.src_imagen}});"
+
+    >
+    <div class="container h-100" [class]="'content-text ' + img.posicion_horizontal + ' ' + img.posicion_vertical">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <div class="hero-content">
+                    <h6>{{ img.texto2 }}</h6>
+                    <h2>{{ img.texto }}</h2>
+                    <button *ngIf="!img.link && img.texto_boton" class="btn essence-btn" (click)="clickImage(img.link)">{{ img.texto_boton ? img.texto_boton : 'Ver más'}}</button>
+                    <a *ngIf="img.link" class="btn essence-btn" [routerLink]="img.link">{{ img.texto_boton ? img.texto_boton : 'Ver más' }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <img src="../../../assets/front-office/img/bg-img/arrow.png" alt="Siguiente" (click)="nextImage()" class="right-arrow">
+    <img src="../../../assets/front-office/img/bg-img/arrow.png" alt="Anterior" (click)="previousImage()" class="left-arrow">
+  </section>
+</ng-container>

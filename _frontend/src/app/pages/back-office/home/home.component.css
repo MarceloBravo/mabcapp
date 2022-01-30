@@ -1,0 +1,23 @@
+.container-fluid {
+  width: inherit !important;
+}
+
+.main-menu{
+  height: calc(133% - 80px) !important;
+}
+
+app-main-menu{
+  display: contents;
+}
+
+.page-wrapper{
+  padding: 0px !important;
+}
+
+.img-producto{
+  height: 50px;
+}
+
+.span-button{
+  cursor: pointer;
+}

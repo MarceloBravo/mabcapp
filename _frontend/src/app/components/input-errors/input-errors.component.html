@@ -1,0 +1,5 @@
+<div *ngIf="control && control?.dirty" class="error-input">
+  <ng-container *ngFor="let keyError of getErrors(control)">
+    {{ errorMesage(keyError) }}
+  </ng-container>
+</div>

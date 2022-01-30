@@ -1,0 +1,86 @@
+<!-- ##### Welcome Area Start ##### -->
+<app-marquesina [imagenes]="imagenesMarquesina" [segundos]="180"></app-marquesina>
+<!-- ##### Welcome Area End ##### -->
+
+<!-- ##### Top Catagory Area Start ##### -->
+<div class="top_catagory_area section-padding-80 clearfix">
+  <div class="container">
+
+        <app-carousel
+          [imagenes]="imgCategorias"
+          [sourceImage]="imageFolder + 'categorias/'"
+          [arrows]="false"
+          [cellsToShow]="3"
+          (itemClick)="itemClick($event)"
+        >
+        </app-carousel>
+
+    </div>
+</div>
+<!-- ##### Top Catagory Area End ##### -->
+
+<!-- ##### CTA Area Start ##### -->
+<div class="cta-area" *ngIf="ofertaPrincipal.src_imagen">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="cta-content bg-img background-overlay" style="background-image: url({{sourceImage}});">
+                    <div class="h-100 d-flex align-items-center justify-content-end">
+                        <div [class]="'cta--text ' + ofertaPrincipal.posicion_horizontal + ' ' + ofertaPrincipal.posicion_vertical">
+                            <h6>{{ ofertaPrincipal.texto1 }}</h6>
+                            <h2>{{ ofertaPrincipal.texto2 }}</h2>
+                            <a routerLink="{{ ofertaPrincipal.link }}" class="btn essence-btn">{{ ofertaPrincipal.texto_boton }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ##### CTA Area End ##### -->
+
+<!-- ##### New Arrivals Area Start ##### -->
+<section *ngFor="let seccion of secciones" class="new_arrivals_area section-padding-80 clearfix">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading text-center">
+                    <h2>{{ seccion.nombre }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <app-fo-carousel
+              [imagenes]="seccion.productos"
+              [sourceImage]="imageFolder + 'productos/'"
+              (itemClick)="itemClick($event)"
+              [lightDOM]="true"
+              (clickFavorito)="clickFavorito($event)"
+            ></app-fo-carousel>
+
+          </div>
+        </div>
+    </div>
+</section>
+<!-- ##### New Arrivals Area End ##### -->
+
+<!-- ##### Brands Area Start ##### -->
+<div class="brands-area d-flex align-items-center justify-content-between">
+    <!-- Brand Logo -->
+    <div class="container carousel-marcas">
+      <app-carousel
+          [imagenes]="imgMarcas"
+          [sourceImage]="imageFolder + 'marcas/'"
+          [arrows]="false"
+          [cellsToShow]="5"
+        >
+      </app-carousel>
+    </div>
+
+</div>
+<!-- ##### Brands Area End ##### <img src="{{sourceImage}}{{ item }}" alt="">-->
+

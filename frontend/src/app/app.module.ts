@@ -81,7 +81,6 @@ import { DespachosGridComponent } from './pages/back-office/despachos/despachos-
 import { DespachosFormComponent } from './pages/back-office/despachos/despachos-form/despachos-form.component';
 import { AcercaDeComponent } from './pages/front-office/acerca-de/acerca-de.component';
 //import { NgChartjsModule } from 'ng-chartjs';
-//import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
 
 @NgModule({
   declarations: [
@@ -167,7 +166,7 @@ import { AcercaDeComponent } from './pages/front-office/acerca-de/acerca-de.comp
     IvyCarouselModule,
     BrowserAnimationsModule,
     AccordionModule.forRoot(),
-    //NgChartjsModule,
+    //NgApexchartsModule,
   ],
   providers: [LoguedGuard],
   bootstrap: [AppComponent],
