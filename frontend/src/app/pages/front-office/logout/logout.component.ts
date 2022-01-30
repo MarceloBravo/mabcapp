@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginClientesService } from 'src/app/services/loginClientes/login-clientes.service';
 import { Router } from '@angular/router';
+import { SharedService } from '../../../services/shared/shared.service';
 
 @Component({
   selector: 'app-logout',
@@ -14,6 +15,7 @@ export class LogoutComponent implements OnInit {
 
   constructor(
     private _loginClienteService: LoginClientesService,
+    private _sharedService: SharedService,
     private router: Router
   ) { }
 
@@ -23,6 +25,12 @@ export class LogoutComponent implements OnInit {
 
 
   logout(){
-
+    this._loginClienteService.logOut().subscribe(res => {
+      this._loginClienteService.borrarCredencialesCliente()
+      this.router.navigate(['/home'])
+    }, error =>{
+      console.log(error)
+      this._sharedService.handlerError(error)
+    })
   }
 }

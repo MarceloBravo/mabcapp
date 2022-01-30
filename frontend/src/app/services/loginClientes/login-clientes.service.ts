@@ -49,9 +49,9 @@ export class LoginClientesService {
 
   logOut(){
     let header = this._const.header();
-    this.borrarCredencialesCliente();
+    //this.borrarCredencialesCliente();
     return this.httpClient.post(
-            `${this._const.endPoint}${this.endPoint}/clientes_login`,
+            `${this._const.endPoint}${this.endPoint}/clientes_logout`,
             {},
             {headers: header}
           );
@@ -78,9 +78,10 @@ export class LoginClientesService {
   }
 
 
-  private borrarCredencialesCliente(){
+  borrarCredencialesCliente(){
     sessionStorage.removeItem('client');
     this._tokenService.deteToken()
+    return this.activeUserChange$.emit(undefined)
     //sessionStorage.removeItem('mabc-client-token');
   }
 

@@ -20,6 +20,7 @@ import { Despacho } from '../../../class/despachos/despacho';
 import { VentasService } from '../../../services/ventas/ventas.service';
 import { VentasClienteTiendaService } from 'src/app/services/ventasClienteTienda/ventas-cliente-tienda.service';
 import { DetalleVentaService } from '../../../services/detalleVenta/detalle-venta.service';
+import { Precio } from '../../../class/precio/precio';
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -188,6 +189,7 @@ export class ResultadoTransaccionComponent implements OnInit {
       despacho.casa_num = this.cliente.casa_num,
       despacho.block_num = this.cliente.block_num ? this.cliente.block_num : '',
       despacho.referencia = this.cliente.referencia
+      this.carrito.forEach(e => e.precio_neto = e.precio_venta)
 
       this._despachosService.insert(despacho, this.carrito).subscribe((res: any) => {
         if(res['tipoMensaje'] === 'success'){

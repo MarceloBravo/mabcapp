@@ -86,6 +86,7 @@ export class FoHeaderNavbarComponent implements OnInit {
 
   private obtenerDatosCliente(){
     this._loginClienteService.activeUserChange$.subscribe((res: any) => {
+      console.log('CAMBIO CLIENTE ******************')
       let cliente = this._loginClienteService.getClienteLogueado()
       if(cliente && cliente.id){
         this.nombre_cliente = cliente.nombres + ' ' + cliente.apellido1

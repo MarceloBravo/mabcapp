@@ -11,6 +11,7 @@ export class ItemCarrito {
   precio: number = 0
   precio_venta_normal: number = 0
   precio_venta: number = 0
+  precio_neto: number = 0
   producto_id: number = 0
   stock: number = 0
   str_precio: string = '$ 0'
