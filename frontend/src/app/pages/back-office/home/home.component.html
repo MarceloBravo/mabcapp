@@ -23,6 +23,8 @@
               </div>
             </div>
             <!-- card1 end -->
+
+
             <!-- card1 start -->
             <div class="col-md-6 col-xl-3">
               <div class="card widget-card-1">
@@ -84,7 +86,9 @@
               </div>
             </div>
             <!-- card1 end -->
+
             <!-- Statestics Start -->
+            <!--
             <div class="col-md-12 col-xl-8">
               <div class="card">
                 <div class="card-header">
@@ -94,51 +98,15 @@
                     <h2>Line Chart</h2>
                     <div>
 
-                      <!--
-                      <div style="text-align:center">
-                        <apx-chart
-                          [series]="chartOptions.series"
-                          [chart]="chartOptions.chart"
-                          [xaxis]="chartOptions.xaxis"
-                          [title]="chartOptions.title"
-                        ></apx-chart>
-                      </div>
-                      -->
                     </div>
                   </div>
 
-
-                  <!--
-                  <div class="card-header-left"></div>
-                  <div class="card-header-right">
-                    <ul class="list-unstyled card-option">
-                      <li>
-                        <i class="icofont icofont-simple-left"></i>
-                      </li>
-                      <li>
-                        <i class="icofont icofont-maximize full-card"></i>
-                      </li>
-                      <li>
-                        <i class="icofont icofont-minus minimize-card"></i>
-                      </li>
-                      <li>
-                        <i class="icofont icofont-refresh reload-card"></i>
-                      </li>
-                      <li>
-                        <i class="icofont icofont-error close-card"></i>
-                      </li>
-                    </ul>
-                  </div>
-                  -->
                 </div>
 
-                <!--
-                <div class="card-block">
-                  <div id="statestics-chart" style="height: 517px"></div>
-                </div>
-                -->
+
               </div>
             </div>
+          -->
 
             <div class="col-md-12 col-xl-4">
               <div class="card fb-card">
@@ -195,7 +163,6 @@
                   <div class="row">
 
                       <h2>{{ fechaDespacho }}</h2>
-                      <p class="text-muted">Fecha</p>
 
                   </div>
                 </div>
@@ -204,47 +171,8 @@
 
             <!-- Email Sent End -->
             <!-- Data widget start -->
-            <div class="col-md-12 col-xl-6">
-              <div class="card project-task">
-                <div class="card-header">
-                  <div class="card-header-left">
-                    <h5>Los 5 productos más vendidos</h5>
-                  </div>
-                  <div class="card-header-right">
 
-                  </div>
-                </div>
-                <div class="card-block p-b-10">
-                  <div class="table-responsive">
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th>Producto</th>
-                          <th>Cantidad</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let item of prodMasVendidos">
-                          <td>
-                            <div class="task-contain">
-                              <img src="{{ sourceImage + 'productos/' + item.imagen }}" alt="{{ item.imagen }}" class="img-producto">
-                              <p class="d-inline-block m-l-20">{{ item.producto }}</p>
-                            </div>
-                          </td>
-                          <td>
-                            <p class="d-inline-block m-r-20">{{ item.cantidad }}</p>
-
-                          </td>
-                        </tr>
-
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-12 col-xl-6">
+            <div class="col-md-8">
               <div class="card add-task-card">
                 <div class="card-header">
                   <div class="card-header-left">
@@ -286,6 +214,47 @@
                 </div>
               </div>
             </div>
+
+            <div class="col-md-12 col-xl-12">
+              <div class="card project-task">
+                <div class="card-header">
+                  <div class="card-header-left">
+                    <h5>Los 5 productos más vendidos</h5>
+                  </div>
+                  <div class="card-header-right">
+
+                  </div>
+                </div>
+                <div class="card-block p-b-10">
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Producto</th>
+                          <th>Cantidad</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of prodMasVendidos">
+                          <td>
+                            <div class="task-contain">
+                              <img src="{{ sourceImage + 'productos/' + item.imagen }}" alt="{{ item.imagen }}" class="img-producto">
+                              <p class="d-inline-block m-l-20">{{ item.producto }}</p>
+                            </div>
+                          </td>
+                          <td>
+                            <p class="d-inline-block m-r-20">{{ item.cantidad }}</p>
+
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Data widget End -->
           </div>
         </div>

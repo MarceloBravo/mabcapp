@@ -53,7 +53,7 @@ export class CuadroMandoService {
     return this.http.get(`${this._const.endPoint + this.url}/mas-vendidos/${mostrar}`, {headers: this._const.header()})
   }
 
-  detalleDespachosPendientes(mostrar: number = 5){
+  detalleDespachosPendientes(mostrar: number = 6){
     return this.http.get(`${this._const.endPoint + this.url}/detalle-despachos-pendientes/${mostrar}`, {headers: this._const.header()})
   }
 }

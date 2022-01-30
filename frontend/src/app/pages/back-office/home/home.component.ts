@@ -6,22 +6,7 @@ import { PreciosService } from '../../../services/precios/precios.service';
 import { VisitasService } from '../../../services/visitas/visitas.service';
 import { ConstantesService } from '../../../services/constantes/constantes.service';
 import { Router } from '@angular/router';
-/*
-import {
-  ChartComponent,
-  ApexAxisChartSeries,
-  ApexChart,
-  ApexXAxis,
-  ApexTitleSubtitle
-} from "ng-apexcharts";
 
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  title: ApexTitleSubtitle;
-};
-*/
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -53,27 +38,6 @@ export class HomeComponent implements OnInit {
   //ventasPorMes: {cantidad: number, mes: number}[] = []
   public AmCharts: any
   //public chart: any
-  /*
-  chartOptions: ChartOptions = {
-                                series: [
-                                  {
-                                    name: "My-series",
-                                    data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
-                                  }
-                                ],
-                                chart: {
-                                  height: 350,
-                                  type: "bar"
-                                },
-                                title: {
-                                  text: "My First Angular Chart"
-                                },
-                                xaxis: {
-                                  categories: ["Jan", "Feb",  "Mar",  "Apr",  "May",  "Jun",  "Jul",  "Aug", "Sep"]
-                                }
-                              };
-                              */
-
 
   constructor(
     private _scriptService: ScriptServicesService,
@@ -99,45 +63,7 @@ export class HomeComponent implements OnInit {
     this.anuladasUltimoAnio()
     this.masVendidos()
     this.detalleDespachosPendientes()
-    this.initChart()
   }
-
-  initChart(){
-
-    /*
-    var ctx = <HTMLCanvasElement>document.getElementById("myChart");
-    if(ctx){
-        ctx.getContext("2d");
-      var myChart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday",
-          ],
-          datasets: [
-            {
-              label: "work load",
-              data: [2, 9, 3, 17, 6, 3, 7],
-              backgroundColor: "rgba(153,205,1,0.6)",
-            },
-            {
-              label: "free hours",
-              data: [2, 2, 5, 5, 2, 1, 10],
-              backgroundColor: "rgba(155,153,10,0.6)",
-            },
-          ],
-        },
-      });
-    }
-    */
-  }
-
 
   private loadScript(){
     this._scriptService.load([
@@ -270,51 +196,5 @@ export class HomeComponent implements OnInit {
   private makeChart(data: {cantidad: number, mes: number}[]){
     let datos: { year: any; value: number; }[] = []
     data.forEach(e => datos.push({"year": this._const.meses[e.mes], "value": e.cantidad}))
-    /*
-    this.chart = this.AmCharts.makeChart("statestics-chart", {
-      "type": "serial",
-      "marginTop": 0,
-      "hideCredits": true,
-      "marginRight": 0,
-      "dataProvider": datos,
-      "valueAxes": [{
-          "axisAlpha": 0,
-          "dashLength": 6,
-          "gridAlpha": 0.1,
-          "position": "left"
-      }],
-      "graphs": [{
-          "id": "g1",
-          "bullet": "round",
-          "bulletSize": 9,
-          "lineColor": "#4680ff",
-          "lineThickness": 2,
-          "negativeLineColor": "#4680ff",
-          "type": "smoothedLine",
-          "valueField": "value"
-      }],
-      "chartCursor": {
-          "cursorAlpha": 0,
-          "valueLineEnabled": false,
-          "valueLineBalloonEnabled": true,
-          "valueLineAlpha": false,
-          "color": '#fff',
-          "cursorColor": '#FC6180',
-          "fullWidth": true
-      },
-      "categoryField": "year",
-      "categoryAxis": {
-          "gridAlpha": 0,
-          "axisAlpha": 0,
-          "fillAlpha": 1,
-          "fillColor": "#FAFAFA",
-          "minorGridAlpha": 0,
-          "minorGridEnabled": true
-      },
-      "export": {
-          "enabled": true
-      }
-    });
-    */
   }
 }
