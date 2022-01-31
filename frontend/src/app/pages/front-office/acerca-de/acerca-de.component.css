@@ -6,3 +6,12 @@
 .v-align p{
   margin-bottom: 0 !important;
 }
+
+p a{
+  font-size: 18px;
+  color: blue;
+}
+
+p a:hover{
+  text-decoration: underline;
+}
