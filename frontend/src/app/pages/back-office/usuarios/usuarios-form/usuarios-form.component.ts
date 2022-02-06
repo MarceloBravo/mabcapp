@@ -1,5 +1,5 @@
-import { Component, OnInit, ɵCodegenComponentFactoryResolver } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { UsuariosService } from '../../../../services/usuarios/usuarios.service';
 import { User } from '../../../../class/User/user';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,6 +11,7 @@ import { CustomValidators } from '../../../../validators/custom-validators';
 import { FilesService } from '../../../../services/files/files.service';
 import { ConstantesService } from '../../../../services/constantes/constantes.service';
 import { LoginService } from '../../../../services/login/login.service';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-usuarios-form',
@@ -19,10 +20,8 @@ import { LoginService } from '../../../../services/login/login.service';
 })
 export class UsuariosFormComponent implements OnInit {
   public showSpinner: boolean = false;
-  public messageDialog: string = '';
-  private tipoModal = 'grabar';
-  public mostrarModal: boolean = false;
-  public url: string = '';
+  private accion = 'grabar';
+  public url: string = '/admin/usuarios';
   private usuario: User = new User();
   public roles: Rol[] = [];
   public form: FormGroup = new FormGroup({
@@ -54,7 +53,8 @@ export class UsuariosFormComponent implements OnInit {
     private _shared: SharedService,
     private _toastService: ToastService,
     private _const: ConstantesService,
-    private _login: LoginService
+    private _login: LoginService,
+    private _modalDialogService: ModalDialogService,
   ) {
     this._toastService.clearToast();
     let id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -62,9 +62,8 @@ export class UsuariosFormComponent implements OnInit {
     if(id){
       this.id = parseInt(id);
       this.buscar();
-    }else{
-      this.iniciarForm();
     }
+    this.iniciarForm();
   }
 
   ngOnInit(): void {
@@ -109,7 +108,7 @@ export class UsuariosFormComponent implements OnInit {
         this.showSpinner = false;
       }
     },error => {
-      this.handlerError(error);
+      this.showSpinner = !this._shared.handlerError(error);
     });
   }
 
@@ -130,55 +129,41 @@ export class UsuariosFormComponent implements OnInit {
   }
 
   modalGrabar(){
-    this.mostrarModal = true;
-    this.tipoModal = 'grabar';
-    this.messageDialog = '¿Desea grabar el registro';
+    this._modalDialogService.mostrarModalDialog('¿Desea grabar el registro?','Grabar')
+    this.accion = 'grabar';
   }
 
 
   modalEliminar(){
-    this.mostrarModal = true;
-    this.tipoModal = 'eliminar';
-    this.messageDialog = '¿Desea eliminar el registro';
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
+    this.accion = 'eliminar';
   }
 
-
-  cancelarModal(e: any){
-    if(this.tipoModal === 'confirmar cambios'){
-      this.router.navigate(['/admin/usuarios'])
-    }
-    this.mostrarModal = false;
-    this.tipoModal = '';
-    this.messageDialog = '';
-  }
 
   cancelar(){
-    if(this.id !== null && this.detectarCambios()){
+    if(this.form.dirty){
       //Se han detectado cambios sin guardar
-      this.messageDialog = 'Existen cambios sin guardar. ¿Desea guardar los cambios?';
-      this.mostrarModal = true;
-      this.tipoModal = 'confirmar cambios';
+      this._modalDialogService.mostrarModalDialog('Existen cambios sin guardar. ¿Desea grabar los cambios?','Confirmar cambios')
+      this.accion = 'volver';
     }else{
       //No se han detectado cambios, se redirige al listado de roles
-      this.router.navigate(['/admin/usuarios']);
+      this.router.navigate([this.url]);
     }
-  }
-
-  private detectarCambios(){
-    //Itera por cada elemento (campo) del objeto form y lo compara con su homonimo pero del objeto
-    //usuario (El objeto usuario contiene los datos de la base de dato, el objeto form contiene los
-    //cambios del usuario) y retorna un array con los campos con diferencias
-    let arrDiferencias = Object.keys(this.form.value).filter(k => k !== 'password' && k !== 'confirm_password' && k !== 'foto').filter((k : string) => this.form.get(k)?.value !== (<any>this.usuario)[k])
-    return arrDiferencias.length > 0 || this.fileToUpload !== undefined
   }
 
   aceptarModal(e: any){
-    if(this.tipoModal === 'grabar' || this.tipoModal === 'confirmar cambios'){
+    if(this.accion !== 'eliminar'){
       this.grabar();
     }else{
       this.eliminar();
     }
-    this.cancelarModal(null);
+  }
+
+
+  cancelarModal(){
+    if(this.accion === 'volver'){
+      this.router.navigate([this.url])
+    }
   }
 
 
@@ -201,9 +186,10 @@ export class UsuariosFormComponent implements OnInit {
       if(this.isSuccess(res)){
         this.subirFoto(res['id'], res);
       }
-      this.handlerSuccess(res);
+      this._shared.handlerSucces(res, this.url)
+      this.showSpinner = false;
     },error=>{
-      this.handlerError(error);
+      this.showSpinner = !this._shared.handlerError(error);
     });
   }
 
@@ -212,10 +198,15 @@ export class UsuariosFormComponent implements OnInit {
     this._userServices.update(this.id, this.form.value).subscribe((res: any)=> {
       if(this.isSuccess(res)){
         this.subirFoto(res['id'], res);
+        let user = this._login.getUsuarioLogueado()
+        if(user && this.form.value.id === user.id){
+          this._login.setCredencialesUsuario(this.form.value, this.form.value.roles)  //Actualizando los datos del usuario logueado
+        }
       }
-      this.handlerSuccess(res);
+      this._shared.handlerSucces(res, this.url)
+      this.showSpinner = false;
     },error=>{
-      this.handlerError(error);
+      this.showSpinner = !this._shared.handlerError(error);
     });
   }
 
@@ -227,10 +218,9 @@ export class UsuariosFormComponent implements OnInit {
   private subirFoto(id: number, res: any){
     if(this.fileToUpload){
       this._files.uploadFile(<File>this.fileToUpload, 'usuarios/subir/foto').subscribe(() => {
-        this._login.setCredencialesUsuario(this.form.value, this.form.value.roles)
       },error=>{
         console.log(error)
-        this.handlerError(error);
+        this.showSpinner = !this._shared.handlerError(error);
       })
     }
   }
@@ -240,9 +230,10 @@ export class UsuariosFormComponent implements OnInit {
     this.showSpinner = true;
 
     this._userServices.delete(this.id).subscribe((res: any) => {
-      this.handlerSuccess(res);
+      this._shared.handlerSucces(res, this.url)
+      this.showSpinner = false;
     },error=>{
-      this.handlerError(error);
+      this.showSpinner = !this._shared.handlerError(error);
     });
   }
 
@@ -273,29 +264,4 @@ export class UsuariosFormComponent implements OnInit {
     let img: HTMLImageElement = <HTMLImageElement>document.getElementById('img-foto')
     img.src = object ? object : url ? this._const.storageImages + url : this._const.srcDefault
   }
-
-
-  private handlerSuccess(res: any){
-    if(res['status'] === 'Token is Expired'){
-      this.router.navigate(['/']);
-    }else{
-      if(res.errores){
-        let mensaje: string = res.mensaje;
-        mensaje += ': ' + Object.keys(res.errores).map(k => res.errores[k]).join(',');
-        this._toastService.showErrorMessage(mensaje);
-      }else if(res['tipoMensaje'] === "success"){
-        this._toastService.showSuccessMessage(res['mensaje']);
-        this.router.navigate(['/admin/usuarios']);
-      }
-      this.showSpinner = false
-
-    }
-  }
-
-  private handlerError(error: any){
-    this._toastService.showErrorMessage(error.message);
-    console.log(error);
-    this.showSpinner = false
-  }
-
 }

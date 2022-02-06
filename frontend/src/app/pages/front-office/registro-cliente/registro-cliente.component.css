@@ -1,0 +1,21 @@
+.button-content{
+  margin-top: 25px;
+  width: 100%;
+}
+
+.nice-select{
+  top: -100px;
+  display: none !important;
+}
+
+select{
+  display: block !important;
+}
+
+::ng-deep .nice-select{
+  display: none !important;
+}
+
+::ng-deep .modalDialog-container{
+  z-index: 1000 !important;
+}

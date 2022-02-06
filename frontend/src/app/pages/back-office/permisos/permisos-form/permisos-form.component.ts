@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Permisos } from 'src/app/class/permisos/permisos';
 import { Rol } from 'src/app/class/rol/rol';
+import { ModalDialogService } from 'src/app/services/modalDialog/modal-dialog.service';
+import { SharedService } from 'src/app/services/shared/shared.service';
 import { PermisosService } from '../../../../services/permisos/permisos.service';
 import { RolesService } from '../../../../services/roles/roles.service';
 import { ToastService } from '../../../../services/toast/toast.service';
 /*
 IMPORTANTE: Este mantenedor no es un formulario reactivo sino que un formulario enlazado por lo
 cual requiere importar "import { FormsModule } from '@angular/forms';" en el archivo app.module.ts
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 para poder utilizar [(ngModule)] en los archivos html no enlazados
 */
 
@@ -18,8 +21,6 @@ para poder utilizar [(ngModule)] en los archivos html no enlazados
 })
 export class PermisosFormComponent implements OnInit {
   public showSpinner: boolean = false;
-  public messageDialog: string = '';
-  public mostrarModal: boolean = false;
   public roles: Rol[] = [];
 
   public id: any = null;
@@ -30,6 +31,8 @@ export class PermisosFormComponent implements OnInit {
     private _permisosService: PermisosService,
     private _rolesService: RolesService,
     private _toastService: ToastService,
+    private _sharedServices: SharedService,
+    private _modalDialogService: ModalDialogService,
     ) {
       this.getRoles();
     }
@@ -43,7 +46,7 @@ export class PermisosFormComponent implements OnInit {
       (res: any)=>{
         this.roles = res;
       },error=>{
-        this.handlerErrors(error);
+        this.showSpinner = !this._sharedServices.handlerError(error)
       }
     )
   }
@@ -56,24 +59,18 @@ export class PermisosFormComponent implements OnInit {
       (res: any)=>{
         this.permisos = res;
         this.showSpinner = false;
-        console.log(this.permisos);
       },error=>{
-        this.handlerErrors(error)
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     )
   }
 
   modalGrabar(){
-    this.mostrarModal = true;
-    this.messageDialog = '¿Desea grabar los permisos?';
+    this._modalDialogService.mostrarModalDialog('¿Desea grabar los permisos?','Grabar')
   }
 
-  cancelarModal(e: any){
-    this.mostrarModal = false;
-  }
 
   aceptarModal(e: any){
-    this.mostrarModal = false;
     this.showSpinner = true;
     this._permisosService.save(this.id, this.permisos).subscribe(
       (res: any)=>{
@@ -84,15 +81,9 @@ export class PermisosFormComponent implements OnInit {
         }
         this.showSpinner = false;
       },error=>{
-        this.handlerErrors(error);
+        this.showSpinner = !this._sharedServices.handlerError(error)
       }
     )
-  }
-
-  private handlerErrors(error: any){
-    console.log(error);
-    this.showSpinner = false;
-    this._toastService.showErrorMessage(error.message);
   }
 
 }

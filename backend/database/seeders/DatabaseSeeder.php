@@ -20,5 +20,7 @@ class DatabaseSeeder extends Seeder
         //$this->call(pantallas_seeders::class);
         //$this->call(permisos_seeders::class);
         //$this->call(configuracionSeeder::class);
+        //$this->call(tienda_seeders::class);
+        //$this->call(VisitasSeeder::class);
     }
 }

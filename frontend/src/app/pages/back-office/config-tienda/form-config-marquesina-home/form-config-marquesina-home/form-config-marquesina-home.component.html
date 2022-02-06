@@ -1,0 +1,110 @@
+<app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+<app-modal-dialog
+  (aceptar)="aceptarModal()"
+  (cerrar)="cancelarModal()"
+  >
+</app-modal-dialog>
+
+<div class="form-group row">
+  <div class="col-md-6">
+    <button
+      type="button"
+      class="btn btn-success"
+      (click)="nuevaImagen()"
+    >Agregar nueva imagen</button>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group row">
+      <div class="col-md-3 offset-6">
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="grabar()"
+        >Grabar</button>
+      </div>
+      <div class="col-md-3">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="cancelar()"
+        >Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngFor="let img of imagenesMarquesina; index as i" [id]="i" class="form-group row">
+  <input type="file" [id]="'file'+i" class="input-image-file" (change)="cargarImagen(i)">
+
+  <div class="col-6 image-containner">
+    <img [id]="'img'+i" [src]="getFullPathImage(img.src_imagen)" alt="Archivo no encontrado" class="img-item">
+
+    <div class="form-group row">
+      <div class="col-sm-6">
+        <button
+          type="button"
+          class="btn btn btn-open-file"
+          (click)="buscarImagen(i)"
+        ><i class="fas fa-image"></i>Cargar imagen</button>
+      </div>
+      <div class="col-sm-6">
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="eliminarImagen(i, img.id)"
+        >Eliminar imagen</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-6">
+
+
+
+    <div class="form-group row">
+      <input type="text" [value]="img.texto" (change)="updateData(i, 'texto', $event)" maxlength="200" class="form-control" placeholder="Texto principal de la imágen (Opcional)" title="Ingresa el texto principal asociado a la imágen">
+    </div>
+    <div class="form-group row">
+      <input type="text" [value]="img.texto2" (change)="updateData(i, 'texto2', $event)" maxlength="200" class="form-control" placeholder="Texto secundario de la imágen (Opcional)" title="Ingresa el texto secundario asociado a la imágen">
+    </div>
+    <div class="form-group row">
+      <input type="text" [value]="img.link" (change)="updateData(i, 'link', $event)" maxlength="255" class="form-control" placeholder="Hipervinculo de destino (Opcional)" title="Ingresa el hipervínculo de destino al clickear sobre la imágen">
+    </div>
+    <div class="form-group row">
+      <input type="text" [value]="img.texto_boton" (change)="updateData(i, 'texto_boton', $event)" maxlength="15" class="form-control" placeholder="Texto del botón de la imágen (Opcional)" title="Ingresa el texto del botón de la imagen">
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-5 col-form-label">Posición horizontal del texto</label>
+      <div class="col-sm-7">
+        <select class="custom-select col-md-5" [value]="img.posicion_horizontal">
+          <option value="izquierda">Izquierda</option>
+          <option value="centrado">Centrado</option>
+          <option value="derecha">Derecha</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-5 col-form-label">Posición vertical del texto</label>
+      <div class="col-sm-7">
+        <select class="custom-select col-md-5" [value]="img.posicion_vertical">
+          <option value="arriba">Arriba</option>
+          <option value="medio">Medio</option>
+          <option value="abajo">Abajo</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-5 col-form-label">Posición de la imágen</label>
+      <div class="col-md-7">
+        <input type="number" [value]="img.posicion" (change)="updateData(i, 'posicion', $event)" min="0" class="form-control col-md-6" placeholder="Posición" title="Posición de la imagen en la marquesina">
+      </div>
+    </div>
+
+
+  </div>
+
+
+</div>

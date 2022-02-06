@@ -1,6 +1,11 @@
 .card{
   overflow: auto;
-  min-height: 140%;
+  min-height: 90%;
+  padding: 0px 10px;
+}
+
+.action-col0{
+  cursor: pointer;
 }
 
 .col-fecha{
@@ -26,4 +31,21 @@ a{
 
 .data-table-container{
   overflow: auto;
+  padding: 0px 5px;
 }
+
+.editable-cell{
+  width: 100%;
+  border: none;
+  background: transparent;
+}
+
+.editable-cell:focus{
+  border: #ced4da solid thin;
+  background: white;
+}
+
+.rowError td{
+  background: #fbcbcb  !important;
+}
+

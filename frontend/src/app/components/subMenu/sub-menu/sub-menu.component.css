@@ -1,0 +1,8 @@
+.label-main-menu{
+  cursor: pointer;
+}
+
+.sidebar-header{
+  animation-name: display;
+  animation-duration: 1s;
+}

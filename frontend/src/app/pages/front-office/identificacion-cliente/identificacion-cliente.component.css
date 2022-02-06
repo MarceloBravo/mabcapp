@@ -1,0 +1,14 @@
+.a-crear-cuenta{
+  color: blue;
+  font-size: unset;
+}
+
+.a-crear-cuenta:hover{
+  text-decoration: underline;
+  color: blue;
+  font-size: unset;
+}
+
+.essence-btn{
+  position: inherit;
+}

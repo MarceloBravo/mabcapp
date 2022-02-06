@@ -4,6 +4,7 @@ import { Personalizar } from '../../../class/personalizar/personalizar';
 import { PersonalizarService } from '../../../services/personalizar/personalizar.service';
 import { ToastService } from '../../../services/toast/toast.service';
 import { Router } from '@angular/router';
+import { ModalDialogService } from '../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-personalizar',
@@ -12,16 +13,17 @@ import { Router } from '@angular/router';
 })
 export class PersonalizarComponent implements OnInit {
   public mostrarSpinner: boolean = false
-  public mensajeModal: string = ''
-  public mostrarModal: boolean = false
   public personalizar: Personalizar = new Personalizar()
   public form: FormGroup = new FormGroup({
     nombre_app: new FormControl()
   })
+  private url: string = '/admin'
+  private accion: string = ''
 
   constructor(
     private _configService: PersonalizarService,
     private _toastService: ToastService,
+    private _modalDialogService: ModalDialogService,
     private fb: FormBuilder,
     private router: Router
   ) {
@@ -49,17 +51,21 @@ export class PersonalizarComponent implements OnInit {
 
   //Botón grabar del formulario
   grabar(){
-    this.mostrarModal = true
-    this.mensajeModal = '¿Desea grabar los datos?'
+    this._modalDialogService.mostrarModalDialog('¿Desea grabar los datos?','Grabar')
+    this.accion = 'grabar'
   }
 
   //Botón grabar del formulario
   cancelar(){
-    this.router.navigate(['/admin'])
+    if(this.form.dirty && !this.form.invalid){
+      this._modalDialogService.mostrarModalDialog('Existen cambios sin guardar. ¿Desea grabar los datos?','Confirmar cambios')
+      this.accion = 'volver'
+    }else{
+      this.router.navigate([this.url])
+    }
   }
 
   aceptarModal(){
-    this.mostrarModal = false
     this._configService.saveConfig(this.form.value).subscribe((res: any) => {
 
       if(res['status'] === 'Token is Expired'){
@@ -71,6 +77,7 @@ export class PersonalizarComponent implements OnInit {
         }else{
           this._toastService.showErrorMessage(res.mensaje)
         }
+        this.router.navigate([this.url])
       }
 
     }, error => {
@@ -79,9 +86,10 @@ export class PersonalizarComponent implements OnInit {
     })
   }
 
+
   cancelarModal(){
-    this.mostrarModal = false
+    if(this.accion === "volver"){
+      this.router.navigate([this.url])
+    }
   }
-
-
 }

@@ -224,4 +224,7 @@ input[type=checkbox]{
   color: #edf0f3!important;
 }
 
-
+.small-text{
+  color: white;
+  cursor: pointer;
+}

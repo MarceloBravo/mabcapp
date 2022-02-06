@@ -4,11 +4,8 @@
   <app-toasts></app-toasts>
 
   <app-modal-dialog
-    [titulo]="'Grabar'"
-    [mensaje]="messageDialog"
-    [mostrar]="mostrarModal"
-    (cerrar)="cancelarModal($event)"
     (aceptar)="aceptarModal($event)"
+    (cerrar)="cancelarModal()"
   >
   </app-modal-dialog>
 
@@ -34,35 +31,14 @@
                   max="50"
                 />
                 <!-- Mensajes de error -->
-                <div
-                  *ngIf="
-                    form.get('nombre')?.hasError('required') &&
-                    form.get('nombre')?.dirty
-                  "
-                  class="error-input"
-                >
-                  El nombre del menú es obligatorio.
-                </div>
-                <div
-                  *ngIf="
-                    form.get('nombre')?.hasError('minlength') &&
-                    form.get('nombre')?.dirty
-                  "
-                  class="error-input"
-                >
-                  El nombre del menú debe tener almenos 5 carácteres. Ingresa un
-                  nombre más largo.
-                </div>
-                <div
-                  *ngIf="
-                    form.get('nombre')?.hasError('maxlength') &&
-                    form.get('nombre')?.dirty
-                  "
-                  class="error-input"
-                >
-                  El nombre del menú debe tener un máximo de 50 carácteres.
-                  Ingresa un nombre más corto.
-                </div>
+                <app-input-errors
+                  [control]="form.get('nombre')"
+                  [mensajes]="{
+                    required: 'El nombre del menú es obligatorio.',
+                    minlength: 'El nombre del menú debe tener almenos 5 carácteres. Ingresa un nombre más largo.',
+                    maxlength: 'El nombre del menú debe tener un máximo de 50 carácteres. Ingresa un nombre más corto.'
+                  }"
+                ></app-input-errors>
                 <!-- /Mensajes de error -->
               </div>
             </div>
@@ -78,35 +54,14 @@
                   max="200"
                 />
                 <!-- Mensajes de error -->
-                <div
-                  *ngIf="
-                    form.get('url')?.hasError('required') &&
-                    form.get('url')?.dirty
-                  "
-                  class="error-input"
-                >
-                  La url del menú es obligatoria.
-                </div>
-                <div
-                  *ngIf="
-                    form.get('url')?.hasError('minlength') &&
-                    form.get('url')?.dirty
-                  "
-                  class="error-input"
-                >
-                  La url del menú debe tener almenos 3 carácteres. Ingresa una
-                  url más larga.
-                </div>
-                <div
-                  *ngIf="
-                    form.get('url')?.hasError('maxlength') &&
-                    form.get('url')?.dirty
-                  "
-                  class="error-input"
-                >
-                  La url del menú debe tener un máximo de 200 carácteres.
-                  Ingresa una url más corta.
-                </div>
+                <app-input-errors
+                  [control]="form.get('url')"
+                  [mensajes]="{
+                    required: 'La url del menú es obligatoria.',
+                    minlenth: 'La url del menú debe tener almenos 3 carácteres. Ingresa una url más larga.',
+                    maxlength: 'La url del menú debe tener un máximo de 200 carácteres. Ingresa una url más corta.'
+                  }"
+                ></app-input-errors>
                 <!-- /Mensajes de error -->
               </div>
             </div>
@@ -124,16 +79,17 @@
                   </option>
                 </select>
                 <!-- Mensajes de error -->
-                <div
-                  *ngIf="
-                    form.get('menu_padre_id')?.hasError('menuPadreError') &&
-                    form.get('menu_padre_id')?.dirty
-                  "
-                  class="error-input"
-                >
-                  El menú padre debe ser diferente al menú actual.
-                </div>
+                <app-input-errors
+                  [control]="form.get('menuPadreError')"
+                  [mensajes]="{
+                    menuPadreError: 'El menú padre debe ser diferente al menú actual.',
+                    required: 'Debe ingresar la posición del menú.',
+                    min: 'La posición del menú debe ser un número positivo.',
+                    max: 'La url del menú debe tener un máximo de 200 carácteres. Ingresa una url más corta.'
+                  }"
+                ></app-input-errors>
                 <!-- /Mensajes de error -->
+
               </div>
             </div>
 
@@ -141,30 +97,20 @@
               <label class="col-sm-2 col-form-label">Posición</label>
               <div class="col-sm-10">
                 <input
-                  type="number"
+                  type="text"
                   formControlName="posicion"
-                  class="form-control col-md-2"
-                  min="0"
+                  class="form-control col-md-5"
+                  placeholder="Ingresa la posición del menú"
+                  max="50"
                 />
                 <!-- Mensajes de error -->
-                <div
-                  *ngIf="
-                    form.get('posicion')?.hasError('required') &&
-                    form.get('posicion')?.dirty
-                  "
-                  class="error-input"
-                >
-                  Debe ingresar la posición del menú.
-                </div>
-                <div
-                  *ngIf="
-                    form.get('posicion')?.hasError('min') &&
-                    form.get('posicion')?.dirty
-                  "
-                  class="error-input"
-                >
-                  La posición del menú debe ser un número positivo.
-                </div>
+                <app-input-errors
+                  [control]="form.get('posicion')"
+                  [mensajes]="{
+                    required: 'La posición del menú es obligatoria.',
+                    min: 'La posición debe ser un número positivo.'
+                  }"
+                ></app-input-errors>
                 <!-- /Mensajes de error -->
               </div>
             </div>

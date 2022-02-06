@@ -4,6 +4,8 @@ import { Paginacion } from '../../../../class/paginacion/paginacion';
 import { PantallasService } from '../../../../services/pantallas/pantallas.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { Router } from '@angular/router';
+import { SharedService } from 'src/app/services/shared/shared.service';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-pantallas-grid',
@@ -12,7 +14,6 @@ import { Router } from '@angular/router';
 })
 export class PantallasGridComponent implements OnInit {
   public showSpinner: boolean = false;
-  public mostrarModalEliminar: boolean = false;
   public gridHeaders: string[] = ['Nombre','Menú','Url','Fecha creación','Fecha actualización'];
   public visibleColumns: string[] = ['nombre','menu','url','created_at','updated_at'];
   public data: Pantalla[] = [];
@@ -22,6 +23,8 @@ export class PantallasGridComponent implements OnInit {
   constructor(
     private _pantallasServices: PantallasService,
     private _toast: ToastService,
+    private _sharedServices: SharedService,
+    private _modalDialogService: ModalDialogService,
     private router: Router,
   ) {
     this.obtenerDatos();
@@ -40,7 +43,7 @@ export class PantallasGridComponent implements OnInit {
           this.cargarDatos(res);
         }
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error)
       }
     )
   }
@@ -57,7 +60,6 @@ export class PantallasGridComponent implements OnInit {
 
 
   cancelarEliminar(e: any){
-    this.mostrarModalEliminar = false;
   }
 
   aceptarEliminar(e: any){
@@ -71,13 +73,13 @@ export class PantallasGridComponent implements OnInit {
         }
         this.obtenerDatos();
       },error => {
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error)
       }
     )
   }
 
   eliminar(){
-    this.mostrarModalEliminar = true;
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
   }
 
   filtrar(texto: string){
@@ -86,7 +88,7 @@ export class PantallasGridComponent implements OnInit {
       (res: any)=> {
         this.cargarDatos(res);
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error)
       }
     )
   }
@@ -96,10 +98,4 @@ export class PantallasGridComponent implements OnInit {
     this.obtenerDatos();
   }
 
-
-  private handlerError(error: any){
-    console.log(error);
-    this.showSpinner = false;
-    this._toast.showErrorMessage(error.message)
-  }
 }

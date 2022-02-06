@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,7 +29,60 @@ import { SubMenuComponent } from './components/subMenu/sub-menu/sub-menu.compone
 import { ImageUploadModule } from 'angular2-image-upload';
 import { FormButtonsComponent } from './components/form-buttons/form-buttons.component';
 import { PersonalizarComponent } from './pages/back-office/personalizar/personalizar.component';
-//import { CustomValidatorsComponent } from './validators/custom-validators/custom-validators.component';
+import { PerfilComponent } from './pages/back-office/perfil/perfil.component';
+import { LoguedGuard } from './guards/logued.guard';
+import { FoCarouselComponent } from './components/fo-carousel/fo-carousel.component';
+import { FoFooterComponent } from './components/fo-footer/fo-footer.component';
+import { FoHeaderNavbarComponent } from './components/fo-header-navbar/fo-header-navbar.component';
+import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
+import { MainTiendaComponent } from './pages/front-office/main-tienda/main-tienda.component';
+import { HomeTiendaComponent } from './pages/front-office/home-tienda/home-tienda.component';
+import { IvyCarouselModule } from 'angular-responsive-carousel';
+import { MarcasGridComponent } from './pages/back-office/marcas/marcas-grid/marcas-grid.component';
+import { MarcaFormComponent } from './pages/back-office/marcas/marca-form/marca-form.component';
+import { ImpuestosGridComponent } from './pages/back-office/impuestos/impuestos-grid/impuestos-grid.component';
+import { ImpuestosFormComponent } from './pages/back-office/impuestos/impuestos-form/impuestos-form.component';
+import { InputErrorsComponent } from './components/input-errors/input-errors.component';
+import { CategoriasGridComponent } from './pages/back-office/categorias/categorias-grid/categorias-grid.component';
+import { CategoriasFormComponent } from './pages/back-office/categorias/categorias-form/categorias-form.component';
+import { InfoSessionComponent } from './components/info-session/info-session.component';
+import { SubCategoriasGridComponent } from './pages/back-office/subCategorias/sub-categorias-grid/sub-categorias-grid.component';
+import { SubCategoriasFormComponent } from './pages/back-office/subCategorias/sub-categorias-form/sub-categorias-form.component';
+import { UnidadFormComponent } from './pages/back-office/unidad/unidad-form/unidad-form.component';
+import { UnidadGridComponent } from './pages/back-office/unidad/unidad-grid/unidad-grid.component';
+import { ClientesGridComponent } from './pages/back-office/clientes/clientes-grid/clientes-grid.component';
+import { ClientesFormComponent } from './pages/back-office/clientes/clientes-form/clientes-form.component';
+import { ProductosGridComponent } from './pages/back-office/productos/productos-grid/productos-grid.component';
+import { ProductosFormComponent } from './pages/back-office/productos/productos-form/productos-form.component';
+import { PreciosComponent } from './pages/back-office/precios/precios.component';
+import { ConfigTiendaComponent } from './pages/back-office/config-tienda/config-tienda.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { FormDatosTiendaComponent } from './pages/back-office/config-tienda/form-datos-tienda/form-datos-tienda.component';
+import { SeccionesHomeGridComponent } from './pages/back-office/seccionesHome/secciones-home-grid/secciones-home-grid.component';
+import { SeccionesHomeFormComponent } from './pages/back-office/seccionesHome/secciones-home-form/secciones-home-form.component';
+import { MarquesinaComponent } from './components/marquesina/marquesina.component';
+import { CarouselComponent } from './components/carousel/carousel.component';
+import { FormConfigMarquesinaHomeComponent } from './pages/back-office/config-tienda/form-config-marquesina-home/form-config-marquesina-home/form-config-marquesina-home.component';
+import { FormConfigOfertaPrincipalComponent } from './pages/back-office/config-tienda/form-config-oferta-principal/form-config-oferta-principal/form-config-oferta-principal.component';
+import { CatalogoComponent } from './pages/front-office/catalogo/catalogo.component';
+import { CardProductoComponent } from './components/card-producto/card-producto.component';
+import { DetalleProductoComponent } from './pages/front-office/detalle-producto/detalle-producto.component';
+import { TallasGridComponent } from './pages/back-office/tallas/tallas-grid/tallas-grid.component';
+import { TallasFormComponent } from './pages/back-office/tallas/tallas-form/tallas-form.component';
+import { LoginClienteComponent } from './pages/front-office/login-cliente/login-cliente.component';
+import { RegistroClienteComponent } from './pages/front-office/registro-cliente/registro-cliente.component';
+import { LogoutComponent } from './pages/front-office/logout/logout.component';
+import { IdentificacionClienteComponent } from './pages/front-office/identificacion-cliente/identificacion-cliente.component';
+import { TituloComponent } from './components/titulo/titulo.component';
+import { DatosDespachoComponent } from './pages/front-office/datos-despacho/datos-despacho.component';
+import { ResultadoTransaccionComponent } from './pages/front-office/resultado-transaccion/resultado-transaccion.component';
+import { DespachosGridComponent } from './pages/back-office/despachos/despachos-grid/despachos-grid.component';
+import { DespachosFormComponent } from './pages/back-office/despachos/despachos-form/despachos-form.component';
+import { AcercaDeComponent } from './pages/front-office/acerca-de/acerca-de.component';
+import { ResetPasswordComponent } from './pages/back-office/reset-password/reset-password.component';
+import { PageErrorComponent } from './pages/back-office/page-error/page-error.component';
+//import { NgChartjsModule } from 'ng-chartjs';
 
 @NgModule({
   declarations: [
@@ -57,6 +110,55 @@ import { PersonalizarComponent } from './pages/back-office/personalizar/personal
     SubMenuComponent,
     FormButtonsComponent,
     PersonalizarComponent,
+    PerfilComponent,
+    FoCarouselComponent,
+    FoHeaderNavbarComponent,
+    ShoppingCartComponent,
+    FoFooterComponent,
+    MainTiendaComponent,
+    HomeTiendaComponent,
+    MarcasGridComponent,
+    MarcaFormComponent,
+    ImpuestosGridComponent,
+    ImpuestosFormComponent,
+    InputErrorsComponent,
+    CategoriasGridComponent,
+    CategoriasFormComponent,
+    InfoSessionComponent,
+    SubCategoriasGridComponent,
+    SubCategoriasFormComponent,
+    UnidadFormComponent,
+    UnidadGridComponent,
+    ClientesGridComponent,
+    ClientesFormComponent,
+    ProductosGridComponent,
+    ProductosFormComponent,
+    PreciosComponent,
+    ConfigTiendaComponent,
+    FormDatosTiendaComponent,
+    SeccionesHomeGridComponent,
+    SeccionesHomeFormComponent,
+    MarquesinaComponent,
+    CarouselComponent,
+    FormConfigMarquesinaHomeComponent,
+    FormConfigOfertaPrincipalComponent,
+    CatalogoComponent,
+    CardProductoComponent,
+    DetalleProductoComponent,
+    TallasGridComponent,
+    TallasFormComponent,
+    LoginClienteComponent,
+    RegistroClienteComponent,
+    LogoutComponent,
+    IdentificacionClienteComponent,
+    TituloComponent,
+    DatosDespachoComponent,
+    ResultadoTransaccionComponent,
+    DespachosGridComponent,
+    DespachosFormComponent,
+    AcercaDeComponent,
+    ResetPasswordComponent,
+    PageErrorComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,9 +166,17 @@ import { PersonalizarComponent } from './pages/back-office/personalizar/personal
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    ImageUploadModule.forRoot()
+    ImageUploadModule.forRoot(),
+    IvyCarouselModule,
+    BrowserAnimationsModule,
+    AccordionModule.forRoot(),
+    //NgApexchartsModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [LoguedGuard],
+  bootstrap: [AppComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA
+  ]
 })
 export class AppModule { }

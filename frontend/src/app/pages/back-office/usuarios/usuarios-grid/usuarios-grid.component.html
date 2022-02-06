@@ -5,11 +5,6 @@
   <app-toasts></app-toasts>
 
   <app-modal-dialog
-    [titulo]="'Eliminar'"
-    [mensaje]="'¿Desea eliminar el registro?'"
-    [mostrar]="mostrarModalEliminar"
-    [textoBtnAceptar]="'Eliminar'"
-    (cerrar)="cancelarEliminar($event)"
     (aceptar)="aceptarEliminar($event)"
     >
   </app-modal-dialog>

@@ -5,11 +5,8 @@
   <app-toasts></app-toasts>
 
   <app-modal-dialog
-    [titulo]="'Grabar'"
-    [mensaje]="messageDialog"
-    [mostrar]="mostrarModal"
-    (cerrar)="cancelarModal($event)"
     (aceptar)="aceptarModal($event)"
+    (cerrar)="cancelarModal()"
     >
   </app-modal-dialog>
 
@@ -151,7 +148,7 @@
               <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Confirmar contraseña</label>
                 <div class="col-sm-10">
-                  <input type="password" formControlName="confirm_password" class="form-control col-md-5" placeholder="Buelve a ingresar la contraseña." max="20"/>
+                  <input type="password" formControlName="confirm_password" class="form-control col-md-5" placeholder="Vuelve a ingresar la contraseña." max="20"/>
                   <!-- Mensajes de error -->
                   <div *ngIf="form.get('confirm_password')?.hasError('minlength') && form.get('confirm_password')?.dirty" class="error-input">La contraseña ingresada debe terener almenos 6 carácteres. Ingresa una contraseña mas larga.</div>
                   <div *ngIf="form.get('confirm_password')?.hasError('maxlength') && form.get('confirm_password')?.dirty" class="error-input">La contraseña ingresada debe tener un máximo de 20 carácteres. Ingresa una contraseña más corta.</div>

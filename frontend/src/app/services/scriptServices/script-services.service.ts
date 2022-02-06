@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,5 +21,6 @@ export class ScriptServicesService {
       document.getElementsByTagName('head')[0].appendChild(nodo);
     }
   }
+
 
 }

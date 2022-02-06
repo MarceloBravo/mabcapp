@@ -9,3 +9,20 @@
 app-main-menu{
   display: contents;
 }
+
+.page-wrapper{
+  padding: 0px !important;
+}
+
+.img-producto{
+  height: 50px;
+}
+
+.span-button{
+  cursor: pointer;
+}
+
+.check-task h6{
+  justify-content: space-between;
+  display: flex;
+}

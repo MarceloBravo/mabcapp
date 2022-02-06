@@ -21,6 +21,10 @@ button{
   text-align: left;
 }
 
+.col-form-label{
+  padding: 0;
+}
+
 @media only screen and (max-width: 767px) {
   .heders-rigth{
     display: none

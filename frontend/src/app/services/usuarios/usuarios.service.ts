@@ -18,6 +18,10 @@ export class UsuariosService {
     return this.http.get(`${this._constantes.endPoint}${this.url}/get/all`,{headers: this._constantes.header()});
   }
 
+  findByEmail(email: string){
+    return this.http.post( `${this._constantes.endPoint + this.url}/find_by_email`, {email}, {headers: this._constantes.header()})
+  }
+
   list(page: number){
     return this.http.get(`${this._constantes.endPoint}${this.url}/pag/${page}`,{headers: this._constantes.header()});
   }
@@ -28,6 +32,10 @@ export class UsuariosService {
 
   find(id: number){
     return this.http.get(`${this._constantes.endPoint}${this.url}/${id}`,{headers: this._constantes.header()});
+  }
+
+  findWithoutRols(id: number){
+    return this.http.get(`${this._constantes.endPoint + this.url}/find/${id}`,{headers: this._constantes.header()})
   }
 
   insert(user: User){
@@ -57,6 +65,10 @@ export class UsuariosService {
     console.log(id, user, JSON.stringify(user))
     */
     return this.http.put<object>(`${this._constantes.endPoint}${this.url}/${id}`, user, {headers: this._constantes.headerAttachFile()});
+  }
+
+  updatePassword(id: number, password: string){
+    return this.http.put(`${this._constantes.endPoint + this.url}/pwd/${id}`, {password}, {headers: this._constantes.header()})
   }
 
   delete(id: number){

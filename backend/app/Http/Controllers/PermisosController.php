@@ -82,15 +82,17 @@ class PermisosController extends Controller
     //Graba los permisos asociados a un rol
     private function store($permiso)
     {
-        $found = null;
+        $record = null;
         if(!is_null($permiso['id'])){
-            $found = Permisos::find($permiso['id']);
+            $record = Permisos::find($permiso['id']);
         }
 
-        if(!$found){
+        if(!$record){
             $record = new Permisos();
         }
-        $res = $found->fill($permiso)->save();
+
+        $datos = array_diff($permiso,['created_at','updated_at','deleted_at']);
+        $res = $record->fill($datos)->save();
 
         return $res;
     }

@@ -1,0 +1,94 @@
+<app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+<app-modal-dialog
+  (aceptar)="aceptarModal()"
+  (cerrar)="cancelarModal()"
+  >
+</app-modal-dialog>
+
+
+<div class="card-body">
+  <form [formGroup]="form" id="form">
+
+    <div class="form-group row">
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Nombre de la tienda</label>
+          <div class="col-sm-9">
+            <input type="text" formControlName="nombre_tienda" class="form-control col-md-9" placeholder="Ingresa el nombre de la tienda" max="100"/>
+            <!-- Mensajes de error -->
+            <app-input-errors
+              [control]="form.get('nombre_tienda')"
+              [mensajes]="{
+                required: 'Debes ingresar el nombre de la tienda.',
+                minlength: 'El nombre debe tener almenos 3 carácteres. Ingresa un nombre más largo.',
+                maxlength: 'El nombre debe tener un máximo de 100 carácteres. Ingresa un nombre más corto.'
+              }"
+            ></app-input-errors>
+            <!-- /Mensajes de error -->
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Fono venta</label>
+          <div class="col-sm-9">
+            <input type="text" formControlName="fono_venta" class="form-control col-md-9" placeholder="Ingresa un teléfono de venta." max="30"/>
+            <!-- Mensajes de error -->
+            <app-input-errors
+              [control]="form.get('fono_venta')"
+              [mensajes]="{
+                required: 'Debes ingresar un teléfono de venta.',
+                minlength: 'El teléfono de venta debe tener almenos 6 carácteres. Ingresa un teléfono más largo.',
+                maxlength: 'El teléfono de venta debe tener hasta 30 carácteres. Ingresa un teléfono más corto.'
+              }"
+            ></app-input-errors>
+            <!-- /Mensajes de error -->
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Email</label>
+          <div class="col-sm-9">
+            <input type="text" formControlName="email" class="form-control col-md-9" placeholder="Ingresa un email de contácto." max="150"/>
+            <!-- Mensajes de error -->
+            <app-input-errors
+              [control]="form.get('email')"
+              [mensajes]="{
+                required: 'Debes ingresar el email de contácto.',
+                email: 'El email Ingresado no es válido.',
+                maxlength: 'El email materno debe tener un máximo de 150 carácteres. Ingresa un email más corto.'
+              }"
+            ></app-input-errors>
+            <!-- /Mensajes de error -->
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Dirección</label>
+          <div class="col-sm-9">
+            <input type="text" formControlName="direccion" class="form-control col-md-9" placeholder="Ingresa la dirección de la cas matriz." max="255"/>
+            <!-- Mensajes de error -->
+            <app-input-errors
+              [control]="form.get('direccion')"
+              [mensajes]="{
+                required: 'Debes ingresar la dirección de la cas amtriz de la tienda.',
+                minlength: 'La dirección debe tener almenos 8 carácteres. Ingresa una dirección más larga',
+                maxlength: 'La dirección debe tener un máximo de 255 carácteres. Ingresa una dirección más corta.'
+              }"
+            ></app-input-errors>
+            <!-- /Mensajes de error -->
+          </div>
+        </div>
+
+    </div>
+
+    <app-form-buttons
+      (eventCancelar)="cancelarTienda()"
+      (eventGrabar)="grabarTienda()"
+      [forzarMostrarBtnCrear]="true"
+      [id]="id"
+      [formValid]="form.invalid"
+    ></app-form-buttons>
+
+  </form>
+</div>

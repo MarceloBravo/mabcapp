@@ -1,0 +1,154 @@
+<app-spinner [mostrarSpinner]="showSpinner"></app-spinner>
+
+<app-titulo [titulo]="titulo"></app-titulo>
+
+<div class="checkout_area section-padding-80">
+  <div class="container">
+      <div class="row">
+
+          <div class="col-12 col-md-5">
+              <div class="checkout_details_area mt-50 clearfix">
+
+                  <div class="cart-page-heading mb-30">
+                      <h5>Comprar con mi cuenta</h5>
+                  </div>
+
+                  <form [formGroup]="formLogin">
+                    <div class="col-12 mb-3">
+                      <label for="email">E-mail</label>
+                      <input type="text" formControlName="email" class="form-control" id="email" value="" placeholder="Correo electrónico">
+                    </div>
+                    <div class="col-12 mb-3">
+                      <label for="password">Password</label>
+                      <input type="password" formControlName="password" class="form-control" id="password" value="" placeholder="Contraseña">
+                    </div>
+
+                    <div class="form-check">
+                      <label class="form-check-label text-muted">
+                        <input
+                          type="checkbox"
+                          formControlName="remember"
+                        >
+                        Recordarme
+                      </label>
+                    </div>
+
+                  </form>
+                  <br/>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <button class="btn essence-btn" (click)="login()">Aceptar</button>
+                    </div>
+                    <a class="a-crear-cuenta" routerLink="/registro_cliente">Crea una cuenta aquí</a>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-12 col-md-7 col-lg-7 ml-lg-auto">
+              <div class="order-details-confirmation">
+
+                <div class="cart-page-heading">
+                    <h5>Comprar sin registrarme</h5>
+                </div>
+
+                  <form [formGroup]="formCliente">
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                          <label for="rut">Rut <span>*</span></label>
+                          <input #txtCliente type="text" formControlName="rut" class="form-control" id="rut" value="" required>
+                          <!-- Mensajes de error -->
+                          <app-input-errors
+                            [control]="formCliente.get('rut')"
+                            [mensajes]="{
+                              required: 'Debes ingresar el rut',
+                              minlength: 'El rut debe tener entre 9 y 13 carácteres. Ingresa un rut más largo',
+                              maxlength: 'El rut debe tener entre 9 y 13 carácteres. Ingresa un rut más corto'
+                          }"></app-input-errors>
+                          <!-- /Mensajes de error -->
+                      </div>
+
+                      <div class="col-md-6 mb-3">
+                          <label for="nombres">Nombre(s) <span>*</span></label>
+                          <input type="text" formControlName="nombres" class="form-control" id="nombres" value="" required>
+                          <!-- Mensajes de error -->
+                          <app-input-errors
+                            [control]="formCliente.get('nombres')"
+                            [mensajes]="{
+                              required: 'Debes ingresar el nombre',
+                              minlength: 'El nombre debe tener entre 2 y 50 carácteres. Ingresa un nombre más largo',
+                              maxlength: 'El nombre debe tener entre 2 y 50 carácteres. Ingresa un nombre más corto'
+                          }"></app-input-errors>
+                          <!-- /Mensajes de error -->
+                      </div>
+
+
+                      <div class="col-md-6 mb-3">
+                        <label for="apellido1">Apellido 1 <span>*</span></label>
+                        <input type="text" formControlName="apellido1" class="form-control" id="apellido1" value="" required>
+                        <!-- Mensajes de error -->
+                        <app-input-errors
+                          [control]="formCliente.get('apellido1')"
+                          [mensajes]="{
+                            required: 'Debes ingresar el primer apellido',
+                            minlength: 'El apellido debe tener entre 2 y 50 carácteres. Ingresa un apellido más largo',
+                            maxlength: 'El apellido debe tener entre 2 y 50 carácteres. Ingresa un apellido más corto'
+                        }"></app-input-errors>
+                        <!-- /Mensajes de error -->
+                      </div>
+
+
+                      <div class="col-md-6 mb-3">
+                          <label for="apellido2">Apellido 2 </label>
+                          <input type="text" formControlName="apellido2" class="form-control" id="apellido2" value="">
+                          <!-- Mensajes de error -->
+                          <app-input-errors
+                            [control]="formCliente.get('apellido2')"
+                            [mensajes]="{
+                              required: 'Debes ingresar el primer apellido',
+                              minlength: 'El apellido debe tener entre 2 y 50 carácteres. Ingresa un apellido más largo',
+                              maxlength: 'El apellido debe tener entre 2 y 50 carácteres. Ingresa un apellido más corto'
+                          }"></app-input-errors>
+                          <!-- /Mensajes de error -->
+                      </div>
+
+
+                      <div class="col-md-6 mb-3">
+                        <label for="fono">Fono <span>*</span></label>
+                        <input type="text" formControlName="fono" class="form-control" id="fono" value="" required>
+                        <!-- Mensajes de error -->
+                        <app-input-errors
+                          [control]="formCliente.get('fono')"
+                          [mensajes]="{
+                            required: 'Debes ingresar el telefóno',
+                            minlength: 'El teléfono debe tener entre 9 y 20 carácteres. Ingresa un teléfono más largo',
+                            maxlength: 'El teléfono debe tener entre 9 y 20 carácteres. Ingresa un teléfono más corto'
+                        }"></app-input-errors>
+                        <!-- /Mensajes de error -->
+                      </div>
+
+                      <div class="col-md-6 mb-3">
+                          <label for="email">Email <span>*</span></label>
+                          <input type="email" formControlName="email" class="form-control" id="email" value="" required>
+                          <!-- Mensajes de error -->
+                          <app-input-errors
+                            [control]="formCliente.get('email')"
+                            [mensajes]="{
+                              required: 'Debes ingresar el email',
+                              email: 'El email ingresado no es válido',
+                              maxlength: 'El email debe tener hasta 150 carácteres. Ingresa un email más corto'
+                          }"></app-input-errors>
+                          <!-- /Mensajes de error -->
+                      </div>
+
+
+                    </div>
+                  </form>
+
+                  <button [disabled]="!formCliente.valid" class="btn essence-btn" (click)="continuarCompra()">Continuar</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- ##### Checkout Area End ##### -->
+

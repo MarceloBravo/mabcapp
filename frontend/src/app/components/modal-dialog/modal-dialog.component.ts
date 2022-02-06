@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef, SimpleChanges } from '@angular/core';
-import { element } from 'protractor';
+import { ModalDialogService } from 'src/app/services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-modal-dialog',
@@ -7,41 +7,26 @@ import { element } from 'protractor';
   styleUrls: ['./modal-dialog.component.css']
 })
 export class ModalDialogComponent implements OnInit {
-  @Input() titulo: string = 'Atención';
-  @Input() mensaje: string = 'Este es un modal.';
-  @Input() mostrar: boolean = false;
-  @Input() textoBtnAceptar: string = 'Aceptar';
-  @Input() textoBtnCancelar: string = 'Cancelar';
   @Output() cerrar: EventEmitter<boolean> = new EventEmitter();
   @Output() aceptar: EventEmitter<boolean> = new EventEmitter();
 
-  constructor() { }
+  constructor(public _modalDialogService: ModalDialogService) { }
 
   ngOnInit(): void {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-
-    this.mostrarChange(changes.mostrar.currentValue);
-
-}
-
   btnCancelar(){
+    this.resetValues()
     this.cerrar.emit(false);
   }
 
   btnAceptar(){
+    this.resetValues()
     this.aceptar.emit(true);
   }
 
-
-  private mostrarChange(mostrar: any){
-    //console.log('MOSTRAR  MODAL', mostrar ? 'show' : 'hide')
-    if(mostrar){
-      var el = <HTMLButtonElement>document.getElementById('btnShowModal');
-    }else{
-      var el = <HTMLButtonElement>document.getElementById('btnHidewModal');
-    }
-    el.click();
+  private resetValues(){
+    this._modalDialogService.ocultarModalDialog()
   }
+
 }

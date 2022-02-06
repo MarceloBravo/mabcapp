@@ -1,0 +1,18 @@
+.button-group{
+  width: fit-content;
+}
+
+button{
+  margin-right: 10px;
+  position: absolute;
+  z-index: 10;
+  top: 10px;
+}
+
+.btn-success{
+  right: 120px;
+}
+
+.btn-primary{
+  right: 10px;
+}

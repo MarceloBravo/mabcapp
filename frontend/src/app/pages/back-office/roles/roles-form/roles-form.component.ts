@@ -5,6 +5,7 @@ import { Rol } from '../../../../class/rol/rol';
 import { RolesService } from '../../../../services/roles/roles.service';
 import { ToastService } from '../../../../services/toast/toast.service';
 import { SharedService } from '../../../../services/shared/shared.service';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-roles-form',
@@ -23,10 +24,9 @@ export class RolesFormComponent implements OnInit {
   });
   public id: any = null;
   public url: string = '';
-  public mostrarModal: boolean = false;
-  public messageDialog: string = '¿Desea grabar el registro?';
   public showSpinner: boolean = false;
-  private tipoModal: string = 'grabar';
+  private accion: string = 'grabar';
+  private gridUrl: string = '/admin/roles'
 
   constructor(
     private _rolesService: RolesService,
@@ -34,6 +34,8 @@ export class RolesFormComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private _toastService: ToastService,
+    private _sharedServices: SharedService,
+    private _modalDialogService: ModalDialogService,
     private _shared: SharedService,
   ) {
     this._toastService.clearToast();
@@ -41,7 +43,6 @@ export class RolesFormComponent implements OnInit {
     this.url = urlTree
 
     let id = this.activatedRoute.snapshot.paramMap.get('id');
-    console.log('ID',id);
     if(id != undefined){
       this.id = id
       this.buscarRol();
@@ -79,61 +80,48 @@ export class RolesFormComponent implements OnInit {
           this.showSpinner = false
         }
       }, error => {
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     )
   }
 
   modalGrabar(){
-    this.mostrarModal = true;
-    this.messageDialog = '¿Desea grabar el registro?';
-    this.tipoModal = 'grabar';
+    this._modalDialogService.mostrarModalDialog('¿Desea grabar el registro?','Grabar')
+    this.accion = 'grabar';
   }
 
   modalEliminar(){
-    this.mostrarModal = true;
-    this.messageDialog = '¿Desea eliminar el registro?';
-    this.tipoModal = 'eliminar';
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
+    this.accion = 'eliminar';
   }
 
 
   cancelar(){
-    if(this.id !== null && this.detectarCambios()){
+    if(this.form.dirty){
       //Se han detectado cambios sin guardar
-      this.messageDialog = 'Existen cambios sin guardar. ¿Desea guardar los cambios?';
-      this.tipoModal = 'confirmar cambios';
-      this.mostrarModal = true;
+      this._modalDialogService.mostrarModalDialog('Existen cambios sin guardar. ¿Desea grabar los cambios?','Confirmar cambios')
+      this.accion = 'volver';
     }else{
       //No se han detectado cambios, se redirige al listado de roles
-      this.router.navigate(['/admin/roles']);
+      this.router.navigate([this.gridUrl]);
     }
   }
 
-  private detectarCambios(){
-    let arrDiferencias =  Object.keys(this.form.value).filter(k => this.form.get(k)?.value !==  (<any>this.rol)[k]);
-    return arrDiferencias.length > 0;
-  }
-
-
-  cancelarModal(e: any){
-    if(this.tipoModal === 'confirmar cambios'){
-      this.router.navigate(['/admin/roles'])
-    }
-    this.mostrarModal = false;
-    this.messageDialog = '';
-    this.tipoModal = '';
-  }
 
   aceptarModal(e: any){
-    if(this.tipoModal === 'grabar' || this.tipoModal === 'confirmar cambios'){
+    if(this.accion !== 'eliminar'){
       this.grabar();
     }else{
       this.eliminar();
     }
-    this.cancelarModal(null);
   }
 
 
+  cancelarModal(){
+    if(this.accion === 'volver'){
+      this.router.navigate([this.gridUrl])
+    }
+  }
 
   private grabar(){
     this.showSpinner = true
@@ -149,10 +137,10 @@ export class RolesFormComponent implements OnInit {
   private insertar(){
     this._rolesService.insert(this.form.value).subscribe(
       (res: any)=>{
-
-        this.handlerSuccess(res);
+        this._sharedServices.handlerSucces(res, this.gridUrl)
+        this.showSpinner = false;
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     );
   }
@@ -160,9 +148,10 @@ export class RolesFormComponent implements OnInit {
   private actualizar(){
     this._rolesService.update(this.id, this.form.value).subscribe(
       (res: any)=>{
-        this.handlerSuccess(res);
+        this._sharedServices.handlerSucces(res, this.gridUrl)
+        this.showSpinner = false;
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     );
   }
@@ -172,32 +161,12 @@ export class RolesFormComponent implements OnInit {
     this.showSpinner = true
     this._rolesService.delete(this.id).subscribe(
       (res: any)=>{
-        this.handlerSuccess(res);
+        this._sharedServices.handlerSucces(res, this.gridUrl)
+        this.showSpinner = false;
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     );
   }
 
-  private handlerSuccess(res: any){
-    if(res['status'] === 'Token is Expired'){
-      this.router.navigate(['/']);
-    }else{
-      if(res.errores){
-        let mensaje: string = res.mensaje;
-        mensaje += ': ' + Object.keys(res.errores).map(k => res.errores[k]).join(',');
-        this._toastService.showErrorMessage(mensaje);
-      }else if(res['tipoMensaje'] === "success"){
-        this._toastService.showSuccessMessage(res['mensaje']);
-        this.router.navigate(['/admin/roles']);
-      }
-      this.showSpinner = false
-    }
-  }
-
-  private handlerError(error: any){
-    this._toastService.showErrorMessage(error.message);
-    console.log(error);
-    this.showSpinner = false
-  }
 }

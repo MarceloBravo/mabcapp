@@ -1,23 +1,23 @@
-<div class="button-group">
+<div class="button-group" *ngIf="!ocultarBtnCerrar">
   <button type="submit" class="btn btn-primary" (click)="cancelar()">
-    Cancelar
+    {{ textoBotonCancelar }}
   </button>
 
-  <button *ngIf="eliminar"
+  <button *ngIf="eliminar || forzarMostrarBtnEliminar"
     type="submit"
     class="btn btn-danger"
     (click)="modalEliminar()"
     [disabled]="id == null"
   >
-    Eliminar
+  {{ textoBotonEliminar }}
   </button>
 
-  <button *ngIf="(crear && id == null) || (modificar && id != null)"
+  <button *ngIf="((crear || forzarMostrarBtnCrear)  && id == null ) || ((modificar || forzarMostrarBtnModificar) && id != null)"
     type="submit"
     class="btn btn-success"
     (click)="modalGrabar()"
     [disabled]="formValid"
   >
-    Grabar
+  {{ textoBotonGrabar }}
   </button>
 </div>

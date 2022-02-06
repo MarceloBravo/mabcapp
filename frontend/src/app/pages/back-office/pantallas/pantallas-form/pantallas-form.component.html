@@ -4,20 +4,8 @@
   <app-toasts></app-toasts>
 
   <app-modal-dialog
-    [titulo]="'Grabar'"
-    [mensaje]="messageDialog"
-    [mostrar]="mostrarModal"
-    (cerrar)="cancelarModal($event)"
     (aceptar)="aceptarModal($event)"
-  >
-  </app-modal-dialog>
-
-  <app-modal-dialog
-    [titulo]="'Eliminar'"
-    [mensaje]="'¿Desea eliminar el registro?'"
-    [mostrar]="mostrarModal"
-    (cerrar)="cancelarModal($event)"
-    (aceptar)="aceptarModal($event)"
+    (cerrar)="cancelarModal()"
   >
   </app-modal-dialog>
 
@@ -43,36 +31,16 @@
                   max="50"
                 />
                 <!-- Mensajes de error -->
-                <div
-                  *ngIf="
-                    form.get('nombre')?.hasError('required') &&
-                    form.get('nombre')?.dirty
-                  "
-                  class="error-input"
-                >
-                  El nombre de la pantalla es obligatoria.
-                </div>
-                <div
-                  *ngIf="
-                    form.get('nombre')?.hasError('minlength') &&
-                    form.get('nombre')?.dirty
-                  "
-                  class="error-input"
-                >
-                  El nombre de la pantalla debe tener almenos 3 carácteres.
-                  Ingresa un nombre más largo.
-                </div>
-                <div
-                  *ngIf="
-                    form.get('nombre')?.hasError('maxlength') &&
-                    form.get('nombre')?.dirty
-                  "
-                  class="error-input"
-                >
-                  El nombre de la pantalla debe tener un máximo de 50
-                  carácteres. Ingresa un nombre más corto.
-                </div>
+                <app-input-errors
+                  [control]="form.get('nombre')"
+                  [mensajes]="{
+                    required: 'El nombre de la pantalla es obligatoria.',
+                    minlength: 'El nombre de la pantalla debe tener almenos 3 carácteres. Ingresa un nombre más largo.',
+                    maxlength: 'El nombre de la pantalla debe tener un máximo de 50 carácteres. Ingresa un nombre más corto.'
+                  }"
+                ></app-input-errors>
                 <!-- /Mensajes de error -->
+
               </div>
             </div>
 

@@ -1,16 +1,16 @@
 <nav id="sidebar" class="sidebar">
   <div class="sidebar-content js-simplebar">
-    <a class="sidebar-brand" href="index.html">
+    <a class="sidebar-brand" routerLink="/admin">
       <span class="align-middle">AdminKit</span>
     </a>
 
-    <ul class="sidebar-nav">
-      <ng-container *ngFor="let mnu of menus">
+    <ul class="sidebar-nav" *ngFor="let mnu of menus">
+      <!-- <ng-container *ngFor="let mnu of menus"> -->
         <app-sub-menu
           [className]="'sidebar-header'"
           [menu]="mnu"
         ></app-sub-menu>
-      </ng-container>
+      <!-- </ng-container> -->
     </ul>
   </div>
 </nav>

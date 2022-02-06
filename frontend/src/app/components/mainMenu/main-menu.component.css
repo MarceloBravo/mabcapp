@@ -13,3 +13,12 @@
 .group-menu {
   padding: 1.5rem 1.5rem 0rem 1.375rem !important;
 }
+
+.sidebar-nav{
+  flex-grow: 0;
+}
+
+.sidebar-content{
+  position: fixed;
+}
+

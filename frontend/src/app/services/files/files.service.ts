@@ -41,11 +41,10 @@ export class FilesService {
     return this.http.post<object>(`${this._const.endPoint}${destino}/${id}`, form, {headers: this._const.headerAttachFile()})
   }
 
-  uploadFiles(id: number,  arrFiles: File[], destino: string):Observable<HttpEvent<any>>{
+  uploadFiles(arrFiles: File[], destino: string):Observable<HttpEvent<any>>{
     let formData = new FormData();
     for(var i=0; i < arrFiles.length; i++){
-      debugger
-      formData.append('upload', arrFiles[i], arrFiles[i].name)
+      formData.append('upload[]', arrFiles[i], arrFiles[i].name)
     }
 
     let params = new HttpParams();
@@ -55,7 +54,9 @@ export class FilesService {
       headers: this._const.headerAttachFile()
     };
 
-    const req = new HttpRequest('POST', `${this._const.endPoint}${destino}/${id}`, formData, options);
+    console.log('uploadFiles',`${this._const.endPoint}${destino}`);
+
+    const req = new HttpRequest('POST', `${this._const.endPoint}${destino}`, formData, options);
     return this.http.request(req);
   }
 

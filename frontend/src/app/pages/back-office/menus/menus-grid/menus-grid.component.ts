@@ -4,6 +4,8 @@ import { Menu } from '../../../../class/menus/menu';
 import { MenusService } from '../../../../services/menus/menus.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { Router } from '@angular/router';
+import { SharedService } from 'src/app/services/shared/shared.service';
+import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 
 @Component({
   selector: 'app-menus-grid',
@@ -12,7 +14,6 @@ import { Router } from '@angular/router';
 })
 export class MenusGridComponent implements OnInit {
   public showSpinner: boolean = false;
-  public mostrarModalEliminar: boolean = false;
   public headers: string[] = ['Nombre','Url','posición','Fecha creación','Fecha actualización'];
   public visibleColumns: string[] = ['nombre','url','posicion','created_at','updated_at'];
   public menus: Menu[] = [];
@@ -22,6 +23,8 @@ export class MenusGridComponent implements OnInit {
   constructor(
     private _menusService: MenusService,
     private _toastService: ToastService,
+    private _sharedServices: SharedService,
+    private _modalDialogService: ModalDialogService,
     private router: Router,
   ) {
     this.obtenerDatos();
@@ -34,15 +37,14 @@ export class MenusGridComponent implements OnInit {
     this.showSpinner = true;
     this._menusService.list(this.paginacion.pagina).subscribe(
       (res: any)=>{
-        console.log(res);
         if(res['status'] === 'Token is Expired'){
           this.router.navigate(['/']);
         }else{
           this.cargarDatos(res);
-          this.showSpinner = false;
         }
+        this.showSpinner = false;
     },error=>{
-      this.handlerError(error);
+      this.showSpinner = !this._sharedServices.handlerError(error);
     })
   }
 
@@ -57,7 +59,6 @@ export class MenusGridComponent implements OnInit {
 
   cancelarEliminar(e: any){
     this.idEliminar = null;
-    this.mostrarModalEliminar = false;
   }
 
   aceptarEliminar(e: any){
@@ -66,15 +67,15 @@ export class MenusGridComponent implements OnInit {
       (res: any)=>{
         this._toastService.showSuccessMessage(res.mensaje, res.tipoMensaje);
         this.obtenerDatos();
-        this.mostrarModalEliminar = false;
+        this.showSpinner = false;
     },error=>{
-      this.handlerError(error);
+      this.showSpinner = !this._sharedServices.handlerError(error);
     })
 
   }
 
   eliminar(id: number){
-    this.mostrarModalEliminar = true;
+    this._modalDialogService.mostrarModalDialog('¿Desea eliminar el registro?','Eliminar')
     this.idEliminar = id;
   }
 
@@ -99,15 +100,8 @@ export class MenusGridComponent implements OnInit {
         this.cargarDatos(res);
         this.showSpinner = false;
       },error=>{
-        this.handlerError(error);
+        this.showSpinner = !this._sharedServices.handlerError(error);
       }
     )
   }
-
-  private handlerError(error: any){
-    console.log(error);
-    this.showSpinner = false;
-    this._toastService.showErrorMessage(error.message);
-  }
-
 }

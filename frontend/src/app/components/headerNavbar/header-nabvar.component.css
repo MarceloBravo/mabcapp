@@ -5,3 +5,9 @@
 .clickeable{
   cursor: pointer;
 }
+
+.dropdown{
+  display: flex;
+}
+
+

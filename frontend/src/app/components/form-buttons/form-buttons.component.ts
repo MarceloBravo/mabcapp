@@ -13,6 +13,13 @@ import { ToastService } from '../../services/toast/toast.service';
 export class FormButtonsComponent implements OnInit {
   @Input() id: number | null = null
   @Input() formValid: boolean = false
+  @Input() forzarMostrarBtnCrear: boolean = false
+  @Input() forzarMostrarBtnModificar: boolean = false
+  @Input() forzarMostrarBtnEliminar: boolean = false
+  @Input() ocultarBtnCerrar: boolean = false
+  @Input() textoBotonGrabar: string = 'Grabar'
+  @Input() textoBotonCancelar: string = 'Cancelar'
+  @Input() textoBotonEliminar: string = 'Eliminar'
   @Output() eventCancelar: EventEmitter<boolean> = new EventEmitter()
   @Output() eventGrabar: EventEmitter<boolean> = new EventEmitter()
   @Output() eventEliminar: EventEmitter<boolean> = new EventEmitter()
@@ -61,7 +68,7 @@ export class FormButtonsComponent implements OnInit {
 
 
   modalEliminar(){
-    return this.eventGrabar.emit(true)
+    return this.eventEliminar.emit(true)
   }
 
   modalGrabar(){
