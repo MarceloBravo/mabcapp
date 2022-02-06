@@ -29,7 +29,7 @@ class SendMail extends Mailable
      */
     public function __construct($title, $cliente, $tienda, $carrito, $total, $fecha, $folio) {
         //
-        $cliente;
+        $this->cliente = $cliente;
         $this->tienda = $tienda;
         $this->carrito = $carrito;
         $this->total = $total;

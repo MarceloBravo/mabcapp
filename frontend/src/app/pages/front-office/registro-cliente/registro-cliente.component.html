@@ -106,6 +106,7 @@
                             <label for="first_name">Contraseña <span>*</span></label>
                             <input type="password" formControlName="password" class="form-control" placeholder="Ingresa una contraseña." max="150"/>
                             <!-- Mensajes de error -->
+                            <div *ngIf="form.get('password')?.hasError('isRequiredIf') && form.get('password')?.dirty" class="error-input">Debe ingresar una contraseña.</div>
                             <div *ngIf="form.get('password')?.hasError('minlength') && form.get('password')?.dirty" class="error-input">La contraseña ingresada debe terener almenos 6 carácteres. Ingresa una contraseña mas larga.</div>
                             <div *ngIf="form.get('password')?.hasError('maxlength') && form.get('password')?.dirty" class="error-input">La contraseña ingresada debe tener un máximo de 20 carácteres. Ingresa una contraseña más corta.</div>
                             <div *ngIf="

@@ -89,7 +89,7 @@ export class TallasFormComponent implements OnInit {
     this.showSpinner = true
     this._tallasService.insert(this.form.value).subscribe((res: any) => {
       this.showSpinner = false
-      this._sharedService.handlerSucces(res, '/tallas')
+      this._sharedService.handlerSucces(res, '/admin/tallas')
     }, error => {
       this.showSpinner = false
       this._sharedService.handlerError(error)
@@ -100,7 +100,7 @@ export class TallasFormComponent implements OnInit {
     this.showSpinner = true
     this._tallasService.update(this.form.value).subscribe((res: any) => {
       this.showSpinner = false
-      this._sharedService.handlerSucces(res, '/tallas')
+      this._sharedService.handlerSucces(res, '/admin/tallas')
     }, error => {
       this.showSpinner = false
       this._sharedService.handlerError(error)
@@ -112,7 +112,7 @@ export class TallasFormComponent implements OnInit {
       this.showSpinner = true
       this._tallasService.delete(this.id).subscribe((res: any) => {
         this.showSpinner = false
-        this._sharedService.handlerSucces(res, '/tallas')
+        this._sharedService.handlerSucces(res, '/admin/tallas')
       }, error => {
         this.showSpinner = false
         this._sharedService.handlerError(error)
@@ -123,7 +123,7 @@ export class TallasFormComponent implements OnInit {
 
   cancelarModal(){
     if(this.accion === 'salir'){
-      this.router.navigate(['/tallas'])
+      this.router.navigate(['/admin/tallas'])
     }
   }
 
@@ -133,7 +133,7 @@ export class TallasFormComponent implements OnInit {
       this._modalService.mostrarModalDialog('Existen cambios sin guardar. ¿Desea grabar los cambios?',this.id ? 'Nuevo' : 'Actualizar', 'Grabar')
       this.accion = 'salir'
     }else{
-      this.router.navigate(['/tallas'])
+      this.router.navigate(['/admin/tallas'])
     }
   }
 

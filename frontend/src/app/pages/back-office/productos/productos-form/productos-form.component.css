@@ -11,7 +11,9 @@
 
 .imagen-element{
   width: 45%;
-  max-height: 37%;  
+  max-height: 37% !important;
+  align-items: center;
+  display: flex;
 }
 
 
@@ -38,5 +40,8 @@
 .default-image-icon > svg{
   stroke: white;
   padding: 3px;
+}
 
+.foto-usuario{
+  height: auto;
 }

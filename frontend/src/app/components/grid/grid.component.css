@@ -1,6 +1,7 @@
 .card{
   overflow: auto;
-  min-height: 140%;
+  min-height: 90%;
+  padding: 0px 10px;
 }
 
 .action-col0{

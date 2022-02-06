@@ -80,6 +80,8 @@ import { ResultadoTransaccionComponent } from './pages/front-office/resultado-tr
 import { DespachosGridComponent } from './pages/back-office/despachos/despachos-grid/despachos-grid.component';
 import { DespachosFormComponent } from './pages/back-office/despachos/despachos-form/despachos-form.component';
 import { AcercaDeComponent } from './pages/front-office/acerca-de/acerca-de.component';
+import { ResetPasswordComponent } from './pages/back-office/reset-password/reset-password.component';
+import { PageErrorComponent } from './pages/back-office/page-error/page-error.component';
 //import { NgChartjsModule } from 'ng-chartjs';
 
 @NgModule({
@@ -155,6 +157,8 @@ import { AcercaDeComponent } from './pages/front-office/acerca-de/acerca-de.comp
     DespachosGridComponent,
     DespachosFormComponent,
     AcercaDeComponent,
+    ResetPasswordComponent,
+    PageErrorComponent,
   ],
   imports: [
     BrowserModule,

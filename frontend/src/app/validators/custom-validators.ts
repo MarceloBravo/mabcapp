@@ -45,6 +45,19 @@ export class CustomValidators {
   // ----------------   /Confirmar contraseña   ----------------
 
 
+  static isRequiredIf(obligatoryField: string, optionalField: string)
+  {
+    return (control: AbstractControl): {[key: string]: boolean} | null => {
+      let obligatory = control?.get(obligatoryField)?.value
+      let optional = control?.get(optionalField)?.value
+      if((!obligatory && !optional)){
+        return {isRequired: true}
+      }
+      return null
+    }
+  }
+
+
   public findInvalidControls(form: FormGroup) {
     const invalid = [];
     const controls = form.controls;

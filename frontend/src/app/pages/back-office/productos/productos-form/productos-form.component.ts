@@ -247,6 +247,7 @@ export class ProductosFormComponent implements OnInit {
   }
 
   aceptarModal(e: any){
+    debugger
     if(this.accion === 'grabar' || this.accion === 'salir'){
       if(this.id){
         this.actualizar()
@@ -260,7 +261,7 @@ export class ProductosFormComponent implements OnInit {
 
   private insertar(){
     this.showSpinner = true
-    console.log('actualizar',this.form.value, JSON.stringify(this.form.value))
+    console.log('nuevo',this.form.value, JSON.stringify(this.form.value))
 
     this._productosService.insert(this.form.value).subscribe((res: any) => {
       this.subirImagenes()
@@ -273,7 +274,7 @@ export class ProductosFormComponent implements OnInit {
   }
 
   private actualizar(){
-    //console.log(this.form.value, JSON.stringify(this.form.value))
+    console.log('actualizar',this.form.value, JSON.stringify(this.form.value))
     //debugger
     this.showSpinner = true
     this._productosService.update(this.form.value).subscribe((res: any) => {

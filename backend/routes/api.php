@@ -223,8 +223,15 @@ Route::post('ventas_cliente_invitado/{id}','VentasClienteInvitadoController@upda
 //Read more: https://rabineupane.com.np/how-to-send-mail-in-laravel-6-api-with-gmail/#ixzz7GdgabxNX
 Route::post('sendmail', 'MailController@sendEmail');
 
+Route::post('reset_password', 'PasswordResetMailController@sendEmail');
+
 Route::post('despachos', 'DespachosVentasController@store');
 
 Route::post('detalle_ventas/update_stock','DetalleVentaController@updateStockSold');
 
 Route::put('visitas','VisitasController@update');
+
+Route::post('usuarios/find_by_email','UserController@findByEmail');
+
+Route::get('usuarios/find/{id}','UserController@findUser');
+Route::put('usuarios/pwd/{id}','UserController@updatePassword');

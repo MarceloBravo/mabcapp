@@ -9,6 +9,13 @@ import { ScriptServicesService } from '../../../services/scriptServices/script-s
 import { ToastService } from '../../../services/toast/toast.service';
 import { PersonalizarService } from '../../../services/personalizar/personalizar.service';
 import { Title } from '@angular/platform-browser';
+import { ResetEmailService } from '../../../services/resetEmail/reset-email.service';
+import { UsuariosService } from '../../../services/usuarios/usuarios.service';
+import { User } from '../../../class/User/user';
+import { Tienda } from '../../../class/tienda/tienda';
+import { ConfigTiendaService } from '../../../services/configTienda/config-tienda.service';
+import { isArray } from 'util';
+import { ConstantesService } from '../../../services/constantes/constantes.service';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +32,9 @@ export class LoginComponent implements OnInit {
   })
   public showToast: boolean = false
   public nombreApp: string = ''
+  private usuario: User | null = null
+  private tienda: Tienda | null = null
+
 
   constructor(
     private _loginService: LoginService,
@@ -34,7 +44,12 @@ export class LoginComponent implements OnInit {
     private _scriptService: ScriptServicesService,
     private toastService: ToastService,
     private _configService: PersonalizarService,
-    private title: Title
+    private title: Title,
+    private resetEmail: ResetEmailService,
+    private user: UsuariosService,
+    private configTienda: ConfigTiendaService,
+    private _const: ConstantesService
+
   ) {
     this._scriptService.load([
       '//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js',
@@ -89,7 +104,67 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  rememberPassword(){
 
+  async rememberPassword(email: HTMLInputElement){
+    if(email.value.length > 0){
+      this.usuario = await this.buscarUsuario(email.value)
+      this.tienda = await this.obtenerDatosTienda()
+
+        this.restaurarContraseña()
+
+    }else{
+      this.toastService.showErrorMessage('Debe ingresar su correo electrónico en el cuadro de texto de email')
+    }
+  }
+
+
+  private buscarUsuario(email: string): Promise<any>{
+    return new Promise((resolve, reject) =>{
+      this.user.findByEmail(email).subscribe((res: any) => {
+        return resolve(res)
+      }, error =>{
+        this.toastService.showErrorMessage(error)
+        return reject(null)
+      })
+    })
+
+  }
+
+
+  private obtenerDatosTienda(): Promise<any>{
+    return new Promise((resolve, reject) => {
+      this.configTienda.get().subscribe(res => {
+        return resolve(res)
+      }, error => {
+        this.toastService.showErrorMessage(error)
+        return reject(null)
+      })
+    })
+
+  }
+
+
+  private restaurarContraseña(){
+    if(this.usuario && this.tienda){
+
+      let url = document.URL.split(this.router.url)[0] + '/reset-password/' + this.usuario.id
+      let data = {usuario: this.usuario, tienda: this.tienda, url ,title: 'Restaurar contraseña'}
+      this.resetEmail.resetEmail(data).subscribe((res: any) => {
+        if(res.tipoMensaje === 'danger'){
+          this.toastService.showErrorMessage(res.mensaje)
+        }else{
+          this.toastService.showSuccessMessage('Te hemos enviado un email con instrucciones para restablecer tu contraseña')
+        }
+      }, error=> {
+        this.toastService.showErrorMessage(error.message)
+      })
+
+    }else{
+
+      let mensaje: string  = !this.usuario ? 'El usuario no fue encontrado o no existe. ' : ''
+      mensaje += !this.tienda ? 'La información de la tienda no fue encontrada.' : ''
+      this.toastService.showErrorMessage(mensaje)
+
+    }
   }
 }

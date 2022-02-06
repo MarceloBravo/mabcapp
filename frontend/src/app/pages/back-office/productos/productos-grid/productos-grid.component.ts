@@ -49,6 +49,7 @@ export class ProductosGridComponent implements OnInit {
   private cargarDatos(res: any){
     this.data = res.data
     res.data.forEach((p: any) => {
+      p.descripcion = p.descripcion.substring(0,100) + (p.descripcion.length > 100 ? '...' : '')
       p.imagen_principal = this._const.storageImages + 'productos/' + p.imagen_principal
     })
 
@@ -87,7 +88,6 @@ export class ProductosGridComponent implements OnInit {
     if(this.textoFiltro !== texto)this.paginacion.pagina = 0
 
     if(texto.length > 0){
-      debugger
       this._productosServices.filter(texto, this.paginacion.pagina).subscribe((res: any) => {
         this.cargarDatos(res)
         this.showSpinner = false
@@ -102,6 +102,7 @@ export class ProductosGridComponent implements OnInit {
   }
 
   mostrarPagina(pag: number){
+    this.paginacion.pagina = pag
     if(this.textoFiltro.length > 0 ){
       this.filtrar(this.textoFiltro)
     }else{

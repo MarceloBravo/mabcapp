@@ -50,6 +50,25 @@ class UserController extends Controller
         return response()->json($users->toArray());
     }
 
+    public function updatePassword(Request $request, $id)
+    {
+        if(!$request->password){
+            return response()->json(['mensaje' => 'Debe ingresar una contraseña.', 'tipoMensaje' => 'danger']);
+        }
+        $user = User::find($id);
+        if(!is_null($user)){
+            $user->password = $request->password;
+            $res = $user->save();
+            $mensaje = $res ? 'La contraseña ha sido actualizada.' : 'Ocurrió un error al intentar actualizar la contraseña.';
+            $tipoMensaje = $res ? 'success' : 'danger';
+        }else{
+            $mensaje = 'Usuario no encontrado o no existe. No fue posible actualizar la contraseña';
+            $tipoMensaje = 'danger';
+        }
+
+        return response()->json(['mensaje' => $mensaje, 'tipoMensaje' => $tipoMensaje]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -123,6 +142,17 @@ class UserController extends Controller
     }
 
 
+    /*
+    Busca un suaurio por el email recibido en el request
+    */
+    public function findByEmail(Request $request)
+    {
+        $user = User::where('email','=',$request->email)->first();
+
+        return response()->json($user);
+    }
+
+
     /**
      * Display the specified resource.
      *
@@ -135,6 +165,14 @@ class UserController extends Controller
         $user['roles'] = $user->roles();
 
         return response()->json($user->toArray());
+    }
+
+
+    public function findUser($id)
+    {
+        $user = User::find($id);
+
+        return response()->json($user);
     }
 
     /**

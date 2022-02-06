@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Region } from '../../../class/region/region';
 import { Provincia } from '../../../class/provincia/provincia';
 import { Comuna } from '../../../class/comuna/comuna';
@@ -13,6 +13,7 @@ import { ToastService } from '../../../services/toast/toast.service';
 import { Router } from '@angular/router';
 import { CustomValidators } from 'src/app/validators/custom-validators';
 import { LoginClientesService } from 'src/app/services/loginClientes/login-clientes.service';
+import { timeStamp } from 'console';
 
 @Component({
   selector: 'app-registro-cliente',
@@ -21,6 +22,7 @@ import { LoginClientesService } from 'src/app/services/loginClientes/login-clien
   '../../../../assets/front-office/css/core-style.css']
 })
 export class RegistroClienteComponent implements OnInit {
+  idCli: number | null = null
   titulo: string = 'Registro de cliente'
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
@@ -30,8 +32,8 @@ export class RegistroClienteComponent implements OnInit {
     apellido2: new FormControl(null, [Validators.minLength(2), Validators.maxLength(50)]),
     fono: new FormControl(null, [Validators.required, Validators.minLength(9), Validators.maxLength(20)]),
     email: new FormControl(null, [Validators.required, Validators.email, Validators.maxLength(200)]),
-    password: new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
-    confirm_password: new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
+    password: new FormControl(null, [Validators.minLength(6), Validators.maxLength(20)]),
+    confirm_password: new FormControl(null, [Validators.minLength(6), Validators.maxLength(20)]),
     direccion: new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(255)]),
     cod_region: new FormControl(null, [Validators.required]),
     cod_provincia: new FormControl(null, [Validators.required]),
@@ -43,14 +45,16 @@ export class RegistroClienteComponent implements OnInit {
   },
   //Validaciones Asincronas
   {
-    validators: CustomValidators.confirmPassword('password','confirm_password'),
-
+    validators: [
+      CustomValidators.confirmPassword('password','confirm_password'),
+      CustomValidators.isRequiredIf('id','password'),
+    ],
   })
   regiones: Region[] = []
   provincias: Provincia[] = []
   comunas: Comuna[] = []
   showSpinner: boolean = false
-  idCli: number | null = null
+
 
   constructor(
     private _regionesService: RegionesService,
@@ -139,7 +143,13 @@ export class RegistroClienteComponent implements OnInit {
 
 
   registrarCliente(){
-    this._modalService.mostrarModalDialog('¿Desea registrar tus datos?','Registro de cliente','Registrarme')
+    let pwd = this.form.value.password ? this.form.value.password : ''
+    let confirmPwd = this.form.value.confirm_password ? this.form.value.confirm_password : ''
+    if(pwd === confirmPwd){
+      this._modalService.mostrarModalDialog('¿Desea registrar sus datos?','Registro de cliente','Registrarme')
+    }else{
+      this._toastService.showErrorMessage('Existen datos incompletos o no válidos!','Error de datos')
+    }
   }
 
   aceptarModal(){
