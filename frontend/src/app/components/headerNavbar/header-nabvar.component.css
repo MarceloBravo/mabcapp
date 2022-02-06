@@ -6,7 +6,7 @@
   cursor: pointer;
 }
 
-.dropdown{
+.nav-item.dropdown{
   display: flex;
 }
 
