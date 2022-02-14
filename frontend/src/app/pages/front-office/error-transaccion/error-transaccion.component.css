@@ -1,0 +1,29 @@
+.content-page{
+  padding: 12%;
+  text-align: center;
+  font-weight: bold;
+}
+
+
+/* ************* LAPTOP *************** */
+@media (min-width: 1024px){
+  .content-page{
+    height: 400px;
+  }
+}
+
+
+/* ************* TABLET *************** */
+@media (min-width: 720px) and (max-width: 1023px){
+  .content-page{
+    height: 200px;
+  }
+}
+
+
+/* ************* MOBILE *************** */
+@media (max-width: 719px){
+  .content-page{
+    height: 100px;
+  }
+}

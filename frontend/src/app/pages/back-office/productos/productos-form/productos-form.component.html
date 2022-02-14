@@ -271,8 +271,9 @@
                       #cboSubCategorias
                       class="custom-select col-md-12"
                       formControlName="sub_categoria_id"
+                      (change)="subCategoriaChange(cboSubCategorias.value)"
                     >
-                      <option *ngFor="let item of subCategorias" [value]="item.id" (change)="subCategoriaChange(cboSubCategorias.value)">
+                      <option *ngFor="let item of subCategorias" [value]="item.id">
                         {{ item.nombre }}
                       </option>
                     </select>

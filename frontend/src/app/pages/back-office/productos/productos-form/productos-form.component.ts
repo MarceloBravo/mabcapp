@@ -220,7 +220,6 @@ export class ProductosFormComponent implements OnInit {
       this.showSpinner = true
       this._productosService.find(this.id).subscribe((res: any)=> {
         this.producto = res
-        //console.log(this.obtenerPrecioActual(this.producto))
         this.arrImpuestos = this.producto.impuestos.map((i: any) => i.porcentaje)
         this.cargarSubCategorias(res['categoria_id'])
         this.cargarTallas(res['sub_categoria_id'])
@@ -247,7 +246,6 @@ export class ProductosFormComponent implements OnInit {
   }
 
   aceptarModal(e: any){
-    debugger
     if(this.accion === 'grabar' || this.accion === 'salir'){
       if(this.id){
         this.actualizar()
@@ -261,7 +259,6 @@ export class ProductosFormComponent implements OnInit {
 
   private insertar(){
     this.showSpinner = true
-    console.log('nuevo',this.form.value, JSON.stringify(this.form.value))
 
     this._productosService.insert(this.form.value).subscribe((res: any) => {
       this.subirImagenes()
@@ -274,8 +271,6 @@ export class ProductosFormComponent implements OnInit {
   }
 
   private actualizar(){
-    console.log('actualizar',this.form.value, JSON.stringify(this.form.value))
-    //debugger
     this.showSpinner = true
     this._productosService.update(this.form.value).subscribe((res: any) => {
       this.subirImagenes()
@@ -429,10 +424,8 @@ export class ProductosFormComponent implements OnInit {
     for(let i = 0; i < cbo.selectedOptions.length; i++){
       let indice = parseInt(cbo.selectedOptions[i].value.split(':')[0])
       if(this.impuestos.filter(e => e.id === indice)){
-        //console.log(this.impuestos[indice].porcentaje, this.impuestos[indice].nombre)
         this.arrImpuestos.push(this.impuestos[indice].porcentaje)
       }
     }
-    //console.log(this.arrImpuestos)
   }
 }

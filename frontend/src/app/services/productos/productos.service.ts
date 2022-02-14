@@ -43,8 +43,6 @@ export class ProductosService {
   }
 
   update(producto: Producto){
-    console.log(producto);
-    debugger
     return this.http.put<object>(`${this._const.endPoint}${this.url}/${producto.id}`, producto, {headers: this._const.headerAttachFile()});
   }
 

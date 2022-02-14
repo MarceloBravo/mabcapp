@@ -175,7 +175,7 @@ class ProductosController extends Controller
         }catch(\PDOException $e){
             $mensaje = 'Error al intentar crear el registro.';
             $tipoMensaje = 'danger';
-            $id = -1;
+            $newId = -1;
             DB::rollback();
         }
 
