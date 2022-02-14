@@ -54,19 +54,31 @@ class WebPayController extends Controller
 
 
     public function confirmPay(Request $request){
-        $confirmacion = (new Transaction)->commit($request->token_ws);
 
-        $wp = Webpay::where('id',$confirmacion->buyOrder)->first();
-        $wp->venta_id = self::registrarVenta($wp->ammount);
-        $wp = self::actualizaDatosTransaccion($wp, $confirmacion);
-        $wp->update();
+        if($request->token_ws){
+            $confirmacion = (new Transaction)->commit($request->token_ws);
+
+            $wp = Webpay::where('id',$confirmacion->buyOrder)->first();
+            $wp->venta_id = self::registrarVenta($wp->ammount);
+            $wp = self::actualizaDatosTransaccion($wp, $confirmacion);
+            $wp->update();
 
 
-        if($confirmacion->isApproved()){
-            return redirect(env('URL_FRONTEND_AFTER_PAYMENT')."/{$wp->id}/{$wp->status}/{$wp->venta_id}");
+            if($confirmacion->isApproved()){
+                return redirect(env('URL_FRONTEND_AFTER_PAYMENT')."/{$wp->id}/{$wp->status}/{$wp->venta_id}");
+            }else{
+                return redirect(env('URL_FRONTEND_AFTER_PAYMENT')."/{$wp->id}/{$confirmacion->status}/{$wp->venta_id}");
+            }
         }else{
-            return redirect(env('URL_FRONTEND_AFTER_PAYMENT')."/{$wp->id}/{$confirmacion->status}/{$wp->venta_id}");
+            return redirect(env('URL_FRONTEND_AFTER_PAYMENT'));
         }
+    }
+
+
+    public function cancelPay(Request $request){
+
+        return redirect(env('URL_FRONTEND_AFTER_PAYMENT')."/{$wp->id}/{$confirmacion->status}/{$wp->venta_id}");
+
     }
 
 

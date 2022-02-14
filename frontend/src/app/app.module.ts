@@ -82,6 +82,7 @@ import { DespachosFormComponent } from './pages/back-office/despachos/despachos-
 import { AcercaDeComponent } from './pages/front-office/acerca-de/acerca-de.component';
 import { ResetPasswordComponent } from './pages/back-office/reset-password/reset-password.component';
 import { PageErrorComponent } from './pages/back-office/page-error/page-error.component';
+import { ErrorTransaccionComponent } from './pages/front-office/error-transaccion/error-transaccion.component';
 //import { NgChartjsModule } from 'ng-chartjs';
 
 @NgModule({
@@ -159,6 +160,7 @@ import { PageErrorComponent } from './pages/back-office/page-error/page-error.co
     AcercaDeComponent,
     ResetPasswordComponent,
     PageErrorComponent,
+    ErrorTransaccionComponent,
   ],
   imports: [
     BrowserModule,
