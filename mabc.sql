@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 30/01/2022 12:26:01
+ Date: 21/02/2022 12:07:08
 */
 
 SET NAMES utf8mb4;
@@ -36,7 +36,7 @@ CREATE TABLE `categorias`  (
 -- ----------------------------
 -- Records of categorias
 -- ----------------------------
-INSERT INTO `categorias` VALUES (1, 'Electrodomésticos', '2021-10-30 17:12:46', '2021-11-07 22:20:58', NULL, NULL, NULL);
+INSERT INTO `categorias` VALUES (1, 'Tecnología', '2021-10-30 17:12:46', '2022-02-05 12:19:02', NULL, NULL, NULL);
 INSERT INTO `categorias` VALUES (2, 'Ropa de hombre', '2021-10-30 17:13:03', '2021-10-30 17:13:36', '2021-10-30 17:13:36', NULL, NULL);
 INSERT INTO `categorias` VALUES (3, 'qwertyuio', '2021-10-30 17:13:45', '2021-10-30 17:17:47', '2021-10-30 17:17:47', NULL, NULL);
 INSERT INTO `categorias` VALUES (4, 'Informática', '2021-10-30 17:23:40', '2021-10-30 17:23:40', NULL, NULL, NULL);
@@ -46,6 +46,7 @@ INSERT INTO `categorias` VALUES (7, 'Navidad', '2021-12-07 22:47:53', '2021-12-0
 INSERT INTO `categorias` VALUES (8, 'Calzado', '2021-12-07 22:48:47', '2021-12-07 22:48:47', NULL, 'bg-3.jpg', NULL);
 INSERT INTO `categorias` VALUES (9, 'Electrónica', '2021-12-10 19:27:18', '2021-12-10 19:27:18', NULL, NULL, 'electronica');
 INSERT INTO `categorias` VALUES (10, 'Deportes', '2021-12-11 16:14:21', '2021-12-11 17:02:58', NULL, 'deportes-hd.jpg', 'deportes');
+INSERT INTO `categorias` VALUES (11, 'Salud y Belleza', '2022-02-05 12:24:51', '2022-02-05 12:24:51', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for clientes
@@ -74,7 +75,7 @@ CREATE TABLE `clientes`  (
   `rut` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `clientes_rut_unique`(`rut`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of clientes
@@ -100,7 +101,7 @@ CREATE TABLE `config_oferta_principal`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of config_oferta_principal
@@ -118,7 +119,7 @@ CREATE TABLE `configuracion`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of configuracion
@@ -176,6 +177,7 @@ INSERT INTO `despachos_ventas` VALUES (61, 42, '1 NORTE 2 ORIENTE', '07', '071',
 INSERT INTO `despachos_ventas` VALUES (64, 44, '1 NORTE 2 ORIENTE', '07', '071', '07101', 'Talca', '123A', NULL, 'Pasaje sin número', 0, NULL, '2022-01-30 01:59:58', '2022-01-30 01:59:58', NULL);
 INSERT INTO `despachos_ventas` VALUES (67, 47, '12 Norte 16 Oriente, #2288, Talca', '07', '071', '07101', 'Talca', '1234', '01', 'Cerca de colegio', 0, NULL, '2022-01-30 02:14:06', '2022-01-30 02:14:06', NULL);
 INSERT INTO `despachos_ventas` VALUES (68, 48, '1 NORTE 2 ORIENTE', '07', '071', '07101', 'Talca', '123A', NULL, 'Pasaje sin número', 0, NULL, '2022-01-30 15:05:08', '2022-01-30 15:05:08', NULL);
+INSERT INTO `despachos_ventas` VALUES (69, 49, '1 NORTE 2 ORIENTE', '07', '071', '07101', 'Talca', '123A', NULL, 'Pasaje sin número', 0, NULL, '2022-02-11 20:51:21', '2022-02-11 20:51:21', NULL);
 
 -- ----------------------------
 -- Table structure for detalle_ventas
@@ -234,6 +236,7 @@ INSERT INTO `detalle_ventas` VALUES (40, 42, 6, 110000, 19, NULL, 130900, 1, 130
 INSERT INTO `detalle_ventas` VALUES (41, 42, 7, 33000, 19, NULL, 39270, 1, 39270, '2022-01-06 13:25:13', '2022-01-06 13:25:13', NULL);
 INSERT INTO `detalle_ventas` VALUES (42, 47, 24, 13685, 19, NULL, 13685, 1, 16285, '2022-01-30 02:14:06', '2022-01-30 02:14:06', NULL);
 INSERT INTO `detalle_ventas` VALUES (43, 48, 24, 13685, 19, NULL, 13685, 1, 16285, '2022-01-30 15:05:08', '2022-01-30 15:05:08', NULL);
+INSERT INTO `detalle_ventas` VALUES (44, 49, 43, 29750, 19, NULL, 29750, 1, 35403, '2022-02-11 20:51:21', '2022-02-11 20:51:21', NULL);
 
 -- ----------------------------
 -- Table structure for failed_jobs
@@ -273,7 +276,7 @@ CREATE TABLE `imagenes_marquesina_home`  (
   `posicion_horizontal` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pos_left',
   `posicion_vertical` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pos_middle',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of imagenes_marquesina_home
@@ -307,7 +310,7 @@ CREATE TABLE `imagenes_producto`  (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `imagen_principal` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 94 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 161 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of imagenes_producto
@@ -378,6 +381,54 @@ INSERT INTO `imagenes_producto` VALUES (90, 25, 'dron phantom3.jpg', '2021-12-12
 INSERT INTO `imagenes_producto` VALUES (91, 25, 'dron phantom3-b.jpg', '2021-12-12 12:35:35', '2021-12-12 12:35:35', NULL, 0);
 INSERT INTO `imagenes_producto` VALUES (92, 25, 'dron phantom3-c.jpg', '2021-12-12 12:35:35', '2021-12-12 12:35:35', NULL, 0);
 INSERT INTO `imagenes_producto` VALUES (93, 7, 'hd4.jpg', '2021-12-12 12:38:39', '2021-12-12 12:38:39', NULL, 1);
+INSERT INTO `imagenes_producto` VALUES (102, 28, '152540-0960-001.webp', '2022-02-04 21:23:44', '2022-02-04 21:23:44', NULL, 1);
+INSERT INTO `imagenes_producto` VALUES (103, 28, '152540-0960-002.webp', '2022-02-04 21:23:44', '2022-02-04 21:23:44', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (104, 28, '152540-0960-003.webp', '2022-02-04 21:23:44', '2022-02-04 21:23:44', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (105, 28, '152540-0960-004.webp', '2022-02-04 21:23:44', '2022-02-04 21:23:44', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (106, 29, 'MKM9HFDSVU-001.jpg', '2022-02-05 11:57:40', '2022-02-05 11:57:40', NULL, 1);
+INSERT INTO `imagenes_producto` VALUES (107, 29, 'MKM9HFDSVU-003.jpg', '2022-02-05 11:57:40', '2022-02-05 11:57:40', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (108, 29, 'MKM9HFDSVU-004.jpg', '2022-02-05 11:57:40', '2022-02-05 11:57:40', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (109, 29, 'MKM9HFDSVU-005.jpg', '2022-02-05 11:57:40', '2022-02-05 11:57:40', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (110, 29, 'MKM9HFDSVU-006.jpg', '2022-02-05 11:57:40', '2022-02-05 11:57:40', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (111, 29, 'MKM9HFDSVU-007.jpg', '2022-02-05 11:57:40', '2022-02-05 11:57:40', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (112, 29, 'MKM9HFDSVU-008.jpg', '2022-02-05 11:57:40', '2022-02-05 11:57:40', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (113, 30, 'pc gamer-1.jpg', '2022-02-05 12:05:55', '2022-02-05 12:05:55', NULL, 1);
+INSERT INTO `imagenes_producto` VALUES (114, 30, 'pc gamer-2.jpg', '2022-02-05 12:05:55', '2022-02-05 12:05:55', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (115, 30, 'pc gamer-3.jpg', '2022-02-05 12:05:55', '2022-02-05 12:05:55', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (116, 30, 'pc gamer-4.jpg', '2022-02-05 12:05:55', '2022-02-05 12:05:55', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (117, 31, 'buzo-1.webp', '2022-02-05 12:14:39', '2022-02-05 12:14:39', NULL, 1);
+INSERT INTO `imagenes_producto` VALUES (118, 31, 'buzo-2.webp', '2022-02-05 12:14:39', '2022-02-05 12:14:39', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (119, 31, 'buzo-3.webp', '2022-02-05 12:14:39', '2022-02-05 12:14:39', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (120, 31, 'buzo-4.webp', '2022-02-05 12:14:39', '2022-02-05 12:14:39', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (121, 32, 'traje-baño-mujer-1.webp', '2022-02-05 12:31:27', '2022-02-05 12:31:27', NULL, 1);
+INSERT INTO `imagenes_producto` VALUES (122, 32, 'traje-baño-mujer-2.webp', '2022-02-05 12:31:27', '2022-02-05 12:31:27', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (123, 32, 'traje-baño-mujer-3.webp', '2022-02-05 12:31:27', '2022-02-05 12:31:27', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (124, 33, 'traje-buzeo-mujer-1.jpg', '2022-02-05 12:35:20', '2022-02-05 12:35:20', NULL, 1);
+INSERT INTO `imagenes_producto` VALUES (125, 33, 'traje-buzeo-mujer-2.jpg', '2022-02-05 12:35:20', '2022-02-05 12:35:20', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (126, 33, 'traje-buzeo-mujer-3.webp', '2022-02-05 12:35:20', '2022-02-05 12:35:20', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (127, 34, 'all-in-one-1.jpg', '2022-02-05 12:43:06', '2022-02-05 12:43:06', NULL, 1);
+INSERT INTO `imagenes_producto` VALUES (128, 34, 'all-in-one-2.jpg', '2022-02-05 12:43:06', '2022-02-05 12:43:06', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (129, 34, 'all-in-one-3.jpg', '2022-02-05 12:43:06', '2022-02-05 12:43:06', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (130, 34, 'all-in-one-4.jpg', '2022-02-05 12:43:06', '2022-02-05 12:43:06', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (143, 39, 'zapatilla-sp-1.webp', '2022-02-07 11:45:46', '2022-02-07 11:45:46', NULL, 1);
+INSERT INTO `imagenes_producto` VALUES (144, 39, 'zapatilla-sp-2.webp', '2022-02-07 11:45:46', '2022-02-07 11:45:46', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (145, 39, 'zapatilla-sp-3.webp', '2022-02-07 11:45:46', '2022-02-07 11:45:46', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (146, 40, 'smart-tv-1.webp', '2022-02-07 11:56:34', '2022-02-07 11:56:34', NULL, 1);
+INSERT INTO `imagenes_producto` VALUES (147, 40, 'smart-tv-3.webp', '2022-02-07 11:56:34', '2022-02-07 11:56:34', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (148, 40, 'smart-tv-4.webp', '2022-02-07 11:56:34', '2022-02-07 11:56:34', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (149, 40, 'smart-tv-5.webp', '2022-02-07 11:56:34', '2022-02-07 11:56:34', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (150, 40, 'smart-tv-6.webp', '2022-02-07 11:56:34', '2022-02-07 11:56:34', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (151, 41, 'audifono-sony-1.webp', '2022-02-07 12:09:27', '2022-02-07 12:09:27', NULL, 1);
+INSERT INTO `imagenes_producto` VALUES (152, 41, 'audifono-sony-2.webp', '2022-02-07 12:09:27', '2022-02-07 12:09:27', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (153, 41, 'audifono-sony-3.webp', '2022-02-07 12:09:27', '2022-02-07 12:09:27', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (154, 41, 'audifono-sony-4.webp', '2022-02-07 12:09:27', '2022-02-07 12:09:27', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (155, 41, 'audifono-sony-7.webp', '2022-02-07 12:09:27', '2022-02-07 12:09:27', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (156, 42, 'blusa-1.jpg', '2022-02-07 12:17:07', '2022-02-07 12:17:07', NULL, 1);
+INSERT INTO `imagenes_producto` VALUES (157, 42, 'blusa-2.webp', '2022-02-07 12:17:07', '2022-02-07 12:17:07', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (158, 42, 'blusa-3.jpg', '2022-02-07 12:17:07', '2022-02-07 12:17:07', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (159, 42, 'blusa-4.webp', '2022-02-07 12:17:07', '2022-02-07 12:17:07', NULL, 0);
+INSERT INTO `imagenes_producto` VALUES (160, 43, 'POLERONES-1.webp', '2022-02-07 12:21:37', '2022-02-07 12:21:37', NULL, 1);
+INSERT INTO `imagenes_producto` VALUES (161, 43, 'POLERONES-2.webp', '2022-02-07 12:21:37', '2022-02-07 12:21:37', NULL, 0);
 
 -- ----------------------------
 -- Table structure for impuestos
@@ -393,7 +444,7 @@ CREATE TABLE `impuestos`  (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `impuestos_nombre_unique`(`nombre`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of impuestos
@@ -417,7 +468,7 @@ CREATE TABLE `marcas`  (
   `mostrar_en_home` tinyint NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `marcas_nombre_unique`(`nombre`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of marcas
@@ -440,6 +491,15 @@ INSERT INTO `marcas` VALUES (15, 'Lenovo', '2021-12-12 12:11:21', '2021-12-12 12
 INSERT INTO `marcas` VALUES (16, 'Muuk', '2021-12-12 12:25:53', '2021-12-12 12:25:53', NULL, NULL, 0);
 INSERT INTO `marcas` VALUES (17, 'Nappo', '2021-12-12 12:28:43', '2021-12-12 12:28:43', NULL, NULL, 0);
 INSERT INTO `marcas` VALUES (18, 'Phantom', '2021-12-12 12:34:34', '2021-12-12 12:34:34', NULL, NULL, 0);
+INSERT INTO `marcas` VALUES (21, 'GKK', '2022-02-05 11:49:03', '2022-02-05 11:49:03', NULL, '/assets/front-office/img/bg-img/no_image.png', 0);
+INSERT INTO `marcas` VALUES (22, 'MSI', '2022-02-05 12:03:13', '2022-02-05 12:03:13', NULL, '/assets/front-office/img/bg-img/no_image.png', 0);
+INSERT INTO `marcas` VALUES (23, 'FROENS', '2022-02-05 12:28:41', '2022-02-05 12:28:41', NULL, '/assets/front-office/img/bg-img/no_image.png', 0);
+INSERT INTO `marcas` VALUES (24, 'Samia', '2022-02-05 12:33:20', '2022-02-05 12:33:20', NULL, '/assets/front-office/img/bg-img/no_image.png', 0);
+INSERT INTO `marcas` VALUES (25, 'HP', '2022-02-05 12:40:20', '2022-02-05 12:40:20', NULL, 'hp.png', 1);
+INSERT INTO `marcas` VALUES (26, 'Spalding', '2022-02-07 11:26:30', '2022-02-07 11:26:30', NULL, '/assets/front-office/img/bg-img/no_image.png', 0);
+INSERT INTO `marcas` VALUES (27, 'Sony', '2022-02-07 12:06:23', '2022-02-07 12:06:23', NULL, '/assets/front-office/img/bg-img/no_image.png', 0);
+INSERT INTO `marcas` VALUES (28, 'High Spirit', '2022-02-07 12:15:20', '2022-02-07 12:15:20', NULL, '/assets/front-office/img/bg-img/no_image.png', 0);
+INSERT INTO `marcas` VALUES (29, 'NBA', '2022-02-07 12:20:07', '2022-02-07 12:20:07', NULL, '/assets/front-office/img/bg-img/no_image.png', 0);
 
 -- ----------------------------
 -- Table structure for menus
@@ -457,7 +517,7 @@ CREATE TABLE `menus`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `menus_nombre_unique`(`nombre`) USING BTREE,
   UNIQUE INDEX `menus_url_unique`(`url`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of menus
@@ -569,7 +629,7 @@ CREATE TABLE `pantallas`  (
   UNIQUE INDEX `pantallas_nombre_unique`(`nombre`) USING BTREE,
   INDEX `pantallas_menus_id_foreign`(`menus_id`) USING BTREE,
   CONSTRAINT `pantallas_menus_id_foreign` FOREIGN KEY (`menus_id`) REFERENCES `menus` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of pantallas
@@ -629,7 +689,7 @@ CREATE TABLE `permisos`  (
   INDEX `permisos_pantallas_id_foreign`(`pantallas_id`) USING BTREE,
   CONSTRAINT `permisos_pantallas_id_foreign` FOREIGN KEY (`pantallas_id`) REFERENCES `pantallas` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `permisos_roles_id_foreign` FOREIGN KEY (`roles_id`) REFERENCES `roles` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 56 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 55 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of permisos
@@ -680,7 +740,7 @@ CREATE TABLE `precios`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of precios
@@ -702,7 +762,7 @@ CREATE TABLE `producto_impuesto`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of producto_impuesto
@@ -718,15 +778,27 @@ INSERT INTO `producto_impuesto` VALUES (8, 13, 1, '2021-12-10 18:36:53', '2021-1
 INSERT INTO `producto_impuesto` VALUES (9, 14, 1, '2021-12-10 19:19:15', '2021-12-21 23:05:53', NULL);
 INSERT INTO `producto_impuesto` VALUES (10, 15, 1, '2021-12-10 19:22:01', '2021-12-10 19:22:01', NULL);
 INSERT INTO `producto_impuesto` VALUES (11, 16, 1, '2021-12-10 19:25:39', '2021-12-10 19:32:00', NULL);
-INSERT INTO `producto_impuesto` VALUES (12, 17, 1, '2021-12-11 15:25:36', '2021-12-11 15:25:36', NULL);
-INSERT INTO `producto_impuesto` VALUES (13, 18, 1, '2021-12-11 15:46:59', '2021-12-11 15:46:59', NULL);
-INSERT INTO `producto_impuesto` VALUES (14, 19, 1, '2021-12-11 15:58:15', '2021-12-11 15:58:15', NULL);
+INSERT INTO `producto_impuesto` VALUES (12, 17, 1, '2021-12-11 15:25:36', '2022-02-06 02:18:08', NULL);
+INSERT INTO `producto_impuesto` VALUES (13, 18, 1, '2021-12-11 15:46:59', '2022-02-06 02:17:50', NULL);
+INSERT INTO `producto_impuesto` VALUES (14, 19, 1, '2021-12-11 15:58:15', '2022-02-06 02:17:31', NULL);
 INSERT INTO `producto_impuesto` VALUES (15, 20, 1, '2021-12-11 16:31:48', '2021-12-11 16:31:48', NULL);
 INSERT INTO `producto_impuesto` VALUES (16, 21, 1, '2021-12-12 12:05:34', '2021-12-12 12:05:34', NULL);
 INSERT INTO `producto_impuesto` VALUES (17, 22, 1, '2021-12-12 12:17:16', '2021-12-12 12:17:16', NULL);
 INSERT INTO `producto_impuesto` VALUES (18, 23, 1, '2021-12-12 12:27:00', '2021-12-12 12:27:00', NULL);
 INSERT INTO `producto_impuesto` VALUES (19, 24, 1, '2021-12-12 12:31:34', '2021-12-12 16:01:15', NULL);
 INSERT INTO `producto_impuesto` VALUES (20, 25, 1, '2021-12-12 12:35:35', '2021-12-12 12:35:35', NULL);
+INSERT INTO `producto_impuesto` VALUES (23, 28, 1, '2022-02-04 21:23:44', '2022-02-06 02:17:13', NULL);
+INSERT INTO `producto_impuesto` VALUES (24, 29, 1, '2022-02-05 11:57:40', '2022-02-05 11:57:40', NULL);
+INSERT INTO `producto_impuesto` VALUES (25, 30, 1, '2022-02-05 12:05:55', '2022-02-05 12:05:55', NULL);
+INSERT INTO `producto_impuesto` VALUES (26, 31, 1, '2022-02-05 12:14:39', '2022-02-06 02:18:31', NULL);
+INSERT INTO `producto_impuesto` VALUES (27, 32, 1, '2022-02-05 12:31:27', '2022-02-06 02:16:26', NULL);
+INSERT INTO `producto_impuesto` VALUES (28, 33, 1, '2022-02-05 12:35:20', '2022-02-06 02:16:51', NULL);
+INSERT INTO `producto_impuesto` VALUES (29, 34, 1, '2022-02-05 12:43:06', '2022-02-05 12:43:06', NULL);
+INSERT INTO `producto_impuesto` VALUES (34, 39, 1, '2022-02-07 11:45:46', '2022-02-07 15:40:18', NULL);
+INSERT INTO `producto_impuesto` VALUES (35, 40, 1, '2022-02-07 11:56:34', '2022-02-07 11:56:34', NULL);
+INSERT INTO `producto_impuesto` VALUES (36, 41, 1, '2022-02-07 12:09:27', '2022-02-07 12:09:27', NULL);
+INSERT INTO `producto_impuesto` VALUES (37, 42, 1, '2022-02-07 12:17:07', '2022-02-07 12:17:07', NULL);
+INSERT INTO `producto_impuesto` VALUES (38, 43, 1, '2022-02-07 12:21:37', '2022-02-07 15:38:15', NULL);
 
 -- ----------------------------
 -- Table structure for productos
@@ -748,7 +820,7 @@ CREATE TABLE `productos`  (
   `descuento_maximo` double(3, 1) UNSIGNED NOT NULL,
   `precio_costo` int NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of productos
@@ -773,6 +845,18 @@ INSERT INTO `productos` VALUES (22, 'Notebook Lenovo', 'Intel(R) Core(TM) i7-750
 INSERT INTO `productos` VALUES (23, 'Balon De Basketball 6 Muuk', 'La pelota de Basketball MUUK de tamaño Juvenil para entrenamiento, ideal para uso en exteriores. Elaborado con materiales altamente durables y resistentes, contiene cámara de butilo que retiene más el aire y viene encordado en nylon, lo que le hace conservar su esfericidad y un bote uniforme.', 11900, 49, 3, 16, 10, 8, '2021-12-12 12:27:00', '2022-01-29 20:10:20', NULL, 15.0, 0);
 INSERT INTO `productos` VALUES (24, 'BALANZA DIGITAL NAPPO 180KG', 'Nueva balanza Nappo con diseño ergonómico, de excelente calidad, que gracias a su graduación de 100 gramos aseguran la mayor exactitud del peso. Con capacidad de hasta 180KG. Ideal para colocar en el baño de tu casa, y pesarte despues de hacer ejercicio o en cualquier momento.', 11500, 44, 3, 17, 1, 9, '2021-12-12 12:31:34', '2022-01-30 15:05:05', NULL, 10.0, 10000);
 INSERT INTO `productos` VALUES (25, 'Drone Phantom 3', 'Phantom 3 standar fácil de pilotar, vuelo estacionario de modo gps, registros automáticos de vuelo videocámara 2.7 k fotos de 12 megapixeles', 529900, 100, 3, 18, 9, 6, '2021-12-12 12:35:35', '2021-12-12 12:35:35', NULL, 15.0, 0);
+INSERT INTO `productos` VALUES (28, 'Zapatilla Nike Fútbol Mercurial Superfly 7 Club MG Hombre', 'Nike Mercurial Superfly 7 Club MG envuelve tu pie para una velocidad aerodinámica. Una placa versátil para múltiples superficies proporciona tracción en césped.', 40950, 20, 3, 4, 8, 10, '2022-02-04 21:23:44', '2022-02-04 21:23:44', NULL, 10.0, 30000);
+INSERT INTO `productos` VALUES (29, 'Funda: Galaxy S10 Plus', 'Funda: Galaxy S10 Plus - Carcasa Estuche / Rojo', 25000, 15, 3, 21, 9, 11, '2022-02-05 11:57:40', '2022-02-05 11:57:40', NULL, 30.0, 15000);
+INSERT INTO `productos` VALUES (30, 'Notebook MSI GF65 Thin Gamer', 'Notebook MSI GF65 Thin Gamer i7, 16 GB, 512 GB SSD, 15.6”, RTX 3060', 1150000, 10, 3, 22, 4, 12, '2022-02-05 12:05:55', '2022-02-05 12:05:55', NULL, 10.0, 900000);
+INSERT INTO `productos` VALUES (31, 'Pantalón Essentials 3 Tiras Hombre', 'Pantalón está hecho de felpa francesa para brindarte comodidad versátil en tu día a día.', 28000, 20, 3, 4, 10, 13, '2022-02-05 12:14:39', '2022-02-05 12:16:34', NULL, 10.0, 20000);
+INSERT INTO `productos` VALUES (32, 'Bikini Capri Negro', 'Fabricado a partir de 4 botellas plasticas Pet. Diseñado por froens y fabricados en colombia, este producto es responsable con el medio ambiente', 28000, 15, 3, 23, 6, 14, '2022-02-05 12:31:27', '2022-02-05 12:31:27', NULL, 10.0, 20000);
+INSERT INTO `productos` VALUES (33, 'Traje de baño con piernas y mangas negro', 'Traje de baño con piernas y mangas negro', 27000, 10, 3, 24, 6, 14, '2022-02-05 12:35:19', '2022-02-05 12:35:19', NULL, 10.0, 23300);
+INSERT INTO `productos` VALUES (34, 'All in one HP 205 G4 AMD 3050U', 'All in one HP 205 G4 AMD 3050U/ 4GB Ram/ 1TB HDD/ 21.5\" FHD/ W10H', 400000, 15, 3, 25, 4, 15, '2022-02-05 12:43:06', '2022-02-05 12:43:06', NULL, 10.0, 300000);
+INSERT INTO `productos` VALUES (39, 'Zapatilla Spalding Running Hombre', 'Zapatilla Spalding Running Zmf1004 Hombre', 20000, 20, 3, 26, 8, 16, '2022-02-07 11:45:46', '2022-02-07 11:45:46', NULL, 15.0, 16000);
+INSERT INTO `productos` VALUES (40, 'LED 43\" TU7090 Crystal UHD 4K Smart TV', 'Crystal Display, Procesador Crystal 4K, Resolución 4K, HDR, Acceso Remoto, Optimizador de juego, UHD Dimming, Diseño delgado', 200000, 10, 3, 2, 9, 17, '2022-02-07 11:56:34', '2022-02-07 11:56:34', NULL, 10.0, 150000);
+INSERT INTO `productos` VALUES (41, 'Audífonos Sony Bluetooth WH-CH510/B Negro', 'Los Audífonos Bluetooth Sony WH-CH510/B Negro fueron hechos para una vida activa. Cuentan con un diseño liviano y son inalámbricos', 29000, 15, 3, 27, 9, 18, '2022-02-07 12:09:27', '2022-02-07 12:09:27', NULL, 10.0, 20000);
+INSERT INTO `productos` VALUES (42, 'Blusa High Spirits Mix Print', 'Blusa Mix Print High Spirits; 100% Viscosa', 25000, 20, 3, 28, 6, 19, '2022-02-07 12:17:07', '2022-02-07 12:17:07', NULL, 10.0, 20000);
+INSERT INTO `productos` VALUES (43, 'Polerón NBA Gris Print Multilogo', 'Polerón de cuello redondo con diseño bitono gris y negro, estampado multilogo, confeccionado con tejido algodón, marca NBA', 25000, 9, 3, 29, 10, 20, '2022-02-07 12:21:37', '2022-02-11 20:51:17', NULL, 15.0, 20000);
 
 -- ----------------------------
 -- Table structure for productos_secciones_home
@@ -788,7 +872,7 @@ CREATE TABLE `productos_secciones_home`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of productos_secciones_home
@@ -839,7 +923,7 @@ CREATE TABLE `role_user`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of role_user
@@ -871,7 +955,7 @@ CREATE TABLE `roles`  (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `roles_name_unique`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of roles
@@ -901,7 +985,7 @@ CREATE TABLE `secciones_home`  (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `secciones_home_nombre_unique`(`nombre`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of secciones_home
@@ -926,12 +1010,12 @@ CREATE TABLE `sub_categorias`  (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `sub_categoria_nombre_unique`(`nombre`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sub_categorias
 -- ----------------------------
-INSERT INTO `sub_categorias` VALUES (1, 'Notebooks', 1, '2021-11-06 13:16:21', '2021-11-06 13:16:21', NULL);
+INSERT INTO `sub_categorias` VALUES (1, 'Notebooks', 4, '2021-11-06 13:16:21', '2022-02-05 12:23:57', NULL);
 INSERT INTO `sub_categorias` VALUES (2, 'Almacenamiento', 4, '2021-11-07 00:23:25', '2021-11-07 00:23:25', NULL);
 INSERT INTO `sub_categorias` VALUES (3, 'aaaaaaaaaaaa', 1, '2021-11-07 00:24:10', '2021-11-07 00:33:32', '2021-11-07 00:33:32');
 INSERT INTO `sub_categorias` VALUES (4, 'AAAAAAAAA', 1, '2021-11-07 23:16:15', '2021-11-07 23:16:54', '2021-11-07 23:16:54');
@@ -939,7 +1023,18 @@ INSERT INTO `sub_categorias` VALUES (5, 'Vestidos', 6, '2021-12-10 18:18:45', '2
 INSERT INTO `sub_categorias` VALUES (6, 'Telefonía Celular', 9, '2021-12-10 19:27:56', '2021-12-10 19:27:56', NULL);
 INSERT INTO `sub_categorias` VALUES (7, 'Zapatillas', 8, '2021-12-11 15:24:15', '2021-12-11 15:24:15', NULL);
 INSERT INTO `sub_categorias` VALUES (8, 'Fitness', 10, '2021-12-11 16:30:09', '2021-12-11 16:30:09', NULL);
-INSERT INTO `sub_categorias` VALUES (9, 'Salud', 1, '2021-12-12 12:30:46', '2021-12-12 12:30:46', NULL);
+INSERT INTO `sub_categorias` VALUES (9, 'Salud', 11, '2021-12-12 12:30:46', '2022-02-05 12:25:06', NULL);
+INSERT INTO `sub_categorias` VALUES (10, 'Zapatillas futbol', 8, '2022-02-04 20:26:34', '2022-02-04 20:26:34', NULL);
+INSERT INTO `sub_categorias` VALUES (11, 'Accesorios de celulares', 9, '2022-02-05 11:47:20', '2022-02-05 11:48:26', NULL);
+INSERT INTO `sub_categorias` VALUES (12, 'PC Gamer', 4, '2022-02-05 12:03:41', '2022-02-05 12:03:41', NULL);
+INSERT INTO `sub_categorias` VALUES (13, 'Buzos hombre', 10, '2022-02-05 12:15:43', '2022-02-05 12:15:43', NULL);
+INSERT INTO `sub_categorias` VALUES (14, 'Trajes de Baño Mujer', 6, '2022-02-05 12:29:28', '2022-02-05 12:29:28', NULL);
+INSERT INTO `sub_categorias` VALUES (15, 'Desktop All in One', 4, '2022-02-05 12:41:22', '2022-02-05 12:41:22', NULL);
+INSERT INTO `sub_categorias` VALUES (16, 'Zapatillas Runing', 8, '2022-02-07 11:28:16', '2022-02-07 11:28:16', NULL);
+INSERT INTO `sub_categorias` VALUES (17, 'Smart TV', 9, '2022-02-07 11:53:53', '2022-02-07 11:53:53', NULL);
+INSERT INTO `sub_categorias` VALUES (18, 'Audífonos Inalámbricos', 9, '2022-02-07 12:05:57', '2022-02-07 12:05:57', NULL);
+INSERT INTO `sub_categorias` VALUES (19, 'Blusas', 6, '2022-02-07 12:15:42', '2022-02-07 12:15:42', NULL);
+INSERT INTO `sub_categorias` VALUES (20, 'Polerones Hombre', 10, '2022-02-07 12:19:10', '2022-02-07 12:19:28', NULL);
 
 -- ----------------------------
 -- Table structure for tallas
@@ -953,13 +1048,19 @@ CREATE TABLE `tallas`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tallas
 -- ----------------------------
 INSERT INTO `tallas` VALUES (1, 'XS', 5, '2021-12-20 21:04:49', '2021-12-20 21:15:44', NULL);
 INSERT INTO `tallas` VALUES (2, 'S', 5, '2021-12-20 21:16:17', '2021-12-21 11:14:46', NULL);
+INSERT INTO `tallas` VALUES (3, '42', 7, '2022-02-06 01:12:09', '2022-02-06 01:12:09', NULL);
+INSERT INTO `tallas` VALUES (4, '42.5', 10, '2022-02-06 02:13:12', '2022-02-06 02:13:12', NULL);
+INSERT INTO `tallas` VALUES (5, 'M', 13, '2022-02-06 02:15:14', '2022-02-06 02:15:14', NULL);
+INSERT INTO `tallas` VALUES (6, 'M', 14, '2022-02-06 02:15:51', '2022-02-06 02:15:51', NULL);
+INSERT INTO `tallas` VALUES (7, '42.5', 16, '2022-02-07 11:30:08', '2022-02-07 11:30:08', NULL);
+INSERT INTO `tallas` VALUES (8, 'M', 20, '2022-02-07 12:19:46', '2022-02-07 12:19:46', NULL);
 
 -- ----------------------------
 -- Table structure for tallas_productos
@@ -974,7 +1075,7 @@ CREATE TABLE `tallas_productos`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tallas_productos
@@ -982,6 +1083,15 @@ CREATE TABLE `tallas_productos`  (
 INSERT INTO `tallas_productos` VALUES (1, 1, 5, 14, '2021-12-21 19:08:09', '2021-12-21 23:05:53', NULL);
 INSERT INTO `tallas_productos` VALUES (2, 2, 5, 14, '2021-12-21 19:08:09', '2021-12-21 23:05:53', NULL);
 INSERT INTO `tallas_productos` VALUES (7, 2, 5, 14, '2021-12-21 19:17:56', '2021-12-21 19:19:27', '2021-12-21 19:19:27');
+INSERT INTO `tallas_productos` VALUES (8, 6, 14, 32, '2022-02-06 02:16:26', '2022-02-06 02:16:26', NULL);
+INSERT INTO `tallas_productos` VALUES (9, 6, 14, 33, '2022-02-06 02:16:51', '2022-02-06 02:16:51', NULL);
+INSERT INTO `tallas_productos` VALUES (10, 4, 10, 28, '2022-02-06 02:17:13', '2022-02-06 02:17:13', NULL);
+INSERT INTO `tallas_productos` VALUES (11, 3, 7, 19, '2022-02-06 02:17:31', '2022-02-06 02:17:31', NULL);
+INSERT INTO `tallas_productos` VALUES (12, 3, 7, 18, '2022-02-06 02:17:50', '2022-02-06 02:17:50', NULL);
+INSERT INTO `tallas_productos` VALUES (13, 3, 7, 17, '2022-02-06 02:18:08', '2022-02-06 02:18:08', NULL);
+INSERT INTO `tallas_productos` VALUES (14, 5, 13, 31, '2022-02-06 02:18:31', '2022-02-06 02:18:31', NULL);
+INSERT INTO `tallas_productos` VALUES (15, 8, 20, 43, '2022-02-07 15:38:15', '2022-02-07 15:38:15', NULL);
+INSERT INTO `tallas_productos` VALUES (16, 7, 16, 39, '2022-02-07 15:40:18', '2022-02-07 15:40:18', NULL);
 
 -- ----------------------------
 -- Table structure for tienda
@@ -997,7 +1107,7 @@ CREATE TABLE `tienda`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `tienda_nombre_tienda_unique`(`nombre_tienda`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tienda
@@ -1017,7 +1127,7 @@ CREATE TABLE `unidades`  (
   `nombre_plural` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `unidades_nombre_unique`(`nombre`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of unidades
@@ -1049,12 +1159,12 @@ CREATE TABLE `users`  (
   `fono` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `users_email_unique`(`email`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 72 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 71 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, 'Marcelo', 'mabc@live.cl', NULL, '$2b$10$q1ZwYwzfy2QlUzY2fTuLCuZvOJRyQrHmIVMVNMIOIlHAXdj6zliYG', NULL, '2020-11-22 00:00:00', '2021-11-08 16:24:32', NULL, 'Bravo', 'Castillo', '12 Norte 16 Oriente, #2288, Talca', 'Mi Avatar.jpg', '987654321');
+INSERT INTO `users` VALUES (1, 'Marcelo', 'mabc@live.cl', NULL, '$2y$10$foS3RTfSqzv98d0Gzt63GeScIwcUnV8djhvHPOI8xx/yBKVs919NW', NULL, '2020-11-22 00:00:00', '2022-02-01 18:29:09', NULL, 'Bravo', 'Castillo', '12 Norte 16 Oriente, #2288, Talca', 'Mi Avatar.jpg', '987654321');
 INSERT INTO `users` VALUES (19, 'Valeria z', 'prueba@ejemplo.cl', NULL, '$2b$10$BCo6PZMKbxA/3ROLBo7D1uynIWQ/7GO6LQdk0qez0k9VZhmilWur.', NULL, '2021-01-22 21:47:01', '2021-11-08 16:15:12', NULL, 'Maza', 'sozza', '12 Norte 123', 'descarga.png', '');
 INSERT INTO `users` VALUES (30, 'Marcelo Antonio', 'marcelo.a.bravo.c@gmail.cl', NULL, '$2b$10$66WGQByMZWmVkOtRin00eOGUlw2BKuWu5/nS2Gm.fDEGH0/otpWLi', NULL, '2021-05-05 01:13:57', '2021-06-08 00:00:00', NULL, 'Bravo', 'Castillo', '12 Norte #123', 'yo.jpg', '');
 INSERT INTO `users` VALUES (62, 'Mariela Andrea', 'mariela2@ejemplo.cl', NULL, '$2b$10$b.qrq9mTNfYSgdPqC.veQuWXNDHe0OeCrlVHVisek7VtrtlhD5Mf6', NULL, '2021-05-05 01:13:57', '2021-04-08 00:00:00', NULL, 'Bezoain', 'Bravo', '12 Norte #123', 'fgfgfgfgfgf', '');
@@ -1109,6 +1219,7 @@ INSERT INTO `ventas` VALUES (45, '2022-01-30 00:00:00', 13685, NULL, '2022-01-30
 INSERT INTO `ventas` VALUES (46, '2022-01-30 00:00:00', 13685, NULL, '2022-01-30 02:10:27', '2022-01-30 02:10:27', NULL);
 INSERT INTO `ventas` VALUES (47, '2022-01-30 00:00:00', 13685, NULL, '2022-01-30 02:14:00', '2022-01-30 02:14:00', NULL);
 INSERT INTO `ventas` VALUES (48, '2022-01-30 00:00:00', 13685, NULL, '2022-01-30 15:05:01', '2022-01-30 15:05:01', NULL);
+INSERT INTO `ventas` VALUES (49, '2022-02-11 00:00:00', 29750, NULL, '2022-02-11 20:51:13', '2022-02-11 20:51:13', NULL);
 
 -- ----------------------------
 -- Table structure for ventas_cliente_invitado
@@ -1129,7 +1240,7 @@ CREATE TABLE `ventas_cliente_invitado`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `ventas_cliente_invitado_venta_id_foreign`(`venta_id`) USING BTREE,
   CONSTRAINT `ventas_cliente_invitado_venta_id_foreign` FOREIGN KEY (`venta_id`) REFERENCES `ventas` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ventas_cliente_invitado
@@ -1192,6 +1303,7 @@ INSERT INTO `ventas_cliente_tienda` VALUES (33, 44, 1, '2022-01-30 01:51:25', '2
 INSERT INTO `ventas_cliente_tienda` VALUES (34, 44, 1, '2022-01-30 01:59:57', '2022-01-30 01:59:57', NULL);
 INSERT INTO `ventas_cliente_tienda` VALUES (35, 45, 1, '2022-01-30 02:04:31', '2022-01-30 02:04:31', NULL);
 INSERT INTO `ventas_cliente_tienda` VALUES (36, 48, 1, '2022-01-30 15:05:07', '2022-01-30 15:05:07', NULL);
+INSERT INTO `ventas_cliente_tienda` VALUES (37, 49, 1, '2022-02-11 20:51:20', '2022-02-11 20:51:20', NULL);
 
 -- ----------------------------
 -- Table structure for visitas
@@ -1204,12 +1316,12 @@ CREATE TABLE `visitas`  (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of visitas
 -- ----------------------------
-INSERT INTO `visitas` VALUES (1, 37, 37, '2022-01-10 00:00:00', '2022-01-30 14:01:35');
+INSERT INTO `visitas` VALUES (1, 62, 62, '2022-01-10 00:00:00', '2022-02-20 21:28:50');
 
 -- ----------------------------
 -- Table structure for web_pay
@@ -1235,7 +1347,7 @@ CREATE TABLE `web_pay`  (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of web_pay
@@ -1279,5 +1391,12 @@ INSERT INTO `web_pay` VALUES (36, 45, 'TSY', 13685, '36', 'AUTHORIZED', '1173', 
 INSERT INTO `web_pay` VALUES (37, 46, 'TSY', 13685, '37', 'AUTHORIZED', '4632', '7763', '{\"card_number\":\"7763\"}', '0129', '2022-01-30T02:09:53.025Z', '1415', 'VD', 0, 0, '2022-01-30 02:09:52', '2022-01-30 02:10:27', NULL);
 INSERT INTO `web_pay` VALUES (38, 47, 'TSY', 13685, '38', 'AUTHORIZED', '7979', '7763', '{\"card_number\":\"7763\"}', '0129', '2022-01-30T02:13:31.900Z', '1415', 'VD', 0, 0, '2022-01-30 02:13:31', '2022-01-30 02:14:00', NULL);
 INSERT INTO `web_pay` VALUES (39, 48, 'TSY', 13685, '39', 'AUTHORIZED', '8206', '7763', '{\"card_number\":\"7763\"}', '0130', '2022-01-30T15:04:08.330Z', '1415', 'VD', 0, 0, '2022-01-30 15:04:04', '2022-01-30 15:05:01', NULL);
+INSERT INTO `web_pay` VALUES (40, 0, NULL, 29750, '5800', NULL, '9529', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-02-11 18:32:24', '2022-02-11 18:32:24', NULL);
+INSERT INTO `web_pay` VALUES (41, 0, NULL, 29750, '4029', NULL, '8228', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-02-11 20:16:44', '2022-02-11 20:16:44', NULL);
+INSERT INTO `web_pay` VALUES (42, 49, 'TSY', 29750, '42', 'AUTHORIZED', '8125', '7763', '{\"card_number\":\"7763\"}', '0211', '2022-02-11T20:47:54.069Z', '1415', 'VD', 0, 0, '2022-02-11 20:47:36', '2022-02-11 20:51:14', NULL);
+INSERT INTO `web_pay` VALUES (43, 0, NULL, 29750, '4687', NULL, '3109', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-02-11 20:51:45', '2022-02-11 20:51:45', NULL);
+INSERT INTO `web_pay` VALUES (44, 0, NULL, 29750, '5082', NULL, '3126', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-02-11 21:34:50', '2022-02-11 21:34:50', NULL);
+INSERT INTO `web_pay` VALUES (45, 0, NULL, 29750, '1137', NULL, '7450', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-02-11 21:43:33', '2022-02-11 21:43:33', NULL);
+INSERT INTO `web_pay` VALUES (46, 0, NULL, 29750, '6006', NULL, '3181', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2022-02-12 11:54:35', '2022-02-12 11:54:35', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
