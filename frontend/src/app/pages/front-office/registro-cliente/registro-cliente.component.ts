@@ -13,7 +13,6 @@ import { ToastService } from '../../../services/toast/toast.service';
 import { Router } from '@angular/router';
 import { CustomValidators } from 'src/app/validators/custom-validators';
 import { LoginClientesService } from 'src/app/services/loginClientes/login-clientes.service';
-import { timeStamp } from 'console';
 
 @Component({
   selector: 'app-registro-cliente',
