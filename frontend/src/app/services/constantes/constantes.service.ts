@@ -8,8 +8,8 @@ import { TokenService } from '../token/token.service';
 export class ConstantesService {
   public endPoint = "http://localhost:8000/api/"  //Ruta local de las peticiones al backend
   public storageImages = "http://localhost:8000/storage/" //Ruta de almnacenamiento de las imágenes en el backend
-  //public endPoint = "http://192.168.xx.xxx:3000/api/" //Ruta pública de las peticiones al backend
-  //public storageImages = "http://192.168.xx.xxx:3000/storage/" //Ruta de almnacenamiento de las imágenes en el backend
+  //public endPoint = "http://192.168.43.118:3000/api/" //Ruta pública de las peticiones al backend
+  //public storageImages = "http://192.168.43.118:3000/storage/" //Ruta de almnacenamiento de las imágenes en el backend
   public srcDefault: string = '/assets/images/users/user.png'
   public noImage: string = '/assets/front-office/img/bg-img/no_image.png'
   public apiDigitalGob: string = 'https://apis.digital.gob.cl/dpa/'
