@@ -8,6 +8,7 @@ import { Tienda } from '../../class/tienda/tienda';
 import { LoginClientesService } from '../../services/loginClientes/login-clientes.service';
 import { CategoriasService } from '../../services/categorias/categorias.service';
 import { Categoria } from '../../class/Categoria/categoria';
+import { Paginacion } from 'src/app/class/paginacion/paginacion';
 
 @Component({
   selector: 'app-fo-header-navbar',
@@ -26,6 +27,7 @@ export class FoHeaderNavbarComponent implements OnInit {
   nombre_cliente: string = ''
   ocultarNombre: boolean = false
   categorias: Categoria[] = []
+  paginacion: Paginacion = new Paginacion()
 
   constructor(
     private _catalogoService: CatalogoService,
@@ -114,12 +116,12 @@ export class FoHeaderNavbarComponent implements OnInit {
 
   ocultaNombre(){
     this.ocultarNombre = true
-    console.log('ocultar')
+    //console.log('ocultar')
   }
 
   muestraNombre(){
     this.ocultarNombre = false
-    console.log('mostrar')
+    //console.log('mostrar')
   }
 
   tieneCategorias(cat: Categoria):boolean{

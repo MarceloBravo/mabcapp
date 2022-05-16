@@ -96,20 +96,24 @@ export class DatosDespachoComponent implements OnInit {
   }
 
   cargarProvincias(codRegion: string){
-    this.comunas = []
-    this._provinciasService.listarProvinciasRegion(codRegion).subscribe((res: any) => {
-      this.provincias = res
-    }, error =>{
-      this._sharedService.handlerError(error)
-    })
+    if(codRegion){
+      this.comunas = []
+      this._provinciasService.listarProvinciasRegion(codRegion).subscribe((res: any) => {
+        this.provincias = res
+      }, error =>{
+        this._sharedService.handlerError(error)
+      })
+    }
   }
 
   cargarComunas(codProvincia: string){
-    this._comunasService.listarComunasProvincias(codProvincia).subscribe((res: any) => {
-      this.comunas = res
-    }, error =>{
-      this._sharedService.handlerError(error)
-    })
+    if(codProvincia){
+      this._comunasService.listarComunasProvincias(codProvincia).subscribe((res: any) => {
+        this.comunas = res
+      }, error =>{
+        this._sharedService.handlerError(error)
+      })
+    }
   }
 
   pagar(){

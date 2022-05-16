@@ -13,6 +13,7 @@ import { Marca } from '../../../class/marca/marca';
 import { OrdenarPor } from '../../../enum/catalogoParams/ordenarPor';
 import { CarritoService } from 'src/app/services/carrito/carrito.service';
 import { PreciosService } from '../../../services/precios/precios.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-catalogo',
@@ -45,7 +46,7 @@ export class CatalogoComponent implements OnInit {
     private router: Router
   ) {
     this.params.filtro = this._catalogoService.getTextoFiltro()
-    this.obtenerDatos()
+    //this.obtenerDatos()
     this.cargarCategorias()
     this.cargarMarcas()
     this.obtenerPrecioMinMax()
@@ -55,6 +56,8 @@ export class CatalogoComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.url.subscribe(res => {
       this.titulo = res[0].path
+      this.actualizarCatalogo()
+      //console.log('URL = ',res[0].path, this.activatedRoute.snapshot.paramMap.get('idCategoria'))
     }, error => {
       this.titulo = 'Catalogo'
     } )
@@ -67,6 +70,15 @@ export class CatalogoComponent implements OnInit {
       this.favoritos = this._carritoServices.getFavorites()
     })
 
+  }
+
+  private actualizarCatalogo(){
+    let idCategoria = this.activatedRoute.snapshot.paramMap.get('idCategoria')
+    let idSubCategoria = this.activatedRoute.snapshot.paramMap.get('idSubCategoria')
+    this.params.categoria_id = (idCategoria && parseInt(idCategoria) !== NaN) ? parseInt(idCategoria) : null
+    this.params.sub_categoria_id = (idSubCategoria && parseInt(idSubCategoria) !== NaN) ? parseInt(idSubCategoria) : null
+
+    this.obtenerDatos()
   }
 
   private cargarCategorias(){

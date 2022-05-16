@@ -132,6 +132,7 @@ const routes: Routes = [
     children: [
       { path: '', component: HomeTiendaComponent },
       { path: 'catalogo', component: CatalogoComponent },
+      { path: 'catalogo/:idCategoria/:idSubCategoria', component: CatalogoComponent },
       { path: 'detalle_producto/:id', component: DetalleProductoComponent },
       { path: 'login_cliente', component: LoginClienteComponent },
       { path: 'registro_cliente', component: RegistroClienteComponent },
