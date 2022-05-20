@@ -145,6 +145,7 @@ export class ResultadoTransaccionComponent implements OnInit {
 
   private obtenerDatosCarrito(){
     let carrito = this._carritoService.getCarrito()
+    debugger
     if(carrito){
       carrito.forEach((i: ItemCarrito) => {
         i.imagen = this._const.storageImages + '/productos/' + i.imagen
