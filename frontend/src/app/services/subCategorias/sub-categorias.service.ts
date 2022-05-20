@@ -43,6 +43,7 @@ export class SubCategoriasService {
   }
 
   filter(texto: string, pag: number = 0){
+    texto = texto.split('/').join(this._constService.caracterComodinBusqueda)
     return this.http.get(`${this._constService.endPoint}${this.url}/filter/${texto}/${pag}`,{headers: this._constService.header()});
   }
 }

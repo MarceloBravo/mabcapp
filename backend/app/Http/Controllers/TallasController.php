@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Tallas;
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class TallasController extends Controller
 {
@@ -112,22 +113,27 @@ class TallasController extends Controller
 
 
     public function filter($texto, $pag){
-        $tallas = Tallas::join('sub_categorias','tallas.sub_categoria_id','=','sub_categorias.id')
-                        ->orderBy('sub_categorias.nombre','asc')
-                        ->orderBy('talla','asc')
-                        ->where('sub_categorias.nombre','like','%'.$texto.'%')
-                        ->orWhere('tallas.talla','like','%'.$texto.'%')
-                        ->orWhereDate("tallas.created_at",'like','%'.$texto.'%')
-                        ->orWhereDate("tallas.created_at",'like','%'.$texto.'%')
-                        ->select('tallas.*','sub_categorias.nombre as sub_categoria');
+        try{
+            $texto = str_replace(env('CARACTER_COMODIN_BUSQUEDA'),'/',$texto);
+            $tallas = Tallas::join('sub_categorias','tallas.sub_categoria_id','=','sub_categorias.id')
+                            ->orderBy('sub_categorias.nombre','asc')
+                            ->orderBy('talla','asc')
+                            ->where('sub_categorias.nombre','like','%'.$texto.'%')
+                            ->orWhere('tallas.talla','like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(tallas.created_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(tallas.updated_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                            ->select('tallas.*','sub_categorias.nombre as sub_categoria');
 
-        $totRows = count($tallas->get());
+            $totRows = count($tallas->get());
 
-        $data = $tallas->skip($this->rowsPerPage * $pag)
-                        ->take($this->rowsPerPage)
-                        ->get();
+            $data = $tallas->skip($this->rowsPerPage * $pag)
+                            ->take($this->rowsPerPage)
+                            ->get();
 
-        return response()->json(['data' => $data, 'rowsPerPage' => $this->rowsPerPage, 'rows' => $totRows, 'page' => $pag]);
+            return response()->json(['data' => $data, 'rowsPerPage' => $this->rowsPerPage, 'rows' => $totRows, 'page' => $pag]);
+        }catch(\PDOException $e){
+            return response()->json(['data' => [], 'rowsPerPage' => $this->rowsPerPage, 'rows' => 0, 'page' => $pag]);
+        }
     }
 
 

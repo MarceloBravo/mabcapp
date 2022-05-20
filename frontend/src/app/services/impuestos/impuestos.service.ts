@@ -38,6 +38,7 @@ export class ImpuestosService {
   }
 
   filter(texto: string, pag: number){
+    texto = texto.split('/').join(this.constantes.caracterComodinBusqueda)
     return this.http.get(`${this.constantes.endPoint}${this.url}/filter/${texto}/${pag}`, {headers: this.constantes.header()});
   }
 }

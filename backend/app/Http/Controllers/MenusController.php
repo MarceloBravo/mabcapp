@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Menu;
 use App\Models\Pantalla;
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class MenusController extends Controller
 {
@@ -144,16 +145,24 @@ class MenusController extends Controller
 
 
     public function filter($texto, $pag){
-        $data = Menu::orderBy('menus.nombre','asc')
-                    ->where('nombre','Like','%'.$texto.'%');
 
-        $totRows = count($data->get());
+        try{
+            $texto = str_replace(env('CARACTER_COMODIN_BUSQUEDA'),'/',$texto);
+            $data = Menu::orderBy('menus.nombre','asc')
+                        ->where('nombre','Like','%'.$texto.'%')
+                        ->orWhere(DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                        ->orWhere(DB::raw('DATE_FORMAT(updated_at, "%d/%m/%Y")'),'like','%'.$texto.'%');
 
-        $menus = $data->skip($this->rowsPerPage * $pag)
-                    ->take($this->rowsPerPage)
-                    ->get();
+            $totRows = count($data->get());
 
-        return response()->json(['data' => $menus, 'rowsPerPage' => $this->rowsPerPage, 'rows' => $totRows, 'page' => $pag]);
+            $menus = $data->skip($this->rowsPerPage * $pag)
+                        ->take($this->rowsPerPage)
+                        ->get();
+
+            return response()->json(['data' => $menus, 'rowsPerPage' => $this->rowsPerPage, 'rows' => $totRows, 'page' => $pag]);
+        }catch(\PDOException $e){
+            return response()->json(['data' => [], 'rowsPerPage' => $this->rowsPerPage, 'rows' => 0, 'page' => $pag]);
+        }
     }
 
 

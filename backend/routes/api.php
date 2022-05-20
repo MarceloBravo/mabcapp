@@ -84,7 +84,7 @@ Route::group([
 
     Route::resource('marcas', 'MarcasController');
     Route::get('marcas/pag/{pag}', 'MarcasController@index');
-    Route::get('marcas/filtrar/{texto}{pag}', 'MarcasController@filter');
+    Route::get('marcas/filtrar/{texto}/{pag}', 'MarcasController@filter');
     Route::post('marcas/subir/imagen', 'MarcasController@uploadImage');
 
     Route::resource('impuestos', 'ImpuestosController');

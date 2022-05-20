@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Impuesto;
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class ImpuestosController extends Controller
 {
@@ -133,17 +134,24 @@ class ImpuestosController extends Controller
 
 
     public function filter($texto, $pag){
-        $data = Impuesto::orderBy('nombre','asc')
-                        ->where('nombre','like','%'.$texto.'%')
-                        ->orWhere('sigla','like','%'.$texto.'%')
-                        ->orWhere('porcentaje','like','%'.$texto.'%');
+        try{
+            $texto = str_replace(env('CARACTER_COMODIN_BUSQUEDA'),'/',$texto);
+            $data = Impuesto::orderBy('nombre','asc')
+                            ->where('nombre','like','%'.$texto.'%')
+                            ->orWhere('sigla','like','%'.$texto.'%')
+                            ->orWhere('porcentaje','like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(updated_at, "%d/%m/%Y")'),'like','%'.$texto.'%');
 
-        $totRows = count($data->get());
-        $result = $data->skip($this->rowsPerPage * $pag)
-                        ->take($this->rowsPerPage)
-                        ->get();
+            $totRows = count($data->get());
+            $result = $data->skip($this->rowsPerPage * $pag)
+                            ->take($this->rowsPerPage)
+                            ->get();
 
-        return response()->json(['data' => $result, 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag, 'rows' => $totRows]);
+            return response()->json(['data' => $result, 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag, 'rows' => $totRows]);
+        }catch(\PDOException $e){
+            return response()->json(['data' => [], 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag, 'rows' => 0]);
+        }
     }
 
 

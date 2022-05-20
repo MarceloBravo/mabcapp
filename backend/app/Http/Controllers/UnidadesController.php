@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Unidad;
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class UnidadesController extends Controller
 {
@@ -128,16 +129,23 @@ class UnidadesController extends Controller
 
 
     public function filter($texto, $pag){
-        $unidades = Unidad::orderBy('nombre','asc')
-                        ->where('nombre','Like','%'.$texto.'%');
+        try{
+            $texto = str_replace(env('CARACTER_COMODIN_BUSQUEDA'),'/',$texto);
+            $unidades = Unidad::orderBy('nombre','asc')
+                            ->where('nombre','Like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(updated_at, "%d/%m/%Y")'),'like','%'.$texto.'%');
 
-        $totRows = count($unidades->get());
+            $totRows = count($unidades->get());
 
-        $data = $unidades->skip($this->rowsPerPage * $pag)
-                        ->take($this->rowsPerPage)
-                        ->get();
+            $data = $unidades->skip($this->rowsPerPage * $pag)
+                            ->take($this->rowsPerPage)
+                            ->get();
 
-        return response()->json(['data' => $data, 'rows' => $totRows, 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag]);
+            return response()->json(['data' => $data, 'rows' => $totRows, 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag]);
+        }catch(\PDOException $e){
+            return response()->json(['data' => [], 'rows' => 0, 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag]);
+        }
     }
 
 

@@ -27,8 +27,9 @@ export class TallasService {
     return this.http.get(`${this._constantes.endPoint}${this.url}/pag/${pag}`,{headers: this._constantes.header()});
   }
 
-  filter(textoBuscado: string, pag: number){
-    return this.http.get(`${this._constantes.endPoint}${this.url}/filter/${textoBuscado}/${pag}`,{headers: this._constantes.header()});
+  filter(texto: string, pag: number){
+    texto = texto.split('/').join(this._constantes.caracterComodinBusqueda)
+    return this.http.get(`${this._constantes.endPoint}${this.url}/filter/${texto}/${pag}`,{headers: this._constantes.header()});
   }
 
   find(id: number){
