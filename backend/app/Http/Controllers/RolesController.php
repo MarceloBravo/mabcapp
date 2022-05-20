@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class RolesController extends Controller
 {
@@ -156,27 +157,34 @@ class RolesController extends Controller
     }
 
 
-    public function filter($buscado, $pag = 0){
-        $allData = Role::select(
-                            'id',
-                            'name',
-                            'description',
-                            'created_at',
-                            'updated_at',
-                            'deleted_at'
-                        )
-                        ->where('name','Like','%'.$buscado.'%')
-                        ->orWhere('description','Like','%'.$buscado.'%')
-                        ->whereNull('deleted_at')
-                        ->orderBy('name','asc');
+    public function filter($texto, $pag = 0){
+        try{
+            $texto = str_replace(env('CARACTER_COMODIN_BUSQUEDA'),'/',$texto);
+            $allData = Role::select(
+                                'id',
+                                'name',
+                                'description',
+                                'created_at',
+                                'updated_at',
+                                'deleted_at'
+                            )
+                            ->where('name','Like','%'.$texto.'%')
+                            ->orWhere('description','Like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(updated_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                            ->whereNull('deleted_at')
+                            ->orderBy('name','asc');
 
-        $totReg = count($allData->get());
+            $totReg = count($allData->get());
 
-        $roles = $allData->skip($this->rowsPerPag * $pag)
-                        ->take($this->rowsPerPag)
-                        ->get();
+            $roles = $allData->skip($this->rowsPerPag * $pag)
+                            ->take($this->rowsPerPag)
+                            ->get();
 
-        return response()->json(['data' => $roles->toArray(), 'rows' => $totReg, 'page' => $pag, 'rowsPerPage' => $this->rowsPerPag]);
+            return response()->json(['data' => $roles->toArray(), 'rows' => $totReg, 'page' => $pag, 'rowsPerPage' => $this->rowsPerPag]);
+        }catch(\PDOException $e){
+            return response()->json(['data' => [], 'rows' => 0, 'page' => $pag, 'rowsPerPage' => $this->rowsPerPag]);
+        }
     }
 
 }

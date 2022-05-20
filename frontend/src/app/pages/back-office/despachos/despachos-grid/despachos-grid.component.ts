@@ -34,7 +34,8 @@ export class DespachosGridComponent implements OnInit {
 
   private obtenerVentas(){
     this._ventasService.list(this.paginacion.pagina).subscribe((res: any) => {
-      this.data = res.data
+      //this.data = res.data
+      this.cargarDatos(res)
       this.showSpinner = false
     }, error => {
       this.showSpinner = false

@@ -206,16 +206,23 @@ class SeccionesHomeController extends Controller
 
     public function filter($texto, $pag)
     {
-        $records = SeccionesHome::where('nombre','like','%'.$texto.'%')
-                                ->orderBy('nombre','asc');
+        try{
+            $texto = str_replace(env('CARACTER_COMODIN_BUSQUEDA'),'/',$texto);
+            $records = SeccionesHome::where('nombre','like','%'.$texto.'%')
+                                    ->orWhere(DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                                    ->orWhere(DB::raw('DATE_FORMAT(updated_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                                    ->orderBy('nombre','asc');
 
-        $totRows = count($records->get());
+            $totRows = count($records->get());
 
-        $data = $records->skip($this->rowsPerPage * $pag)
-                        ->take($this->rowsPerPage)
-                        ->get();
+            $data = $records->skip($this->rowsPerPage * $pag)
+                            ->take($this->rowsPerPage)
+                            ->get();
 
-        return response()->json(['data' => $data, 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag, 'rows' => $totRows]);
+            return response()->json(['data' => $data, 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag, 'rows' => $totRows]);
+        }catch(\PDOException $e){
+            return response()->json(['data' => [], 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag, 'rows' => 0]);
+        }
     }
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Categoria;
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class CategoriasController extends Controller
 {
@@ -136,16 +137,23 @@ class CategoriasController extends Controller
 
 
     public function filter($texto, $pag){
-        $data = Categoria::orderBy('nombre','asc')
-                        ->where('nombre','like','%'.$texto.'%');
+        try{
+            $texto = str_replace(env('CARACTER_COMODIN_BUSQUEDA'),'/',$texto);
+            $data = Categoria::orderBy('nombre','asc')
+                            ->where('nombre','like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(updated_at, "%d/%m/%Y")'),'like','%'.$texto.'%');
 
-        $totReg = count($data->get());
+            $totReg = count($data->get());
 
-        $categorias = $data->skip($this->rowsPerPage * $pag)
-                            ->take($this->rowsPerPage)
-                            ->get();
+            $categorias = $data->skip($this->rowsPerPage * $pag)
+                                ->take($this->rowsPerPage)
+                                ->get();
 
-        return response()->json(['data' => $categorias, 'rowsPerPage' => $this->rowsPerPage, 'rows' => $totReg, 'page' => $pag]);
+            return response()->json(['data' => $categorias, 'rowsPerPage' => $this->rowsPerPage, 'rows' => $totReg, 'page' => $pag]);
+        }catch(\PDOException $e){
+            return response()->json(['data' => [], 'rowsPerPage' => $this->rowsPerPage, 'rows' => 0, 'page'=>$pag, ]);
+        }
     }
 
 

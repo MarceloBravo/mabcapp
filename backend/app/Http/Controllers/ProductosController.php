@@ -317,64 +317,71 @@ class ProductosController extends Controller
     }
 
     public function filter($texto, $pag){
-        $allRecords = Producto::join('producto_impuesto','productos.id','=','producto_impuesto.producto_id')
-                        ->join('impuestos','producto_impuesto.impuesto_id','=','impuestos.id')
-                        ->join('marcas','productos.marca_id','=','marcas.id')
-                        ->join('categorias','productos.categoria_id','=','categorias.id')
-                        ->join('sub_categorias','productos.sub_categoria_id','=','sub_categorias.id')
-                        ->join('unidades','productos.unidad_id','=','unidades.id')
-                        ->join(DB::raw('(SELECT source_image, producto_id, id FROM `imagenes_producto` WHERE imagen_principal AND deleted_at IS NULL
-                                        UNION
-                                        SELECT source_image, producto_id, min(id) FROM `imagenes_producto`
-                                        WHERE NOT imagen_principal
-                                        AND producto_id NOT IN (SELECT producto_id FROM `imagenes_producto` WHERE imagen_principal AND deleted_at IS NULL)
-                                        AND deleted_at IS NULL
-                                        GROUP BY source_image, producto_id
-                                        )
-                                imagen_producto'),
-                            function($join)
-                            {
-                                $join->on('productos.id', '=', 'imagen_producto.producto_id');
-                            })
-                        ->where('productos.nombre','like','%'.$texto.'%')
-                        ->orWhere('productos.descripcion','like','%'.$texto.'%')
-                        ->orWhere('precio_venta_normal','like','%'.$texto.'%')
-                        ->orWhere('stock','like','%'.$texto.'%')
-                        ->orWhere('marcas.nombre','like','%'.$texto.'%')
-                        ->orWhere('categorias.nombre','like','%'.$texto.'%')
-                        ->orWhere('sub_categorias.nombre','like','%'.$texto.'%')
-                        ->orWhere('impuestos.nombre','like','%'.$texto.'%')
-                        ->orWhere('unidades.nombre','like','%'.$texto.'%')
-                        ->select(
-                            'productos.id',
-                            'productos.nombre',
-                            'productos.descripcion',
-                            'productos.precio_venta_normal',
-                            'productos.precio_costo',
-                            'productos.stock',
-                            'productos.unidad_id',
-                            'productos.descuento_maximo',
-                            'unidades.nombre as nombre_unidad',
-                            'productos.marca_id',
-                            'marcas.nombre as nombre_marca',
-                            'productos.categoria_id',
-                            'categorias.nombre as nombre_categoria',
-                            'productos.sub_categoria_id',
-                            'sub_categorias.nombre as nombre_sub_categoria',
-                            'productos.created_at',
-                            'productos.updated_at',
-                            'productos.deleted_at',
-                            'imagen_producto.source_image as imagen_principal'
-                            )
-                        ->orderBy('nombre','asc');
+        try{
+            $texto = str_replace(env('CARACTER_COMODIN_BUSQUEDA'),'/',$texto);
+            $allRecords = Producto::join('producto_impuesto','productos.id','=','producto_impuesto.producto_id')
+                            ->join('impuestos','producto_impuesto.impuesto_id','=','impuestos.id')
+                            ->join('marcas','productos.marca_id','=','marcas.id')
+                            ->join('categorias','productos.categoria_id','=','categorias.id')
+                            ->join('sub_categorias','productos.sub_categoria_id','=','sub_categorias.id')
+                            ->join('unidades','productos.unidad_id','=','unidades.id')
+                            ->join(DB::raw('(SELECT source_image, producto_id, id FROM `imagenes_producto` WHERE imagen_principal AND deleted_at IS NULL
+                                            UNION
+                                            SELECT source_image, producto_id, min(id) FROM `imagenes_producto`
+                                            WHERE NOT imagen_principal
+                                            AND producto_id NOT IN (SELECT producto_id FROM `imagenes_producto` WHERE imagen_principal AND deleted_at IS NULL)
+                                            AND deleted_at IS NULL
+                                            GROUP BY source_image, producto_id
+                                            )
+                                    imagen_producto'),
+                                function($join)
+                                {
+                                    $join->on('productos.id', '=', 'imagen_producto.producto_id');
+                                })
+                            ->where('productos.nombre','like','%'.$texto.'%')
+                            ->orWhere('productos.descripcion','like','%'.$texto.'%')
+                            ->orWhere('precio_venta_normal','like','%'.$texto.'%')
+                            ->orWhere('stock','like','%'.$texto.'%')
+                            ->orWhere('marcas.nombre','like','%'.$texto.'%')
+                            ->orWhere('categorias.nombre','like','%'.$texto.'%')
+                            ->orWhere('sub_categorias.nombre','like','%'.$texto.'%')
+                            ->orWhere('impuestos.nombre','like','%'.$texto.'%')
+                            ->orWhere('unidades.nombre','like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(productos.created_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(productos.updated_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                            ->select(
+                                'productos.id',
+                                'productos.nombre',
+                                'productos.descripcion',
+                                'productos.precio_venta_normal',
+                                'productos.precio_costo',
+                                'productos.stock',
+                                'productos.unidad_id',
+                                'productos.descuento_maximo',
+                                'unidades.nombre as nombre_unidad',
+                                'productos.marca_id',
+                                'marcas.nombre as nombre_marca',
+                                'productos.categoria_id',
+                                'categorias.nombre as nombre_categoria',
+                                'productos.sub_categoria_id',
+                                'sub_categorias.nombre as nombre_sub_categoria',
+                                'productos.created_at',
+                                'productos.updated_at',
+                                'productos.deleted_at',
+                                'imagen_producto.source_image as imagen_principal'
+                                )
+                            ->orderBy('nombre','asc');
 
-        $totReg = count($allRecords->get());
+            $totReg = count($allRecords->get());
 
-        $data = $allRecords->skip($this->rowsPerPage * $pag)
-                            ->take($this->rowsPerPage)
-                            ->get();
+            $data = $allRecords->skip($this->rowsPerPage * $pag)
+                                ->take($this->rowsPerPage)
+                                ->get();
 
-        return response()->json(['data' => $data,  'rowsPerPage' => $this->rowsPerPage, 'rows' => $totReg, 'page' => $pag]);
+            return response()->json(['data' => $data,  'rowsPerPage' => $this->rowsPerPage, 'rows' => $totReg, 'page' => $pag]);
+        }catch(\PDOException $e){
+            return response()->json(['data' => [],  'rowsPerPage' => $this->rowsPerPage, 'rows' => 0, 'page' => $pag]);
+        }
     }
 
 

@@ -19,7 +19,7 @@
           [titulo]="'Listado de despachos pendientes'"
           [cabeceras]="['Orden N°','Cliente','Dirección','Ciudad','Casa N°','Fecha despacho','Fecha venta']"
           [registros]="data"
-          [columnasVisibles]="['orden_compra','cliente','direccion','ciudad','casa_num','fecha_despacho','fecha_venta_tienda']"
+          [columnasVisibles]="['orden_compra','cliente','direccion','ciudad','casa_num','fecha_despacho','created_at']"
           (idEliminar)="eliminar($event)"
           (textoFiltro)="filtrar($event)"
         >

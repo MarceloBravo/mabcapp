@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pantalla;
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class PantallasController extends Controller
 {
@@ -149,22 +150,29 @@ class PantallasController extends Controller
 
     public function filter($texto, $page = 0)
     {
-        $data = Pantalla::join('menus','pantallas.menus_id','=','menus.id')
-                        ->select('pantallas.*','menus.nombre as menu', 'menus.url as url')
-                        ->orderBy('pantallas.nombre','asc')
-                        ->orderBy('menus.nombre','asc')
-                        ->where('pantallas.nombre','Like','%'.$texto.'%')
-                        ->orWhere('menus.nombre','Like','%'.$texto.'%')
-                        ->orWhere('menus.url','Like','%'.$texto.'%')
-                        ->whereNull('menus.deleted_at');
+        try{
+            $texto = str_replace(env('CARACTER_COMODIN_BUSQUEDA'),'/',$texto);
+            $data = Pantalla::join('menus','pantallas.menus_id','=','menus.id')
+                            ->select('pantallas.*','menus.nombre as menu', 'menus.url as url')
+                            ->orderBy('pantallas.nombre','asc')
+                            ->orderBy('menus.nombre','asc')
+                            ->where('pantallas.nombre','Like','%'.$texto.'%')
+                            ->orWhere('menus.nombre','Like','%'.$texto.'%')
+                            ->orWhere('menus.url','Like','%'.$texto.'%')
+                            ->whereNull('menus.deleted_at')
+                            ->orWhere(DB::raw('DATE_FORMAT(pantallas.created_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(pantallas.updated_at, "%d/%m/%Y")'),'like','%'.$texto.'%');
 
-        $totRows = count($data->get());
+            $totRows = count($data->get());
 
-        $pantallas = $data->skip($this->rowsPerPage * $page)
-                            ->take($this->rowsPerPage)
-                            ->get();
+            $pantallas = $data->skip($this->rowsPerPage * $page)
+                                ->take($this->rowsPerPage)
+                                ->get();
 
-        return response()->json(['data' => $pantallas, 'rowsPerPage' => $this->rowsPerPage, 'page' => $page, 'rows' => $totRows]);
+            return response()->json(['data' => $pantallas, 'rowsPerPage' => $this->rowsPerPage, 'page' => $page, 'rows' => $totRows]);
+        }catch(\PDOException $e){
+            return response()->json(['data' => [], 'rowsPerPage' => $this->rowsPerPage, 'page' => 0, 'rows' => $totRows]);
+        }
     }
 
 

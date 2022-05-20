@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Marca;
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class MarcasController extends Controller
 {
@@ -143,16 +144,23 @@ class MarcasController extends Controller
 
 
     public function filter($texto, $pag){
-        $data = Marca::orderBy('nombre','asc')
-                        ->where('nombre','Like','%'.$texto.'%');
+        try{
+            $texto = str_replace(env('CARACTER_COMODIN_BUSQUEDA'),'/',$texto);
+            $data = Marca::orderBy('nombre','asc')
+                            ->where('nombre','Like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(updated_at, "%d/%m/%Y")'),'like','%'.$texto.'%');
 
-        $totRows = count($data->get());
+            $totRows = count($data->get());
 
-        $marcas = $data->skip($this->rowsPerPage * $pag)
-                        ->take($this->rowsPerPage)
-                        ->get();
+            $marcas = $data->skip($this->rowsPerPage * $pag)
+                            ->take($this->rowsPerPage)
+                            ->get();
 
-        return response()->json(['data' => $marcas, 'rowsPerPage' => $this->rowsPerPage, 'rows' => $totRows, 'page' => $pag]);
+            return response()->json(['data' => $marcas, 'rowsPerPage' => $this->rowsPerPage, 'rows' => $totRows, 'page' => $pag]);
+        }catch(\PDOException $e){
+            return response()->json(['data' => [], 'rowsPerPage' => $this->rowsPerPage, 'rows' => 0, 'page' => $pag]);
+        }
     }
 
 

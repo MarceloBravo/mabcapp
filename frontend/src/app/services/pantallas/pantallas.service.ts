@@ -19,6 +19,7 @@ export class PantallasService {
   }
 
   filter(texto: string, pag: number){
+    texto = texto.split('/').join(this._constantes.caracterComodinBusqueda)
     return this.http.get(`${this._constantes.endPoint}${this.url}/filtrar/${texto}/${pag}`,{headers: this._constantes.header()});
   }
 

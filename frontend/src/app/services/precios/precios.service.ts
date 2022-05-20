@@ -18,6 +18,7 @@ export class PreciosService {
   }
 
   filter(texto: string, page: number){
+    texto = texto.split('/').join(this._const.caracterComodinBusqueda)
     return this.http.get(`${this._const.endPoint}${this.url}/filter/${texto}/${page}`,{headers: this._const.header()})
   }
 

@@ -23,6 +23,7 @@ export class UnidadesService {
   }
 
   filter(texto: string, pag: number){
+    texto = texto.split('/').join(this._const.caracterComodinBusqueda)
     return this.http.get(`${this._const.endPoint}${this.url}/filter/${texto}/${pag}`,{headers: this._const.header()})
   }
 

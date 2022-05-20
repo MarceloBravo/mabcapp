@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cliente;
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class ClientesController extends Controller
 {
@@ -144,32 +145,39 @@ class ClientesController extends Controller
     }
 
     public function filter($texto, $pag){
-        $records = Cliente::where('rut','like','%'.$texto.'%')
-                        ->orWhere('nombres','like','%'.$texto.'%')
-                        ->orWhere('apellido1','like','%'.$texto.'%')
-                        ->orWhere('apellido2','like','%'.$texto.'%')
-                        ->orWhere('ciudad','like','%'.$texto.'%')
-                        ->orWhere('ciudad','like','%'.$texto.'%')
-                        ->orWhere('direccion','like','%'.$texto.'%')
-                        ->orWhere('email','like','%'.$texto.'%')
-                        ->orWhere('fono','like','%'.$texto.'%')
-                        ->orWhere('casa_num','like','%'.$texto.'%')
-                        ->orWhere('block_num','like','%'.$texto.'%')
-                        ->orWhere('referencia','like','%'.$texto.'%')
-                        ->orWhere('created_at','like','%'.$texto.'%')
-                        ->orWhere('updated_at','like','%'.$texto.'%')
-                        ->orderBy('apellido1', 'asc')
-                        ->orderBy('apellido2', 'asc')
-                        ->orderBy('nombres','asc');
+        try{
+            $texto = str_replace(env('CARACTER_COMODIN_BUSQUEDA'),'/',$texto);
+            $records = Cliente::where('rut','like','%'.$texto.'%')
+                            ->orWhere('nombres','like','%'.$texto.'%')
+                            ->orWhere('apellido1','like','%'.$texto.'%')
+                            ->orWhere('apellido2','like','%'.$texto.'%')
+                            ->orWhere('ciudad','like','%'.$texto.'%')
+                            ->orWhere('ciudad','like','%'.$texto.'%')
+                            ->orWhere('direccion','like','%'.$texto.'%')
+                            ->orWhere('email','like','%'.$texto.'%')
+                            ->orWhere('fono','like','%'.$texto.'%')
+                            ->orWhere('casa_num','like','%'.$texto.'%')
+                            ->orWhere('block_num','like','%'.$texto.'%')
+                            ->orWhere('referencia','like','%'.$texto.'%')
+                            ->orWhere('created_at','like','%'.$texto.'%')
+                            ->orWhere('updated_at','like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                            ->orWhere(DB::raw('DATE_FORMAT(updated_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                            ->orderBy('apellido1', 'asc')
+                            ->orderBy('apellido2', 'asc')
+                            ->orderBy('nombres','asc');
 
 
-        $totRows = count($records->get());
+            $totRows = count($records->get());
 
-        $data = $records->skip($this->rowsPerPage * $pag)
-                        ->take($this->rowsPerPage)
-                        ->get();
+            $data = $records->skip($this->rowsPerPage * $pag)
+                            ->take($this->rowsPerPage)
+                            ->get();
 
-        return response()->json(['data' => $data, 'rows' => $totRows, 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag]);
+            return response()->json(['data' => $data, 'rows' => $totRows, 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag]);
+        }catch(\PDOException $e){
+            return response()->json(['data' => [], 'rows' => 0, 'rowsPerPage' => $this->rowsPerPage, 'page' => $pag]);
+        }
     }
 
 

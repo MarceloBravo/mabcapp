@@ -83,14 +83,18 @@ export class PantallasGridComponent implements OnInit {
   }
 
   filtrar(texto: string){
-    this.paginacion.pagina = 0;
-    this._pantallasServices.filter(texto, this.paginacion.pagina).subscribe(
-      (res: any)=> {
-        this.cargarDatos(res);
-      },error=>{
-        this.showSpinner = !this._sharedServices.handlerError(error)
-      }
-    )
+    this.paginacion.pagina = 0
+    if(texto.trim().length > 0){
+      this._pantallasServices.filter(texto, this.paginacion.pagina).subscribe(
+        (res: any)=> {
+          this.cargarDatos(res);
+        },error=>{
+          this.showSpinner = !this._sharedServices.handlerError(error)
+        }
+      )
+    }else{
+      this.obtenerDatos()
+    }
   }
 
   mostrarPagina(pagina: number){

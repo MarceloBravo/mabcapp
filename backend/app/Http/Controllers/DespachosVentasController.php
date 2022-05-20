@@ -276,43 +276,49 @@ class DespachosVentasController extends Controller
 
     public function filter($texto, $pag)
     {
-        $data = DespachosVentas::leftJoin(
-            DB::raw(
-                        "(
-                        SELECT venta_id, rut, nombres, apellido1, apellido2 FROM `ventas_cliente_tienda`
-                        INNER JOIN clientes ON ventas_cliente_tienda.cliente_id = clientes.id
-                        UNION
-                        SELECT venta_id, rut, nombres, apellido1, apellido2 FROM ventas_cliente_invitado
-                        ) as ventas_cliente"
-                    ),'ventas_cliente.venta_id','=','despachos_ventas.venta_id')
-                ->join('web_pay','despachos_ventas.venta_id','=','web_pay.venta_id')
+        $texto = str_replace(env('CARACTER_COMODIN_BUSQUEDA'),'/',$texto);
+        try{
+            $data = DespachosVentas::leftJoin(
+                DB::raw(
+                            "(
+                            SELECT venta_id, rut, nombres, apellido1, apellido2 FROM `ventas_cliente_tienda`
+                            INNER JOIN clientes ON ventas_cliente_tienda.cliente_id = clientes.id
+                            UNION
+                            SELECT venta_id, rut, nombres, apellido1, apellido2 FROM ventas_cliente_invitado
+                            ) as ventas_cliente"
+                        ),'ventas_cliente.venta_id','=','despachos_ventas.venta_id')
+                    ->join('web_pay','despachos_ventas.venta_id','=','web_pay.venta_id')
+                                ->orWhere('despachos_ventas.venta_id','like','%'.$texto.'%')
+                                ->orWhere('direccion','like','%'.$texto.'%')
+                                ->orWhere('rut','like','%'.$texto.'%')
+                                ->orWhere('nombres','like','%'.$texto.'%')
+                                ->orWhere('apellido1','like','%'.$texto.'%')
+                                ->orWhere('apellido2','like','%'.$texto.'%')
+                                ->orWhere('ciudad','like','%'.$texto.'%')
+                                ->orWhere('casa_num','like','%'.$texto.'%')
+                                ->orWhere('block_num','like','%'.$texto.'%')
+                                ->orWhere('referencia','like','%'.$texto.'%')
+                                ->orWhere('ciudad','like','%'.$texto.'%')
+                                ->orWhere(DB::raw('DATE_FORMAT(despachos_ventas.created_at, "%d/%m/%Y")'),'Like','%'.$texto.'%')
+                                ->orWhere(DB::raw('DATE_FORMAT(despachos_ventas.updated_at, "%d/%m/%Y")'),'Like','%'.$texto.'%')
+                                ->select(
+                                    'despachos_ventas.*',
+                                    'web_pay.buy_order as orden_compra',
+                                    'ventas_cliente.rut',
+                                    DB::raw("CONCAT(ventas_cliente.nombres,' ',ventas_cliente.apellido1,' ',ventas_cliente.apellido2) as cliente")
+                                    )
+                                ->orderBy('created_at','asc');
 
-                            ->where('despachos_ventas.venta_id','like','%'.$texto.'%')
-                            ->orWhere('direccion','like','%'.$texto.'%')
-                            ->orWhere('rut','like','%'.$texto.'%')
-                            ->orWhere('nombres','like','%'.$texto.'%')
-                            ->orWhere('apellido1','like','%'.$texto.'%')
-                            ->orWhere('apellido2','like','%'.$texto.'%')
-                            ->orWhere('ciudad','like','%'.$texto.'%')
-                            ->orWhere('casa_num','like','%'.$texto.'%')
-                            ->orWhere('block_num','like','%'.$texto.'%')
-                            ->orWhere('referencia','like','%'.$texto.'%')
-                            ->orWhere('ciudad','like','%'.$texto.'%')
-                            ->select(
-                                'despachos_ventas.*',
-                                'web_pay.buy_order as orden_compra',
-                                'ventas_cliente.rut',
-                                DB::raw("CONCAT(ventas_cliente.nombres,' ',ventas_cliente.apellido1,' ',ventas_cliente.apellido2) as cliente")
-                                )
-                            ->orderBy('created_at','asc');
+            $totRows = count($data->get());
 
-        $totRows = count($data->get());
+            $datos = $data->skip($this->rowsPerPage * $pag)
+                        ->take($this->rowsPerPage)
+                        ->get();
 
-        $datos = $data->skip($this->rowsPerPage * $pag)
-                    ->take($this->rowsPerPage)
-                    ->get();
-
-        return response()->json(['data' => $datos, 'rowsPerPage' => $this->rowsPerPage, 'rows' => $totRows, 'page'=>$pag, ]);
+            return response()->json(['data' => $datos, 'rowsPerPage' => $this->rowsPerPage, 'rows' => $totRows, 'page'=>$pag, ]);
+        }catch(\PDOException $e){
+            return response()->json(['data' => [], 'rowsPerPage' => $this->rowsPerPage, 'rows' => 0, 'page'=>$pag, ]);
+        }
     }
 
 

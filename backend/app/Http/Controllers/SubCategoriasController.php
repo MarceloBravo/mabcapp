@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SubCategoria;
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class SubCategoriasController extends Controller
 {
@@ -138,20 +139,25 @@ class SubCategoriasController extends Controller
 
 
     public function filter($texto, $pag){
-        $data = SubCategoria::join('categorias','sub_categorias.categoria_id','=','categorias.id')
-                            ->orderBy('nombre','asc')
-                            ->select('sub_categorias.*','categorias.nombre as nombre_categoria')
-                            ->where('sub_categorias.nombre','like','%'.$texto.'%')
-                            ->orWhereDate("created_at",'=','%'.$texto.'%')
-                            ->orWhereDate("created_at",'=','%'.$texto.'%');
+        try{
+            $texto = str_replace(env('CARACTER_COMODIN_BUSQUEDA'),'/',$texto);
+            $data = SubCategoria::join('categorias','sub_categorias.categoria_id','=','categorias.id')
+                                ->orderBy('nombre','asc')
+                                ->select('sub_categorias.*','categorias.nombre as nombre_categoria')
+                                ->where('sub_categorias.nombre','like','%'.$texto.'%')
+                                ->orWhere(DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y")'),'like','%'.$texto.'%')
+                                ->orWhere(DB::raw('DATE_FORMAT(updated_at, "%d/%m/%Y")'),'like','%'.$texto.'%');
 
-        $totRows = count($data->get());
+            $totRows = count($data->get());
 
-        $dataPage = $data->skip($this->rowsPerPage * $pag)
-                        ->take($this->rowsPerPage)
-                        ->get();
+            $dataPage = $data->skip($this->rowsPerPage * $pag)
+                            ->take($this->rowsPerPage)
+                            ->get();
 
-        return response()->json(['data'=> $dataPage, 'rowsPerPage'=> $this->rowsPerPage, 'rows'=>$totRows, 'page'=>$pag]);
+            return response()->json(['data'=> $dataPage, 'rowsPerPage'=> $this->rowsPerPage, 'rows'=>$totRows, 'page'=>$pag]);
+        }catch(\PDOException $e){
+            return response()->json(['data'=> [], 'rowsPerPage'=> $this->rowsPerPage, 'rows'=> 0, 'page'=>$pag]);
+        }
     }
 
 

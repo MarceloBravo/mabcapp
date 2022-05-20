@@ -26,8 +26,9 @@ export class UsuariosService {
     return this.http.get(`${this._constantes.endPoint}${this.url}/pag/${page}`,{headers: this._constantes.header()});
   }
 
-  filter(buscado: string, page: number){
-    return this.http.get(`${this._constantes.endPoint}${this.url}/filtrar/${buscado}/${page}`,{headers: this._constantes.header()});
+  filter(texto: string, page: number){
+    texto = texto.split('/').join(this._constantes.caracterComodinBusqueda)
+    return this.http.get(`${this._constantes.endPoint}${this.url}/filtrar/${texto}/${page}`,{headers: this._constantes.header()});
   }
 
   find(id: number){
