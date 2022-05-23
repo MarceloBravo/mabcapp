@@ -1164,7 +1164,7 @@ CREATE TABLE `users`  (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, 'Marcelo', 'mabc@live.cl', NULL, '$2y$10$foS3RTfSqzv98d0Gzt63GeScIwcUnV8djhvHPOI8xx/yBKVs919NW', NULL, '2020-11-22 00:00:00', '2022-02-01 18:29:09', NULL, 'Bravo', 'Castillo', '12 Norte 16 Oriente, #2288, Talca', 'Mi Avatar.jpg', '987654321');
+INSERT INTO `users` VALUES (1, 'Marcelo', 'mabc@live.cl', NULL, '$2y$10$foS3RTfSqzv98d0Gzt63GeScIwcUnV8djhvHPOI8xx/yBKVs919NW', NULL, '2020-11-22 00:00:00', '2022-02-01 18:29:09', NULL, 'Bravo', 'Castillo', '12 Norte, #123, Talca', 'Mi Avatar.jpg', '987654321');
 INSERT INTO `users` VALUES (19, 'Valeria z', 'prueba@ejemplo.cl', NULL, '$2b$10$BCo6PZMKbxA/3ROLBo7D1uynIWQ/7GO6LQdk0qez0k9VZhmilWur.', NULL, '2021-01-22 21:47:01', '2021-11-08 16:15:12', NULL, 'Maza', 'sozza', '12 Norte 123', 'descarga.png', '');
 INSERT INTO `users` VALUES (30, 'Marcelo Antonio', 'marcelo.a.bravo.c@gmail.cl', NULL, '$2b$10$66WGQByMZWmVkOtRin00eOGUlw2BKuWu5/nS2Gm.fDEGH0/otpWLi', NULL, '2021-05-05 01:13:57', '2021-06-08 00:00:00', NULL, 'Bravo', 'Castillo', '12 Norte #123', 'yo.jpg', '');
 INSERT INTO `users` VALUES (62, 'Mariela Andrea', 'mariela2@ejemplo.cl', NULL, '$2b$10$b.qrq9mTNfYSgdPqC.veQuWXNDHe0OeCrlVHVisek7VtrtlhD5Mf6', NULL, '2021-05-05 01:13:57', '2021-04-08 00:00:00', NULL, 'Bezoain', 'Bravo', '12 Norte #123', 'fgfgfgfgfgf', '');
