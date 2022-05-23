@@ -37,6 +37,9 @@
       <p class="product-price"><span *ngIf="precios.precio_venta !== precios.precio_normal" class="old-price">{{ formatearPrecio(precios.precio_normal) }}</span> {{ formatearPrecio(precios.precio_venta) }}</p>
       <p class="product-desc">{{ producto.descripcion }}</p>
 
+      <p>
+        <label>Quedan {{ producto.stock }} {{ nombreUnidad }}</label>
+      </p>
       <!-- Form -->
       <form class="cart-form clearfix" method="post">
           <!-- Select Box -->
@@ -59,7 +62,15 @@
           <!-- Cart & Favourite Box -->
           <div class="cart-fav-box d-flex align-items-center">
               <!-- Cart -->
-              <button type="submit" name="addtocart" value="5" class="btn essence-btn" (click)="agregarCarrito()">Agregar al carrito</button>
+              <button
+                type="submit"
+                name="addtocart"
+                value="5"
+                class="btn essence-btn"
+                (click)="agregarCarrito()"
+                [disabled]="producto.stock === 0">
+                {{ producto.stock > 0 ? 'Agregar al carrito' : 'Producto Agotado' }}
+              </button>
               <!-- Favourite -->
               <div class="product-favourite ml-4">
                   <a href="#" class="favme fa fa-heart"></a>

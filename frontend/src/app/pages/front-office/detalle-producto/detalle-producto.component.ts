@@ -26,6 +26,7 @@ export class DetalleProductoComponent implements OnInit {
   previewImageStyle: string = ''
   previewImage: string = ''
   favoritos: number[] = []
+  nombreUnidad: string = ''
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -56,6 +57,7 @@ export class DetalleProductoComponent implements OnInit {
       this.showSpinner = false
       if(res){
         this.producto = res;
+        this.nombreUnidad = res.unidad[0] ? (res.stock > 0 ? res.unidad[0].nombre_plural : res.unidad[0].nombre) : ''
         let impuestos: number[] = []
         this.producto.impuestos.forEach(i =>
           impuestos.push(i.porcentaje)
