@@ -66,9 +66,9 @@ export class SharedService {
   }
 
   public handlerError(error: any): boolean{
-    console.log(error);
-    let detalles = error.errores ?  ': ' + this.detalleErrores(error.errores) : ''
-    this._toastService.showErrorMessage(error.message + detalles, 'Error');
+    //console.log(error);
+    let mensajeError = error.errores ?  error.message + this.detalleErrores(error.errores) : (error.status === 401 ? 'Usuario o contrasenña no válidos!' : error.statusText )
+    this._toastService.showErrorMessage(mensajeError, 'Error');
     return true;
   }
 

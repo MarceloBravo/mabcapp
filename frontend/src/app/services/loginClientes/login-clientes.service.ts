@@ -24,7 +24,6 @@ export class LoginClientesService {
   login(loginForm: FormGroup){
     let remember: boolean = <boolean><unknown>loginForm.value['remember'];
     this._sharedServices.globalRememberClient = remember;
-
     return this.httpClient.post(this._const.endPoint + this.endPoint + '/clientes_login', loginForm.value, {headers: this.header});
   }
 

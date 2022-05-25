@@ -100,5 +100,6 @@ Obs:
  - Las credenciales para ingresar al módulo de administración son:  
   usuario: mabc@live.cl  
   password: 123456  
-  
-
+      
+Última versión:  
+Versión 1.5.0
