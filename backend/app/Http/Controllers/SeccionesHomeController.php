@@ -49,12 +49,13 @@ class SeccionesHomeController extends Controller
         $seccion = SeccionesHome::find($id);
         if(!is_null($seccion)){
             $seccion['productos'] = $seccion->productos();
-            foreach($seccion['productos'] as $producto){
-                if(count($producto->producto()) > 0){
-                    $producto['nombre'] = $producto->producto()[0]['nombre'];
-                    $producto['nombre_marca'] = $producto->producto()[0]->marca()[0]['nombre'];
-                }
-            }
+            //foreach($seccion['productos'] as $producto){
+
+                //if(count($producto->producto()) > 0){
+                //    $producto['nombre'] = $producto->producto()[0]['nombre'];
+                //    $producto['nombre_marca'] = $producto->producto()[0]->marca()[0]['nombre'];
+                //}
+            //}
         }
 
         return response()->json($seccion);

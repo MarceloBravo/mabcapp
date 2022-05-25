@@ -14,3 +14,8 @@
   right: 0px;
   top: 0px;
 }
+
+::ng-deep .editable-cell{
+  height: 50px;
+  width: auto;
+}

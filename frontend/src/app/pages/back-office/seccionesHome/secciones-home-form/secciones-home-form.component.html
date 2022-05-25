@@ -78,9 +78,10 @@
 
             <app-grid
               [titulo]="'Productos de la sección'"
-              [cabeceras]="['Nombre','Marca','Texto 1','Texto 2']"
+              [cabeceras]="['Foto','Nombre','Marca','Texto 1','Texto 2']"
               [registros]="form.value.productos"
               [columnasVisibles]="visibleColumns"
+              [columnasConImagenes]="['source_image']"
               (idEliminar)="eliminarProd($event)"
               [ocultarNuevo]="true"
               [ocultarFiltro]="true"

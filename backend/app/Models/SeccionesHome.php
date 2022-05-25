@@ -17,8 +17,42 @@ class SeccionesHome extends Model
 
     protected $fillable = ['nombre'];
 
+    //public function productos2(){
+    //    return $this->hasMany(ProductoSeccionHome::class, 'seccion_id')->get();
+    //}
+
     public function productos(){
-        return $this->hasMany(ProductoSeccionHome::class, 'seccion_id')->get();
+        //return $this->hasMany(ProductoSeccionHome::class, 'seccion_id')->get();
+        return $this->hasMany(ProductoSeccionHome::class, 'seccion_id')
+                    ->join('productos','productos_secciones_home.producto_id','=','productos.id')
+                    ->join('marcas','productos.marca_id','=','marcas.id')
+                    ->leftJoin(DB::raw('(
+                            SELECT producto_id, source_image
+                            FROM imagenes_producto
+                            WHERE
+                                imagen_principal AND
+                                deleted_at IS NULL
+                        ) AS imagen_producto'), 'productos.id','=','imagen_producto.producto_id')
+                    ->select(
+                        'productos.id',
+                        'productos_secciones_home.seccion_id',
+                        'productos_secciones_home.texto1',
+                        'productos_secciones_home.texto2',
+                        'productos.nombre',
+                        'productos.descripcion',
+                        'productos.precio_venta_normal',
+                        'productos.stock',
+                        'productos.unidad_id',
+                        'productos.marca_id',
+                        'productos.categoria_id',
+                        'productos.sub_categoria_id',
+                        'productos.descuento_maximo',
+                        'productos.precio_costo',
+                        'imagen_producto.source_image',
+                        'marcas.nombre as nombre_marca'
+                    )
+                    ->get();
+
     }
 
 

@@ -3,12 +3,10 @@ import { SeccionesHomeService } from '../../../../services/seccionesHome/seccion
 import { SharedService } from '../../../../services/shared/shared.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductosSeccionHome } from '../../../../class/productosSeccionHome/productos-seccion-home';
 import { ModalDialogService } from '../../../../services/modalDialog/modal-dialog.service';
 import { ProductosService } from '../../../../services/productos/productos.service';
 import { ToastService } from '../../../../services/toast/toast.service';
 import { ConstantesService } from '../../../../services/constantes/constantes.service';
-import { FilesService } from '../../../../services/files/files.service';
 
 @Component({
   selector: 'app-secciones-home-form',
@@ -29,7 +27,7 @@ export class SeccionesHomeFormComponent implements OnInit {
   private url: string = '/admin/secciones_home'
   public search: string = ''
   public productos: any[] = []
-  public visibleColumns: string[] = ['nombre','nombre_marca','texto1','texto2']
+  public visibleColumns: string[] = ['source_image','nombre','nombre_marca','texto1','texto2']
   public idSelectedProd: any = null
 
   constructor(
@@ -39,6 +37,7 @@ export class SeccionesHomeFormComponent implements OnInit {
     private avctivatedRoute: ActivatedRoute,
     private _modalService: ModalDialogService,
     private _toastService: ToastService,
+    private _const: ConstantesService,
     private router: Router,
   ) {
     let id = this.avctivatedRoute.snapshot.paramMap.get('id')
@@ -55,6 +54,9 @@ export class SeccionesHomeFormComponent implements OnInit {
     if(this.id){
       this._seccionesService.find(this.id).subscribe((res: any) =>{
         this.form.patchValue(res)
+        this.form.value.productos.forEach((e: any) => {
+          e.source_image = this._const.storageImages + 'productos/' + e.source_image
+        });
         this.showSpinner = false
       }, error =>{
         this.showSpinner = false
